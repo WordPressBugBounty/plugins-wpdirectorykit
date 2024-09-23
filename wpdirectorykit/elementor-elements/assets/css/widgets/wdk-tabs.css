@@ -1,0 +1,42 @@
+.wdk-tabs {
+  position: fixed;
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  background: #3C73A8;
+  z-index: 50;
+  display: flex;
+  overflow: hidden;
+  display: none;
+  color: #fff;
+  flex-wrap: wrap;
+}
+
+.wdk-tabs.is_edit_mode {
+  overflow: visible;
+  display: block;
+}
+
+.wdk-tabs .tab {
+  padding: 15px 15px;
+  display: inline-block;
+  transition: all .15s;
+}
+
+.wdk-tabs .tab.active,
+.wdk-tabs .tab:hover {
+  background: #224668;
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  .wdk-tabs {
+    display: flex;
+  }
+  .wdk_tab_mobile:not(.active) {
+    position: absolute;
+    visibility: hidden;
+    left: 0;
+  }
+}
