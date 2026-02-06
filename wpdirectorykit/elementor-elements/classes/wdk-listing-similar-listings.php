@@ -166,18 +166,18 @@ class WdkListingSimilarListings extends WdkElementorBase {
 
                 if(empty($similar_field['field'])) continue;
 
-                if ($similar_field['field_skip_if_empty'] == 'true' && empty(wdk_field_value(str_replace('field','',$similar_field['field']), $wdk_listing_id))) {
+                if ($similar_field['field_skip_if_empty'] == 'true' && empty(wdk_field_value(str_replace('field_','',$similar_field['field']), $wdk_listing_id))) {
                     continue;
                 }
 
                 if($similar_field['field'] == 'is_featured') {
-                    if (!empty(wdk_field_value(str_replace('field','',$similar_field['field']), $wdk_listing_id))) {
+                    if (!empty(wdk_field_value(str_replace('field_','',$similar_field['field']), $wdk_listing_id))) {
                         $custom_parameters[$similar_field['field']] = 'on';
                     } else {
                         $custom_parameters[$similar_field['field']] = 'off';
                     }
                 } else {    
-                    $custom_parameters[$similar_field['field']] = wdk_field_value(str_replace('field','',$similar_field['field']), $wdk_listing_id);
+                    $custom_parameters[$similar_field['field']] = wdk_field_value(str_replace('field_','',$similar_field['field']), $wdk_listing_id);
                 }
             }
         }
@@ -237,6 +237,62 @@ class WdkListingSimilarListings extends WdkElementorBase {
             ]
         );
 
+        
+        if(wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_listing_card_elementor_layout')){
+            $this->add_control(
+                'is_custom_layout_enable',
+                [
+                    'label' => __( 'Enable Custom Layout', 'wpdirectorykit' ),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => __( 'True', 'wpdirectorykit' ),
+                    'label_off' => __( 'False', 'wpdirectorykit' ),
+                    'return_value' => 'yes',
+                    'default' => '',
+                    
+                ]
+            );
+            $this->add_control(
+                'custom_layout_id_grid',
+                [
+                    'label' => __( 'Layout Grid id', 'wpdirectorykit' ),
+                    'type' => \Elementor\Controls_Manager::TEXT,
+                    'default' => '',
+                    'placeholder' => __( 'put your template id', 'wpdirectorykit' ),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'conditions' => [
+                        'terms' => [
+                            [
+                                'name' => 'is_custom_layout_enable',
+                                'operator' => '==',
+                                'value' => 'yes',
+                            ]
+                        ],
+                    ],
+                ]
+            );
+
+            $this->add_control (
+                'custom_layout_id_list',
+                [
+                    'label' => __( 'Layout List Id', 'wpdirectorykit' ),
+                    'type' => \Elementor\Controls_Manager::TEXT,
+                    'default' => '',
+                    'placeholder' => __( 'put your template id', 'wpdirectorykit' ),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'conditions' => [
+                        'terms' => [
+                            [
+                                'name' => 'is_custom_layout_enable',
+                                'operator' => '==',
+                                'value' => 'yes',
+                            ]
+                        ],
+                    ],
+                ]
+            );
+        } 
+
+        
         if(true){
             $this->add_control(
                 'per_page',
@@ -875,7 +931,7 @@ class WdkListingSimilarListings extends WdkElementorBase {
                             'max' => 100,
                         ]
                     ],
-                    'size_units' => [ 'px', 'vw' ],
+                    'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                     'default' => [
                         'size' => 220,
                         'unit' => 'px',
@@ -1017,18 +1073,11 @@ class WdkListingSimilarListings extends WdkElementorBase {
                 ]
             );
 
-            $this->add_responsive_control(
-                'styles_carousel_arrows_s_m_left_margin',
-                [
-                        'label' => esc_html__( 'Margin', 'wpdirectorykit' ),
-                        'type' => Controls_Manager::DIMENSIONS,
-                        'size_units' => [ 'px', 'em', '%' ],
-                        'allowed_dimensions' => 'horizontal',
-                        'selectors' => [
-                            '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow.wdk-slider-prev' => 'margin-right:{{RIGHT}}{{UNIT}}; margin-left:{{LEFT}}{{UNIT}};',
-                        ],
-                ]
+            $selectors = array(
+                'normal' => '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow.wdk-slider-prev',
             );
+            $this->generate_renders_tabs($selectors, 'styles_carousel_arrows_s_m_left', ['margin','border','border_radius', 'width','height']);
+
 
             $this->add_responsive_control(
                 'styles_carousel_arrows_icon_left',
@@ -1052,18 +1101,10 @@ class WdkListingSimilarListings extends WdkElementorBase {
                 ]
             );
 
-            $this->add_responsive_control(
-                'styles_carousel_arrows_s_m_right_margin',
-                [
-                        'label' => esc_html__( 'Margin', 'wpdirectorykit' ),
-                        'type' => Controls_Manager::DIMENSIONS,
-                        'size_units' => [ 'px', 'em', '%' ],
-                        'allowed_dimensions' => 'horizontal',
-                        'selectors' => [
-                            '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow.wdk-slider-next' => 'margin-right:{{RIGHT}}{{UNIT}}; margin-left:{{LEFT}}{{UNIT}};',
-                        ],
-                ]
+            $selectors = array(
+                'normal' => '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow.wdk-slider-next',
             );
+            $this->generate_renders_tabs($selectors, 'styles_carousel_arrows_s_m_next', ['margin','border','border_radius', 'width','height']);
 
             $this->add_responsive_control(
                 'styles_carousel_arrows_icon_right',

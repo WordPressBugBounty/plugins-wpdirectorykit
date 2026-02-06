@@ -1,5 +1,4 @@
 body {
-  height: 100%;
   overflow-x: hidden;
   z-index: 0;
   position: relative;
@@ -183,6 +182,12 @@ body {
 
 .wdk-listing-card:hover .overlay {
   opacity: 1;
+}
+
+.wdk-listing-card .wdk-title .title span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .wdk-listing-card .wdk-title .title {
@@ -408,6 +413,44 @@ body {
 
 .wdk-listing-card .wdk-thumbnail .wdk-favorites-actions .fa-custom-ajax-indicator {
   margin-top: 0;
+}
+
+.wdk-listing-card .wdk-listing-item-agent {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 15px;
+  padding: 5px 15px;
+  align-items: center;
+  color: #000;
+}
+
+.wdk-listing-card .wdk-listing-item-agent .agent-thumbnail a {
+  display: block;
+}
+
+.wdk-listing-card .wdk-listing-item-agent .agent-thumbnail img {
+  max-width: 70px;
+  max-height: 70px;
+}
+
+.wdk-listing-card .wdk-listing-item-agent .agent-cont {
+  flex: 1 2 auto;
+  overflow: hidden;
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  color: #000;
+}
+
+.wdk-listing-card .wdk-listing-item-agent .agent-cont .by {
+  font-size: 14px;
+}
+
+.wdk-listing-card .wdk-listing-item-agent .agent-cont .title {
+  color: #000;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .wdk-listing-card.is_multiline_enabled .wdk-features-part {
@@ -842,7 +885,7 @@ body .wdk_alert a {
 }
 
 .wdk-search.layout_inline .min_max_wdk-field {
-  flex: 10000 0 !important;
+  /*flex: 10000 0 !important;*/
   min-width: 160px;
 }
 
@@ -1217,15 +1260,13 @@ body .wdk_alert a {
   background: #383838;
 }
 
-.wdk-search .wdk-row .wdk-field-btn,
-.wdk-search.layout_inline .wdk-row .wdk-field-btn {
+.wdk-search .wdk-row .wdk-field-btn {
   margin-left: -15px;
   margin-right: -15px;
   width: calc(100% + 15px + 15px);
 }
 
-.wdk-search .wdk-row .wdk-field-btn .wdk-field-group,
-.wdk-search.layout_inline .wdk-row .wdk-field-btn .wdk-field-group {
+.wdk-search .wdk-row .wdk-field-btn .wdk-field-group {
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -1826,11 +1867,12 @@ body .leaflet-control-custom.leaflet-draw-toolbar {
   margin-top: 0;
 }
 
-.wdk_dropdown_tree .list_container {
+body .wdk_dropdown_tree .list_container {
   max-width: 100%;
+  z-index: 10001;
 }
 
-.wdk_dropdown_tree .list_container .list_scroll ul li {
+body .wdk_dropdown_tree .list_container .list_scroll ul li {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1891,6 +1933,24 @@ body .leaflet-control-custom.leaflet-draw-toolbar {
 
 .elementor-editor-active .wdk-listing-card .wdk_js_gallery_slider_box .wdk_js_gallery_slider .slick-track .slick-slide:not(:first-child) {
   display: none;
+}
+
+.wdk-field-value.TEXTAREA p {
+  margin-bottom: 15px;
+}
+
+.wdk-element .complete_link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.wdk-stroke {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .wdk-compare-table,

@@ -57,27 +57,32 @@ $empty_value = __('Selecte', 'wpdirectorykit').' '.$field_label;
 $button_suffix = '';
 
 //var_dump($values);
-wp_enqueue_script('select2');
+wp_enqueue_script('select2-select2');
 wp_enqueue_script('wdk-select2');
-wp_enqueue_style('select2');
+wp_enqueue_style('select2-select2');
 
 
 $post_values = wmvc_show_data($field_id, $db_data, '');
 $post_values = explode(',', $post_values);
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?> <?php echo esc_attr($field->class); ?> <?php if(!empty($form) && method_exists($form, 'hasError') && $form->hasError($field_id)):?> field-error <?php endif;?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <?php echo wdk_select_option_multiple($field_id.'_select2', $values, $post_values, "id='".$field_id."_select2' class='select_multi' data-maxselectlimit='20' data-placeholder='".esc_attr($empty_value)."'"); ?>
         <span class="suffix"><?php
-            echo esc_html($field->prefix);
+            echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
-            echo esc_html($field->suffix);
+            echo esc_html__($field->suffix, 'wpdirectorykit');
         ?></span>
         <?php if(!empty($field->hint)):?>
         <p class="wdk-hint">
             <?php echo esc_html($field->hint); ?>
+        </p>
+        <?php endif;?>
+        <?php if(!empty($form) && method_exists($form, 'hasError') && $form->getError($field_id)):?>
+        <p class="wdk-hint wdk-error">
+            <?php echo wp_kses_post($form->getError($field_id)); ?>
         </p>
         <?php endif;?>
         <input type="hidden" name="<?php echo esc_attr($field_id);?>" id="<?php echo esc_attr($field_id);?>" value="<?php echo esc_attr(wmvc_show_data($field_id, $db_data, '')); ?>"/>

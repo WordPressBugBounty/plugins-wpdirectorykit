@@ -13,7 +13,10 @@ jQuery.fn.wpMediaMultiple = function (options)
         delImgLink: null,
         imgContainer: null,
         imgIdInput: null,
-        frame: {}
+        frame: {},
+        library: {
+            type: [ 'video', 'image' ]
+        },
     };
     
     var options = jQuery.extend(defaults, options);
@@ -57,7 +60,7 @@ jQuery.fn.wpMediaMultiple = function (options)
         options.frame = wp.media({
             title: options.frame.title,
             library: {
-                type: [ 'video', 'image' ]
+                type: options.library.type
             },
             button: {
                 text: options.frame.button
@@ -114,7 +117,9 @@ jQuery.fn.wpMediaMultiple = function (options)
         var input_values = options.imgIdInput.val();
 
         for (var item in attachments) {
-            if(attachments[item].mime.indexOf('video') != -1) {
+            if(attachments[item].mime.indexOf('application') != -1) {
+                options.imgContainer.append( '<div class="winter_mvc-media-card" data-media-id="'+attachments[item].id+'"><img style="object-fit: contain;" class="thumbnail" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAMAAAAOusbgAAAAgVBMVEVHcExykqL+/v72+forNjz8/f3///+rvse0xc1vj5/5+vr7/Pzy9fbz9vfp7vDw8/Xd5Ojm7O/u8fPU3uPZ4ebM2N3R2+Di6ezs8PL19/jP2d/f5uri6Ovj6u2tv8jX4OX09/jT3OHb4+fG09mLpbO+zNOUq7Z0lKO2xcx8maiFoa9epPxgAAAACnRSTlMA////NP//l1rrisj8aAAAAbNJREFUaN7t18tygkAUhGGBGBNBQRFUvIuI+v4PGKxkkUppcuzT1EzF+c+C5VfNbjqdH/U8qPeXjjIQ1ss971I+XFXr5Z53eH24ca3fjMIXrYzCx6NShuG1Ukbh9Ukpw3CllGG4VMoofMqUMgznShmFq41ShuFEKaNwuVTKMDz6JteADMPDkW4zCmdjpQzDsVKG4YFSRuFirpRhOFDKKJz3lTIOK2UU3oVKuYH9h7vCXaWMw0oZhn2ljMKpr5Rh+FUp47BSRuE8DBu0HwSNG13haTJJi7ISyyh8vlPddH3RtQMHh7vv5vrr89YK7EfV73leS/Bff8RyuEvPGDx3sIMNwyG9rYMd/An36Q2EcMi+yNTiyC128LPCAb3YwZbBc3piOCCf/YvZjS2Ht/SE8ICeMXhmORzRsx2O6Q0dfBse0xPDMfnsX8xuJINn9Bx8Bx7SW4ngyz+Cp5bDI3rG4IWDb8MresbgRAZP6QnhJT1j8F4GL+gZgycyOKFnDN7I4D09Y3BqOTyhJ4Q39HZPB+cyOKUnhHf0CsvhnF7m4NtwQc8UnAnhjF5pN3xe8xPB7WQN/AHIbEdUOqs3LAAAAABJRU5ErkJggg==" alt="Base64 Image Preview" /><a href="#" class="remove"></a></div>' );
+            } else if(attachments[item].mime.indexOf('video') != -1) {
                 options.imgContainer.append( '<div class="winter_mvc-media-card" data-media-id="'+attachments[item].id+'"><video src="'+attachments[item].url+'" controls class="thumbnail"></video><a href="#" class="remove"></a><span href="#" class="move"><span class="dashicons dashicons-editor-expand"></span></span></div>' );
             } else {
                 options.imgContainer.append( '<div class="winter_mvc-media-card" data-media-id="'+attachments[item].id+'"><img src="'+attachments[item].url+'" alt="" class="thumbnail"/><a href="#" class="remove"></a></div>' );
@@ -161,7 +166,9 @@ jQuery.fn.wpMediaMultiple = function (options)
             e.preventDefault();
             var media = jQuery(this).closest('.winter_mvc-media')
             jQuery(this).closest('.winter_mvc-media-card').remove();
-            re_order(media)
+            re_order(media);
+
+            options.imgIdInput.change();
         })
         // end js manager feature
     }

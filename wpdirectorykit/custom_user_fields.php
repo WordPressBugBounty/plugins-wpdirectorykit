@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $wdk_user_fields_list = array(
-    'wdk_phone' => __('Phone', 'wpdirectorykit'),
+    'wdk_phone' => 'Phone',
 );
 
 add_action( 'show_user_profile', function($user) use ($wdk_user_fields_list) {wdk_extra_user_profile_fields($user,$wdk_user_fields_list);} );

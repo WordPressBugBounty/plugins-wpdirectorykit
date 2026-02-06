@@ -512,7 +512,7 @@ class WdkListingSlidersGridMoreImages extends WdkElementorBase {
                             'max' => 200,
                         ],   
                     ],
-                    'size_units' => [ 'px'],
+                    'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                     'selectors' => [
                         '{{WRAPPER}} .wdk-listing-sliders-more-grid-images .wdk-cls-banner-thumbs .banner-thumbs .banner-grid' => 'padding: {{SIZE}}{{UNIT}}',
                         '{{WRAPPER}} .wdk-listing-sliders-more-grid-images .wdk-cls-banner-thumbs .banner-thumbs' => ' height: calc(100% +  {{SIZE}}{{UNIT}} * 1);',

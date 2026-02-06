@@ -507,7 +507,7 @@ class WdkLocationsGridCover extends WdkElementorBase {
                         'max' => 100,
                     ],
                 ],
-                'size_units' => [ 'px', 'vw' ],
+                'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                 'selectors' => [
                     '{{WRAPPER}} .wdk-locations-card-cover' => 'height: {{SIZE}}{{UNIT}}',
                 ],
@@ -560,28 +560,27 @@ class WdkLocationsGridCover extends WdkElementorBase {
 			]
 		);
 
-        $this->add_responsive_control(
-            't_content_basic_mask',
-            [
-                'label' => esc_html__( 'Mask', 'wpdirectorykit' ),
-                'description' => esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wdk-locations-card-cover .mask' => 'background-color: {{VALUE}};',
-                ],
-            ]
+
+        $this->add_group_control(
+                \Elementor\Group_Control_Background::get_type(),
+                [
+                        'name' => 't_content_basic_mask',
+                        'description' => esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
+                        'label' =>  esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
+                        'types' => [ 'classic', 'gradient', 'video' ],
+                        'selector' => '{{WRAPPER}} .wdk-locations-card-cover .mask',
+                ]
         );
 
-        $this->add_responsive_control(
-            't_content_basic_mask_hover',
-            [
-                'label' => esc_html__( 'Mask Hover', 'wpdirectorykit' ),
-                'description' => esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wdk-locations-card-cover:hover .mask' => 'background-color: {{VALUE}};',
-                ],
-            ]
+        $this->add_group_control(
+                \Elementor\Group_Control_Background::get_type(),
+                [
+                        'name' => 't_content_basic_mask_hover',
+                        'label' =>  esc_html__( 'Mask Hover', 'wpdirectorykit' ),
+                        'types' => [ 'classic', 'gradient', 'video' ],
+                        'selector' => '{{WRAPPER}} .wdk-locations-card-cover:hover .mask',
+                        'description' => esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
+                ]
         );
 
         $this->end_controls_section();
@@ -684,7 +683,7 @@ class WdkLocationsGridCover extends WdkElementorBase {
                                 'max' => 100,
                             ],
                         ],
-                        'size_units' => [ 'px', 'vw' ],
+                        'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                         'selectors' => [
                             '{{WRAPPER}} .wdk-locations-card-cover .wdk-locations-card-body .wdk-location-btn' => 'font-size: {{SIZE}}{{UNIT}}',
                         ],

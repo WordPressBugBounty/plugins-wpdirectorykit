@@ -75,6 +75,22 @@
   flex-wrap: wrap;
 }
 
+.wdk-categories-tree .title a.title-in:hover,
+.wdk-categories-tree .title a.title-in {
+  color: inherit;
+  text-decoration: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+  font-stretch: inherit;
+  font-optical-sizing: inherit;
+  font-kerning: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+}
+
 .wdk-categories-tree .title img {
   margin-right: 10px;
 }

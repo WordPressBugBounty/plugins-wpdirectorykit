@@ -195,6 +195,19 @@ class WdkCategoriesList extends WdkElementorBase {
             ]
         );
 
+        $this->add_control(
+            'enable_search_sensitive',
+            [
+                'label' => __( 'Enable Search Sensitive', 'wpdirectorykit' ),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
+                'return_value' => 'true',
+                'default' => '',
+                'separator' => 'after',
+            ]
+        );
+
         $pages = array('' => __('Not Selected', 'wpdirectorykit'));
         foreach(get_pages(array('sort_column' => 'post_title')) as $page)
         {
@@ -433,17 +446,17 @@ class WdkCategoriesList extends WdkElementorBase {
                             'calc(100% / 3)' => '3',
                             '25%' => '4',
                             '20%' => '5',
-                            'auto_flexible' => 'auto flexible',
+                            'auto_flexible' => 'inline',
                         ],
                         'selectors_dictionary' => [
-                            'auto' => '-webkit-flex:1 2 auto;flex:1 2 auto',
+                            'auto' => '-webkit-flex:1 2 auto;flex:1 2 auto;width:auto;',
                             '100%' =>  '-webkit-flex:1 2 100%;flex:1 2 100%',
                             '50%' =>  '-webkit-flex:1 2 50%;flex:1 2 50%',
                             'calc(100% / 3)' =>  '-webkit-flex:1 2 calc(100% / 3);flex:1 2 calc(100% / 3)',
                             '25%' =>  '-webkit-flex:1 2 25%;flex:1 2 25%',
                             '20%' =>  '-webkit-flex:1 2 20%;flex:1 2 20%',
                             'auto' =>  '-webkit-flex:1 2 auto;flex:1 2 auto',
-                            'auto_flexible' =>  '-webkit-flex:1 2 auto;flex:1 2 auto',
+                            'auto_flexible' =>  '-webkit-flex:0 auto;flex:0 auto;width:auto;',
                         ],
                         'selectors' => [
                             '{{WRAPPER}} .wdk-categories .wdk-item' => '{{UNIT}}',
@@ -503,36 +516,36 @@ class WdkCategoriesList extends WdkElementorBase {
             [
                 'key'=>'item_button',
                 'label'=> esc_html__('Item Box', 'wpdirectorykit'),
-                'selector'=>'.wdk-categories .wdk-link',
-                'selector_hover'=>'.wdk-categories .wdk-link%1$s',
+                'selector'=>'{{WRAPPER}} .wdk-categories .wdk-link',
+                'selector_hover'=>'{{WRAPPER}} .wdk-categories .wdk-link%1$s',
                 'options'=>['color','background','border','border_radius','padding','shadow','transition'],
             ],
             [
                 'key'=>'item_icon',
                 'label'=> esc_html__('Item Icon', 'wpdirectorykit'),
-                'selector'=>'.wdk-categories .wdk-link i',
-                'selector_hover'=>'.wdk-categories .wdk-link%1$s i',
+                'selector'=>'{{WRAPPER}} .wdk-categories .wdk-link i,{{WRAPPER}} .wdk-categories .wdk-link svg',
+                'selector_hover'=>'{{WRAPPER}} .wdk-categories .wdk-link%1$s i,{{WRAPPER}} .wdk-categories .wdk-link%1$s svg',
                 'options'=>['margin','color','background','border','border_radius','padding','shadow','color'],
             ],
             [
                 'key'=>'item_icon_tree',
                 'label'=> esc_html__('Item Icon', 'wpdirectorykit'),
-                'selector'=>'.wdk-categories .wdk-link .wdk-icon',
-                'selector_hover'=>'.wdk-categories .wdk-link%1$s .wdk-icon',
+                'selector'=>'{{WRAPPER}} .wdk-categories .wdk-link .wdk-icon',
+                'selector_hover'=>'{{WRAPPER}} .wdk-categories .wdk-link%1$s .wdk-icon',
                 'options'=>['color','margin','background','border','border_radius','padding','shadow','transition','image_size_control', 'css_filters'],
             ],
             [
                 'key'=>'item_title',
                 'label'=> esc_html__('Item Title', 'wpdirectorykit'),
-                'selector'=>'.wdk-categories .wdk-link .wdk-title',
-                'selector_hover'=>'.wdk-categories .wdk-link%1$s .wdk-title',
+                'selector'=>'{{WRAPPER}} .wdk-categories .wdk-link .wdk-title',
+                'selector_hover'=>'{{WRAPPER}} .wdk-categories .wdk-link%1$s .wdk-title',
                 'options'=>['margin','typo','color','background','border','border_radius','padding'],
             ],
             [
                 'key'=>'item_count',
                 'label'=> esc_html__('Item Count', 'wpdirectorykit'),
-                'selector'=>'.wdk-categories .wdk-link .wdk-count',
-                'selector_hover'=>'.wdk-categories .wdk-link%1$s .wdk-count',
+                'selector'=>'{{WRAPPER}} .wdk-categories .wdk-link .wdk-count',
+                'selector_hover'=>'{{WRAPPER}} .wdk-categories .wdk-link%1$s .wdk-count',
                 'options'=>['margin','typo','color','background','border','border_radius','padding'],
             ],
         ];
@@ -593,13 +606,13 @@ class WdkCategoriesList extends WdkElementorBase {
                         'return_value' => 'none',
                         'default' => '',
                         'selectors' => [
-                            '{{WRAPPER}} '.$item['selector'] => 'display: {{VALUE}};',
+                            $item['selector'] => 'display: {{VALUE}};',
                         ],
                     ]
             );
             $selectors = array(
-                'normal' => '{{WRAPPER}} '.$item['selector'],
-                'hover'=>'{{WRAPPER}} '.$item['selector_hover'],
+                'normal' => $item['selector'],
+                'hover'=> $item['selector_hover'],
             );
             $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
 
@@ -622,7 +635,7 @@ class WdkCategoriesList extends WdkElementorBase {
                     [
                         'label' => __( 'Size', 'wpdirectorykit' ),
                         'type' => Controls_Manager::SLIDER,
-                        'size_units' => [ 'px'],
+                        'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                         'range' => [
                             'px' => [
                                 'min' => 1,
@@ -635,7 +648,7 @@ class WdkCategoriesList extends WdkElementorBase {
                             'size' => 14,
                         ],
                         'selectors' => [
-                            '{{WRAPPER}} '.$item['selector'] => 'font-size: {{SIZE}}{{UNIT}};',
+                            $item['selector'] => 'font-size: {{SIZE}}{{UNIT}};',
                         ],
                     ]
                 );
@@ -668,7 +681,7 @@ class WdkCategoriesList extends WdkElementorBase {
                             'right' => 'text-align: right;',
                         ],
                         'selectors' => [
-                            '{{WRAPPER}} '.$item['selector'] => '{{VALUE}};',
+                            $item['selector'] => '{{VALUE}};',
                         ],
                     ]
                 );

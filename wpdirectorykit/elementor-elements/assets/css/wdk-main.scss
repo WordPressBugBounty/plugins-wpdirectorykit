@@ -60,6 +60,7 @@
 }
 
 .wdk-listings-results {
+
     .wdk_results_listings_slider_ini:not(.slick-initialized) .wdk_lr_s_item:not(:nth-child(1))  {
         display: none !important;
     }
@@ -278,12 +279,39 @@
     font-style: italic;
 } 
 
-.wdk-field-value .value {
-    line-height: 1.8;
-    margin: 0;
-    padding: 0;
-}
+.wdk-field-value
+ {
+    line-height: 1;
+    .value {
+        line-height: 1.8;
+        margin: 0; 
+        padding: 0;
+    
+        a:hover,
+        a {
+            color: inherit;
+            text-decoration: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+            font-family: inherit;
+            font-style: inherit;
+            font-variant: inherit;
+            font-stretch: inherit;
+            font-optical-sizing: inherit;
+            font-kerning: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+        }
+    }
+ }
 
+
+.wdk-field-value-stars-lst {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
 
 .wdk-button-login .dash-span {
     position: relative;

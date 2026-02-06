@@ -4,7 +4,6 @@ namespace Wdk\Extensions;
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
-define( 'WDK_EXTENSIONS_CACHED_USERS_ACTIVATED', '1' );
 
 class WdkCachedUsers
 {
@@ -19,7 +18,7 @@ class WdkCachedUsers
     public function __construct($data = array(), $args = null)
     {
 
-        add_action( 'edit_user_profile_update', array($this, 'update'), 11);
+        add_action( 'wp_update_user', array($this, 'update'), 11);
         add_action( 'init', array($this, 'regenerate_cache_activation'), 11);
 
         /* call with GET['wdk_cached_users_regenerate'] */
@@ -73,6 +72,8 @@ class WdkCachedUsers
             'cacheduser_wdk_iban' =>  wdk_get_user_field ($user_id, 'wdk_iban'),
             'cacheduser_wdk_telegram' =>  wdk_get_user_field ($user_id, 'wdk_telegram'),
             'cacheduser_wdk_position_title' =>  wdk_get_user_field ($user_id, 'wdk_position_title'),
+            'cacheduser_wdk_slug' =>  wdk_get_user_field ($user_id, 'wdk_slug'),
+            'cacheduser_user_login' =>  wdk_get_user_field ($user_id, 'user_login'),
             'cacheduser_agency_name' =>  wdk_get_user_field ($user_id, 'agency_name'),
             'cacheduser_description' =>  wdk_get_user_field ($user_id, 'description'),
             'cacheduser_user_url' =>  wdk_get_user_field ($user_id, 'user_url'),

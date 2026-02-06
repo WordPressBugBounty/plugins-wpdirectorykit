@@ -14,9 +14,7 @@ class AjaxHandler {
     protected $WMVC = NULL;
 
 
-    public function __construct($data = array(), $args = null) {
-        add_action( 'eli/ajax-handler/after', array( $this, 'after' ) );
-        add_filter( 'eli/ajax-handler/filter_from_data', array( $this, 'filter_from_data' ) );
+    public function helper_transalte_strings($data = array(), $args = null) {
 
         $this->_translate_strings = array(
             __('Guests number', 'wpdirectorykit'),
@@ -25,6 +23,12 @@ class AjaxHandler {
             __('Date from', 'wpdirectorykit'),
             __('Date to', 'wpdirectorykit'),
         );
+    }
+
+    public function __construct($data = array(), $args = null) {
+        add_action( 'init', array( $this, 'helper_transalte_strings' ) );
+        add_action( 'eli/ajax-handler/after', array( $this, 'after' ) );
+        add_filter( 'eli/ajax-handler/filter_from_data', array( $this, 'filter_from_data' ) );
     }
 
     public function filter_output ($filter_output = array()) {
@@ -170,7 +174,7 @@ class AjaxHandler {
                     foreach($_POST as $key => $value) {
                         if($key=='element_id') continue;
                         if(in_array($key, array('eli_page_id', 'g-recaptcha-response','eli_id', 'eli_type','ID','filter','action','send_action_type','Phone','Message','Email','Name','pets_allowed','сhildrens_allowed','guests_number','guests_number_childs','guests_number_adults'))) continue;
-                        if(in_array($key, array('listing_link','date_from','date_to','listing_id','wdk_widget', 'function','page'))) continue;
+                        if(in_array($key, array('listing_link','date_from','date_to','listing_id','wdk_widget', 'function','page','eli_nonce','eli_token','_wp_http_referer'))) continue;
 
                         if(filter_var($value, FILTER_VALIDATE_URL ) || strpos( $value, 'http' ) !== FALSE) {
                             $note .= '<b> '.__(str_replace('_',' ', ucfirst($key)), 'wpdirectorykit').':</b> <a href="'.esc_url($value).'">'.$value.'</a><br>';
@@ -527,6 +531,7 @@ class AjaxHandler {
                                 __('Reservation ID', 'wpdirectorykit')=> $insert_id,
                                 __('Date From', 'wpdirectorykit')=>  wdk_get_date($date_from),
                                 __('Date To', 'wpdirectorykit')=>  wdk_get_date($date_to),
+                                __('Nights', 'wpdirectorykit')=>  wdk_calculate_nights(wdk_get_date($date_from), wdk_get_date($date_to)),
                             );
                             
                             $nights = (int)abs(strtotime($date_to) - strtotime($date_from))/(60*60*24);
@@ -605,6 +610,7 @@ class AjaxHandler {
                             __('Reservation ID', 'wpdirectorykit')=> $insert_id,
                             __('Date From', 'wpdirectorykit')=>  wdk_get_date($date_from),
                             __('Date To', 'wpdirectorykit')=>  wdk_get_date($date_to),
+                            __('Nights', 'wpdirectorykit')=>  wdk_calculate_nights(wdk_get_date($date_from), wdk_get_date($date_to)),
                         );
                         $nights = (int)abs(strtotime($date_to) - strtotime($date_from))/(60*60*24);
                         $guests_number = intval(wmvc_show_data('guests_number_adults', $_POST, 0)) + intval(wmvc_show_data('guests_number_childs', $_POST, 0));
@@ -697,7 +703,7 @@ class AjaxHandler {
 
                     foreach($_POST as $key => $value){
                         if($key=='element_id') continue;
-                        if(in_array($key, array('eli_id','eli_page_id', 'eli_type','ID','filter','action','send_action_type', 'page_link', 'g-recaptcha-response'))) continue;
+                        if(in_array($key, array('eli_id','eli_page_id', 'eli_type','ID','filter','action','send_action_type', 'page_link', 'g-recaptcha-response','eli_nonce','eli_token','_wp_http_referer'))) continue;
 
                         if(empty($value)) continue;
           
@@ -713,6 +719,12 @@ class AjaxHandler {
                     $Winter_MVC_WDK->model('listing_m');
                     $Winter_MVC_WDK->load_helper('listing');
                     $data_listing = $Winter_MVC_WDK->listing_m->get($post_id, TRUE);
+
+                    if(function_exists('run_wdk_bookings')) {
+                        if(isset($_POST['date_from']) && isset($_POST['date_to']) && !empty($_POST['date_from']) && !empty($_POST['date_to'])) {
+                            $data_mess []= '<p><strong>'.__('Nights', 'wpdirectorykit').':</strong> '.wdk_calculate_nights(wdk_get_date($_POST['date_from']), wdk_get_date($_POST['date_to'])).'</p>';
+                        }
+                    }
 
                     /* message for user */
                     if (!empty($email)) {
@@ -748,7 +760,7 @@ class AjaxHandler {
                         if(isset($_POST['date_from']) && isset($_POST['date_to']) && !empty($_POST['date_from']) && !empty($_POST['date_to'])) {
                             $data_message['message'] .= '<h2>'.__('Date reservation change to', 'wpdirectorykit').'</h2>';
                             $data_message['message'] .= '<p>'.__('Details from contact form', 'wpdirectorykit').'</p>';
-
+                            
                             $message_title = __('Contact message related to reservation on page', 'wpdirectorykit').' '.get_bloginfo('name');
                         }
                     }

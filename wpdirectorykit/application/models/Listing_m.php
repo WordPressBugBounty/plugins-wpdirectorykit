@@ -125,7 +125,7 @@ class Listing_m extends Winter_MVC_Model {
         $this->db->where($where);
         
         if(wdk_get_option('wdk_sub_listings_enable')) {
-            $this->db->where(array('listing_parent_post_id IS NULL'=>NULL));
+            $this->db->where(array('(listing_parent_post_id IS NULL OR listing_parent_post_id = 0)'=>NULL));
         }
         
         $this->db->order_by($this->_order_by);
@@ -259,7 +259,7 @@ class Listing_m extends Winter_MVC_Model {
         }
 
         if(wdk_get_option('wdk_sub_listings_enable')) {
-            $this->db->where(array('listing_parent_post_id IS NULL'=>NULL));
+            $this->db->where(array('(listing_parent_post_id IS NULL OR listing_parent_post_id = 0)'=>NULL));
         }
 
         $this->db->limit($limit);
@@ -374,6 +374,15 @@ class Listing_m extends Winter_MVC_Model {
         }
     
         $this->update(array('counter_views' => ++$counter), $listing_id);
+    }
+
+    public function update_listings_views($listing_ids = [], $increment = 1)
+    {
+        if(empty($listing_ids) )
+            return false;
+
+       $sql = 'UPDATE '.$this->_table_name.' SET `counter_results_views` = `counter_results_views`+'.$increment.' WHERE post_id IN ('.join(',', $listing_ids).')';
+       $this->db->query($sql);
     }
 
 }

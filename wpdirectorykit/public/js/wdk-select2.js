@@ -162,6 +162,58 @@ const wdk_select_init = ($wrapper = 'body') => {
 
             $select.data('select2').$dropdown.addClass('select_multi_dropdown');
         });
+        
+    $('.wdk_select2_field_suggestion').each(function () { 
+        var self = $(this);
+        let ajax_url = $(this).attr('data-ajax');
+        var data = {
+            "action": 'wdk_public_action',
+            "page": 'wdk_frontendajax',
+            "function": 'select_2_ajax_field_db_suggestion',
+            "field_id": $(this).attr('data-id'),
+        }; 
+        
+        if(self.hasClass('select2-hidden-accessible')) return true;
+    
+        var $select =  $(this).select2({
+            multiple: true,
+            placeholder: $(this).attr('data-placeholder') || '',
+            maximumSelectionLength: 1,
+            //dropdownAdapter: dropdownAdapter,
+            minimumResultsForSearch: 1,
+            ajax: {
+                url: ajax_url,
+                dataType: 'json',
+                data: data,
+                type: "POST",
+                quietMillis: 10,
+             
+                data: function (term, page) { // page is the one-based page number tracked by Select2
+                    return {
+                        q: term, //search term
+                        "page_result":  term.page || 1,
+                        "action": 'wdk_public_action',
+                        "page": 'wdk_frontendajax',
+                        "function": 'select_2_ajax_field_db_suggestion',
+                        "field_id": $(this).attr('data-id'),
+                    };
+                },
+                results: function (data, page) {
+                    var more = (page * 30) < data.total_count; // whether or not there are more results available
+    
+                    // notice we return the value of more so Select2 knows if more results can be loaded
+                    return { results: data.items, more: more };
+                }
+            },
+             templateResult: wdk_select_ajax_formatRepo,
+                templateSelection: wdk_select_ajax_templateSelection
+        }).on('select2:opening select2:closing', function (event) {
+       
+        });
+    
+        $select.data('select2').$dropdown.addClass('select_multi_dropdown_fields');
+    });
+
 
     }
 

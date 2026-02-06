@@ -45,7 +45,7 @@ $field_id = str_replace('_lat', '', $field_id);
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?>" id="inputbox_map_<?php echo esc_attr($field_id); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?>" id="inputbox_map_<?php echo esc_attr($field_id); ?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <div class="inputbox_map" id="<?php echo esc_attr($field_id); ?>_map"></div>

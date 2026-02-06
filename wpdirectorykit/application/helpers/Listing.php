@@ -140,7 +140,8 @@ if(!function_exists('wdk_listing_images')) {
 						$output[] = $image;
 					*/
 					$image = wp_get_attachment_image_src( $image_id, $size  );
-					$output[] = $image[0];
+					if($image)
+						$output[] = $image[0];
 				}
 			}
 		} else if(is_numeric($image_ids))
@@ -210,6 +211,59 @@ if(!function_exists('wdk_listing_images_data')) {
 		if(is_array($listing) || is_object($listing)) {
 			$image_ids = explode(',', wdk_show_data('listing_images', $listing, '', TRUE, TRUE));
 		} else if(is_string($listing)){
+			$image_ids = explode(',', $listing);
+		}
+
+		if(is_string($ext_list)){
+			if(!empty($ext_list)) {
+				$ext_list = explode(',', $ext_list);
+			} else {
+				$ext_list = array();
+			}
+		}
+		if(is_array($image_ids)) {
+			foreach ($image_ids as $key => $image_id) {
+				if(is_numeric($image_id))
+				{
+					$image = wp_get_attachment_url( $image_id, $size  );
+					if(!empty($ext_list) && !in_array(wdk_file_extension($image), $ext_list)) {
+						continue;
+					}
+
+					if(empty($image)/* || !file_exists(str_replace(WP_CONTENT_URL, WP_CONTENT_DIR, $image))*/)
+					{
+						$image = wdk_placeholder_image_src();
+					}
+					$attr = wdk_image_attr($image_id);
+					$output[] = array('src' =>$image, 'title' => $attr['title'], 'alt' => $attr['alt']);
+				}
+			}
+		} else if(is_numeric($image_ids))
+		{
+			$image = wp_get_attachment_url( $image_ids, $size  );
+			if(!empty($ext_list) && !in_array(wdk_file_extension($image), $ext_list)) {
+				$attr = wdk_image_attr($image_ids);
+				$output[] = array('src' =>$image, 'title' => $attr['title'], 'alt' => $attr['alt']);
+			}
+		}
+		return $output;
+    }
+}
+
+if(!function_exists('wdk_files_data')) {
+    /**
+	 * Initialize the class and set its properties.
+	 *
+	 * @param      string   files ids
+	 * @param      string    $size     The size of image
+	 * @param      string|array    $ext_list     Allowed extensions, mixed sring with separated like jpg,doc,pdf or array
+	 * @return     array
+	 */
+    function wdk_files_data ($listing = '', $size = 'thumb', $ext_list = array()) {
+		$output = array();
+
+		$image_ids = '';
+		if(is_string($listing)){
 			$image_ids = explode(',', $listing);
 		}
 
@@ -426,7 +480,7 @@ if(!function_exists('wdk_resultitem_fields_section_value')) {
 			$row = array();
 			$row['value'] = wdk_field_value($field->field_id, $listing, $default);
 
-			if(wmvc_show_data('field_id', $field) == 'agent_image') {
+			if(in_array(wmvc_show_data('field_id', $field), array('agent_image','agent_email','agent_name'))) {
 				$row['value'] = wmvc_show_data('user_id_editor', $listing);
 			}
 
@@ -448,6 +502,7 @@ if(!function_exists('wdk_resultitem_fields_section_value')) {
                     $tree_data = $category_static[$row['value']];
                 }
 
+				$row['field_label'] = esc_html__('Category','wpdirectorykit');
 				$row['value'] = wmvc_show_data('category_title', $tree_data);
 				
 				if(isset($listing->categories_list)){
@@ -468,6 +523,7 @@ if(!function_exists('wdk_resultitem_fields_section_value')) {
                     $tree_data = $location_static[$row['value']];
                 }
 
+				$row['field_label'] = esc_html__('Location','wpdirectorykit');
 				$row['value'] = wmvc_show_data('location_title', $tree_data);
 
 				if(isset($listing->locations_list)){
@@ -476,6 +532,10 @@ if(!function_exists('wdk_resultitem_fields_section_value')) {
 					$row['value'] .=', '.join(', ',$other_locations);
 				}
 			} else if(wdk_field_option($field->field_id, 'field_type') == 'DATE') {
+				$row['field_label'] = esc_html__('Date','wpdirectorykit');
+				$row['value'] = wdk_generate_field_date($field->field_id, $listing);
+			} else if(wmvc_show_data('field_id', $field) == 'date_modified') {
+				$row['field_label'] = esc_html__('Date','wpdirectorykit');
 				$row['value'] = wdk_generate_field_date($field->field_id, $listing);
 			} else {
 				
@@ -549,16 +609,35 @@ if(!function_exists('wdk_listing_card')) {
 		$data ['favorite_added'] = wmvc_show_data('is_favorite', $listing, false, TRUE, TRUE);
 		/* End Favorite module */
 
-		$output = $WMVC->view('frontend/'.$template, $data, FALSE);
+		if(is_intval($template)) {
+			$output = '';
+			$post_data = get_post($template);
 
+			global $wdk_listing_id;
+			$wdk_listing_id = wmvc_show_data('post_id', $listing);
+			
+			if ($post_data) {
+				if ($post_data->post_type == 'page' || $post_data->post_type == 'elementor_library') {
+					$elementor_instance = \Elementor\Plugin::instance();
+					$output = $elementor_instance->frontend->get_builder_content_for_display($template);
+					if (empty($output))
+						$output = $post_data->post_content;
+				} else {
+					$output = $post_data->post_content;
+				}
+			}
+		} else {
+			$output = $WMVC->view('frontend/'.$template, $data, FALSE);
+		}
 		$output = sprintf($html_sprintf, $output);
+
 		if($json_output) {
 			$output = str_replace("'", "\'", $output);
 			$output = str_replace('"', '\"', $output);
 			$output = str_replace(array("\n", "\r"), '', $output);
 		}
-		
-		return ($output);
+	
+		return $output;
 	}
 }
 
@@ -798,7 +877,7 @@ if(!function_exists('wdk_field_value_on_type')) {
 		}
 
 		if(wdk_field_option($field_id, 'is_price_format') && wdk_field_option($field_id, 'field_type') == 'NUMBER') {
-			$value = wdk_number_format_i18n(wdk_filter_decimal($value));
+			$value = wdk_filter_decimal(wdk_number_format_i18n($value));
 		} elseif(wdk_field_option($field_id, 'field_type') == 'DATE') {
 			$value = wdk_get_date($value, FALSE);
 		} else {
@@ -915,6 +994,9 @@ if(!function_exists('wdk_get_user_field')) {
 		if(!empty($user_data)) {
 			if(wmvc_show_data($field,$user_data['userdata'], false, TRUE, TRUE)) {
 				$output = wmvc_show_data($field,$user_data['userdata'], false, TRUE, TRUE);
+			}
+			if(wmvc_show_data($field, $user_data, false, TRUE, TRUE)) {
+				$output = wmvc_show_data($field,$user_data, false, TRUE, TRUE);
 			}
 		}
 

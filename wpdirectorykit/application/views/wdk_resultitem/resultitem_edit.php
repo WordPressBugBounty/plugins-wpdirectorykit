@@ -54,6 +54,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     </p>
                                 </td>
                             </tr>
+                            <tr>
+                                <th scope="row"><label for="is_show_agent_details"><?php echo __('Show agent details','wpdirectorykit'); ?></label></th>
+                                <td>
+                                    <input name="is_show_agent_details" value="1" type="checkbox" id="is_show_agent_details" class="regular-text" <?php echo !empty(wmvc_show_data('is_show_agent_details', $db_data, ''))?'checked':''; ?>>
+                                    <p class="wdk-hint">
+                                    <?php echo esc_html__('Show basic agent details on result item card.','wpdirectorykit'); ?>
+                                    </p>
+                                </td>
+                            </tr>
                             <tr class="hidden">
                                 <th scope="row"><label for="resultitem_json"><?php echo __('Result Card Json/Structure','wpdirectorykit'); ?></label></th>
                                 <td>
@@ -119,6 +128,16 @@ if ( ! defined( 'ABSPATH' ) ) {
                     'field_type'=> 'IMAGE',
                     'field_label'=> '',
                 ),
+                array(
+                    'idfield'=> 'agent_name',
+                    'field_type'=> 'TEXT',
+                    'field_label'=> '',
+                ),
+                array(
+                    'idfield'=> 'agent_email',
+                    'field_type'=> 'TEXT',
+                    'field_label'=> '',
+                ),
             );
 
             foreach ($predefined_fields_array as $key => $value) {
@@ -132,6 +151,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                 $main_fields [] = $predefined_field;
             }
 
+            $fields_assoc = array();
+            foreach($fields as $f){
+                $fields_assoc[$f->idfield] = $f;
+            }
             ?>
 
             <div class="postbox" style="display: block;">
@@ -166,6 +189,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                                             <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
                                             <input class="widefat columns" id="fid_<?php echo esc_attr($field->idfield); ?>-columns" name="fid_<?php echo esc_attr($field->idfield); ?>-columns" type="number" value="">
                                         </p>
+                                        <?php if(in_array($field->idfield, array('agent_image','agent_name','agent_email'))):?>
+                                            <p>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link">
+                                                    <input class="widefat add_profile_link" id="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" name="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" type="checkbox" value="1">
+                                                    <?php echo __('Add profile link','wpdirectorykit'); ?>
+                                                </label>
+                                            </p>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +205,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <?php foreach($fields as $key => $field): 
                                 if(isset($used_fields[$field->idfield]))continue; // skip if field is used
                                 
-                                if(in_array($field->idfield, array('search','loc','cat','address','post_title','more','booking_date','location_id','category_id','agent_image','post_content','date_modified','date','counter_views')) !== FALSE)continue; // skip if field is used
+                                if(in_array($field->idfield, array('search','loc','cat','address','post_title','more','booking_date','location_id','category_id','agent_image','agent_name','agent_email','post_content','date_modified','date','counter_views')) !== FALSE)continue; // skip if field is used
                             ?>
                             <?php if($field->field_type=='SECTION'):?>
                                 </div>
@@ -203,6 +234,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                                             <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
                                             <input class="widefat columns" id="fid_<?php echo esc_attr($field->idfield); ?>-columns" name="fid_<?php echo esc_attr($field->idfield); ?>-columns" type="number" value="">
                                         </p>
+                                        <?php if(in_array($field->idfield, array('agent_image','agent_name','agent_email'))):?>
+                                            <p>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link">
+                                                    <input class="widefat add_profile_link" id="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" name="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" type="checkbox" value="1">
+                                                    <?php echo __('Add profile link','wpdirectorykit'); ?>
+                                                </label>
+                                            </p>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
@@ -223,10 +262,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                 ?>
                 <h3><?php echo esc_html($titles[$i-1]); ?></h3>
                 <div id="wdk-drop-<?php echo esc_attr($i); ?>" class="wdk-builder-selected wdk-drop">
-                <?php if(isset($used_fields_sub[$i]) && is_array($used_fields_sub[$i]))
-                        foreach($fields as $field): 
-                            if(!isset($used_fields_sub[$i][$field->idfield]))continue; // skip if field is not used
-                    ?>
+                <?php 
+                if(isset($used_fields_sub[$i]) && is_array($used_fields_sub[$i])) {
+                    foreach($used_fields_sub[$i] as $fid => $cfg){
+                        if(!isset($fields_assoc[$fid])) continue; // skip if field object not found
+                        $field = $fields_assoc[$fid];
+                ?>
                     <div id="fid_<?php echo esc_attr($field->idfield); ?>" class="widget ui-draggable" rel="<?php echo esc_attr($field->idfield); ?>">
                         <div class="widget-top">
                             <div class="widget-title-action">
@@ -249,10 +290,21 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
                                     <input class="widefat columns" id="fid_<?php echo esc_attr($field->idfield); ?>-columns" name="fid_<?php echo esc_attr($field->idfield); ?>-columns" type="number" value="<?php echo esc_attr(wmvc_show_data('columns', $used_fields[$field->idfield], '')); ?>">
                                 </p>
+                                <?php if(in_array($field->idfield, array('agent_image','agent_name','agent_email'))):?>
+                                    <p>
+                                        <label for="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link">
+                                            <input class="widefat add_profile_link" id="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" name="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" type="checkbox" value="1">
+                                            <?php echo __('Add profile link','wpdirectorykit'); ?>
+                                        </label>
+                                    </p>
+                                <?php endif;?>
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                <?php 
+                    } // end foreach ordered by used_fields_sub
+                }  
+                ?>
                 </div>
                 <br style="clear:both;" />
                 <?php endfor; ?>
@@ -322,7 +374,9 @@ wp_enqueue_script( 'jquery-ui-sortable', false, array('jquery') );
                     $(this).find('.widget.ui-draggable').each(function( index ) {
                         data_fields_sublist.push({'field_id': $( this ).attr('rel'),
                                         'class': $( this ).find('input.class').val(),
-                                        'columns': $( this ).find('input.columns').val()});
+                                        'columns': $( this ).find('input.columns').val(),
+                                        'add_profile_link': $( this ).find('input.add_profile_link').is(':checked')
+                                    });
                     })
 
 

@@ -222,6 +222,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                                                 <input class="widefat value_max" id="fid_<?php echo esc_attr($field->idfield); ?>-value_max" name="fid_<?php echo esc_attr($field->idfield); ?>-value_max" type="number" value="">
                                             </p>
                                             <?php endif;?>
+
+                                            <?php if(in_array($field->idfield, array('search','loc','cat','address','post_title')) == FALSE && $field->field_type =='INPUTBOX'):?>
+                                            <p class="is_select_2_ajax_field_db_suggestion">
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-is_select_2_ajax_field_db_suggestion"><?php echo __('Field suggestion:','wpdirectorykit'); ?></label>
+                                                <input class="widefat is_select_2_ajax_field_db_suggestion" id="fid_<?php echo esc_attr($field->idfield); ?>-is_select_2_ajax_field_db_suggestion" name="fid_<?php echo esc_attr($field->idfield); ?>-is_select_2_ajax_field_db_suggestion" type="checkbox" value="1">
+                                            </p>
+                                            <?php endif;?>
                                         </div>
                                     </div>
                                 </div>
@@ -294,6 +301,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                                         <input class="widefat value_max" id="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_max" name="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_max" type="number" value="<?php echo esc_attr(wmvc_show_data('value_max', $used_fields[wmvc_show_data('idfield', $field)], '')); ?>">
                                     </p>
                                     <?php endif;?>
+
+                                    <?php if(in_array(wmvc_show_data('idfield', $field), array('search','loc','cat','address','post_title')) == FALSE && wmvc_show_data('field_type', $field) =='INPUTBOX'):?>
+                                        <p class="is_select_2_ajax_field_db_suggestion">
+                                            <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-is_select_2_ajax_field_db_suggestion"><?php echo __('Field suggestion:','wpdirectorykit'); ?></label>
+                                            <input class="widefat is_select_2_ajax_field_db_suggestion" id="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-is_select_2_ajax_field_db_suggestion" name="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-is_select_2_ajax_field_db_suggestion" type="checkbox" value="1" <?php if(wmvc_show_data('is_select_2_ajax_field_db_suggestion', $used_fields[wmvc_show_data('idfield', $field)], '') == 1):?> checked="checked" <?php endif;?>">
+                                        </p>
+                                     
+                                    <?php endif;?>
+
                                 </div>
                             </div>
                         </div>
@@ -367,12 +383,16 @@ jQuery(document).ready(function($) {
         var data_fields_list = [];
 
         $('#wdk-drop .widget.ui-draggable').each(function( index ) {
-            data_fields_list.push({'field_id': $( this ).attr('rel'),
-                                'class': $( this ).find('input.class').val(),
-                                'query_type': $( this ).find('select.query_type').val(),
-                                'value_min': $( this ).find('input.value_min').val(),
-                                'value_max': $( this ).find('input.value_max').val(),
-                                'columns': $( this ).find('input.columns').val()});
+            data_fields_list.push({
+                                    'field_id': $( this ).attr('rel'),
+                                    'class': $( this ).find('input.class').val(),
+                                    'query_type': $( this ).find('select.query_type').val(),
+                                    'value_min': $( this ).find('input.value_min').val(),
+                                    'value_max': $( this ).find('input.value_max').val(),
+                                    'is_select_2_ajax_field_db_suggestion': $( this ).find('input.is_select_2_ajax_field_db_suggestion').prop('checked'),
+                                    'columns': $( this ).find('input.columns').val()
+                                }
+                            );
         });
 
         $('#searchform_json').val(JSON.stringify(data_fields_list));

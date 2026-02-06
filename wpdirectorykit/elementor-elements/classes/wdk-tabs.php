@@ -71,7 +71,7 @@ class WdkTabs extends WdkElementorBase {
      * @return string Widget title.
      */
     public function get_title() {
-        return esc_html__('Wdk Tabs', 'wpdirectorykit');
+        return esc_html__('Wdk Switcher', 'wpdirectorykit');
     }
 
     /**
@@ -290,7 +290,7 @@ class WdkTabs extends WdkElementorBase {
                 $selectors['hover'] = $item['selector_hover'];
 
             if(!empty($item['selector_focus']))
-                $selectors['focus'] = $item['selector_hover'];
+                $selectors['focus'] = $item['selector_focus'];
                 
             $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
 

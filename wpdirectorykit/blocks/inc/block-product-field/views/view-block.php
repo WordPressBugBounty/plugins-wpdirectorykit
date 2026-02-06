@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                             <?php else:?>
                                                 <?php  
                                                     $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
-                                                    echo esc_html(wdk_number_format_i18n($value));
+                                                    echo esc_html($value);
                                                 ?>
                                             <?php endif;?>
                                             <?php echo esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));?>

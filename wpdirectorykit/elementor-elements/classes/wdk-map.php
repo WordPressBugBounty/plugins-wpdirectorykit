@@ -181,6 +181,40 @@ class WdkMap extends WdkElementorBase {
             ]
         );
 
+        if(wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_listing_card_elementor_layout')){
+            $this->add_control(
+                'is_custom_layout_enable',
+                [
+                    'label' => __( 'Enable Custom Layout', 'wpdirectorykit' ),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => __( 'True', 'wpdirectorykit' ),
+                    'label_off' => __( 'False', 'wpdirectorykit' ),
+                    'return_value' => 'yes',
+                    'default' => '',
+                    
+                ]
+            );
+            $this->add_control(
+                'custom_layout_id',
+                [
+                    'label' => __( 'Layout Template id', 'wpdirectorykit' ),
+                    'type' => \Elementor\Controls_Manager::TEXT,
+                    'default' => '',
+                    'placeholder' => __( 'put your template id', 'wpdirectorykit' ),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'conditions' => [
+                        'terms' => [
+                            [
+                                'name' => 'is_custom_layout_enable',
+                                'operator' => '==',
+                                'value' => 'yes',
+                            ]
+                        ],
+                    ],
+                ]
+            );
+        } 
+
         if(wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_ajax_results')){
             $this->add_control(
                 'is_ajax_enable',
@@ -217,7 +251,46 @@ class WdkMap extends WdkElementorBase {
                         'render_type' => 'template',
                         'return_value' => 'yes',
                         'default' => '',
-                        'separator' => 'after',
+                ]
+            );
+
+            $this->add_control(
+                'enable_rectangle_auto_search',
+                [
+                        'label' => esc_html__( 'Recangle auto search', 'wpdirectorykit' ),
+                        'type' => Controls_Manager::SWITCHER,
+                        'none' => esc_html__( 'True', 'wpdirectorykit' ),
+                        'block' => esc_html__( 'False', 'wpdirectorykit' ),
+                        'render_type' => 'template',
+                        'return_value' => 'yes',
+                        'default' => 'yes',
+                ]
+            );
+
+            $this->add_control(
+                'disable_rectangle',
+                [
+                    'label' => esc_html__( 'Disable Rectangle Search', 'wpdirectorykit' ),
+                    'type' => Controls_Manager::SWITCHER,
+                    'none' => esc_html__( 'True', 'wpdirectorykit' ),
+                    'block' => esc_html__( 'False', 'wpdirectorykit' ),
+                    'render_type' => 'template',
+                    'return_value' => 'yes',
+                    'default' => '',
+                ]
+            );
+
+            $this->add_control(
+                'enable_scrollWheelZoom',
+                [
+                    'label' => esc_html__( 'Enable scrollWheelZoom', 'wpdirectorykit' ),
+                    'type' => Controls_Manager::SWITCHER,
+                    'none' => esc_html__( 'True', 'wpdirectorykit' ),
+                    'block' => esc_html__( 'False', 'wpdirectorykit' ),
+                    'render_type' => 'template',
+                    'return_value' => 'yes',
+                    'default' => '',
+                    'separator' => 'after',
                 ]
             );
 
@@ -290,42 +363,6 @@ class WdkMap extends WdkElementorBase {
                         'desc'          => __('Descending', 'wpdirectorykit')
                     ],
                     'default'       => 'desc',
-                ]
-            );
-
-
-            $fields_data = wdk_cached_field_get();
-            $fields_list = array('' => esc_html__('Not Selected', 'wpdirectorykit'));
-            $order_i = 0;
-    
-            $fields_list [(++$order_i).'__section'] = esc_html__('-- Section Custom fields --', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__first_image'] = esc_html__('First Image', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__counter_views'] = esc_html__('Views counter', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__post_title'] = esc_html__('WP Title', 'wpdirectorykit');
-
-            $fields_list [(++$order_i).'__date'] = esc_html__('Date', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__address'] = esc_html__('Address', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__category_title'] = esc_html__('Category', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__location_title'] = esc_html__('Location', 'wpdirectorykit');
-
-            foreach($fields_data as $field)
-            {
-                if(wmvc_show_data('field_type', $field) == 'SECTION') {
-                    $fields_list [(++$order_i).'section__'.wmvc_show_data('idfield', $field)] = '-- '.esc_html__('Section', 'wpdirectorykit').' '.wmvc_show_data('field_label', $field).' --';
-                } else {
-                    $fields_list[(++$order_i).'__'.wmvc_show_data('idfield', $field)] = '#'.wmvc_show_data('idfield', $field).' '.wmvc_show_data('field_label', $field).'['.wmvc_show_data('field_type', $field).']';
-                }
-            }
-    
-            $this->add_control(
-                'custom_marker_fields',
-                [
-                    'label' => __('Show field value instead of marker on map', 'wpdirectorykit'),
-                    'type' => \Elementor\Controls_Manager::SELECT2,
-                    'default' => '',
-                    'label_block'   => true,
-                    'options' => $fields_list,
-                    'separator' => 'after',
                 ]
             );
 
@@ -689,6 +726,41 @@ class WdkMap extends WdkElementorBase {
                     'type' => Controls_Manager::HEADING,
                     'separator' => 'before',
                 ]
+        );
+        
+        $fields_data = wdk_cached_field_get();
+        $fields_list = array('' => esc_html__('Not Selected', 'wpdirectorykit'));
+        $order_i = 0;
+
+        $fields_list [(++$order_i).'__section'] = esc_html__('-- Section Custom fields --', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__first_image'] = esc_html__('First Image', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__counter_views'] = esc_html__('Views counter', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__post_title'] = esc_html__('WP Title', 'wpdirectorykit');
+
+        $fields_list [(++$order_i).'__date'] = esc_html__('Date', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__address'] = esc_html__('Address', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__category_title'] = esc_html__('Category', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__location_title'] = esc_html__('Location', 'wpdirectorykit');
+
+        foreach($fields_data as $field)
+        {
+            if(wmvc_show_data('field_type', $field) == 'SECTION') {
+                $fields_list [(++$order_i).'section__'.wmvc_show_data('idfield', $field)] = '-- '.esc_html__('Section', 'wpdirectorykit').' '.wmvc_show_data('field_label', $field).' --';
+            } else {
+                $fields_list[(++$order_i).'__'.wmvc_show_data('idfield', $field)] = '#'.wmvc_show_data('idfield', $field).' '.wmvc_show_data('field_label', $field).'['.wmvc_show_data('field_type', $field).']';
+            }
+        }
+
+        $this->add_control(
+            'custom_marker_fields',
+            [
+                'label' => __('Show field value instead of marker on map', 'wpdirectorykit'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'default' => '',
+                'label_block'   => true,
+                'options' => $fields_list,
+                'separator' => 'after',
+            ]
         );
         
         $this->start_controls_tabs('marker_button_style');

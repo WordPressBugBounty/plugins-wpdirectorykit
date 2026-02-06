@@ -201,6 +201,19 @@ class WdkLocationsList extends WdkElementorBase {
                 'tab' => '1',
             ]
         );
+        
+        $this->add_control(
+            'enable_search_sensitive',
+            [
+                'label' => __( 'Enable Search Sensitive', 'wpdirectorykit' ),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
+                'return_value' => 'true',
+                'default' => '',
+                'separator' => 'after',
+            ]
+        );
 
         $pages = array('' => __('Not Selected', 'wpdirectorykit'));
         foreach(get_pages(array('sort_column' => 'post_title')) as $page)
@@ -572,7 +585,7 @@ class WdkLocationsList extends WdkElementorBase {
                     [
                         'label' => __( 'Size', 'wpdirectorykit' ),
                         'type' => Controls_Manager::SLIDER,
-                        'size_units' => [ 'px'],
+                        'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                         'range' => [
                             'px' => [
                                 'min' => 1,

@@ -5,8 +5,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Blocks
 require_once plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/inc/block-product-field/block-product-field.php';
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/inc/block-share/block-share.php';
 
-function my_custom_block_category($categories, $post) {
+function wdk_block_category($categories, $post) {
     return array_merge(
         array(
             array(
@@ -18,7 +19,8 @@ function my_custom_block_category($categories, $post) {
         $categories
     );
 }
-add_filter('block_categories_all', 'my_custom_block_category', 10, 2);
+
+add_filter('block_categories_all', 'wdk_block_category', 10, 2);
 
 function wdk_block_view($view_file = '', $element = '', $print = false)
 {

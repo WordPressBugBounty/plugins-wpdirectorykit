@@ -11,14 +11,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
-    <a href="<?php echo esc_attr(wmvc_show_data('link_url', $settings));?>" id="<?php echo esc_attr(wmvc_show_data('link_id', $settings));?>" class="wdk-element-button">
+    <a href="<?php echo esc_attr(do_shortcode(wmvc_show_data('link_url', $settings)));?>" id="<?php echo esc_attr(wmvc_show_data('link_id', $settings));?>" class="wdk-element-button" <?php if(wmvc_show_data('link_in_new_tab', $settings) == 'true'):?> target="_blank"<?php endif;?>>
         <?php if(wmvc_show_data('link_icon_position', $settings) == 'left') :?>
             <?php \Elementor\Icons_Manager::render_icon( $settings['link_icon'], [ 'aria-hidden' => 'true' ] ); ?>
         <?php endif;?>
-        <?php echo esc_html(wmvc_show_data('link_text', $settings));?>
+        <?php echo esc_html(do_shortcode(wmvc_show_data('link_text', $settings)));?>
         <?php if(wmvc_show_data('link_icon_position', $settings) == 'right') :?>
             <?php \Elementor\Icons_Manager::render_icon( $settings['link_icon'], [ 'aria-hidden' => 'true' ] ); ?>
         <?php endif;?>
     </a>
 </div>
-

@@ -190,7 +190,7 @@ class WdkButtonAddlisting extends WdkElementorBase {
         $this->add_control(
             'link_id',
             [
-                'label' => __('Secial attr id for link', 'wpdirectorykit'),
+                'label' => __('Special attr id for link', 'wpdirectorykit'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'default' => '',
             ]

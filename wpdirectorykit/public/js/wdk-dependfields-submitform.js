@@ -10,7 +10,7 @@ const wdk_dependfields_submit_form = ($selector = null, parent_field_selector = 
     el_form = jQuery($selector);
     el_category = el_form.find('*[name="category_id"]');
 
-    el_category.on('change', function(){
+    el_category.on('change input', function(){
         hide_fields(el_category);
     });
 

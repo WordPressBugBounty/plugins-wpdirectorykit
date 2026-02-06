@@ -316,11 +316,7 @@ class Wdk_listing extends Winter_MVC_Controller {
                     'label' => __('Listing parent id', 'wpdirectorykit'),
                     'rules' => ''
                 ),
-                array(
-                    'field' => 'listing_related_ids',
-                    'label' => __('Listing childs', 'wpdirectorykit'),
-                    'rules' => ''
-                ),
+
         );
 
         $rules[] =  array(
@@ -329,6 +325,14 @@ class Wdk_listing extends Winter_MVC_Controller {
                         'rules' => 'numeric'
                     );
         
+
+        if(wdk_get_option('wdk_sub_listings_enable')) {
+            $rules[] =  array(
+                        'field' => 'listing_related_ids',
+                        'label' => __('Listing childs', 'wpdirectorykit'),
+                        'rules' => 'wdk_related_validation'
+                    );
+         }
 
         foreach($this->data['fields'] as $key => $field)
         {
@@ -392,6 +396,7 @@ class Wdk_listing extends Winter_MVC_Controller {
         }
 
         $this->form->add_error_message('wdk_gps_single', __('Gps field is not valid, should be like xx.xxxxxx (between -180 and 180)', 'wpdirectorykit'));
+        $this->form->add_error_message('wdk_related_validation', __('Related listings must not contain child listings and cannot be child listings themselves.', 'wpdirectorykit'));
         if($this->form->run($rules))
         {
             // Check _wpnonce
@@ -423,10 +428,14 @@ class Wdk_listing extends Winter_MVC_Controller {
 
             $listing_data_fields = array('category_id', 'location_id', 'address', 'lat', 'lng', 'listing_images','listing_plans_documents', 'is_featured', 'is_activated','is_approved', 'package_id','rank','subscription_id',
                                          'user_id_editor', 'listing_parent_post_id','listing_related_ids');
+           
             foreach($listing_data_fields as $field_name)
             {
-                $listing_data[$field_name] = $data[$field_name];
+                $listing_data[$field_name] = $data[$field_name] ?? '';
             }
+
+			if(empty($listing_data['user_id_editor']))
+                $listing_data['user_id_editor'] = $this->data['db_data']['user_id_editor'] = get_current_user_id();
 
 			$image_ids = array();
 			if(!empty($data['listing_images']))
@@ -577,7 +586,7 @@ class Wdk_listing extends Winter_MVC_Controller {
             global $wpdb;
             foreach($this->data['fields'] as $key => $field)
             {
-                if($field->field_type == 'TEXTAREA'){
+                if($field->field_type == 'TEXTAREA' && !empty($data['field_'.$field->idfield])){
                     $data[ 'field_'.$field->idfield ] = wp_encode_emoji( $data['field_'.$field->idfield] );
                 }
             }

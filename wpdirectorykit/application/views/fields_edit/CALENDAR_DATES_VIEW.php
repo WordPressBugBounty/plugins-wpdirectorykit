@@ -34,7 +34,7 @@ if(isset($field->is_required) && $field->is_required == 1)
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <div class="wdk-field-calendar">
@@ -71,7 +71,7 @@ if(isset($field->is_required) && $field->is_required == 1)
                         list($mon, $month_m, $month, $year, $num_days) = explode('-', date("n-m-F-Y-t", $next_month_time));
 
                         $first_day_of_week = array_search(esc_html__(date('D', strtotime($year . '-' . $month . '-1')), 'wpdirectorykit'), $days);
-                        if(!$first_day_of_week)
+                        if(!$first_day_of_week && $first_day_of_week != 0)
                             $first_day_of_week = 1;
 
                         $num_days_last_month = date('j', strtotime('last day of previous month', strtotime($current_day. '-' . $month . '-' . $year)));

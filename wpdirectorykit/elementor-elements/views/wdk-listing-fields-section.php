@@ -32,14 +32,19 @@ if ( ! defined( 'ABSPATH' ) ) {
                     if((empty(wdk_field_value (wmvc_show_data('idfield', $field), $wdk_listing_id, wdk_field_option(wmvc_show_data('idfield', $field),'empty_value'))) ||wdk_field_value (wmvc_show_data('idfield', $field), $wdk_listing_id) == '0.00' ) &&  wmvc_show_data('hide_onempty', $settings))
                         continue;
                 } 
+
             }
             ?>
             <div class="wdk-col 
                 <?php if(wmvc_show_data('field_group_icon_enable', $settings, false) && wmvc_show_data('icon_id', $field, false)):?> icon_group <?php endif;?>  
                 <?php if(wmvc_show_data('field_label_hide', $settings, false) == 'none'):?> no_label <?php endif;?>  
-                <?php echo esc_html(wmvc_show_data('field_layout', $settings));?> <?php echo esc_html(wmvc_show_data('field_type', $field));?>
+                <?php echo esc_html(wmvc_show_data('field_layout', $settings));?> <?php echo esc_html(wmvc_show_data('field_type', $field));?> 
+                <?php if(wmvc_show_data('field_type', $field) == "FILEUPLOAD"):?> wdk-col-full-always <?php endif;?>  
                 ">
-                <div class="field-group">
+                <div class="field-group
+                 <?php if(wmvc_show_data('field_type', $field) == "FILEUPLOAD"):?> d-column <?php endif;?>  
+                  fied_<?php echo esc_attr(wmvc_show_data('idfield', $field));?>
+                ">
                     <?php if(wmvc_show_data('field_group_icon_enable', $settings, false) && wmvc_show_data('icon_id', $field, false)):?>
                         <span class="field_icon"> 
                             <img src="<?php echo esc_url(wdk_image_src($field, 'full',NULL,'icon_id'));?>" alt="<?php echo wmvc_show_data('field_label', $value);?>" class="wdk-icon">
@@ -68,6 +73,19 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     else if($field_value == '') {
                                         $field_value = '-';
                                     } 
+                                    else if(wmvc_show_data('field_type', $field) == "DROPDOWNMULTIPLE") {
+                                        if(strpos($field_value, ',') !== FALSE)
+                                        {
+                                            $translated_value = [];
+                                            foreach(explode(',', $field_value) as $value)
+                                            {
+                                                $translated_value []= esc_html__(trim($value), 'wpdirectorykit');
+                                            }
+
+                                            $field_value = implode(', ', $translated_value);
+                                        }
+
+                                    }
                                     else if(wmvc_show_data('field_type', $field) == "INPUTBOX") {
                                         $field_value = wdk_field_value (wmvc_show_data('idfield', $field), $wdk_listing_id);
 
@@ -95,13 +113,19 @@ if ( ! defined( 'ABSPATH' ) ) {
                                             $field_value  = '<video src="'.$field_value.'" controls></video> ';
                                         }
                                         elseif(filter_var($field_value , FILTER_VALIDATE_URL) !== FALSE) {
-                                            $field_value  = '<a href="'.$field_value .'">'.$field_value .'</a>';
+                                            $field_value  = '<a target="_blank" href="'.$field_value .'">'.$field_value .'</a>';
                                         }
                                         elseif(filter_var($field_value , FILTER_VALIDATE_EMAIL) !== FALSE) {
                                             $field_value  = '<a href="mailto:'.$field_value .'">'.$field_value .'</a>';
                                         }
-                                        elseif(wdk_is_phone($field_value)) {
+                                        elseif(wdk_field_option (wmvc_show_data('idfield', $field), 'validation') == 'is_phone') {
                                             $field_value  = '<a href="tel:'.wdk_filter_phone($field_value) .'">'.$field_value .'</a>';
+                                        }
+                                        elseif(wdk_field_option (wmvc_show_data('idfield', $field), 'validation') == 'is_phone|wdk_viber') {
+                                            $field_value  = '<a href="viber://chat?number='.wdk_filter_viber_phone($field_value) .'">'.$field_value .'</a>';
+                                        }
+                                        elseif(wdk_field_option (wmvc_show_data('idfield', $field), 'validation') == 'is_phone|wdk_whatsapp') {
+                                            $field_value  = '<a href="//wa.me/'.wdk_filter_phone($field_value) .'">'.$field_value .'</a>';
                                         }
                                     }
                                     elseif(wmvc_show_data('idfield', $field) == 'category_id') {
@@ -136,6 +160,94 @@ if ( ! defined( 'ABSPATH' ) ) {
                                             $field_value = apply_filters( 'wpdirectorykit/listing/field/value', $field_value, wmvc_show_data('idfield', $field));
                                         }
                                         
+                                    } elseif(
+                                            wdk_field_option(wmvc_show_data('idfield', $field), 'field_type') == "FILEUPLOAD"
+                                        ) {
+
+                                            $field_value = wdk_files_data ($field_value, 'full');
+                        
+                                            wp_enqueue_style('wdk-field-files');
+                                            wp_enqueue_style('blueimp-gallery');
+                                            wp_enqueue_script('blueimp-gallery');
+                                            wp_enqueue_script('wdk-blueimp-gallery');
+                                        ?>
+
+                                            <div class="wdk-field-files wdk_js_gallery">
+                                                <?php if (is_array($field_value) && count($field_value) > 0):  ?>
+                                                    <div class="wdk-row">
+                                                        <?php foreach ($field_value as $image): ?>
+                                                            <?php
+                                                            if ($is_edit_mode) {
+                                                                $src = $image;
+                                                                $image = array('src' => $src, 'title' => esc_html__('Image Title', 'wpdirectorykit'));
+                                                            } else {
+                                                                $src = $image['src'];
+                                                            }
+                                                            ?>
+                                                            <?php
+                                                            if (!in_array(wdk_file_extension($image['src']), array('jpg', 'jpeg', 'bmp', 'png', 'webp')))
+                                                                continue;
+                                                            ?>
+
+                                                            <div class="wdk-col">
+                                                                <figure>
+                                                                    <a class="wdk-listing-image-card" href="<?php echo esc_url($image['src']); ?>">
+                                                                        <img src="<?php echo esc_url($src); ?>" class="wdk-listing-image" alt="<?php echo esc_attr(wmvc_show_data('alt', $image, '', TRUE, TRUE)); ?>">
+                                                                    </a>
+                                                                    <?php if (false): ?>
+                                                                        <figcaption>
+                                                                            <a class="skip" href="<?php echo esc_url($image['src']); ?>" target="_blank">
+                                                                                <?php echo esc_html(wmvc_show_data('title', $image, '', TRUE, TRUE)); ?>
+                                                                            </a>
+                                                                        </figcaption>
+                                                                    <?php endif; ?>
+                                                                </figure>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                <?php endif; ?>
+
+                                                <?php if (is_array($field_value) && count($field_value) > 0):  ?>
+                                                    <div class="files-row">
+                                                        <ul class="files">
+                                                            <?php foreach ($field_value as $image): ?>
+                                                                <?php
+                                                                if ($is_edit_mode) {
+                                                                    $src = $image;
+                                                                    $image = array('src' => $src, 'title' => esc_html__('Image Title', 'wpdirectorykit'));
+                                                                } else {
+                                                                    $src = $image['src'];
+                                                                }
+
+                                                                if (in_array(wdk_file_extension($image['src']), array('jpg', 'jpeg', 'bmp', 'png', 'webp')))
+                                                                    continue;
+
+                                                                if (file_exists(WPDIRECTORYKIT_PATH . '/public/img/filetype/' . wdk_file_extension($image['src']) . '.png')) {
+                                                                    $src = WPDIRECTORYKIT_URL . 'public/img/filetype/' . wdk_file_extension($image['src']) . '.png';
+                                                                } else {
+                                                                    $src = WPDIRECTORYKIT_URL . 'public/img/filetype/_blank.png';
+                                                                }
+                                                                ?>
+
+                                                                <li class="list-item">
+                                                                    <a class="file-link" href="<?php echo esc_url($image['src']); ?>" target="_blank" title="<?php echo esc_attr(wmvc_show_data('title', $image, '', TRUE, TRUE)); ?>">
+                                                                        <img src="<?php echo esc_url($src); ?>" class="wdk-listing-file-icon" alt="<?php echo esc_attr(wmvc_show_data('alt', $image, '', TRUE, TRUE)); ?>">
+                                                                        <?php echo esc_html(wmvc_show_data('title', $image, '', TRUE, TRUE)); ?>
+                                                                    </a>
+                                                                </li>
+                                                            <?php endforeach; ?>
+                                                        </ul>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+
+                                        <?php
+                                        $field_value ='';
+
+                                    } elseif(wmvc_show_data('field_type', $field) == 'TEXTAREA') {
+                                        global $wp_embed;
+                                        $field_value = wpautop(__($field_value, 'wpdirectorykit' ));
+                                        $field_value = html_entity_decode($wp_embed->autoembed($field_value ));
                                     } else {
                                         $field_value = apply_filters( 'wpdirectorykit/listing/field/value', $field_value, wmvc_show_data('idfield', $field));
                                     } 

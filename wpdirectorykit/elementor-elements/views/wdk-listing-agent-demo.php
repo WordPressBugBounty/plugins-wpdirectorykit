@@ -32,17 +32,17 @@ if (!defined('ABSPATH')) {
                             <?php if(filter_var($meta['meta_field'], FILTER_VALIDATE_EMAIL) !== FALSE || strpos($meta['meta_field'],'email') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="mailto:agent1@wpdirectorykit.com"><i class="far fa-envelope"></i>agency@example.com</a></div>
                             <?php elseif(strpos($meta['meta_field'],'youtube') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-youtube"></i><?php echo esc_html__('link youtube','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-youtube"></i><?php echo esc_html__('link youtube','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'facebook') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-facebook"></i><?php echo esc_html__('link facebook','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-facebook"></i><?php echo esc_html__('link facebook','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'linkedin') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-linkedin"></i><?php echo esc_html__('link linkedin','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-linkedin"></i><?php echo esc_html__('link linkedin','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'twitter') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-twitter"></i><?php echo esc_html__('link twitter','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fab fa-x-twitter"></i><?php echo esc_html__('link twitter','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-telegram"></i><?php echo esc_html__('link telegram','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-telegram"></i><?php echo esc_html__('link telegram','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-whatsapp"></i><?php echo esc_html__('link whatsapp','wdk-membership');?> </a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-whatsapp"></i><?php echo esc_html__('link whatsapp','wpdirectorykit');?> </a></div>
                             <?php elseif(strpos($meta['meta_field'],'viber') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="viber://chat?number=#"><i class="fab fa-viber"></i>(917) 367-2058</a></div>
                             <?php elseif(filter_var($meta['meta_field'], FILTER_VALIDATE_URL) !== FALSE):?>
@@ -50,7 +50,7 @@ if (!defined('ABSPATH')) {
                             <?php elseif(strpos($meta['meta_field'],'phone') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="tel:9173672058"><i class="far fa-phone"></i>(917) 367-2058</a></div>
                             <?php else:?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><?php echo esc_html__('meta ','wdk-membership');?> <?php echo esc_html($meta['meta_field']);?></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><?php echo esc_html__('meta ','wpdirectorykit');?> <?php echo esc_html($meta['meta_field']);?></div>
                             <?php endif;?>
                         <?php endforeach;?>
                     </div>
@@ -73,17 +73,17 @@ if (!defined('ABSPATH')) {
                             <?php if(filter_var($meta['meta_field'], FILTER_VALIDATE_EMAIL) !== FALSE || strpos($meta['meta_field'],'mail') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="mailto:agent1@wpdirectorykit.com"><i class="far fa-envelope"></i>agent@example.com</a></div>
                             <?php elseif(strpos($meta['meta_field'],'youtube') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-youtube"></i><?php echo esc_html__('link youtube','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-youtube"></i><?php echo esc_html__('link youtube','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'facebook') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-facebook"></i><?php echo esc_html__('link facebook','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-facebook"></i><?php echo esc_html__('link facebook','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'linkedin') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-linkedin"></i><?php echo esc_html__('link linkedin','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-linkedin"></i><?php echo esc_html__('link linkedin','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'twitter') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-twitter"></i><?php echo esc_html__('link twitter','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fab fa-x-twitter"></i><?php echo esc_html__('link twitter','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-telegram"></i><?php echo esc_html__('link telegram','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-telegram"></i><?php echo esc_html__('link telegram','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-whatsapp"></i><?php echo esc_html__('link whatsapp','wdk-membership');?> </a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-whatsapp"></i><?php echo esc_html__('link whatsapp','wpdirectorykit');?> </a></div>
                             <?php elseif(strpos($meta['meta_field'],'viber') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="viber://chat?number=#"><i class="fab fa-viber"></i>(917) 367-2058</a></div>
                             <?php elseif(filter_var($meta['meta_field'], FILTER_VALIDATE_URL) !== FALSE):?>
@@ -91,7 +91,7 @@ if (!defined('ABSPATH')) {
                             <?php elseif(strpos($meta['meta_field'],'phone') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="tel:9173672058"><i class="far fa-phone"></i>(917) 367-2058</a></div>
                             <?php else:?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><?php echo esc_html__('meta ','wdk-membership');?> <?php echo esc_html($meta['meta_field']);?></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><?php echo esc_html__('meta ','wpdirectorykit');?> <?php echo esc_html($meta['meta_field']);?></div>
                             <?php endif;?>
                         <?php endforeach;?>
                     </div>
@@ -115,17 +115,17 @@ if (!defined('ABSPATH')) {
                             <?php if(filter_var($meta['meta_field'], FILTER_VALIDATE_EMAIL) !== FALSE || strpos($meta['meta_field'],'email') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="mailto:agent1@wpdirectorykit.com"><i class="far fa-envelope"></i>agent@example.com</a></div>
                             <?php elseif(strpos($meta['meta_field'],'youtube') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-youtube"></i><?php echo esc_html__('link youtube','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-youtube"></i><?php echo esc_html__('link youtube','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'facebook') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-facebook"></i><?php echo esc_html__('link facebook','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-facebook"></i><?php echo esc_html__('link facebook','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'linkedin') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-linkedin"></i><?php echo esc_html__('link linkedin','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-linkedin"></i><?php echo esc_html__('link linkedin','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'twitter') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-twitter"></i><?php echo esc_html__('link twitter','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fab fa-x-twitter"></i><?php echo esc_html__('link twitter','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-telegram"></i><?php echo esc_html__('link telegram','wdk-membership');?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-telegram"></i><?php echo esc_html__('link telegram','wpdirectorykit');?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-whatsapp"></i><?php echo esc_html__('link whatsapp','wdk-membership');?> </a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="#"><i class="fa fa-whatsapp"></i><?php echo esc_html__('link whatsapp','wpdirectorykit');?> </a></div>
                             <?php elseif(strpos($meta['meta_field'],'viber') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="viber://chat?number=#"><i class="fab fa-viber"></i>(917) 367-2058</a></div>
                             <?php elseif(filter_var($meta['meta_field'], FILTER_VALIDATE_URL) !== FALSE):?>
@@ -133,7 +133,7 @@ if (!defined('ABSPATH')) {
                             <?php elseif(strpos($meta['meta_field'],'phone') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="tel:9173672058"><i class="far fa-phone"></i>(917) 367-2058</a></div>
                             <?php else:?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><?php echo esc_html__('meta ','wdk-membership');?> <?php echo esc_html($meta['meta_field']);?></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><?php echo esc_html__('meta ','wpdirectorykit');?> <?php echo esc_html($meta['meta_field']);?></div>
                             <?php endif;?>
                         <?php endforeach;?>
                     </div>

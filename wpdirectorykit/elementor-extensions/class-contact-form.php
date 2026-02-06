@@ -274,15 +274,17 @@ class WdkContactFormExt extends \ElementinvaderAddonsForElementor\Widgets\EliCon
             } else {
                 $calendar = $calendar[0];
                 
-                if(intval(wdk_get_option('wdk_bookings_max_guests')) > 0) {
+                if(!empty($calendar->guests)) {
+                    $options = range(1, intval($calendar->guests));
+                } elseif(intval(wdk_get_option('wdk_bookings_max_guests')) > 0) {
                     $options = range(1, intval(wdk_get_option('wdk_bookings_max_guests')));
-                } else {
+                } else { 
                     $options = range(1, 10);
                 }
 
                 if(empty($calendar->is_guests_disabled)) {
 
-                    if($settings['booking_hide_count_childs_field'] != 'yes') {
+                    if($settings['booking_hide_count_childs_field'] != 'yes' && !empty($calendar->is_children_acceptable) ) {
                         $output ='<div class="elementinvader_addons_for_elementor_f_group elementinvader_addons_for_elementor_f_group_el_guests" style="width: 50%;-webkit-flex: 0 0 50%;flex: 0 0 50%;">';
                     } else {
                         $output ='<div class="elementinvader_addons_for_elementor_f_group elementinvader_addons_for_elementor_f_group_el_guests" style="width: 100%;-webkit-flex: 0 0 100%;flex: 0 0 100%;">';
@@ -300,7 +302,7 @@ class WdkContactFormExt extends \ElementinvaderAddonsForElementor\Widgets\EliCon
                         $output .='</select>
                     </div>';
 
-                    if($settings['booking_hide_count_childs_field'] != 'yes') {
+                    if($settings['booking_hide_count_childs_field'] != 'yes' && !empty($calendar->is_children_acceptable)) {
                         $output .='<div class="elementinvader_addons_for_elementor_f_group elementinvader_addons_for_elementor_f_group_el_guests" style="width: 50%;-webkit-flex: 0 0 50%;flex: 0 0 50%;">';
                             $output .='<select name="guests_number_childs" id="guests_number_childs" type="select" class="elementinvader_addons_for_elementor_f_field" value="'.wmvc_show_data('guests_number', $_GET).'">';
                             $output .= '<option value="">'.esc_html__('Childs','wpdirectorykit').'</option>';
@@ -382,7 +384,7 @@ class WdkContactFormExt extends \ElementinvaderAddonsForElementor\Widgets\EliCon
                     }
                 }
 
-                if ($settings['booking_hide_if_pets_allowed_field'] != 'yes') {
+                if ($settings['booking_hide_if_pets_allowed_field'] != 'yes' && wmvc_show_data('is_pets_acceptable',$calendar, false)) {
                     $this->content ['wlisting_fields'] .='<div class="elementinvader_addons_for_elementor_f_group checkbox elementinvader_addons_for_elementor_f_group_el_pets" style="width: 100%;-webkit-flex: 0 0 100%;flex: 0 0 100%;">
                         <label for="pets_allowed">
                             <input name="pets_allowed" id="pets_allowed" type="checkbox" class="elementinvader_addons_for_elementor_f_field_checkbox" value="yes" placeholder="'.esc_attr__('Pets allowed', 'wpdirectorykit').'" >

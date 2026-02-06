@@ -130,9 +130,9 @@ class WdkSearchPopup extends WdkElementorBase {
         $this->data['id_element'] = $this->get_id();
         $this->data['settings'] = $this->get_settings();
 
-        wp_enqueue_script('select2');
+        wp_enqueue_script('select2-select2');
         wp_enqueue_script('wdk-select2');
-        wp_enqueue_style('select2');
+        wp_enqueue_style('select2-select2');
   
         $qr_string = trim($this->data['settings']['conf_predefields_query'],'?');
         $string_par = array();
@@ -1428,9 +1428,9 @@ class WdkSearchPopup extends WdkElementorBase {
         wp_enqueue_script('wdk-modal');
         wp_enqueue_style('wdk-modal');
 
-        wp_enqueue_script('select2');
+        wp_enqueue_script('select2-select2');
         wp_enqueue_script('wdk-select2');
-        wp_enqueue_style('select2');
+        wp_enqueue_style('select2-select2');
 
         wp_enqueue_script( 'ion.range-slider' );
         wp_enqueue_style('ion.range-slider');

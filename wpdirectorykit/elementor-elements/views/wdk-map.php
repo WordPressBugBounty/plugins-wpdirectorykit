@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
     <div class="wdk-map" class="wdk_map_results">
-        <?php if($settings['conf_custom_dragging_mobile'] == 'yes'):?> <div class="map-hint"><?php echo esc_html__( 'Require 2 finger for map movement', 'wpdirectorykit' );?></div><?php endif;?>
         <div id="wdk_map_results_<?php echo esc_html($id_element);?>" data-auto-search="enable" style="height:<?php echo esc_attr($settings['conf_custom_map_height']['size']);?>px" 
             data-el_id="<?php echo esc_attr($this->get_id());?>" 
             data-el_type="<?php echo esc_attr($this->get_name());?>" 
@@ -37,8 +36,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                 ):?>
                     ajax_results_enabled
             <?php endif;?>
-            " >
+            " > 
         </div>
+        <form action="" class="wdk-search-form map" style="wdk-hidden">
+            <input name="rectangle_ne" type="hidden" class="wdk-hidden" value="<?php echo isset($_GET['rectangle_ne']) ? esc_attr(sanitize_text_field($_GET['rectangle_ne'])) : '';?>"/>
+            <input name="rectangle_sw" type="hidden" class="wdk-hidden" value="<?php echo isset($_GET['rectangle_sw']) ? esc_attr(sanitize_text_field($_GET['rectangle_sw'])) : '';?>"/>
+        </form>
     </div>
 </div>
 <?php
@@ -73,8 +76,8 @@ if (!$is_edit_mode)
             wdk_map = L.map('wdk_map_results_<?php echo esc_html($id_element);?>', {
                 center: ["<?php echo esc_js($lat);?>","<?php echo esc_js($lng);?>"],
                 zoom: "<?php echo esc_js($zoom_index);?>",
-                scrollWheelZoom: false,
-                dragging: ((!L.Browser.mobile) ? <?php if($settings['conf_custom_dragging'] == 'yes'):?> true <?php else:?> else <?php endif;?> : <?php if($settings['conf_custom_dragging_mobile'] == 'yes'):?> true <?php else:?> false <?php endif;?>),
+                scrollWheelZoom: <?php echo (wmvc_show_data('enable_scrollWheelZoom', $settings, '') == 'yes') ? 'true' : 'false'; ?>,
+                dragging: ((!L.Browser.mobile) ? (<?php if($settings['conf_custom_dragging'] == 'yes'):?> true <?php else:?> false <?php endif;?>) : (<?php if($settings['conf_custom_dragging_mobile'] == 'yes'):?> true <?php else:?> false <?php endif;?>)),
                 tap: !L.Browser.mobile,
                 fullscreenControl: true,
                 fullscreenControlOptions: {
@@ -82,21 +85,39 @@ if (!$is_edit_mode)
                 },
             });     
 
-        
+        // Custom info label control on the top left of the map
+
+        <?php if($settings['conf_custom_dragging_mobile'] != 'yes'):?>
+            var InfoLabelControl = L.Control.extend({
+                options: {
+                    position: 'topright'
+                },
+
+                onAdd: function (map) {
+                    var container = L.DomUtil.create('div', 'wdk-map-info-label only_mobile');
+                    container.innerHTML = '<?php echo esc_html__( 'Require 2 finger for map movement', 'wpdirectorykit' );?>';
+                    return container;
+                }
+            });
+
+            wdk_map.addControl(new InfoLabelControl());
+        <?php endif;?>
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(wdk_map);
 
-        let drawMap = wdk_map_draw(wdk_map);
+        <?php if(!isset($settings['disable_rectangle']) || $settings['disable_rectangle'] != 'yes'):?>
+            let drawMap = wdk_map_draw(wdk_map, null, <?php if(isset($settings['enable_rectangle_auto_search']) && $settings['enable_rectangle_auto_search'] != 'yes'):?>false<?php else:?>true<?php endif;?>);
 
-        // define rectangle geographical bounds
-        <?php if(isset($_GET['rectangle_ne']) && isset($_GET['rectangle_sw'])) :?>
-            <?php if(wdk_is_gps($_GET['rectangle_ne']) && wdk_is_gps($_GET['rectangle_sw']))  :?>
-                var bounds = [[<?php echo isset($_GET['rectangle_ne']) ? esc_attr(sanitize_text_field($_GET['rectangle_ne'])) : '';?>], [<?php echo isset($_GET['rectangle_sw']) ? esc_attr(sanitize_text_field($_GET['rectangle_sw'])) : '';?>]];
-                drawMap.drawOuther(bounds);
+            // define rectangle geographical bounds
+            <?php if(isset($_GET['rectangle_ne']) && isset($_GET['rectangle_sw'])) :?>
+                <?php if(wdk_is_gps($_GET['rectangle_ne']) && wdk_is_gps($_GET['rectangle_sw']))  :?>
+                    var bounds = [[<?php echo isset($_GET['rectangle_ne']) ? esc_attr(sanitize_text_field($_GET['rectangle_ne'])) : '';?>], [<?php echo isset($_GET['rectangle_sw']) ? esc_attr(sanitize_text_field($_GET['rectangle_sw'])) : '';?>]];
+                    drawMap.drawOuther(bounds);
+                <?php endif;?>
             <?php endif;?>
         <?php endif;?>
-
 
         <?php if(!empty($settings['conf_custom_map_style']) && $settings['conf_custom_map_style'] =='custom' && !empty($settings['conf_custom_map_style_self'])):?>
             var positron = L.tileLayer('<?php echo esc_js($settings['conf_custom_map_style_self']);?>').addTo(wdk_map);
@@ -244,8 +265,6 @@ if (!$is_edit_mode)
 
         if(wmvc_show_data('conf_hide_real_location', $settings) == 'yes') {
             $gps = wdk_get_near_location($listing_lat, $listing_lng);
-            //$listing_lat = (wmvc_show_data('lat', $gps));
-            //$listing_lng = (wmvc_show_data('lng', $gps));
             
             $listing_lat = wdk_move_gps($listing_lat);
             $listing_lng = wdk_move_gps($listing_lng);
@@ -273,7 +292,7 @@ if (!$is_edit_mode)
                         $value = apply_filters( 'wpdirectorykit/listing/field/value', wdk_field_value_on_type($field_id, $listing), $field_id);
                     }
 
-                    $field_value = $value;
+                    $field_value = wdk_filter_decimal($value);
 
                 } else {
                     $field_value .= apply_filters( 'wpdirectorykit/listing/field/value', wdk_field_value_on_type($field_id, $listing), $field_id);
@@ -292,7 +311,7 @@ if (!$is_edit_mode)
         <?php endif;?>
         
         wdk_markers.push(wdk_generate_marker_ajax_popup('<?php echo esc_url(admin_url('admin-ajax.php'));?>','<?php echo esc_html(wmvc_show_data('post_id', $listing));?>','<?php echo esc_html($listing_lat);?>','<?php echo esc_html($listing_lng);?>',innerMarker, wdk_jpopup_customOptions, auto_marker_size
-                    , <?php if(wmvc_show_data('disable_cluster', $settings) == 'yes'):?> false <?php endif;?>));
+                    , <?php if(wmvc_show_data('disable_cluster', $settings) == 'yes'):?> false<?php else:?> true <?php endif;?> <?php if(wmvc_show_data('custom_layout_id', $settings)):?>, <?php echo esc_js(wmvc_show_data('custom_layout_id', $settings));?> <?php endif;?>));
     <?php endforeach; ?> 
     wdk_map.addLayer(wdk_clusters);
     /* set center */

@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 class Wpdirectorykit_Activator {
 
-    public static $db_version = 4.7;
+    public static $db_version = 5.3;
 
 	/**
 	 * Short Description. (use period)
@@ -52,6 +52,8 @@ class Wpdirectorykit_Activator {
         /* disable elmentor experement feature */
         update_option( 'elementor_experiment-landing-pages', 'inactive' );
         update_option( 'elementor_experiment-e_dom_optimization', 'inactive');
+        update_option( 'elementor_experiment-e_element_cache', 'inactive');
+        update_option( 'elementor_element_cache_ttl', 'disable');
 	}
 
     public static function plugins_loaded(){
@@ -780,6 +782,87 @@ class Wpdirectorykit_Activator {
 
             self::$db_version = 4.7;
             /* udpate option with db version */ 
+        }
+        
+        if ( get_site_option( 'wdk_db_version' ) < '4.8' ) {
+
+            $table_name = $wpdb->prefix . 'wdk_categories';
+            $sql = "ALTER TABLE `$table_name` ADD `titles_for_search` text DEFAULT '';";
+            $wpdb->query($sql);
+
+            $table_name = $wpdb->prefix . 'wdk_locations';
+            $sql = "ALTER TABLE `$table_name` ADD `titles_for_search` text DEFAULT '';";
+            $wpdb->query($sql);
+
+            self::$db_version = 4.8;
+            /* udpate option with db version */
+        }
+        
+        if ( get_site_option( 'wdk_db_version' ) < '4.9' ) {
+
+            $table_name = $wpdb->prefix . 'wdk_users';
+            $sql = "ALTER TABLE `$table_name`  ADD `cacheduser_user_login` text DEFAULT ''";
+            $wpdb->query($sql);
+
+            $sql = "ALTER TABLE `$table_name`  ADD `cacheduser_wdk_slug` text DEFAULT ''";
+            $wpdb->query($sql);
+
+            self::$db_version = 4.9;
+            /* udpate option with db version */
+        }
+       
+        
+        if ( get_site_option( 'wdk_db_version' ) < '5.0' ) {
+
+            $table_name = $wpdb->prefix . 'wdk_fields';
+            $sql = "ALTER TABLE `$table_name` ADD `autosuggestion` varchar(64) DEFAULT NULL;";
+            $wpdb->query($sql);
+
+            self::$db_version = 5.0;
+            /* udpate option with db version */
+        }
+
+        if ( get_site_option( 'wdk_db_version' ) < '5.1' ) {
+
+            $table_name = $wpdb->prefix . 'wdk_resultitem';
+            $sql = "ALTER TABLE `$table_name`  ADD `is_show_agent_details` INT(1) NULL DEFAULT NULL";
+            $wpdb->query($sql);
+            
+            $table_name = $wpdb->prefix . 'wdk_listings';
+            $sql = "ALTER TABLE `$table_name`  ADD `user_id_editor_display_name` VARCHAR(128) DEFAULT ''";
+            $wpdb->query($sql);
+            
+            $table_name = $wpdb->prefix . 'wdk_listings';
+            $sql = "ALTER TABLE `$table_name`  ADD `user_id_editor_user_login` VARCHAR(128) DEFAULT ''";
+            $wpdb->query($sql);
+            
+            $table_name = $wpdb->prefix . 'wdk_listings';
+            $sql = "ALTER TABLE `$table_name`  ADD `user_id_editor_wdk_slug` VARCHAR(128) DEFAULT ''";
+            $wpdb->query($sql);
+            
+            $table_name = $wpdb->prefix . 'wdk_listings';
+            $sql = "ALTER TABLE `$table_name`  ADD `user_id_editor_avatar` VARCHAR(256) DEFAULT ''";
+            $wpdb->query($sql);
+
+            self::$db_version = 5.1;
+            /* udpate option with db version */
+        }
+
+        if ( get_site_option( 'wdk_db_version' ) < '5.2' ) {
+
+            $table_name = $wpdb->prefix . 'wdk_listings';
+            $sql = "ALTER TABLE `$table_name`  ADD `counter_results_views` INT(111) DEFAULT 0";
+            $wpdb->query($sql);
+            
+            self::$db_version = 5.2;
+            /* udpate option with db version */
+        }
+
+        if ( get_site_option( 'wdk_db_version' ) < '5.3' ) {
+            update_option( 'wdk_enable_filter_zero_decimal', '1');
+            
+            self::$db_version = 5.3;
+            /* udpate option with db version */
         }
        
         update_option( 'wdk_db_version', self::$db_version );

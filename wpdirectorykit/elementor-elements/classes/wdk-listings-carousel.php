@@ -710,7 +710,7 @@ class WdkListingsCarousel extends WdkElementorBase {
                             'max' => 100,
                         ],
                     ],
-                    'size_units' => [ 'px', 'vw' ],
+                    'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                     'default' => [
                         'size' => 350,
                         'unit' => 'px',
@@ -1129,16 +1129,34 @@ class WdkListingsCarousel extends WdkElementorBase {
                             ],
                     ]
             );
-            $selectors = array(
-                'normal' => '{{WRAPPER}} '.$item['selector'],
-                'hover'=>'{{WRAPPER}} '.$item['selector'].'%1$s'
-            );
-            
-            if(isset($item['is_featured'])) {
-                $selectors['featured'] = '{{WRAPPER}} '.$item['is_featured'];
-            }
-            $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
 
+            
+            $this->add_responsive_control(
+                $item['key'].'_min-height',
+               [
+                   'label' => esc_html__('Min Height', 'wpdirectorykit'),
+                   'type' => Controls_Manager::SLIDER,
+                   'range' => [
+                       'px' => [
+                           'min' => 10,
+                           'max' => 1500,
+                       ],
+                       'vw' => [
+                           'min' => 0,
+                           'max' => 100,
+                       ],
+                       '%' => [
+                           'min' => 0,
+                           'max' => 100,
+                       ],
+                   ],
+                   'size_units' => [ 'px', 'vw','%' ],
+                   'selectors' => [
+                        '{{WRAPPER}} '.$item['selector'] => 'min-height: {{SIZE}}{{UNIT}}',
+                   ],
+                   
+               ]
+            );
             /* special for some elements */
             if ($item['key'] == 'content_description') {
             
@@ -1156,8 +1174,37 @@ class WdkListingsCarousel extends WdkElementorBase {
                         ],
                     ]
                 );
-
             }
+            if ($item['key'] == 'content_title') {
+            
+                $this->add_control(
+                    'content_title_limit',
+                    [
+                        'label' => __( 'Limit Line (per field)', 'wpdirectorykit' ),
+                        'type' => \Elementor\Controls_Manager::NUMBER,
+                        'min' => 1,
+                        'max' => 10,
+                        'step' => 1,
+                        'default' => 3, 
+                        'selectors' => [ 
+                            '{{WRAPPER}} .wdk-listing-card .wdk-title span' => '-webkit-line-clamp: {{VALUE}};',
+                        ],
+                    ]
+                );
+            }
+
+            $selectors = array(
+                'normal' => '{{WRAPPER}} '.$item['selector'],
+                'hover'=>'{{WRAPPER}} '.$item['selector'].'%1$s'
+            );
+            
+            if(isset($item['is_featured'])) {
+                $selectors['featured'] = '{{WRAPPER}} '.$item['is_featured'];
+            }
+            $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
+
+
+
             if($item['key'] == 'content_button') {
                 $this->add_control(
                     $item['key'].'_icon',

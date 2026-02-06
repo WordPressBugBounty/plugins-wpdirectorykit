@@ -26,6 +26,7 @@ class Wdk_fields extends Winter_MVC_Controller {
         $this->load->model('listingfield_m');
 
         $field_id = (int) $this->input->post_get('id');
+        $this->data['selected_section']  = '';
         wdk_access_check('category_m', $field_id);
         $this->data['field_types'] = array(
             'INPUTBOX' =>   __('INPUTBOX', 'wpdirectorykit'),
@@ -37,6 +38,7 @@ class Wdk_fields extends Winter_MVC_Controller {
             'DROPDOWN' =>   __('DROPDOWN', 'wpdirectorykit'),
             'DROPDOWNMULTIPLE' =>   __('DROPDOWN MULTIPLE', 'wpdirectorykit'),
             'CHECKBOX' =>   __('CHECKBOX', 'wpdirectorykit'),
+            'FILEUPLOAD' =>   __('FILE UPLOAD', 'wpdirectorykit'),
         );
         $this->data['section_list'] = array(
             '' =>   __('Not Selected', 'wpdirectorykit'),
@@ -160,7 +162,12 @@ class Wdk_fields extends Winter_MVC_Controller {
             ),
             array(
                 'field' => 'date_format',
-                'label' => __('Вate Аormat', 'wpdirectorykit'),
+                'label' => __('Date Format', 'wpdirectorykit'),
+                'rules' => ''
+            ),
+            array(
+                'field' => 'autosuggestion',
+                'label' => __('Autosuggestion', 'wpdirectorykit'),
                 'rules' => ''
             ),
         );
@@ -235,8 +242,12 @@ class Wdk_fields extends Winter_MVC_Controller {
             }
         }
 
-        if(!empty($field_id))
+
+
+        if(!empty($field_id)) {
             $this->data['db_data'] = $this->field_m->get($field_id, TRUE);
+            $this->data['selected_section'] = wmvc_show_data($field_id, $this->data['fields_categories']);
+        }
 
         $this->load->view('wdk_fields/field_edit', $this->data);
     }

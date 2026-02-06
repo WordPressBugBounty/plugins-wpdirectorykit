@@ -115,8 +115,7 @@ function shortcode_wdk_listing_field_value_text($atts, $content){
     $data['field_value'] = apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $data['field_value'])), $data['settings']['field_id']);
 
     if($data['settings']['norender'] == 1) {
-        return 'https://www.youtube.com/embed/cewZBOGzbPg';
-        //echo $data['field_value'];
+        return $data['field_value'];
     } else {
         return wdk_shortcodes_view('shortcode-wdk-listing-field-value-text', $data);
     }

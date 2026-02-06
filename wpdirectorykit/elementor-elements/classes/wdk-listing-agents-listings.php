@@ -166,18 +166,18 @@ class WdkListingAgentsListings extends WdkElementorBase {
 
                 if(empty($similar_field['field'])) continue;
 
-                if ($similar_field['field_skip_if_empty'] == 'true' && empty(wdk_field_value(str_replace('field','',$similar_field['field']), $wdk_listing_id))) {
+                if ($similar_field['field_skip_if_empty'] == 'true' && empty(wdk_field_value(str_replace('field_','',$similar_field['field']), $wdk_listing_id))) {
                     continue;
                 }
 
                 if($similar_field['field'] == 'is_featured') {
-                    if (!empty(wdk_field_value(str_replace('field','',$similar_field['field']), $wdk_listing_id))) {
+                    if (!empty(wdk_field_value(str_replace('field_','',$similar_field['field']), $wdk_listing_id))) {
                         $custom_parameters[$similar_field['field']] = 'on';
                     } else {
                         $custom_parameters[$similar_field['field']] = 'off';
                     }
                 } else {    
-                    $custom_parameters[$similar_field['field']] = wdk_field_value(str_replace('field','',$similar_field['field']), $wdk_listing_id);
+                    $custom_parameters[$similar_field['field']] = wdk_field_value(str_replace('field_','',$similar_field['field']), $wdk_listing_id);
                 }
             }
         }
@@ -917,7 +917,7 @@ class WdkListingAgentsListings extends WdkElementorBase {
                             'max' => 100,
                         ]
                     ],
-                    'size_units' => [ 'px', 'vw' ],
+                    'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                     'default' => [
                         'size' => 220,
                         'unit' => 'px',

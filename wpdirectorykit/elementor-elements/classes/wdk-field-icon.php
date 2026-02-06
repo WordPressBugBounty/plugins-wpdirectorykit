@@ -154,8 +154,17 @@ class WdkFieldIcon extends WdkElementorBase {
             if(strpos($this->data['settings']['field_id'],'__') !== FALSE){
                 $this->data['settings']['field_id'] = substr($this->data['settings']['field_id'], strpos($this->data['settings']['field_id'],'__')+2);
             }
-            if(wdk_field_option ($this->data['settings']['field_id'], 'icon_id'))
+            if($this->data['settings']['field_id'] == 'category_id') {
+                $this->WMVC->model('category_m');
+                $tree_data = $this->WMVC->category_m->get(wdk_field_value ($this->data['settings']['field_id'], $wdk_listing_id), TRUE);
+                $this->data['field_icon'] =  wmvc_show_data('icon_id', $tree_data);
+            } else if($this->data['settings']['field_id'] == 'location_id') {
+                $this->WMVC->model('location_id');
+                $tree_data = $this->WMVC->location_id->get(wdk_field_value ($this->data['settings']['field_id'], $wdk_listing_id), TRUE);
+                $this->data['field_icon'] =  wmvc_show_data('icon_id', $tree_data);
+            } else {
                 $this->data['field_icon'] = wdk_field_option ($this->data['settings']['field_id'], 'icon_id');
+            }
         }
         
                     
@@ -165,11 +174,11 @@ class WdkFieldIcon extends WdkElementorBase {
         } else {
 
             /* return false if no content */
-            if($this->data['settings']['hide_onempty'] == 'yes' && wdk_field_value($this->data['settings']['field_id'], $wdk_listing_id) == '')
+            if($this->data['settings']['hide_onempty'] == 'yes' && $this->data['field_icon'] == '')
                 return false;
 
             /* return false if no content */
-            if(wdk_field_option ($this->data['settings']['field_id'], 'icon_id') == ''|| wdk_field_option ($this->data['settings']['field_id'], 'icon_id') == 0)
+            if($this->data['field_icon'] == '')
                 return false;
         }
 
@@ -245,66 +254,11 @@ class WdkFieldIcon extends WdkElementorBase {
                 ]
             );
 
-            $this->add_responsive_control (
-                'field_group_icon_max_heigth',
-                [
-                    'label' => esc_html__('Max Height', 'wpdirectorykit'),
-                    'type' => Controls_Manager::SLIDER,
-                    'range' => [
-                        'px' => [
-                            'min' => 10,
-                            'max' => 1500,
-                        ],   
-                        'vw' => [
-                            'min' => 0,
-                            'max' => 100,
-                        ],
-                        '%' => [
-                            'min' => 0,
-                            'max' => 100,
-                        ],
-                    ],
-                    'size_units' => [ 'px', 'vw','%' ],
-                    'default' => [
-                        'unit' => 'px',
-                        'size' => 18,
-                    ],
-                    'selectors' => [
-                        '{{WRAPPER}} .wdk-field-icon' => 'max-width: {{SIZE}}{{UNIT}}',
-                    ],
-                ]
+            $selectors = array(
+                'normal' => '{{WRAPPER}} .wdk-field-icon img',
             );
+            $this->generate_renders_tabs($selectors, 'layout_image_dynamic', ['image_size_control','image_fit_control', 'height', 'width','css_filters']);
 
-            
-            $this->add_responsive_control (
-                'field_group_icon_max_width',
-                [
-                    'label' => esc_html__('Max Width', 'wpdirectorykit'),
-                    'type' => Controls_Manager::SLIDER,
-                    'range' => [
-                        'px' => [
-                            'min' => 10,
-                            'max' => 1500,
-                        ],   
-                        'vw' => [
-                            'min' => 0,
-                            'max' => 100,
-                        ],
-                        '%' => [
-                            'min' => 0,
-                            'max' => 100,
-                        ],
-                    ],
-                    'size_units' => [ 'px', 'vw','%' ],
-                    'default' => [
-                        'unit' => 'px',
-                        'size' => 18,
-                    ],
-                    'selectors' => [
-                        '{{WRAPPER}} .wdk-field-icon' => 'max-width: {{SIZE}}{{UNIT}}',
-                    ],
-                ]
-            );
 
             $this->end_controls_section();
             /* END special for some elements */

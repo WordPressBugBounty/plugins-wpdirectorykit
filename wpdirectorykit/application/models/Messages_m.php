@@ -34,7 +34,7 @@ class Messages_m extends Winter_MVC_Model {
             array(
                 'field' => 'date',
                 'field_label' => __('Date', 'wpdirectorykit'),
-                'field_type' => 'DATE_READONLY', 
+                'field_type' => 'DATETIME_READONLY', 
                 'rules' => ''
             ),
             array(

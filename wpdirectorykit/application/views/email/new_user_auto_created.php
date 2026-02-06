@@ -40,12 +40,29 @@ if (!defined('ABSPATH')) {
                 <p>
                     <?php echo sprintf(esc_html__('Account auto created on portal %1$s%2$s%3$s, please use your access bellow for login','wpdirectorykit'), '<a href="'.get_home_url().'">', get_bloginfo('name'), '</a>'); ?>
                 </p>
+
+                <?php if(wdk_get_option('wdk_membership_new_user_email_credentials_enable')):?>
                 <p>
                     <strong><?php echo esc_html__('Login', 'wpdirectorykit'); ?>:</strong> <?php echo $login; ?><br>
                 </p>
                 <p>
                     <strong><?php echo esc_html__('Password', 'wpdirectorykit'); ?>:</strong> <?php echo $password; ?><br>
                 </p>
+                <?php endif;?>
+
+                <?php if(wdk_get_option('wdk_membership_new_user_email_autologin_hash_link_enable')):?>
+                <p>
+                    <strong><?php echo esc_html__('Login', 'wpdirectorykit'); ?>: <a href="<?php echo wdk_generate_auto_login_link($user->ID); ?>"><?php echo wdk_generate_auto_login_link($user->ID); ?></a>
+                </p>
+                <?php endif;?>
+
+                <?php if(wdk_get_option('wdk_membership_new_user_email_credentials_enable') || (!wdk_get_option('wdk_membership_new_user_email_autologin_hash_link_enable') && !wdk_get_option('wdk_membership_new_user_email_credentials_enable'))):?>
+                <p>
+                    <strong><?php echo esc_html__('Reset password', 'wpdirectorykit'); ?>: <a href="<?php echo wp_lostpassword_url(); ?>"><?php echo wp_lostpassword_url(); ?></a>
+                </p>
+                <?php endif;?>
+
+
                 <p>
                     <strong><?php echo esc_html__('Link', 'wpdirectorykit'); ?>:</strong>
 

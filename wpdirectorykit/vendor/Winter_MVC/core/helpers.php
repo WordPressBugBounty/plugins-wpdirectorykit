@@ -952,7 +952,7 @@ function wmvc_upload_file($field_name, $file_id)
         </a>
         <a class="delete-custom-img <?php if ( ! $you_have_file  ) { echo 'hidden'; } ?>" 
         href="#">
-            <?php echo esc_html__('Remove file','wmvc_win') ?>
+            <?php echo esc_html__('Remove all files','wmvc_win') ?>
         </a>
     </p>
     <?php //endif; ?>
@@ -1046,7 +1046,7 @@ function wmvc_upload_multiple($field_name, $image_ids='')
         </a>
         <a class="button button-secondary delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>" 
         href="#">
-            <?php echo esc_html__('Remove images','wmvc_win') ?>
+            <?php echo esc_html__('Remove all images','wmvc_win') ?>
         </a>
     </p>
     <?php //endif; ?>

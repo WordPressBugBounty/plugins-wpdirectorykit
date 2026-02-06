@@ -49,14 +49,14 @@ $button_suffix = '';
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <?php echo wmvc_select_option($field_id, $values, wmvc_show_data($field_id, $db_data, '')); ?>
         <span class="suffix"><?php
-            echo esc_html($field->prefix);
+            echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
-            echo esc_html($field->suffix);
+            echo esc_html__($field->suffix, 'wpdirectorykit');
         ?>
         <?php if(!empty(wmvc_show_data($field_id, $db_data, '')) && get_post_status(wmvc_show_data($field_id, $db_data, '')) == 'publish'):?>
             <a class="button button-primary" target="_blank" href="<?php echo get_permalink(wmvc_show_data($field_id, $db_data, ''));?>" style="margin-top: -5px;">

@@ -132,11 +132,21 @@ class WdkListingsResults extends WdkElementorBase {
 
         $custom_parameters['order_by'] = $this->WMVC->db->prefix.'wdk_listings.rank DESC';
 
+        if(!empty($this->data['settings']['is_rank_order_disable']))
+            $custom_parameters['order_by'] = '';
+
         $this->data['custom_order'] =  array();
         if($this->data['settings']['custom_order_list']) {
             foreach($this->data['settings']['custom_order_list'] as $item){
                 if(empty($item['title']) || empty($item['key'])) continue;
-                $this->data['custom_order'][] = array('title'=>$item['title'],'key'=>$item['key']);
+
+                /* compatible with old  settings */
+                if(stripos($item['key'], 'ASC') !== FALSE || stripos($item['key'], 'DESC') !== FALSE) {
+                    $item['order_type'] = '';
+                }
+
+                $this->data['custom_order'][] = array('title'=>$item['title'],'key'=>$item['key'],'order_type'=>$item['order_type']);
+
             }
         }
 
@@ -153,10 +163,12 @@ class WdkListingsResults extends WdkElementorBase {
 
             if(!isset($_GET['order_by'])) {
                 /* if detected custom field for order */
-                if(!empty($this->data['settings']['conf_order_by_custom'])) {
-                    $custom_parameters['order_by'] .= ', '.$this->data['settings']['conf_order_by_custom'].' '.$this->data['settings']['conf_order'];
+                if(!empty($this->data['settings']['conf_order_by_custom']) && $this->data['settings']['conf_order_by_custom'] == 'RAND()') {
+                    $custom_parameters['order_by'] = $this->data['settings']['conf_order_by_custom'].' '.$this->data['settings']['conf_order'];
+                } elseif(!empty($this->data['settings']['conf_order_by_custom'])) {
+                    $custom_parameters['order_by'] .= ((!empty($custom_parameters['order_by'])) ? ', ':'').$this->data['settings']['conf_order_by_custom'].' '.$this->data['settings']['conf_order'];
                 } else {
-                    $custom_parameters['order_by'] .= ', '.$this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'];
+                    $custom_parameters['order_by'] .= ((!empty($custom_parameters['order_by'])) ? ', ':'').$this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'];
                 }
             }
                 
@@ -203,7 +215,8 @@ class WdkListingsResults extends WdkElementorBase {
             wdk_prepare_search_query_GET($columns, $controller.'_m', $external_columns, $custom_parameters, $skip_postget);
 
             $this->data['results'] = $this->WMVC->listing_m->get_pagination($this->data['settings']['per_page'], $offset, array('is_activated' => 1,'is_approved'=>1));
-
+            $this->data['results'] = apply_filters('wdk/listings/results', $this->data['results']);
+            
             /*, array('sw_listing.rank DESC')*/
 
         } else if($this->data['settings']['conf_results_type'] == 'custom_listings') {
@@ -257,7 +270,7 @@ class WdkListingsResults extends WdkElementorBase {
             /* hide filter header on specific results */
             $this->data['settings']['get_filters_enable'] = '';
         }
-        
+
         if(!empty($this->data['results']) && $this->data['listings_count'] == 0)
             $this->data['listings_count'] = wmvc_count($this->data['results']);
 
@@ -287,6 +300,33 @@ class WdkListingsResults extends WdkElementorBase {
             ]
         );
 
+        $this->add_control(
+            'is_rank_order_disable',
+            [
+                'label' => __( 'Disable top rank', 'wpdirectorykit' ),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __( 'True', 'wpdirectorykit' ),
+                'label_off' => __( 'False', 'wpdirectorykit' ),
+                'return_value' => 'yes',
+                'default' => '',
+                
+            ]
+        );
+        
+        $this->add_control(
+			'is_complete_link',
+			[
+				'label' => __( 'Complete Card Link', 'elementinvader-addons-for-elementor' ),
+				'description' => __( 'Make Full Card like Link', 'elementinvader-addons-for-elementor' ),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => __( 'True', 'elementinvader-addons-for-elementor' ),
+				'label_off' => __( 'False', 'elementinvader-addons-for-elementor' ),
+				'return_value' => 'yes',
+				'default' => '',
+			]
+		);
+
+
         if(wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_ajax_results')){
             $this->add_control(
                 'is_ajax_enable',
@@ -315,14 +355,22 @@ class WdkListingsResults extends WdkElementorBase {
                     
                 ]
             );
+
+
+            /*
+            https://wpdirectorykit.com/create-nice-listings-card-in-element-builder/
+            */
+
+            // Template title (always visible)
             $this->add_control(
-                'custom_layout_id_grid',
-                [
-                    'label' => __( 'Layout Grid id', 'wpdirectorykit' ),
-                    'type' => \Elementor\Controls_Manager::TEXT,
-                    'default' => '',
-                    'placeholder' => __( 'put your template id', 'wpdirectorykit' ),
-                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                'custom_layout_live_grid',
+                array(
+                    'label'       => __( 'Template Id', 'wdk-addons-for-elementor' ),
+                    'type'        => Controls_Manager::TEXT,
+                    'classes'     => 'wdk-live-temp-title control-hidden',
+                    'label_block' => true,
+                    'placeholder' => __( 'Enter template name...', 'wdk-addons-for-elementor' ),
+                    'separator' => 'before',
                     'conditions' => [
                         'terms' => [
                             [
@@ -332,17 +380,42 @@ class WdkListingsResults extends WdkElementorBase {
                             ]
                         ],
                     ],
-                ]
+                )
+            );
+    
+            // Smart Create/Edit template button (always visible)
+            $this->add_control(
+                'custom_layout_id_grid_item_live',
+                array(
+                    'type'        => Controls_Manager::BUTTON,
+                    'label_block' => true,
+                    'button_type' => 'default papro-btn-block for-custom_layout_live_grid',
+                    'text'        => __( 'Create / Edit Template', 'wdk-addons-for-elementor' ),
+                    'event'       => 'wdkCreateLiveTemp',
+                    'conditions' => [
+                        'terms' => [
+                            [
+                                'name' => 'is_custom_layout_enable',
+                                'operator' => '==',
+                                'value' => 'yes',
+                            ]
+                        ],
+                    ],
+                )
             );
 
-            $this->add_control (
-                'custom_layout_id_list',
-                [
-                    'label' => __( 'Layout List Id', 'wpdirectorykit' ),
-                    'type' => \Elementor\Controls_Manager::TEXT,
-                    'default' => '',
-                    'placeholder' => __( 'put your template id', 'wpdirectorykit' ),
+            $this->add_control(
+                'custom_layout_id_grid',
+                array(
+                    'label'       => __( 'OR Select Existing Template', 'premium-addons-for-elementor' ),
+                    //'type'        => \Wdk\Includes\Controls\Wdk_Post_Filter::TYPE,
+                    'type'        => Controls_Manager::SELECT2,
+                    'options'     => $this->get_elementor_templates(),
                     'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'label_block' => true,
+                    'multiple'    => false,
+                    'source'      => 'elementor_library',
+                    'separator' => 'after',
                     'conditions' => [
                         'terms' => [
                             [
@@ -352,8 +425,72 @@ class WdkListingsResults extends WdkElementorBase {
                             ]
                         ],
                     ],
-                ]
+                )
             );
+
+            $this->add_control(
+                'custom_layout_live_list',
+                array(
+                    'label'       => __( 'Template Id', 'wdk-addons-for-elementor' ),
+                    'type'        => Controls_Manager::TEXT,
+                    'classes'     => 'wdk-live-temp-title control-hidden',
+                    'label_block' => true,
+                    'placeholder' => __( 'Enter template name...', 'wdk-addons-for-elementor' ),
+                    'conditions' => [
+                        'terms' => [
+                            [
+                                'name' => 'is_custom_layout_enable',
+                                'operator' => '==',
+                                'value' => 'yes',
+                            ]
+                        ],
+                    ],
+                )
+            );
+    
+            $this->add_control(
+                'custom_layout_id_list_item_live',
+                array(
+                    'type'        => Controls_Manager::BUTTON,
+                    'label_block' => true,
+                    'button_type' => 'default papro-btn-block for-custom_layout_live_list',
+                    'text'        => __( 'Create / Edit Template', 'wdk-addons-for-elementor' ),
+                    'event'       => 'wdkCreateLiveTemp',
+                    'conditions' => [
+                        'terms' => [
+                            [
+                                'name' => 'is_custom_layout_enable',
+                                'operator' => '==',
+                                'value' => 'yes',
+                            ]
+                        ],
+                    ],
+                )
+            );
+
+            $this->add_control(
+                'custom_layout_id_list',
+                array(
+                    'label'       => __( 'OR Select Existing Template', 'premium-addons-for-elementor' ),
+                    'type'        => Controls_Manager::SELECT2,
+                    'options'     => $this->get_elementor_templates(),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'label_block' => true,
+                    'multiple'    => false,
+                    'source'      => 'elementor_library',
+                    'separator' => 'after',
+                    'conditions' => [
+                        'terms' => [
+                            [
+                                'name' => 'is_custom_layout_enable',
+                                'operator' => '==',
+                                'value' => 'yes',
+                            ]
+                        ],
+                    ],
+                )
+            );
+
         } 
 
 
@@ -588,8 +725,10 @@ class WdkListingsResults extends WdkElementorBase {
                     'placeholder' => __( 'Type your query here, example xxx', 'wpdirectorykit' ),
                     'description' => '<span style="word-break: break-all;">'.__( 'Example (same like on url):', 'wpdirectorykit' ).
                                             '<br> field_6_min=100&field_6_max=200&field_5=rent&is_featured=on&search_category=3&search_location=4&search_agents_ids=3'.
+                                            '<br> Listings by post id - field_post_id=5169,5157,5159'.
                                             '<br> Listings from date - field_post_date_min=2023-05-07'.
                                             '<br> Listings from latest 365 days - field_post_date_min=-365 days'.
+                                            '<br> Filter based on rank - search_rank=1 OR search_rank_min=1 OR search_rank_max=3'.
                                         '</span>',
                     'conditions' => [
                         'terms' => [
@@ -829,21 +968,53 @@ class WdkListingsResults extends WdkElementorBase {
 
         $repeater_order = new Repeater();
         $repeater_order->start_controls_tabs( 'orders' );
+
+        $fields_data = wdk_cached_field_get();
+        $fields_list = array('' => esc_html__('Not Selected', 'wpdirectorykit'));
+        $order_i = 0;
+        $fields_number_types = array();
+        $fields_list[(++$order_i) . '__section'] = esc_html__('-- Section Custom fields --', 'wpdirectorykit');
+        $fields_list[(++$order_i) . '__post_id'] = esc_html__('Post Id', 'wpdirectorykit');
+        $fields_list[(++$order_i) . '__counter_views'] = esc_html__('Views counter', 'wpdirectorykit');
+        $fields_list[(++$order_i) . '__date_modified'] = esc_html__('Date Modified', 'wpdirectorykit');
+        $fields_list[(++$order_i) . '__post_title'] = esc_html__('WP Title', 'wpdirectorykit');
+        $fields_list[(++$order_i) . '__address'] = esc_html__('Address', 'wpdirectorykit');
+        $fields_list[(++$order_i) . '__category_id'] = esc_html__('Category', 'wpdirectorykit');
+        $fields_list[(++$order_i) . '__location_id'] = esc_html__('Location', 'wpdirectorykit');
+
+        foreach ($fields_data as $field) {
+            if (wmvc_show_data('field_type', $field) == 'SECTION') {
+                $fields_list[(++$order_i) . 'section__' . wmvc_show_data('idfield', $field)] = '-- ' . esc_html__('Section', 'wpdirectorykit') . ' ' . wmvc_show_data('field_label', $field) . ' --';
+            } else if(wmvc_show_data('field_type', $field) != 'FILEUPLOAD') {
+                $fields_list[(++$order_i) . '__field_' . wmvc_show_data('idfield', $field)] = '#' . wmvc_show_data('idfield', $field) . ' ' . wmvc_show_data('field_label', $field) . '[' . wmvc_show_data('field_type', $field) . ']';
+            }
+        }
+
         $repeater_order->add_control(
             'key',
             [
-                'label' => __( 'Sort Key', 'wpdirectorykit' ),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => 'post_id ASC',
-                'description' => '<span style="word-break: break-all;">'.__( 'Custom Fields Order Example:', 'wpdirectorykit' ).
-                                        '<br> field_13_NUMBER ASC - where 13 is field id, NUMBER - field type'.
-                                        '<br> field_4_NUMBER DESC - where 4 is field id, NUMBER - field type'.
-                                        '<br> field_6_DROPDOWN ASC - where 6 is field id, DROPDOWN - field type'.
-                                        '<br> category_title  - Category Title'.
-                                        '<br> location_title  - Location Title'.
-                                  '</span>',
+                'label' => __('Field Id', 'wpdirectorykit'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'default' => '',
+                'options' => $fields_list,
             ]
         );
+
+        // Add select for order type "Ask or Desk", default ASK
+        $repeater_order->add_control(
+            'order_type',
+            [
+                'label' => __('Order Type', 'wpdirectorykit'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'asc',
+                'options' => [
+                    'ASC' => __('ASC', 'wpdirectorykit'),
+                    'DESC' => __('DESC', 'wpdirectorykit'),
+                ],
+            ]
+        );
+
+
         $repeater_order->add_control(
             'title',
             [
@@ -1321,7 +1492,7 @@ class WdkListingsResults extends WdkElementorBase {
                             ],
                         ],
                         'selectors' => [
-                            '{{WRAPPER}} .slick-slider.wdk_results_listings_slider_ini .wdk-col' => 'padding-left: {{SIZE}}{{UNIT}};padding-right: {{SIZE}}{{UNIT}};',
+                            '{{WRAPPER}} .slick-slider.wdk_results_listings_slider_ini .slick-slide > div > .wdk-col' => 'padding-left: {{SIZE}}{{UNIT}};padding-right: {{SIZE}}{{UNIT}};',
                             '{{WRAPPER}} .slick-slider.wdk_results_listings_slider_ini' => 'margin-left: -{{SIZE}}{{UNIT}};margin-right: -{{SIZE}}{{UNIT}};',
                         ],
                         'conditions' => [
@@ -1739,20 +1910,6 @@ class WdkListingsResults extends WdkElementorBase {
                 ]
             );
 
-            if(false)
-            $this->add_responsive_control(
-                'styles_carousel_arrows_position_style',
-                [
-                    'label' => __( 'Position Style', 'wpdirectorykit' ),
-                    'type' => \Elementor\Controls_Manager::SELECT,
-                    'default' => 'wdk_slider_arrows_out',
-                    'options' => [
-                        'wdk_slider_arrows_out' => __( 'Out', 'wpdirectorykit' ),
-                        'wdk_slider_arrows_in' => __( 'In', 'wpdirectorykit' ),
-                    ],
-                ]
-            );
-
             $this->add_responsive_control(
                 'styles_carousel_arrows_align',
                 [
@@ -1807,18 +1964,11 @@ class WdkListingsResults extends WdkElementorBase {
                 ]
             );
 
-            $this->add_responsive_control(
-                'styles_carousel_arrows_s_m_left_margin',
-                [
-                        'label' => esc_html__( 'Margin', 'wpdirectorykit' ),
-                        'type' => Controls_Manager::DIMENSIONS,
-                        'size_units' => [ 'px', 'em', '%' ],
-                        'allowed_dimensions' => 'horizontal',
-                        'selectors' => [
-                            '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow.wdk-slider-prev' => 'margin-right:{{RIGHT}}{{UNIT}}; margin-left:{{LEFT}}{{UNIT}};',
-                        ],
-                ]
+            $selectors = array(
+                'normal' => '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow.wdk-slider-prev',
             );
+            $this->generate_renders_tabs($selectors, 'styles_carousel_arrows_s_m_left', ['margin','border','border_radius', 'width','height']);
+
 
             $this->add_responsive_control(
                 'styles_carousel_arrows_icon_left',
@@ -1842,19 +1992,11 @@ class WdkListingsResults extends WdkElementorBase {
                 ]
             );
 
-            $this->add_responsive_control(
-                'styles_carousel_arrows_s_m_right_margin',
-                [
-                        'label' => esc_html__( 'Margin', 'wpdirectorykit' ),
-                        'type' => Controls_Manager::DIMENSIONS,
-                        'size_units' => [ 'px', 'em', '%' ],
-                        'allowed_dimensions' => 'horizontal',
-                        'selectors' => [
-                            '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow.wdk-slider-next' => 'margin-right:{{RIGHT}}{{UNIT}}; margin-left:{{LEFT}}{{UNIT}};',
-                        ],
-                ]
+            $selectors = array(
+                'normal' => '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow.wdk-slider-next',
             );
-         
+            $this->generate_renders_tabs($selectors, 'styles_carousel_arrows_s_m_next', ['margin','border','border_radius', 'width','height']);
+
             $this->add_responsive_control(
                 'styles_carousel_arrows_icon_right',
                 [
@@ -1872,7 +2014,7 @@ class WdkListingsResults extends WdkElementorBase {
                 'normal' => '{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow',
                 'hover'=>'{{WRAPPER}} .wdk_results_listings_slider_box .wdk_slider_arrows .wdk_lr_slider_arrow%1$s'
             );
-            $this->generate_renders_tabs($selectors, 'styles_carousel_arrows_dynamic', ['margin','color','background','border','border_radius','padding','shadow','transition','font-size','hover_animation']);
+            $this->generate_renders_tabs($selectors, 'styles_carousel_arrows_dynamic', ['color','background','border','border_radius','padding','shadow','transition','font-size']);
 
             $this->end_controls_section();
 
@@ -2582,21 +2724,8 @@ class WdkListingsResults extends WdkElementorBase {
                    
                ]
            );
-
-
-            $selectors = array(
-                'normal' => '{{WRAPPER}} '.$item['selector'],
-                'hover'=>'{{WRAPPER}} '.$item['selector'].'%1$s'
-            );
-
-            if(isset($item['is_featured'])) {
-                $selectors['featured'] = '{{WRAPPER}} '.$item['is_featured'];
-            }
-
-            $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
-
             /* special for some elements */
-            if (strpos($item['key'], 'content_description') !== FALSE ) {
+            if (strpos($item['key'], 'content_description') !== FALSE) {
 
                 $key_option = $item['key'].'content_description_limit';
                 if($item['key'] == 'content_description_limit') {
@@ -2617,6 +2746,41 @@ class WdkListingsResults extends WdkElementorBase {
                     ]
                 );
             }
+
+            if (strpos($item['key'], 'content_title') !== FALSE) {
+
+                $key_option = $item['key'].'content_title_limit';
+                if($item['key'] == 'content_title_limit') {
+                    $key_option = 'content_title_limit';
+                }
+                
+                $this->add_control(
+                    $key_option,
+                    [
+                        'label' => __( 'Limit Line (per field)', 'wpdirectorykit' ),
+                        'type' => \Elementor\Controls_Manager::NUMBER,
+                        'min' => 1,
+                        'max' => 10, 
+                        'step' => 1,
+                        'selectors' => [
+                            '{{WRAPPER}} .wdk-listing-card'.$prefix.' .wdk-title span' => '-webkit-line-clamp: {{VALUE}};',
+                        ],
+                    ]
+                );
+            }
+
+            $selectors = array(
+                'normal' => '{{WRAPPER}} '.$item['selector'],
+                'hover'=>'{{WRAPPER}} '.$item['selector'].'%1$s'
+            );
+
+            if(isset($item['is_featured'])) {
+                $selectors['featured'] = '{{WRAPPER}} '.$item['is_featured'];
+            }
+
+            $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
+
+
 
             if(strpos($item['key'], 'content_button') !== FALSE) {
 
@@ -2826,5 +2990,26 @@ class WdkListingsResults extends WdkElementorBase {
         if( wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_ajax_results')) {
             wp_enqueue_script( 'wdk-ajax-loading-listings');
         }
+    }
+
+    /**
+     * Get Elementor templates for select options
+     */
+    private function get_elementor_templates() {
+        $templates = [];
+        
+        $posts = get_posts([
+            'post_type' => 'elementor_library',
+            'post_status' => 'publish',
+            'numberposts' => -1,
+            'orderby' => 'title',
+            'order' => 'ASC'
+        ]);
+        
+        foreach ($posts as $post) {
+            $templates[$post->ID] = $post->post_title . ' (ID: ' . $post->ID . ')';
+        }
+        
+        return $templates;
     }
 }

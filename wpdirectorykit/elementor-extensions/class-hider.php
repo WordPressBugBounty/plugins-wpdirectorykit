@@ -250,14 +250,27 @@ class WDK_Extension_Hider {
         $fields_allow_for_get[] = $order_i.'__show_on_get';
         
         $fields_list [(++$order_i).'__profile_have_agency'] = esc_html__('Profile page is agency', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__profile_have_listings'] = esc_html__('Profile page have listings', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__profile_nothave_listings'] = esc_html__('Profile page haven\'t listings', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__profile_have_membership'] = esc_html__('Profile page have membership', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__profile_nothave_membership'] = esc_html__('Profile page haven\'t membership', 'wpdirectorykit');
         $fields_list [(++$order_i).'__have_agency'] = esc_html__('Listing have agency', 'wpdirectorykit');
         $fields_list [(++$order_i).'__have_sublistings'] = esc_html__('Listing have sublistings', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__have_wdk_rating'] = esc_html__('Exists WDK Rating', 'wpdirectorykit');
+        $fields_list [(++$order_i).'__havent_wdk_rating'] = esc_html__('WDK Rating is not exists', 'wpdirectorykit');
         $fields_list [(++$order_i).'__have_calendar'] = esc_html__('Listing have calendar', 'wpdirectorykit');
         $fields_list [(++$order_i).'__havent_calendar'] = esc_html__('Listing not have calendar', 'wpdirectorykit');
         $fields_list [(++$order_i).'__havent_images'] = esc_html__('Listing not have images', 'wpdirectorykit');
         $fields_list [(++$order_i).'__have_images'] = esc_html__('Listing have images', 'wpdirectorykit');
         $fields_list [(++$order_i).'__havent_plan_images'] = esc_html__('Listing not have plan images', 'wpdirectorykit');
         $fields_list [(++$order_i).'__have_plan_images'] = esc_html__('Listing have plan images', 'wpdirectorykit');
+
+        $fields_list [(++$order_i).'__membership_subscription_id_visitor'] = esc_html__('Id Membership Subscription Visitor', 'wpdirectorykit');
+        $fields_allow_for_compare[] = ($order_i).'__membership_subscription_id_visitor';
+
+        $fields_list [(++$order_i).'__membership_subscription_id_owner'] = esc_html__('Id Membership Subscription Owner', 'wpdirectorykit');
+        $fields_allow_for_compare[] = ($order_i).'__membership_subscription_id_owner';
+
         $fields_list [(++$order_i).'__idlisting'] = esc_html__('Id listing', 'wpdirectorykit');
         $fields_list [(++$order_i).'__post_id'] = esc_html__('Post Id', 'wpdirectorykit');
         $fields_allow_for_compare[] = ($order_i).'__post_id';
@@ -341,6 +354,8 @@ class WDK_Extension_Hider {
                     '!=' => esc_html__('!=', 'wpdirectorykit'),
                     '>' => esc_html__('>', 'wpdirectorykit'),
                     '<' => esc_html__('<', 'wpdirectorykit'),
+                    '!in' => esc_html__('!in', 'wpdirectorykit'),
+                    'in' => esc_html__('in', 'wpdirectorykit'),
                 ],
                 'condition' => [
                     'wdk_related_field' => $fields_allow_for_compare,
@@ -405,6 +420,29 @@ class WDK_Extension_Hider {
                         }
                     }
                 }
+            }elseif($field_id == 'havent_wdk_rating' || $field_id == 'have_wdk_rating') {
+                if(function_exists('run_wdk_reviews')) {
+                    global $Winter_MVC_wdk_reviews;
+                    $Winter_MVC_wdk_reviews->model('reviews_m');
+                    $generate_avg_total = null;
+
+                    if($wdkmembership_user_id) {
+                        $generate_avg_total = $Winter_MVC_wdk_reviews->reviews_m->generate_avg_total($wdkmembership_user_id);
+                    } else {
+                        $generate_avg_total = $Winter_MVC_wdk_reviews->reviews_m->generate_avg_total($wdk_listing_id);
+                    }
+                
+                    if($field_id == 'havent_wdk_rating') {
+                        
+                        if($generate_avg_total && !empty($generate_avg_total['reviewers_total'])){
+                            $field_empty = true;
+                        }
+                    } else if($field_id == 'have_wdk_rating') {
+                        if(!$generate_avg_total || ($generate_avg_total && empty($generate_avg_total['reviewers_total']))){
+                            $field_empty = true;
+                        }
+                    }
+                }
             }elseif($field_id == 'havent_calendar' || $field_id == 'have_calendar') {
                 if(function_exists('run_wdk_bookings')) {
                     global $Winter_MVC_wdk_bookings;
@@ -431,6 +469,49 @@ class WDK_Extension_Hider {
                         $field_empty = false;
                     }
 
+                }
+            } elseif($field_id == 'profile_have_listings') {
+                $wdkmembership_user_id = wdk_get_profile_page_id();
+                $field_empty = true;
+
+
+                if($wdkmembership_user_id) {
+                    $user = wdk_get_user_data($wdkmembership_user_id);
+                    $WMVC->model('listing_m');
+                    if($WMVC->listing_m->total(array('is_activated' => 1,'is_approved'=>1), TRUE, $wdkmembership_user_id, TRUE)) {
+                        $field_empty = false;
+                    }
+                }
+            } elseif($field_id == 'profile_nothave_listings') {
+                $wdkmembership_user_id = wdk_get_profile_page_id();
+                $field_empty = true;
+
+
+                if($wdkmembership_user_id) {
+                    $user = wdk_get_user_data($wdkmembership_user_id);
+                    $WMVC->model('listing_m');
+                    if(!$WMVC->listing_m->total(array('is_activated' => 1,'is_approved'=>1), TRUE, $wdkmembership_user_id, TRUE)) {
+                        $field_empty = false;
+                    }
+                }
+            } elseif($field_id == 'profile_have_listings') {
+                $wdkmembership_user_id = wdk_get_profile_page_id();
+                $field_empty = true;
+
+
+                if($wdkmembership_user_id) {
+                    if(wdk_membership_subscription_booking_enabled($wdkmembership_user_id)) {
+                        $field_empty = false;
+                    }
+                }
+            } elseif($field_id == 'profile_nothave_membership') {
+                $wdkmembership_user_id = wdk_get_profile_page_id();
+                $field_empty = true;
+
+                if($wdkmembership_user_id) {
+                    if(!wdk_membership_subscription_booking_enabled($wdkmembership_user_id)) {
+                        $field_empty = false;
+                    }
                 }
             } elseif($field_id == 'have_agency') {
                 $field_empty = true;
@@ -500,34 +581,68 @@ class WDK_Extension_Hider {
             else
             {
                 $field_value = wdk_field_value($field_id, $wdk_listing_id);
+
+                if($field_id == 'membership_subscription_id_visitor') {
+                    if(get_current_user_id()) {
+                        $field_value = wdk_get_user_subscription_id(get_current_user_id());
+                    } else {
+                        $field_value = 0;
+                    }
+                }
+
+                if($field_id == 'membership_subscription_id_owner') {
+                    if(wdk_field_value('user_id_editor', $wdk_listing_id)) {
+                        $field_value = wdk_get_user_subscription_id(wdk_field_value('user_id_editor', $wdk_listing_id));
+                    } else {
+                        $field_value = 0;
+                    }
+                }
+
                 if(!empty($settings['wdk_related_compare_type'])) {
                     switch ($settings['wdk_related_compare_type']) {
                         case '==':
                             if($field_value == $settings['wdk_related_compare_value']) {
-                            } else {
                                 $field_empty = TRUE;
                             }
                             break;
                         case '!=':
                             if($field_value != $settings['wdk_related_compare_value']) {
-                            } else {
                                 $field_empty = TRUE;
                             }
                             break;
                         case '>':
                             if($field_value > $settings['wdk_related_compare_value']) {
-                            } else {
                                 $field_empty = TRUE;
                             }
                             break;
                         case '<':
                             if($field_value < $settings['wdk_related_compare_value']) {
-                            } else {
+                                $field_empty = TRUE;
+                            }
+                            break;
+                        case 'in':
+                            // Accept comma separated values or array
+                            $compare_values = $settings['wdk_related_compare_value'];
+                            if (!is_array($compare_values)) {
+                                $compare_values = array_map('trim', explode(',', $compare_values));
+                               // dump($compare_values);
+                            }
+                            if (in_array($field_value, $compare_values)) {
+                                $field_empty = TRUE;
+                            }
+                            break;
+                        case '!in':
+                            // Accept comma separated values or array
+                            $compare_values = $settings['wdk_related_compare_value'];
+                            if (!is_array($compare_values)) {
+                                $compare_values = array_map('trim', explode(',', $compare_values));
+                            }
+                            if (!in_array($field_value, $compare_values)) {
                                 $field_empty = TRUE;
                             }
                             break;
                         default:
-                            # code...
+                            // No action
                             break;
                     }
                 } else {
@@ -589,6 +704,28 @@ class WDK_Extension_Hider {
                         }
                     }
                 }
+            }elseif($field_id == 'havent_wdk_rating' || $field_id == 'have_wdk_rating') {
+                if(function_exists('run_wdk_reviews')) {
+                    global $Winter_MVC_wdk_reviews;
+                    $Winter_MVC_wdk_reviews->model('reviews_m');
+                    $generate_avg_total = null;
+
+                    if($wdkmembership_user_id) {
+                        $generate_avg_total = $Winter_MVC_wdk_reviews->reviews_m->generate_avg_total($wdkmembership_user_id);
+                    } else {
+                        $generate_avg_total = $Winter_MVC_wdk_reviews->reviews_m->generate_avg_total($wdk_listing_id);
+                    }
+                    
+                    if($field_id == 'havent_wdk_rating') {
+                        if($generate_avg_total && !empty($generate_avg_total['reviewers_total'])){
+                            $field_empty = true;
+                        }
+                    } else if($field_id == 'have_wdk_rating') {
+                        if(!$generate_avg_total || ($generate_avg_total && empty($generate_avg_total['reviewers_total']))){
+                            $field_empty = true;
+                        }
+                    }
+                }
             }elseif($field_id == 'havent_calendar' || $field_id == 'have_calendar') {
                 if(function_exists('run_wdk_bookings')) {
                     global $Winter_MVC_wdk_bookings;
@@ -613,6 +750,25 @@ class WDK_Extension_Hider {
 
                         $field_empty = false;
                         break;
+                    }
+                }
+            } elseif($field_id == 'profile_have_listings') {
+                $wdkmembership_user_id = wdk_get_profile_page_id();
+                $field_empty = true;
+
+
+                if($wdkmembership_user_id) {
+                    if(wdk_membership_subscription_booking_enabled($wdkmembership_user_id)) {
+                        $field_empty = false;
+                    }
+                }
+            } elseif($field_id == 'profile_nothave_membership') {
+                $wdkmembership_user_id = wdk_get_profile_page_id();
+                $field_empty = true;
+
+                if($wdkmembership_user_id) {
+                    if(!wdk_membership_subscription_booking_enabled($wdkmembership_user_id)) {
+                        $field_empty = false;
                     }
                 }
             } elseif($field_id == 'have_agency') {
@@ -640,6 +796,30 @@ class WDK_Extension_Hider {
                         $field_empty = false;
                     }
 
+                }
+            } elseif($field_id == 'profile_have_listings') {
+                $wdkmembership_user_id = wdk_get_profile_page_id();
+                $field_empty = true;
+
+
+                if($wdkmembership_user_id) {
+                    $user = wdk_get_user_data($wdkmembership_user_id);
+                    $WMVC->model('listing_m');
+                    if($WMVC->listing_m->total(array('is_activated' => 1,'is_approved'=>1), TRUE, $wdkmembership_user_id, TRUE)) {
+                        $field_empty = false;
+                    }
+                }
+            } elseif($field_id == 'profile_nothave_listings') {
+                $wdkmembership_user_id = wdk_get_profile_page_id();
+                $field_empty = true;
+
+
+                if($wdkmembership_user_id) {
+                    $user = wdk_get_user_data($wdkmembership_user_id);
+                    $WMVC->model('listing_m');
+                    if(!$WMVC->listing_m->total(array('is_activated' => 1,'is_approved'=>1), TRUE, $wdkmembership_user_id, TRUE)) {
+                        $field_empty = false;
+                    }
                 }
             } elseif($field_id == 'havent_images' || $field_id == 'have_images') {
                 $images = wdk_field_value('listing_images', $wdk_listing_id);
@@ -682,34 +862,67 @@ class WDK_Extension_Hider {
             else
             {
                 $field_value = wdk_field_value($field_id, $wdk_listing_id);
+
+                if($field_id == 'membership_subscription_id_visitor') {
+                    if(get_current_user_id()) {
+                        $field_value = wdk_get_user_subscription_id(get_current_user_id());
+                    } else {
+                        $field_value = 0;
+                    }
+                }
+
+                if($field_id == 'membership_subscription_id_owner') {
+                    if(wdk_field_value('user_id_editor', $wdk_listing_id)) {
+                        $field_value = wdk_get_user_subscription_id(wdk_field_value('user_id_editor', $wdk_listing_id));
+                    } else {
+                        $field_value = 0;
+                    }
+                }
+
                 if(!empty($settings['wdk_related_compare_type'])) {
                     switch ($settings['wdk_related_compare_type']) {
                         case '==':
                             if($field_value == $settings['wdk_related_compare_value']) {
-                            } else {
                                 $field_empty = TRUE;
                             }
                             break;
                         case '!=':
                             if($field_value != $settings['wdk_related_compare_value']) {
-                            } else {
                                 $field_empty = TRUE;
                             }
                             break;
                         case '>':
                             if($field_value > $settings['wdk_related_compare_value']) {
-                            } else {
                                 $field_empty = TRUE;
                             }
                             break;
                         case '<':
                             if($field_value < $settings['wdk_related_compare_value']) {
-                            } else {
+                                $field_empty = TRUE;
+                            }
+                            break;
+                        case 'in':
+                            // Accept comma separated values or array
+                            $compare_values = $settings['wdk_related_compare_value'];
+                            if (!is_array($compare_values)) {
+                                $compare_values = array_map('trim', explode(',', $compare_values));
+                            }
+                            if (in_array($field_value, $compare_values)) {
+                                $field_empty = TRUE;
+                            }
+                            break;
+                        case '!in':
+                            // Accept comma separated values or array
+                            $compare_values = $settings['wdk_related_compare_value'];
+                            if (!is_array($compare_values)) {
+                                $compare_values = array_map('trim', explode(',', $compare_values));
+                            }
+                            if (!in_array($field_value, $compare_values)) {
                                 $field_empty = TRUE;
                             }
                             break;
                         default:
-                            # code...
+                            // No action
                             break;
                     }
                 } else {

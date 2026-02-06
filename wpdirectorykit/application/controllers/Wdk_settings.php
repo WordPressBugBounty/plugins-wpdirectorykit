@@ -86,7 +86,6 @@ class Wdk_settings extends Winter_MVC_Controller {
 	{
 
         $view_file = $this->input->post_get('file');
-        dump($view_file);
 
         $file = false;
         $sourceFile = null;
@@ -857,6 +856,7 @@ class Wdk_settings extends Winter_MVC_Controller {
             $self->add_widget('Wdk\Elementor\Widgets\WdkListinAgent');
             $self->add_widget('Wdk\Elementor\Widgets\WdkListingAgentField');
             $self->add_widget('Wdk\Elementor\Widgets\WdkListingAgentAvatar');
+            $self->add_widget('Wdk\Elementor\Widgets\WdkCoolListingCarousel');
         });
 
         // Import elementor templates
@@ -907,6 +907,7 @@ class Wdk_settings extends Winter_MVC_Controller {
             $self->add_widget('Wdk\Elementor\Widgets\WdkListinAgent');
             $self->add_widget('Wdk\Elementor\Widgets\WdkListingAgentField');
             $self->add_widget('Wdk\Elementor\Widgets\WdkListingAgentAvatar');
+            $self->add_widget('Wdk\Elementor\Widgets\WdkCoolListingCarousel');
         });
 
         $page_results = $this->create_page(esc_html__('Results Listings', 'wpdirectorykit'), '', 'elementor_canvas');
@@ -952,6 +953,9 @@ class Wdk_settings extends Winter_MVC_Controller {
 
             // assign menu to top menu
             $locations = get_theme_mod( 'nav_menu_locations' );
+            if ( ! is_array( $locations ) ) {
+                $locations = array();
+            }
             $locations[$first_menu] = $menu_id;
             set_theme_mod('nav_menu_locations', $locations);
         }
@@ -1830,7 +1834,7 @@ class Wdk_settings extends Winter_MVC_Controller {
         update_option( 'wdk_is_category_enabled', '1' );
         update_option( 'wdk_is_location_enabled', '1' );
         update_option( 'wdk_is_address_enabled', '1' );
-        update_option( 'wdk_is_results_page_require', '1' );
+        update_option( 'wdk_is_results_page_require', 0 );
         update_option( 'wdk_seo_description', '2' );
         update_option( 'wdk_seo_keywords', '3' );
         update_option( 'wdk_card_slider_enable', '1' );
@@ -1852,7 +1856,7 @@ class Wdk_settings extends Winter_MVC_Controller {
         }
 
         if(!empty($option) && (get_option($option)) && get_post_status(get_option($option)) =='publish'){
-            //  $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.$page_title_message.' '.esc_html__('Page already exists', 'wdk-membership').'</div>';
+            //  $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.$page_title_message.' '.esc_html__('Page already exists', 'wpdirectorykit').'</div>';
             // return false;
         }
 
@@ -1890,7 +1894,7 @@ class Wdk_settings extends Winter_MVC_Controller {
         if($page && !empty($option))
             update_option( $option, $page->ID, TRUE);
         
-        $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.$page_title_message.' '.esc_html__('Page imported', 'wdk-membership').'</div>';
+        $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.$page_title_message.' '.esc_html__('Page imported', 'wpdirectorykit').'</div>';
 
         return $page->ID;
     }

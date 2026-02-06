@@ -10,6 +10,7 @@ class Wdk_messages extends Winter_MVC_Controller {
 	public function index()
 	{
         $this->load->model('messages_m');
+        $this->load->model('listing_m');
         $this->data['form'] = &$this->form;
 
         $dbusers =  get_users( array( 'search' => '',
@@ -42,10 +43,13 @@ class Wdk_messages extends Winter_MVC_Controller {
         }
 
         /* [Search Form] */
-        
+               
+        global $wpdb;
+        $wp_usermeta_table = $wpdb->users;
+
         $controller = 'messages';
-        $columns = array('idmessage','user_id_editor','display_name','user_login', 'user_email', 'search', 'order_by');
-        $external_columns = array('user_id_editor','display_name','user_login', 'user_email');
+        $columns = array($this->messages_m->_table_name.'.idmessage',$this->listing_m->_table_name.'.user_id_editor',$wp_usermeta_table.'.display_name',$wp_usermeta_table.'.user_login', $wp_usermeta_table.'.user_email', 'search',$this->messages_m->_table_name.'.email_sender', $this->messages_m->_table_name.'.message');
+        $external_columns = array($this->listing_m->_table_name.'.user_id_editor',$wp_usermeta_table.'.display_name',$wp_usermeta_table.'.user_login', $wp_usermeta_table.'.user_email',$this->messages_m->_table_name.'.email_sender', $this->messages_m->_table_name.'.message');
 
         $this->data['order_by']   = array('idmessage DESC' => __('ID DESC', 'wpdirectorykit'), 
                                         'idmessage ASC' => __('ID ASC', 'wpdirectorykit'),  
@@ -72,9 +76,7 @@ class Wdk_messages extends Winter_MVC_Controller {
         );
 
         $this->data['db_data'] = $this->messages_m->prepare_data($this->input->get(), $rules);
-       
-        global $wpdb;
-        $wp_usermeta_table = $wpdb->users;
+
 
         $this->db->join($this->db->prefix.'wdk_listings ON '.$this->db->prefix.'wdk_listings.post_id = '.$this->messages_m->_table_name.'.post_id', NULL, 'LEFT');
         $this->db->join($wp_usermeta_table.' ON '.$this->db->prefix.'wdk_listings.user_id_editor = '.$wp_usermeta_table.'.ID', NULL, 'LEFT');
@@ -103,7 +105,7 @@ class Wdk_messages extends Winter_MVC_Controller {
         $this->db->join($this->db->prefix.'wdk_listings ON '.$this->db->prefix.'wdk_listings.post_id = '.$this->messages_m->_table_name.'.post_id', NULL, 'LEFT');
         $this->db->join($wp_usermeta_table.' ON '.$this->db->prefix.'wdk_listings.user_id_editor = '.$wp_usermeta_table.'.ID', NULL, 'LEFT');
         $this->data['messages'] = $this->messages_m->get_pagination($per_page, $offset);
-
+       
         // Load view
         $this->load->view('wdk_messages/index', $this->data);
     }

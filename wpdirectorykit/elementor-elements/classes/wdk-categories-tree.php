@@ -490,8 +490,9 @@ class WdkCategoriesTree extends WdkElementorBase {
                 'key'=>'title',
                 'label'=> esc_html__('Title', 'wpdirectorykit'),
                 'selector'=>'.title',
+                'selector_hide'=>'.title-in',
                 'selector_hover'=>'.title%1$s',
-                'options'=>['color','background','border','border_radius','padding','shadow','transition','margin','padding'],
+                'options'=>['typo','color','background','border','border_radius','padding','shadow','transition','margin','padding'],
             ],
             [
                 'key'=>'item_button',
@@ -499,13 +500,6 @@ class WdkCategoriesTree extends WdkElementorBase {
                 'selector'=>'.wdk-categories .wdk-link',
                 'selector_hover'=>'.wdk-categories .wdk-link%1$s',
                 'options'=>['color','background','border','border_radius','padding','shadow','transition'],
-            ],
-            [
-                'key'=>'item_icon',
-                'label'=> esc_html__('Item Icon', 'wpdirectorykit'),
-                'selector'=>'.wdk-categories .wdk-link i',
-                'selector_hover'=>'.wdk-categories .wdk-link%1$s i',
-                'options'=>['margin','color','background','border','border_radius','padding','shadow'],
             ],
             [
                 'key'=>'category_icon',
@@ -529,15 +523,22 @@ class WdkCategoriesTree extends WdkElementorBase {
                 'options'=>['margin','background','border','border_radius','shadow','color','font-size','height','width'],
             ],
             [
+                'key'=>'item_icon',
+                'label'=> esc_html__('Sub Category List Item Icon', 'wpdirectorykit'),
+                'selector'=>'.wdk-categories .wdk-link i',
+                'selector_hover'=>'.wdk-categories .wdk-link%1$s i',
+                'options'=>['margin','color','background','border','border_radius','padding','shadow'],
+            ],
+            [
                 'key'=>'item_title',
-                'label'=> esc_html__('Item Title', 'wpdirectorykit'),
+                'label'=> esc_html__('Sub Category List Item Title', 'wpdirectorykit'),
                 'selector'=>'.wdk-categories .wdk-link .wdk-title',
                 'selector_hover'=>'.wdk-categories .wdk-link%1$s .wdk-title',
                 'options'=>['margin','typo','color','background','border','border_radius','padding'],
             ],
             [
                 'key'=>'item_count',
-                'label'=> esc_html__('Item Count', 'wpdirectorykit'),
+                'label'=> esc_html__('Sub Category List Item Count', 'wpdirectorykit'),
                 'selector'=>'.wdk-categories .wdk-link .wdk-count',
                 'selector_hover'=>'.wdk-categories .wdk-link%1$s .wdk-count',
                 'options'=>['margin','typo','color','background','border','border_radius','padding'],
@@ -628,6 +629,11 @@ class WdkCategoriesTree extends WdkElementorBase {
                 );
             }
 
+            
+            if(empty($item['selector_hide'])) {
+                $item['selector_hide'] = $item['selector'];
+            }
+
             $this->add_responsive_control(
                 $item['key'].'_hide',
                     [
@@ -638,7 +644,7 @@ class WdkCategoriesTree extends WdkElementorBase {
                         'return_value' => 'none',
                         'default' => '',
                         'selectors' => [
-                            '{{WRAPPER}} '.$item['selector'] => 'display: {{VALUE}};',
+                            '{{WRAPPER}} '.$item['selector_hide'] => 'display: {{VALUE}};',
                         ],
                     ]
             );
@@ -667,7 +673,7 @@ class WdkCategoriesTree extends WdkElementorBase {
                     [
                         'label' => __( 'Size', 'wpdirectorykit' ),
                         'type' => Controls_Manager::SLIDER,
-                        'size_units' => [ 'px'],
+                        'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                         'range' => [
                             'px' => [
                                 'min' => 1,

@@ -13,6 +13,16 @@ if(file_exists(WPDIRECTORYKIT_PATH . 'extensions/wdk-cached-users.php')) {
 	new \Wdk\Extensions\WdkCachedUsers();
 }
 
+if(file_exists(WPDIRECTORYKIT_PATH . 'extensions/wdk-cached-user-editor.php')) {
+	require_once WPDIRECTORYKIT_PATH . 'extensions/wdk-cached-user-editor.php';
+	new \Wdk\Extensions\WdkCachedUserEditor();
+}
+
+if(file_exists(WPDIRECTORYKIT_PATH . 'extensions/wdk-autosuggestion-fields.php')) {
+	require_once WPDIRECTORYKIT_PATH . 'extensions/wdk-autosuggestion-fields.php';
+	new \Wdk\Extensions\WdkAutosuggestionFields();
+}
+
 /* remove wdk data on remove user */
 add_action('delete_user', function($user_id ){
 	if(!empty($user_id)) {
@@ -28,9 +38,9 @@ add_action('wp_footer', function(){
 		wp_enqueue_style( 'dashicons' );
 		?>
 			<div class="wdk_mobile_footer_menu">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr__('Home','nexproperty' ); ?>"><span class="dashicons dashicons-admin-home"></span></a>
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr__('Home','wpdirectorykit' ); ?>"><span class="dashicons dashicons-admin-home"></span></a>
 				<?php if(wdk_get_option('wdk_results_page')):?>
-					<a href="<?php echo esc_url(get_permalink(wdk_get_option('wdk_results_page'))); ?>" title="<?php echo esc_attr__('Search','nexproperty' ); ?>"><span class="dashicons dashicons-search"></span></a>
+					<a href="<?php echo esc_url(get_permalink(wdk_get_option('wdk_results_page'))); ?>" title="<?php echo esc_attr__('Search','wpdirectorykit' ); ?>"><span class="dashicons dashicons-search"></span></a>
 				<?php endif;?>
 				<?php if (!is_user_logged_in()): ?>
 					<a href="<?php echo (get_option('wdk_membership_login_page')) ? esc_url(get_permalink(wdk_get_option('wdk_membership_login_page'))) : esc_url(wp_login_url());?>" class="sign_in sign-btn"><i class="fas fa-user" aria-hidden="true"></i></a>
@@ -41,10 +51,10 @@ add_action('wp_footer', function(){
 							$dash_url = wdk_dash_url();
 						} 
 					?>
-					<a href="<?php echo esc_url($dash_url);?>" class="sign_in dash-btn" title="<?php echo esc_attr__('Dash','nexproperty' ); ?>" class="wdk-element-button logout">
+					<a href="<?php echo esc_url($dash_url);?>" class="sign_in dash-btn" title="<?php echo esc_attr__('Dash','wpdirectorykit' ); ?>" class="wdk-element-button logout">
 						<i aria-hidden="true" class="fas fa-tachometer-alt"></i>                           
 					</a>
-					<a href="<?php echo esc_url(wp_logout_url( get_permalink() )); ?>" class="sign_in sign-btn" title="<?php echo esc_attr__('Log Out','nexproperty' ); ?>"><i class="fas fa-user-times" aria-hidden="true"></i></a>
+					<a href="<?php echo esc_url(wp_logout_url( get_permalink() )); ?>" class="sign_in sign-btn" title="<?php echo esc_attr__('Log Out','wpdirectorykit' ); ?>"><i class="fas fa-user-times" aria-hidden="true"></i></a>
 				<?php endif;?>
 
 
@@ -103,16 +113,23 @@ add_action('wdk-membership/listing/saved', function($post_id = NULL, $old_listin
 });
 
 
+add_filter('posts_clauses', function($clauses, $query) {
+    global $wpdb;
 
+    if (
+        !defined('REST_REQUEST') || !REST_REQUEST ||
+        empty($query->query_vars['post_type']) ||
+        $query->query_vars['post_type'] !== 'wdk-listing'
+    ) {
+        return $clauses;
+    }
 
+    // Join your custom table `wdk_listings`
+    $clauses['join'] .= " INNER JOIN {$wpdb->prefix}wdk_listings AS wdk_tbl ON {$wpdb->posts}.ID = wdk_tbl.post_id";
 
+    // Add condition for activation
+    $clauses['where'] .= " AND wdk_tbl.is_activated = 1";
 
-
-
-
-
-
-
-
-
+    return $clauses;
+}, 10, 2);
 ?>

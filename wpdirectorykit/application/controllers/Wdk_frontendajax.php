@@ -34,8 +34,13 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
 		$listing = $this->load->listing_m->get($listing_post_id, TRUE);
 
+		$popup_layout = 'result_item_card';
+		if(!empty($_POST['custom_layout_id'])) {
+			$popup_layout = (int) sanitize_text_field($_POST['custom_layout_id']);
+		}
+
 		if(!empty($listing)) {
-			$data['popup_content'] = wdk_listing_card($listing, array('infobox' => true), false, '<div class="infobox map-box">%1$s<div>');
+			$data['popup_content'] = wdk_listing_card($listing, array('infobox' => true), false, '<div class="infobox map-box">%1$s<div>', $popup_layout);
 		} else {
 			$data['popup_content'] = __( 'Listing is missing', 'wpdirectorykit' );
 		}
@@ -58,6 +63,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
 		$listing = $this->load->listing_m->get($listing_post_id, TRUE);
 
+
 		if(!empty($listing)) {
 			$data['popup_content'] = wdk_listing_card($listing, [], false, '<div class="infobox map-box">%1$s<div>', 'result_item_card_dash_edit');
 		} else {
@@ -71,6 +77,9 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 	  
     public function treefieldid($output="", $atts=array(), $instance=NULL)
     {
+
+		check_ajax_referer('wdk_secure_treefieldid', 'wdk_secure');
+
 		$this->load->load_helper('listing');
 		$this->load->model('listing_m');
 		$this->load->model('listingfield_m');
@@ -133,9 +142,9 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		$attr_val = preg_replace("/[^0-9a-zA-Z_\-]/", "",sanitize_text_field($parameters['attribute_value']));
 
 
-		$attr_search = sanitize_text_field($parameters['search_term']);
-		$skip_id = intval($parameters['skip_id']);
-		$language_id = intval($parameters['language_id']);
+		$attr_search = wdk_esc_sql(sanitize_text_field($parameters['search_term'] ?? ''));
+		$skip_id = intval($parameters['skip_id'] ?? 0);
+		$language_id = intval($parameters['language_id'] ?? 0);
 
 		if(empty($language_id))
 			$language_id = NULL;
@@ -179,11 +188,28 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 					$this->load->model($table);
 					$attr_val_sql = $this->$table->_table_name.'.category_title';
 				}
+				
+				/* if category/locations search also in translated field */
+				if($attr_val == 'location_title'  || $attr_val == 'category_title') {
+					$where["($id_part $attr_val_sql LIKE '%$attr_search%' OR ".$this->$table->_table_name.".titles_for_search LIKE '%$attr_search%')"] = NULL;
+				} else {
+					$where["($id_part $attr_val_sql LIKE '%$attr_search%')"] = NULL;
+				}
+			}
 
-				$where["($id_part $attr_val_sql LIKE '%$attr_search%')"] = NULL;
+			if(!empty($parameters['sql_where'] )) {
+				$sql_where = '';
+				if($parameters['sql_where'] == 'only_nochilds') {
+					$sql_where = "((".$this->listing_m->_table_name.".listing_parent_post_id IS NULL OR ".$this->listing_m->_table_name.".listing_parent_post_id = 0) AND (".$this->listing_m->_table_name.".`listing_related_ids` IS NULL OR ".$this->listing_m->_table_name.".`listing_related_ids` = '') )";
+				} else {
+					
+				}
+				if(!empty($sql_where))
+					$where[$sql_where] = NULL;
 			}
 
 			if(!empty($parameters['hide_fields'])) {
+				$parameters['hide_fields'] = preg_replace('/[^0-9,]/', '', $parameters['hide_fields']);
 				if($table == 'location_m') {
 					$sql_where = esc_sql($this->$table->_table_name.'.idlocation').' NOT IN ('.esc_sql(sanitize_text_field($parameters['hide_fields'])).')';
 					foreach (explode(',', $parameters['hide_fields']) as $key => $id) {
@@ -201,9 +227,6 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 					$where[$sql_where] = NULL;
 				}
 			}
-			
-			if(!empty($parameters['attr_search']))
-				$where[$parameters['attr_search']] = NULL;
 			
 			if(isset($parameters['user_check']) && ($parameters['user_check'] == 'true' || $parameters['user_check'] == '1')) {
 				if($table == 'listing_m') {
@@ -249,6 +272,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 					} else {
 						$tree_results = $this->$table->get_pagination(intval($parameters['limit']),intval($parameters['offset']), $where);
 					}
+
 				}
 			}
 
@@ -267,7 +291,10 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 												.'#'.wmvc_show_data($attr_id, $row).', '.wmvc_show_data($attr_val, $row);
 				} elseif($table == 'user_m') {
 					$results[$ind_order]['value'] = $level_gen
-												.'#'.wmvc_show_data($attr_id, $row).', '.wmvc_show_data($attr_val, $row).' ('.wmvc_show_data('user_email', $row).')';
+												.'#'.wmvc_show_data($attr_id, $row).', '.wmvc_show_data('display_name', $row);
+
+					//if(current_user_can('wdk_listings_manage'))
+					//	$results[$ind_order]['value'] .= ' ('.wmvc_show_data('user_email', $row).')';
 				} elseif($table == 'icons_list') {
 					$results[$ind_order]['key'] = $row;
 					if(defined('ELEMENTOR_ASSETS_URL')){
@@ -304,7 +331,8 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
 			if($table == 'user_m') {
 				$data['curr_val'] = $level_gen
-											.wmvc_show_data(wmvc_show_data('attribute_value', $parameters), $row).' ('.wmvc_show_data('user_email', $row).')'.' #'.wmvc_show_data($attr_id, $row);
+											.wmvc_show_data('display_name', $row);
+				
 			} else {
 				$data['curr_val'] = $level_gen
 							.esc_html__(wmvc_show_data(wmvc_show_data('attribute_value', $parameters), $row), 'wpdirectorykit');
@@ -322,12 +350,14 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		$this->data['success'] = true;
         
         $data['results'] = $results;
-        //$data['sql'] = $this->db->last_query();
+        $data['sql'] = $this->db->last_query();
 		$this->output($data);
     }
 	  
     public function treefieldid_checkboxes($output="", $atts=array(), $instance=NULL)
     {
+		check_ajax_referer('wdk_secure_treefieldid_checkboxes', 'wdk_secure');
+
 		$this->load->load_helper('listing');
 		$this->load->model('listing_m');
 		$this->load->model('listingfield_m');
@@ -386,7 +416,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		$attr_id = preg_replace("/[^0-9a-zA-Z_\-]/", "",sanitize_text_field($parameters['attribute_id']));
 		$attr_val = preg_replace("/[^0-9a-zA-Z_\-]/", "",sanitize_text_field($parameters['attribute_value']));
 		
-		$attr_search = sanitize_text_field($parameters['search_term']);
+		$attr_search = wdk_esc_sql(sanitize_text_field($parameters['search_term']));
 		$skip_id = intval($parameters['skip_id']);
 		$language_id = intval($parameters['language_id']);
 
@@ -401,7 +431,21 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		
 		$where = array();
 		if(!empty($attr_search))
-			$where["($id_part $attr_val LIKE '%$attr_search%')"] = NULL;
+			$attr_val_sql = $attr_val;
+			if($attr_val == 'location_title') {
+				$this->load->model($table);
+				$attr_val_sql = $this->$table->_table_name.'.location_title';
+			} elseif($attr_val == 'category_title'){
+				$this->load->model($table);
+				$attr_val_sql = $this->$table->_table_name.'.category_title';
+			}
+			
+			/* if category/locations search also in translated field */
+			if($attr_val == 'location_title'  || $attr_val == 'category_title') {
+				$where["($id_part $attr_val_sql LIKE '%$attr_search%' OR ".$this->$table->_table_name.".titles_for_search LIKE '%$attr_search%')"] = NULL;
+			} else {
+				$where["($id_part $attr_val_sql LIKE '%$attr_search%')"] = NULL;
+			}
 		
 			if(isset($parameters['selected']) && !empty($parameters['selected'])) {
                    
@@ -432,6 +476,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 			}
 
 			if(!empty($parameters['hide_fields'])) {
+				$parameters['hide_fields'] = preg_replace('/[^0-9,]/', '', $parameters['hide_fields']);
 				if($table == 'location_m') {
 					$sql_where = esc_sql($this->$table->_table_name.'.idlocation').' NOT IN ('.esc_sql(sanitize_text_field($parameters['hide_fields'])).')';
 					foreach (explode(',', $parameters['hide_fields']) as $key => $id) {
@@ -534,11 +579,11 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 			switch ($model_name) {
 				case 'category_m':
 				    $this->load->model($model_name);
-					$search_column = $this->$model_name->_table_name.'.idcategory,'.$this->$model_name->_table_name.'.category_title';
+					$search_column = $this->$model_name->_table_name.'.idcategory,'.$this->$model_name->_table_name.'.category_title, '.$this->$model_name->_table_name.'.titles_for_search';
 					break;
 				case 'location_m':
 				    $this->load->model($model_name);
-					$search_column = $this->$model_name->_table_name.'.idlocation,'.$this->$model_name->_table_name.'.location_title';
+					$search_column = $this->$model_name->_table_name.'.idlocation,'.$this->$model_name->_table_name.'.location_title, '.$this->$model_name->_table_name.'.titles_for_search';
 					break;
 				
 				default:
@@ -547,7 +592,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 			}
 		
 		} else {
-			$search_column = $parameters['columns_search'];
+			$search_column = esc_sql(preg_replace('/[^a-z0-9_,]/i', '', $parameters['columns_search']));
 		}
 
 		if(empty($parameters['key_column'])) {
@@ -918,7 +963,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 				if(!empty($sql_search))
 					$sql_search .= " OR ";
 
-				$sql_search .= " ".esc_sql($column)." LIKE '%".esc_sql($search_text)."%'";
+				$sql_search .= " ".$this->category_m->_table_name.'.'.esc_sql($column)." LIKE '%".esc_sql($search_text)."%'";
 			}
 			$where ["($sql_search)"] = NULL;
 			$db_results = $this->category_m->get_pagination($categories_limit, NULL, $where);
@@ -997,12 +1042,13 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		/* END Locations */
 
 		/* address suggestion if empty other */
-		if(empty($results)) {
+		$limit = apply_filters('wdk/search_suggestion/address_limit', 5);
+		if(count($results)<10) {
 			$this->db->select('address');
 			$db_results = $this->db->where(array("address LIKE '%".esc_sql($search_text)."%'" => NULL));
 			$this->db->from($this->listing_m->_table_name);
 			$this->db->group_by('address');
-			$this->db->limit(5);
+			$this->db->limit($limit);
 		
 			$query = $this->db->get();
 			if ($this->db->num_rows() > 0) {
@@ -1028,8 +1074,13 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		}
 		
 		/* listings by title suggestion */
+		// Example of how to use add_filter for 'wdk/search_suggestion/listings_limit'
+		// In your theme's functions.php or a custom plugin, you can add:
+		// add_filter('wdk/search_suggestion/listings_limit', function($limit) { return 10; });
+
+		$limit = apply_filters('wdk/search_suggestion/listings_limit', 5);
 		$this->db->where(array("post_title LIKE '%".esc_sql($search_text)."%'" => NULL));
-		$db_results = $this->listing_m->get_pagination(5, NULL, array('is_activated' => 1,'is_approved'=>1));
+		$db_results = $this->listing_m->get_pagination($limit, NULL, array('is_activated' => 1,'is_approved'=>1));
 
 		if($db_results) foreach($db_results as $row) {
 			$results[] = [
@@ -1046,7 +1097,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 			];
 		}
 
-		if(empty($results)) {
+		if(count($results)<10) {
 
 			$name_part = str_replace(' ','+',$search_text);
         
@@ -1122,19 +1173,26 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		if(isset($parameters['post_id'])) {
 			$post_id = $parameters['post_id'];
 		}
+		
+		$calendar = $Winter_MVC_wdk_bookings->calendar_m->get_by(array('post_id'=>$post_id), TRUE);
+		$time_format = "00:00:00";
+		if($calendar && $calendar->is_hour_enabled == 1)
+	    	$time_format = "H:i:s";
+		
 
 		if(isset($parameters['date_from'])) {
-			$date_from = wdk_normalize_date_db($parameters['date_from']);
+			$date_from = wdk_normalize_date_db($parameters['date_from'], 'Y-m-d H:i:s', 'Y-m-d '.$time_format);
 		}
 
 		if(isset($parameters['date_to'])) {
-			$date_to = wdk_normalize_date_db($parameters['date_to']);
+			$date_to = wdk_normalize_date_db($parameters['date_to'], 'Y-m-d H:i:s', 'Y-m-d '.$time_format);
 		}
+
 
 		if($post_id && $date_from && $date_to) {
 			$price = $Winter_MVC_wdk_bookings->reservation_m->calculate_price($post_id, $date_from, $date_to);
 
-			$calendar = $Winter_MVC_wdk_bookings->calendar_m->get_by(array('post_id'=>$post_id), TRUE); // date_package_expire package_id
+		
 			$calendar_fees = array();
 			if($calendar && !empty($calendar->json_data_fees))
 				$calendar_fees = json_decode($calendar->json_data_fees );
@@ -1357,7 +1415,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 				$pin_icon = "";
 				$font_class = "";
 				$font_icon = (wmvc_show_data('conf_custom_map_pin_icon', $settings_el_map)) ? esc_url($get_settings_el_map->generate_icon($settings_el_map['conf_custom_map_pin_icon'])) : '<i class="fa fa-home"></i>';
-				$pin_icon = (isset( $settings_el_map['conf_custom_map_pin'])) ? esc_url($get_settings_el_map['conf_custom_map_pin']['url']) : '';
+				$pin_icon = (isset( $settings_el_map['conf_custom_map_pin'])) ? esc_url($settings_el_map['conf_custom_map_pin']['url']) : '';
 				
 				if(wmvc_show_data('conf_hide_real_location', $category) == 'yes') {
 					$listing->listing_lat = wdk_move_gps($listing->listing_lat);
@@ -1391,6 +1449,207 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
         $this->output($data);
 
 	}
+
+	    
+	public function suggestion_locations (&$output=NULL, $atts=array())
+	{
+
+		$this->load->load_helper('listing');
+		$this->load->model('category_m');
+		$this->load->model('location_m');
+		$this->load->model('listing_m');
+
+        $data = array();
+        $data['message'] = __('No message returned!', 'wpdirectorykit');
+		
+		$data['results'] = array();
+        $parameters = array();
+		foreach ($_POST as $key => $value) {
+			$parameters[$key] = sanitize_text_field($value);
+		}
+
+		$search_text = '';
+		if(!empty($parameters['search']))
+			$search_text = trim($parameters['search']);
+
+		if(!empty($search_text)) {
+			$this->db->select("location_title as value");
+			$this->db->from($this->location_m->_table_name);
+			$this->db->where(array("location_title LIKE '%".esc_sql($search_text)."%'" => NULL));
+
+			$query = $this->db->get();
+			if($this->db->num_rows() > 0) foreach($this->db->results() as $row) {
+				$data['results'][] = $row->value;
+			}
+		}
+
+		$data['success'] = true;
+		$this->output($data);
+	}
+    
+	public function suggestion_categories (&$output=NULL, $atts=array())
+	{
+
+		$this->load->load_helper('listing');
+		$this->load->model('category_m');
+
+        $data = array();
+        $data['message'] = __('No message returned!', 'wpdirectorykit');
+		
+		$data['results'] = array();
+        $parameters = array();
+		foreach ($_POST as $key => $value) {
+			$parameters[$key] = sanitize_text_field($value);
+		}
+
+		$search_text = '';
+		if(!empty($parameters['search']))
+			$search_text = trim($parameters['search']);
+
+		if(!empty($search_text)) {
+			$this->db->select("category_title as value");
+			$this->db->from($this->category_m->_table_name);
+			$this->db->where(array("category_title LIKE '%".esc_sql($search_text)."%'" => NULL));
+
+			$query = $this->db->get();
+			if($this->db->num_rows() > 0) foreach($this->db->results() as $row) {
+				$data['results'][] = $row->value;
+			}
+		}
+
+		$data['success'] = true;
+		$this->output($data);
+	}
+    
+	public function suggestion_db_field (&$output=NULL, $atts=array())
+	{
+        $this->load->load_helper('listing');
+		$this->load->model('category_m');
+		$this->load->model('location_m');
+		$this->load->model('listing_m');
+
+        $data = array();
+        $data['message'] = __('No message returned!', 'wpdirectorykit');
+		
+		$data['results'] = array();
+        $parameters = array();
+		foreach ($_POST as $key => $value) {
+			$parameters[$key] = sanitize_text_field($value);
+		}
+
+		$search_text = '';
+		if(!empty($parameters['search']))
+			$search_text = trim($parameters['search']);
+
+		$search_field_id = '';
+		if(!empty($parameters['field_id']))
+			$search_field_id = (int) trim($parameters['field_id']);
+
+		if(!empty($search_field_id) && wdk_field_option($search_field_id, 'field_type', false)) {
+
+			/* listings by title suggestion */
+			$this->db->select("DISTINCT field_".$search_field_id."_".wdk_field_option($search_field_id, 'field_type', false)." as value");
+			$this->db->from($this->db->prefix.'wdk_listings_fields');
+			$this->db->where(array("field_".$search_field_id."_".wdk_field_option($search_field_id, 'field_type', false)." LIKE '%".esc_sql($search_text)."%'" => NULL));
+
+			$query = $this->db->get();
+			if($this->db->num_rows() > 0) foreach($this->db->results() as $row) {
+				$data['results'][] = $row->value;
+			}
+
+			$field_values = wdk_field_option($search_field_id, 'values', '');
+			$field_values = explode(',', $field_values);
+			if(!empty($field_values)) {
+				foreach($field_values as $value) {
+					if(empty($value)) continue;
+					$data['results'][] = $value;
+				}
+			}
+
+		}
+
+		$data['success'] = true;
+		$this->output($data);
+
+	}
+
+	function select_2_ajax_field_db_suggestion($output="", $atts=array(), $instance=NULL)
+    {
+	    global $Winter_MVC_WDK;
+		$Winter_MVC_WDK->load_helper('listing');
+		$Winter_MVC_WDK->model('location_m');
+
+        $data = array();
+        $data['message'] = __('No message returned!', 'wpdirectorykit');
+		$data['pagination'] = true;
+        $results = array();
+
+        $parameters = array();
+		foreach ($_POST as $key => $value) {
+			$parameters[$key] = sanitize_text_field($value);
+		}
+
+		$limit = 10;
+		if(!empty($parameters['limit'])) {
+			$limit = intval($parameters['limit']);
+		}
+
+		$offset = 0;
+		if(!empty($parameters['page_result']) && $parameters['page_result'] > 1) {
+			$offset = (intval($parameters['page_result']) - 1) * $limit;
+		}
+
+		$search_text = '';
+		if(!empty($_POST['q']['term']))
+			$search_text = sanitize_text_field($_POST['q']['term']);
+
+		$search_field_id = '';
+		if(!empty($parameters['field_id']))
+			$search_field_id = (int) trim($parameters['field_id']);
+
+		if(!empty($search_field_id) && wdk_field_option($search_field_id, 'field_type', false)) {
+
+			/* listings by title suggestion */
+			$Winter_MVC_WDK->db->select("DISTINCT field_".$search_field_id."_".wdk_field_option($search_field_id, 'field_type', false)." as value");
+			$Winter_MVC_WDK->db->from($Winter_MVC_WDK->db->prefix.'wdk_listings_fields');
+			$Winter_MVC_WDK->db->where(array("field_".$search_field_id."_".wdk_field_option($search_field_id, 'field_type', false)." LIKE '%".esc_sql($search_text)."%'" => NULL));
+
+			$query = $Winter_MVC_WDK->db->get();
+			if($Winter_MVC_WDK->db->num_rows() > 0) foreach($Winter_MVC_WDK->db->results() as $row) {
+			
+					$results[] = [
+                        'id'=> $row->value,
+                        'text'=> $row->value,
+                    ];
+			}
+
+			$field_values = wdk_field_option($search_field_id, 'values', '');
+			$field_values = explode(',', $field_values);
+			if(!empty($field_values)) {
+				foreach($field_values as $value) {
+					if(empty($value)) continue;
+				
+					 $results[] = [
+                        'id'=> $value,
+                        'text'=> $value,
+                    ];
+				}
+			}
+
+		}
+
+		$data['success'] = true;
+        
+        $data['results'] = array_slice($results, $offset, $limit);
+		if(count($results) >= $limit + $offset) {
+			$data['pagination'] =[
+				"more"=> true
+			];
+		}
+
+        $data['success'] = true;
+        $this->output($data);
+    }
 	    
 	private function get_fa_icons() {
 
@@ -1466,7 +1725,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		"fas fa-venus-double","fas fa-venus-mars","fab fa-viacoin","fab fa-viadeo","fab fa-viadeo-square","fab fa-viber","fas fa-video","fab fa-vimeo","fab fa-vimeo-square","fab fa-vimeo-v","fab fa-vine","fab fa-vk","fab fa-vnv",
 		"fas fa-volume-down","fas fa-volume-off","fas fa-volume-up","fab fa-vuejs","fab fa-weibo","fab fa-weixin","fab fa-whatsapp","fab fa-whatsapp-square","fas fa-wheelchair","fab fa-whmcs","fas fa-wifi","fab fa-wikipedia-w","fas fa-window-close",
 		"far fa-window-close","fas fa-window-maximize","far fa-window-maximize","fas fa-window-minimize","fas fa-window-restore","far fa-window-restore","fab fa-windows","fas fa-won-sign","fab fa-wordpress","fab fa-wordpress-simple",
-		"fab fa-wpbeginner","fab fa-wpexplorer","fab fa-wpforms","fas fa-wrench","fab fa-xbox","fab fa-xing","fab fa-xing-square","fab fa-y-combinator","fab fa-yahoo","fab fa-yandex","fab fa-yandex-international","fab fa-yelp","fas fa-yen-sign","fab fa-yoast","fab fa-youtube");
+		"fab fa-wpbeginner","fab fa-wpexplorer","fab fa-wpforms","fas fa-wrench","fab fa-xbox","fab fa-xing","fab fa-xing-square","fab fa-y-combinator","fab fa-yahoo","fab fa-yandex","fab fa-yandex-international","fab fa-yelp","fas fa-yen-sign","fab fa-yoast","fab fa-youtube","fas fa-school");
 
 
 		/* icons font Awesome 4 */
@@ -1517,12 +1776,12 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		"fa fa-tablet","fa fa-tachometer","fa fa-tag","fa fa-tags","fa fa-tasks","fa fa-taxi","fa fa-telegram","fa fa-television","fa fa-tencent-weibo","fa fa-terminal","fa fa-text-height","fa fa-text-width","fa fa-th","fa fa-th-large","fa fa-th-list",
 		"fa fa-themeisle","fa fa-thermometer-empty","fa fa-thermometer-full","fa fa-thermometer-half","fa fa-thermometer-quarter","fa fa-thermometer-three-quarters","fa fa-thumb-tack","fa fa-thumbs-down","fa fa-thumbs-o-down",
 		"fa fa-thumbs-o-up","fa fa-thumbs-up","fa fa-ticket","fa fa-times","fa fa-times-circle","fa fa-times-circle-o","fa fa-tint","fa fa-toggle-off","fa fa-toggle-on","fa fa-trademark","fa fa-train","fa fa-transgender","fa fa-transgender-alt",
-		"fa fa-trash","fa fa-trash-o","fa fa-tree","fa fa-trello","fa fa-tripadvisor","fa fa-trophy","fa fa-truck","fa fa-try","fa fa-tty","fa fa-tumblr","fa fa-tumblr-square","fa fa-twitch","fa fa-twitter","fa fa-twitter-square","fa fa-umbrella",
+		"fa fa-trash","fa fa-trash-o","fa fa-tree","fa fa-trello","fa fa-tripadvisor","fa fa-trophy","fa fa-truck","fa fa-try","fa fa-tty","fa fa-tumblr","fa fa-tumblr-square","fa fa-twitch","fab fa-x-twitter","fab fa-x-twitter-square","fa fa-umbrella",
 		"fa fa-underline","fa fa-undo","fa fa-universal-access","fa fa-university","fa fa-unlock","fa fa-unlock-alt","fa fa-upload","fa fa-usb","fa fa-usd","fa fa-user","fa fa-user-circle","fa fa-user-circle-o","fa fa-user-md","fa fa-user-o",
 		"fa fa-user-plus","fa fa-user-secret","fa fa-user-times","fa fa-users","fa fa-venus","fa fa-venus-double","fa fa-venus-mars","fa fa-viacoin","fa fa-viadeo","fa fa-viadeo-square","fa fa-video-camera","fa fa-vimeo","fa fa-vimeo-square","fa fa-vine",
 		"fa fa-vk","fa fa-volume-control-phone","fa fa-volume-down","fa fa-volume-off","fa fa-volume-up","fa fa-weibo","fa fa-weixin","fa fa-whatsapp","fa fa-wheelchair","fa fa-wheelchair-alt","fa fa-wifi","fa fa-wikipedia-w","fa fa-window-close",
 		"fa fa-window-close-o","fa fa-window-maximize","fa fa-window-minimize","fa fa-window-restore","fa fa-windows","fa fa-wordpress","fa fa-wpbeginner","fa fa-wpexplorer","fa fa-wpforms","fa fa-wrench","fa fa-xing","fa fa-xing-square",
-		"fa fa-y-combinator","fa fa-yahoo","fa fa-yelp","fa fa-yoast","fa fa-youtube","fa fa-youtube-play","fa fa-youtube-square");
+		"fa fa-y-combinator","fa fa-yahoo","fa fa-yelp","fa fa-yoast","fa fa-youtube","fa fa-youtube-play","fa fa-youtube-square","fa-solid fa-school");
 	} 
     
 }

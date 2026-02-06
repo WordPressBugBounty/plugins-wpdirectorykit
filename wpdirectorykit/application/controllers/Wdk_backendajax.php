@@ -596,6 +596,58 @@ class Wdk_backendajax extends Winter_MVC_Controller
         $this->output($data);
     }
 
+    public function optimization_db_fields()
+    {
+        $data = array();
+        $data['message'] = '';
+        $data['popup_text_success'] = '';
+        $data['popup_text_error'] = '';
+        $data['parameters'] = $_POST;
+        $data['success'] = false;
+
+        /* protect */
+        if(!wmvc_user_in_role('administrator') && !current_user_can('wdk_listings_manage')) {
+            $data['message'] = __('Disabled for current user', 'wpdirectorykit');
+            $this->output($data);
+        }
+
+        // Check _wpnonce
+        check_admin_referer( 'wdk-backendajax', '_wpnonce' );
+
+        $this->load->load_helper('listing');
+        $this->load->model('field_m');
+        $this->load->model('listingfield_m');
+
+        global $wpdb;
+
+        $existing_listing_fields = $this->listingfield_m->get_available_fields();
+        unset($existing_listing_fields['idlistings_fields'],$existing_listing_fields['post_id'],$existing_listing_fields['lang_code']);
+
+        $fields = $this->field_m->get();
+        foreach ($fields as $key => $field) {
+            // add exits fields
+            $field_col = 'field_'.$field->idfield.'_'.$field->field_type;
+            if(isset($existing_listing_fields[$field_col])) {
+                unset($existing_listing_fields[$field_col]);
+            }
+        }
+        $table_listing_fields = $wpdb->prefix . 'wdk_listings_fields';
+        if(!empty($existing_listing_fields)) foreach ($existing_listing_fields as $field_listing_col => $field_listing) {
+            if(substr($field_listing_col, 0, 6) == 'field_') {
+                $sql = "ALTER TABLE `{$table_listing_fields}`
+                            DROP `$field_listing_col`;";
+
+                $wpdb->query( $sql );
+            }
+        }
+
+
+        /* fields */
+        $data['success'] = true;
+        $data['popup_text_success'] = __('Fields optimization', 'wpdirectorykit');
+        $this->output($data);
+    }
+
     public function loading_sublistings()
     {
         $data = array();
@@ -628,7 +680,6 @@ class Wdk_backendajax extends Winter_MVC_Controller
 
             
             $this->db->where($this->db->prefix . 'wdk_listings.post_id IN(' . wdk_field_value('listing_related_ids', $listing_id) . ')', null, false);
-            $this->db->where(array('is_activated' => 1, 'is_approved' => 1));
             $this->db->order_by('FIELD(' . $this->db->prefix . 'wdk_listings.post_id, ' . wdk_field_value('listing_related_ids', $listing_id) . ')');
 
             $results = $this->listing_m->get();
@@ -641,6 +692,8 @@ class Wdk_backendajax extends Winter_MVC_Controller
                 $_listing['date'] = wdk_get_date(wdk_field_value('date', $sublisting), false);
                 $_listing['location'] = wdk_field_value('location_title', $sublisting);
                 $_listing['category'] = wdk_field_value('category_title', $sublisting);
+                $_listing['counter_views'] = wdk_field_value('counter_views', $sublisting);
+                $_listing['counter_results_views'] = wdk_field_value('counter_results_views', $sublisting);
                 $_listing['image_src'] = wdk_image_src($sublisting);
                 $_listing['listing_remove_url'] = esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&id=" . wdk_field_value('post_id', $sublisting));
                 $_listing['listing_view_url'] = get_permalink($sublisting);
@@ -707,6 +760,192 @@ class Wdk_backendajax extends Winter_MVC_Controller
        
         $this->output($data);
     }
+
+    public function reinstall_page()
+    {
+        $data = array();
+        $data['message'] = '';
+        $data['popup_text_success'] = '';
+        $data['popup_text_error'] = '';
+        $data['parameters'] = $_POST;
+        $data['success'] = false;
+        $data['page_id'] = false;
+        $data['page_title'] = false;
+        $data['results'] = array();
+        /* protect */
+        if(!wmvc_user_in_role('administrator')) {
+            $data['message'] = __('Disabled for current user', 'wpdirectorykit');
+            $this->output($data);
+        }
+
+        // Check _wpnonce
+        check_admin_referer( 'wdk-backendajax', '_wpnonce' );
+        
+        $page = sanitize_text_field(wmvc_show_data('arg', $data['parameters']));
+
+
+        
+        // Import elementor templates
+        switch($page) {
+            case 'wdk_listing_page':
+                $new_page = $this->create_page(esc_html__('Listing Preview', 'wpdirectorykit'), '', 'elementor_canvas');
+                $this->elementor_assign($new_page->ID, 'page-listing-preview.json');
+                update_option('wdk_listing_page', $new_page->ID);
+                $data['page_title'] = esc_html__('Listing Preview', 'wpdirectorykit');
+                break;
+            case 'wdk_results_page':
+                $new_page = $this->create_page(esc_html__('Results Listings', 'wpdirectorykit'), '', 'elementor_canvas');
+                $this->elementor_assign($new_page->ID, 'page-results-listings.json');
+                update_option('wdk_results_page', $new_page->ID);
+                $data['page_title'] = esc_html__('Results Listings', 'wpdirectorykit');
+                break;
+        }
+      
+        if (empty($new_page)) {
+            $data['popup_text_error'] = __('Page not Created', 'wpdirectorykit');
+        } else {
+            $data['page_id'] = $new_page->ID;
+        }
+
+        if (empty($data['popup_text_error'])) {
+            $data['success'] = true;
+        }
+
+        $this->output($data);
+    }
+
+    public function upload_image()
+    {
+        $data = array();
+        $data['message'] = '';
+        $data['popup_text_success'] = '';
+        $data['popup_text_error'] = '';
+        $data['parameters'] = $_POST;
+        $data['success'] = false;
+        $data['page_id'] = false;
+        $data['page_title'] = false;
+        $data['results'] = array();
+        /* protect */
+        if(!wmvc_user_in_role('administrator')) {
+            $data['message'] = __('Disabled for current user', 'wpdirectorykit');
+            $this->output($data);
+        }
+
+        // Check _wpnonce
+        check_admin_referer( 'wdk-backendajax', '_wpnonce' );
+        
+        if(!empty($data['parameters']['image']))    
+            foreach (explode(',', sanitize_text_field($_POST['image'])) as $key => $image_or_src) {
+                if(empty($image_or_src)) continue;
+                $image_id = wmvc_add_wp_image($image_or_src);
+                $image_url = wp_get_attachment_image_url($image_id, 'large');
+        
+                $data['results'][] = [
+                    'image_id'=> $image_id,
+                    'image_url'=> $image_url,
+                ];
+            }
+
+        
+        if (empty($data['popup_text_error'])) {
+            $data['success'] = true;
+        }
+
+        $this->output($data);
+    }
+
+    
+    /* Create Page */
+    private function create_page($post_title, $post_content = '', $post_template = NULL, $post_parent=0, $rebuild = FALSE)
+    {
+        
+        $post_id = NULL;
+        
+        // Delete posts and rebuild
+        if($rebuild) {
+
+            $post = wdk_page_by_title($post_title, 'OBJECT', 'page' );
+            if(!empty($post))
+            {
+                wp_delete_post($post->ID, true);
+                $post=NULL;
+            }
+            if(!empty($post))
+                $post_id   = $post->ID;
+        }
+        
+
+        if(empty($post_id))
+        {
+            $error_obj = NULL;
+            $post_insert = array(
+                'post_title'    => wp_strip_all_tags( $post_title ),
+                'post_content'  => $post_content,
+                'post_status'   => 'publish',
+                'post_type'     => 'page',
+                'post_author'   => get_current_user_id(),
+                'post_category' => array(1,2),
+                'page_template' => $post_template,
+                'post_parent'   => $post_parent
+            );
+            $post_id = wp_insert_post( $post_insert, $error_obj );
+        }
+
+        $post_insert = get_post( $post_id );
+        
+        return $post_insert;
+    }
+
+    /* Elementor Import Template */
+    private function elementor_assign($page_id, $json_template_name = '')
+    {
+
+        $file = false;
+
+        if(is_child_theme() && file_exists(get_stylesheet_directory().'/elementor-data/wpdirectorykit/'.$json_template_name))
+        {
+            $file = get_stylesheet_directory().'/elementor-data/wpdirectorykit/'.$json_template_name;
+        }
+        elseif(file_exists(get_template_directory().'/demo-data/wpdirectorykit/'.$json_template_name))
+        {
+            $file = get_template_directory().'/demo-data/wpdirectorykit/'.$json_template_name;
+        }
+        elseif(file_exists( WPDIRECTORYKIT_PATH. '/demo-data/'.$json_template_name))
+        {
+            $file = WPDIRECTORYKIT_PATH.'demo-data/'.$json_template_name;
+        }
+        
+        if(!$file || !class_exists('Elementor\Plugin'))
+        {
+            return false;
+        }
+
+        $page_template =  get_page_template_slug( $page_id );
+
+        add_post_meta( $page_id, '_elementor_edit_mode', 'builder' );
+
+        global $wp_filesystem;
+        // Initialize the WP filesystem, no more using 'file-put-contents' function
+        if (empty($wp_filesystem)) {
+            WP_Filesystem();
+        }
+
+        $string =  $wp_filesystem->get_contents($file);
+
+        $json_template = json_decode($string, true);
+        $elements = $json_template['content'];
+
+        $data = array(
+            'elements' => $elements,
+            'settings' => array('post_status'=>'autosave', 'template'=>$page_template),
+        );   
+        // @codingStandardsIgnoreStart
+        $document = Elementor\Plugin::$instance->documents->get( $page_id, false );
+        // @codingStandardsIgnoreEnd
+        return $document->save( $data );
+    }
+
+    
 
     private function output($data, $print = TRUE)
     {

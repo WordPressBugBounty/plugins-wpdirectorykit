@@ -608,7 +608,7 @@ class WdkListingSlidersCarousel extends WdkElementorBase {
                                 'max' => 100,
                             ],
                         ],
-                        'size_units' => [ 'px', 'vw' ],
+                        'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                         'selectors' => [
                             '{{WRAPPER}} .banner-thumbs .banner-thumb' => 'height: {{SIZE}}{{UNIT}}',
                         ],

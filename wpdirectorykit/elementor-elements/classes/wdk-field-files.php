@@ -361,7 +361,7 @@ class WdkFieldFiles extends WdkElementorBase {
                         'max' => 100,
                     ],
                 ],
-                'size_units' => [ 'px', 'vw' ],
+                'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                 'selectors' => [
                     '{{WRAPPER}} .wdk-field-files .wdk-listing-image' => 'height: {{SIZE}}{{UNIT}}',
                 ],

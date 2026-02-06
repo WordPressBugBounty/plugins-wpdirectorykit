@@ -38,7 +38,7 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?> <?php echo esc_attr($field->class); ?> <?php if(!empty($form) && method_exists($form, 'hasError') && $form->hasError($field_id)):?> field-error <?php endif;?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <?php 
@@ -56,6 +56,11 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
         <?php if(!empty($field->hint)):?>
         <p class="wdk-hint">
             <?php echo esc_html($field->hint); ?>
+        </p>
+        <?php endif;?>
+        <?php if(!empty($form) && method_exists($form, 'hasError') && $form->getError($field_id)):?>
+        <p class="wdk-hint wdk-error">
+            <?php echo wp_kses_post($form->getError($field_id)); ?>
         </p>
         <?php endif;?>
     </div>

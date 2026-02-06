@@ -14,9 +14,13 @@
     clear: both;
 }
 
+.wdk-wrap {
+    @import 'wdk-utilities.scss';
+}
+ 
 .wdk-wrap .postbox-header {
-    max-width: 100%;
-    min-width: 100%;
+    max-width: 100%;  
+    min-width: 100%; 
 
     h3 {
         padding-left: 15px;
@@ -338,8 +342,20 @@ div.wdk-field-edit div.wdk-field-container {
 
 }
 
+
+div.wdk-field-edit.field-error div.wdk-field-container {
+    background: #FFE6DF;
+    input, select, textarea,.wp-editor-container {
+        border-color: rgb(163, 1, 1);
+    }
+
+    p.wdk-hint.wdk-error {
+        color: rgb(163, 1, 1);
+    }
+}
+
 .form-table p.wdk-hint,
-div.wdk-field-edit p.wdk-hint {
+div.wdk-field-edit p.wdk-hint { 
     font-style: italic;
 }
 
@@ -367,6 +383,10 @@ div.wdk-field-edit.inline {
 
 .wdk-wrap .widefat .actions_column {
     text-align: right;
+}
+
+.wdk-wrap .widefat .static {
+    width: 5%;
 }
 
 .wdk-wrap .form-table td {
@@ -584,6 +604,14 @@ div.wdk-field-edit.inline {
         margin-bottom: 0 !important;
     }
 
+    .m0 {
+        margin: 0 !important;
+    }
+
+    .p0 {
+        padding: 0 !important;
+    }
+
     .align-top {
         vertical-align: top !important;
     }
@@ -678,6 +706,13 @@ div.wdk-field-edit.inline {
 
     div.wdk-field-edit p.wdk-hint {
         flex: 0 0 100%;
+    }
+
+    div.wdk-field-edit .postbox-upload .hide-if-no-js{
+        gap: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
     }
 
     .wdk-row {
@@ -926,6 +961,23 @@ div.wdk-field-edit.inline {
     .winter_mvc-media .winter_mvc-media-card {
         min-width: 200px;
     }
+
+    
+    .field-error {
+        background: #FFE6DF;
+        input, select,textarea {
+            border-color: rgb(163, 1, 1);
+        }
+
+        p.wdk-hint.wdk-error {
+            color: rgb(163, 1, 1);
+        }
+    }
+
+    .wdk-field-container .button {
+        display: inline-flex;
+        align-items: center;
+    }
 }
 
 .wp-core-ui .quicktags-toolbar input.button.button-small {
@@ -1051,6 +1103,18 @@ div.wdk-field-edit.inline {
             }
         }
     }
+
+    .field-error {
+        input, select,textarea {
+            border-color: rgb(163, 1, 1);
+        }
+
+        p.wdk-hint.wdk-error {
+            color: rgb(163, 1, 1);
+        }
+    }
+
+
 }
 
 .tablenav .wdk-unwrapp-field {

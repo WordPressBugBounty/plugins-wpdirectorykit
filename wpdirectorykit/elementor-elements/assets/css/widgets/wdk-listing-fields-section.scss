@@ -15,11 +15,20 @@
     .wdk-row .wdk-col .field-group {
         display: flex;
         align-items: baseline !important;
+
+        &.top {
+            align-items: flex-start !important; 
+        }
+
+        &.d-column {
+            flex-direction: column;
+            gap: 15px;
+        }
     }
+    
 
     .wdk-row .wdk-col .field_value {
         padding-left: 3px;
-        word-break: break-all; 
     }
 
     .wdk-row .wdk-col.reverse .field-group {
@@ -105,4 +114,18 @@
         order: 3;
     } 
 
+
+    .wdk-col.FILEUPLOAD   {
+        .wdk-row{
+            margin-right: -7.5px;
+            margin-left: -7.5px;
+        }
+        .wdk-col {
+            margin-bottom: 15px;
+            flex: 0 0 calc(100% / 3);
+            width: calc(100% / 2);
+            padding: 0 7.5px !important;
+            max-width: 100%;
+        }
+    }
 }

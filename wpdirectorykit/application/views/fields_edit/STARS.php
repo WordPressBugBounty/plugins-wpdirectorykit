@@ -40,7 +40,7 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <fieldset class="wdk-rating-field">
@@ -56,9 +56,9 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
             <label class="full" for="f_<?php echo esc_attr($field_id); ?>_star1" title="<?php echo esc_attr__('Very bad - 1 star', 'wpdirectorykit');?>"></label>
         </fieldset>
         <span class="suffix"><?php
-            echo esc_html($field->prefix);
+            echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
-            echo esc_html($field->suffix);
+            echo esc_html__($field->suffix, 'wpdirectorykit');
         ?></span>
         <?php if(!empty($field->hint)):?>
         <p class="wdk-hint">

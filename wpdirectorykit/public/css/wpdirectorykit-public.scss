@@ -4,13 +4,13 @@ $secondary_color: #0052a2;
 $text_color: #161616;
 
 body {
-    height: 100%;
     overflow-x: hidden;
     z-index: 0;
     position: relative;
 }
 
 .wdk-listing-card {
+            
     & {
        display: flex;
        flex-direction: column; 
@@ -190,6 +190,11 @@ body {
     }
 
     .wdk-title .title {
+        span {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        } 
         &{
             color: $text_color;
             font-weight: 700;
@@ -197,7 +202,7 @@ body {
             margin-bottom: 0;
             font-size: 18px;
             padding: 15px 20px 0;
-        }
+        } 
         &:hover {
             color: $color_hover;
         }
@@ -416,6 +421,44 @@ body {
  
     .wdk-thumbnail .wdk-favorites-actions .fa-custom-ajax-indicator {
         margin-top: 0;
+    }
+
+
+    .wdk-listing-item-agent {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 15px;
+        padding: 5px 15px;
+        align-items: center;
+        color: #000;
+        .agent-thumbnail {
+            a {
+                display: block;
+            }
+            img {
+                max-width: 70px;
+                max-height: 70px;
+            }
+        }
+
+        .agent-cont {
+            flex: 1 2 auto;
+            overflow: hidden;
+            gap: 5px;
+            display: flex;
+            flex-direction: column;
+            color: #000;
+            .by {
+                font-size: 14px;
+            }
+
+            .title {
+                color: #000;
+                margin: 0;
+                font-size: 18px;
+                font-weight: 600;
+            }
+        }
     }
 }
 
@@ -850,7 +893,7 @@ body .wdk_alert a {
     }
 
     &.layout_inline .min_max_wdk-field {
-        flex: 10000 0 !important;
+        /*flex: 10000 0 !important;*/
         min-width: 160px;
     } 
     
@@ -1253,8 +1296,7 @@ body .wdk_alert a {
     }
 }
 
-.wdk-search .wdk-row .wdk-field-btn,
-.wdk-search.layout_inline .wdk-row .wdk-field-btn {
+.wdk-search .wdk-row .wdk-field-btn {
     margin-left: -15px;
     margin-right: -15px;
     width: calc(100% + 15px + 15px);
@@ -1787,9 +1829,9 @@ body .leaflet-control-custom.leaflet-draw-toolbar {
     margin-top: 0;
 }
 
-.wdk_dropdown_tree .list_container {
+body .wdk_dropdown_tree .list_container {
     max-width: 100%;
-
+    z-index: 10001;
     .list_scroll ul li {
         white-space: nowrap;
         overflow: hidden;
@@ -1808,7 +1850,7 @@ body .leaflet-control-custom.leaflet-draw-toolbar {
       width: 100%;
       flex: 0 0 100%;
     } 
-}    
+}     
 
 .wdk-textarea-load-more-wrapper {
     text-align: center;
@@ -1855,6 +1897,25 @@ body .leaflet-control-custom.leaflet-draw-toolbar {
         }
         
     }
+}
+
+
+.wdk-field-value.TEXTAREA p  {
+    margin-bottom: 15px;
+}
+
+.wdk-element .complete_link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.wdk-stroke {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .wdk-compare-table,

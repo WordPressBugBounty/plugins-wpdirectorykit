@@ -37,6 +37,11 @@ class Wdk_resultitem extends Winter_MVC_Controller {
                     'rules' => ''
                 ),
                 array(
+                    'field' => 'is_show_agent_details',
+                    'label' => __('Show agent details', 'wpdirectorykit'),
+                    'rules' => '',
+                ),
+                array(
                     'field' => 'resultitem_json',
                     'label' => __('Search Form Json/Structure', 'wpdirectorykit'),
                     'rules' => ''
@@ -60,9 +65,10 @@ class Wdk_resultitem extends Winter_MVC_Controller {
                 $data['idresultitem'] = 1;
             }
 
+          
             $insert_id = $this->resultitem_m->insert($data, $id);
 
-            // redirect
+            // redirect 
             
             if(!empty($insert_id) && empty($id))
             {

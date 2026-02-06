@@ -339,28 +339,7 @@ class WdkLocationsTree extends WdkElementorBase {
                 'label'=> esc_html__('Title', 'wpdirectorykit'),
                 'selector'=>'.title',
                 'selector_hover'=>'.title%1$s',
-                'options'=>['color','background','border','border_radius','padding','shadow','transition','margin','padding'],
-            ],
-            [
-                'key'=>'item_button',
-                'label'=> esc_html__('Item Box', 'wpdirectorykit'),
-                'selector'=>'.wdk-locations .wdk-link',
-                'selector_hover'=>'.wdk-locations .wdk-link%1$s',
-                'options'=>['color','background','border','border_radius','padding','shadow','transition'],
-            ],
-            [
-                'key'=>'item_icon',
-                'label'=> esc_html__('Item Icon', 'wpdirectorykit'),
-                'selector'=>'.wdk-locations .wdk-link i',
-                'selector_hover'=>'.wdk-locations .wdk-link%1$s i',
-                'options'=>['margin','color','background','border','border_radius','padding','shadow'],
-            ],
-            [
-                'key'=>'location_icon',
-                'label'=> esc_html__('Location Icon', 'wpdirectorykit'),
-                'selector'=>'.title .wdk-icon',
-                'selector_hover'=>'.title%1$s .wdk-icon',
-                'options'=>['margin','color','background','border','border_radius','padding','shadow','image_size_control','image_fit_control'],
+                'options'=>['typo','color','background','border','border_radius','padding','shadow','transition','margin','padding'],
             ],
             [
                 'key'=>'location_image',
@@ -370,15 +349,36 @@ class WdkLocationsTree extends WdkElementorBase {
                 'options'=>['margin','background','border','border_radius','padding','shadow','transition','image_size_control', 'css_filters','image_fit_control'],
             ],
             [
+                'key'=>'location_icon',
+                'label'=> esc_html__('Location Icon', 'wpdirectorykit'),
+                'selector'=>'.title .wdk-icon',
+                'selector_hover'=>'.title%1$s .wdk-icon',
+                'options'=>['margin','color','background','border','border_radius','padding','shadow','image_size_control','image_fit_control'],
+            ],
+            [
+                'key'=>'item_button',
+                'label'=> esc_html__('Sub Location List Item', 'wpdirectorykit'),
+                'selector'=>'.wdk-locations .wdk-link',
+                'selector_hover'=>'.wdk-locations .wdk-link%1$s',
+                'options'=>['color','background','border','border_radius','padding','shadow','transition'],
+            ],
+            [
+                'key'=>'item_icon',
+                'label'=> esc_html__('Sub Location List item Icon', 'wpdirectorykit'),
+                'selector'=>'.wdk-locations .wdk-link i',
+                'selector_hover'=>'.wdk-locations .wdk-link%1$s i',
+                'options'=>['margin','color','background','border','border_radius','padding','shadow'],
+            ],
+            [
                 'key'=>'item_title',
-                'label'=> esc_html__('Item Title', 'wpdirectorykit'),
+                'label'=> esc_html__('Sub Location List Item Title', 'wpdirectorykit'),
                 'selector'=>'.wdk-locations .wdk-link .wdk-title',
                 'selector_hover'=>'.wdk-locations .wdk-link%1$s .wdk-title',
                 'options'=>['margin','typo','color','background','border','border_radius','padding'],
             ],
             [
                 'key'=>'item_count',
-                'label'=> esc_html__('Item Count', 'wpdirectorykit'),
+                'label'=> esc_html__('Sub Location List Item Count', 'wpdirectorykit'),
                 'selector'=>'.wdk-locations .wdk-link .wdk-count',
                 'selector_hover'=>'.wdk-locations .wdk-link%1$s .wdk-count',
                 'options'=>['margin','typo','color','background','border','border_radius','padding'],
@@ -440,6 +440,10 @@ class WdkLocationsTree extends WdkElementorBase {
                 );
             }
 
+            if(empty($item['selector_hide'])) {
+                $item['selector_hide'] = $item['selector'];
+            }
+
             $this->add_responsive_control(
                 $item['key'].'_hide',
                     [
@@ -450,7 +454,7 @@ class WdkLocationsTree extends WdkElementorBase {
                         'return_value' => 'none',
                         'default' => '',
                         'selectors' => [
-                            '{{WRAPPER}} '.$item['selector'] => 'display: {{VALUE}};',
+                            '{{WRAPPER}} '.$item['selector_hide'] => 'display: {{VALUE}};',
                         ],
                     ]
             );
@@ -479,7 +483,7 @@ class WdkLocationsTree extends WdkElementorBase {
                     [
                         'label' => __( 'Size', 'wpdirectorykit' ),
                         'type' => Controls_Manager::SLIDER,
-                        'size_units' => [ 'px'],
+                        'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                         'range' => [
                             'px' => [
                                 'min' => 1,

@@ -26,9 +26,9 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <?php endif;?>
                 </div>
                 <div class="agent-cont">
-                    <h3 class="title <?php if(!empty(wmvc_show_data('profile_url', $listing_agency['userdata']))) :?> link <?php endif;?>">
-                        <?php if(!empty(wmvc_show_data('profile_url', $listing_agency['userdata']))) :?>
-                            <a href="<?php echo esc_url(wmvc_show_data('profile_url', $listing_agency['userdata']));?>"><?php echo esc_html(wmvc_show_data('display_name', $listing_agency['userdata']));?></a>
+                    <h3 class="title <?php if(!empty(wmvc_show_data('profile_url', $listing_agency))) :?> link <?php endif;?>">
+                        <?php if(!empty(wmvc_show_data('profile_url', $listing_agency))) :?>
+                            <a href="<?php echo esc_url(wmvc_show_data('profile_url', $listing_agency));?>"><?php echo esc_html(wmvc_show_data('display_name', $listing_agency['userdata']));?></a>
                         <?php else:?>
                             <?php echo esc_html(wmvc_show_data('display_name', $listing_agency['userdata']));?>
                         <?php endif;?>
@@ -56,7 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <?php elseif(strpos($meta['meta_field'],'linkedin') !== FALSE):?>
                             <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-linkedin"></i><?php echo esc_html($value);?></a></div>
                         <?php elseif(strpos($meta['meta_field'],'twitter') !== FALSE):?>
-                            <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-twitter"></i><?php echo esc_html($value);?></a></div>
+                            <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fab fa-x-twitter"></i><?php echo esc_html($value);?></a></div>
                         <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
                             <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-telegram"></i><?php echo esc_html($value);?></a></div>
                         <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>
@@ -122,7 +122,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <?php elseif(strpos($meta['meta_field'],'linkedin') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-linkedin"></i><?php echo esc_html($value);?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'twitter') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-twitter"></i><?php echo esc_html($value);?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fab fa-x-twitter"></i><?php echo esc_html($value);?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-telegram"></i><?php echo esc_html($value);?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>
@@ -194,7 +194,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <?php elseif(strpos($meta['meta_field'],'linkedin') !== FALSE):?>
                                     <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-linkedin"></i><?php echo esc_html($value);?></a></div>
                                 <?php elseif(strpos($meta['meta_field'],'twitter') !== FALSE):?>
-                                    <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-twitter"></i><?php echo esc_html($value);?></a></div>
+                                    <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fab fa-x-twitter"></i><?php echo esc_html($value);?></a></div>
                                 <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
                                     <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-telegram"></i><?php echo esc_html($value);?></a></div>
                                 <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>

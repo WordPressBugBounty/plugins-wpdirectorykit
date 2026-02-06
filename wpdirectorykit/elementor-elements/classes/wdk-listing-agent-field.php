@@ -221,7 +221,7 @@ class WdkListingAgentField extends WdkElementorBase {
             'wdk_facebook' => __('Facebook', 'wpdirectorykit'),
             'wdk_youtube' => __('Youtube', 'wpdirectorykit'),
             'wdk_address' => __('Address', 'wpdirectorykit'),
-            'wdk_country' => __('Country', 'wdk-membership'),
+            'wdk_country' => __('Country', 'wpdirectorykit'),
             'wdk_city' => __('City', 'wpdirectorykit'),
             'wdk_position_title' => __('Position Title', 'wpdirectorykit'),
             'wdk_linkedin' => __('Linkedin', 'wpdirectorykit'),

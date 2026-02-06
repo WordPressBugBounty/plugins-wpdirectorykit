@@ -65,7 +65,11 @@ wdk_search_fields_toggle();
                 </div>
             </div>
         <?php else:?>
-            <input class="wdk-control" name="<?php echo esc_attr($field_key); ?>" type="text" id="<?php echo esc_attr($field_attr_id); ?>" value="<?php echo esc_attr($field_value); ?>" placeholder="<?php echo esc_attr(trim($placeholder));?>">
+            <?php if(wmvc_show_data('is_select_2_ajax_field_db_suggestion',$field_data)):?> 
+                <?php echo wdk_select_db_field_ajax($field_key, NULL, $placeholder, wmvc_show_data('idfield',$field_data));?>
+            <?php else:?>
+                <input class="wdk-control" name="<?php echo esc_attr($field_key); ?>" type="text" id="<?php echo esc_attr($field_attr_id); ?>" value="<?php echo esc_attr($field_value); ?>" placeholder="<?php echo esc_attr(trim($placeholder));?>">
+            <?php endif;?>
         <?php endif;?>
     </div>
 </div>

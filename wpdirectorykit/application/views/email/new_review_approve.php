@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
-        <?php echo esc_html__('Add or edit review', 'wpdirectorykit') . ': <a href="' . admin_url('admin.php?page=wpdirectorykit-add&id=' . $review_id) . '">' . __('Check / Confirm Review', 'wpdirectorykit') . '</a>'; ?>
+        <?php echo esc_html__('Add or edit review', 'wpdirectorykit') . ': <a href="' . admin_url('admin.php?page=wdk-reviews-add&id=' . $review_id) . '">' . __('Check / Confirm Review', 'wpdirectorykit') . '</a>'; ?>
     </div>
 
     <!-- Footer -->

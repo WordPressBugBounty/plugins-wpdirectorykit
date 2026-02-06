@@ -49,7 +49,7 @@ $results_page = get_permalink($results_page);
                         <img src="<?php echo esc_url(wdk_image_src($item, 'full', NULL,'image_id', 'image_path'));?>" class="wdk-slider-item_thumbnail" alt="<?php echo esc_html(wmvc_show_data('category_title', $item));?>">
                         <div class="wdk-categories-carousel_mask"></div>
                         <?php if(!empty(wmvc_show_data('category_title', $item))):?>
-                        <div class="wdk-slider-item_box_line"> <div class="wdk-slider-item_box_title"> <?php echo esc_html(wmvc_show_data('category_title', $item));?> </div></div>
+                        <div class="wdk-slider-item_box_line"> <div class="wdk-slider-item_box_title"> <?php echo esc_html(strip_tags(wmvc_show_data('category_title', $item)));?> </div></div>
                         <?php endif;?>
                         <div class="wdk-slider-item_box_line"> <div class="wdk-slider-item_box_content"> <?php echo esc_html(wmvc_show_data('listings_counter', $item));?> <?php echo esc_html__('Listings','wpdirectorykit');?> </div></div>
                         <div class="wdk-slider-item_box_line"> <a class="wdk-slider-item_box_link" href="<?php echo esc_url(wdk_url_suffix($results_page,'search_category='.wmvc_show_data('idcategory', $item)));?>#results"> <?php echo esc_html($settings['t_content_basic_link_text']);?> </a></div>
@@ -61,10 +61,10 @@ $results_page = get_permalink($results_page);
             </div>
             <?php if(!empty($results) && wmvc_show_data('layout_carousel_columns', $settings,1) < wmvc_count($results)):?>
                 <div class="wdk-categories-carousel_arrows">
-                    <a class="wdk-slider-prev wdk-categories-carousel_arrow">
+                    <a title="<?php echo esc_attr__('prev slider', 'wpdirectorykit');?>" href="#" class="wdk-slider-prev wdk-categories-carousel_arrow">
                         <?php \Elementor\Icons_Manager::render_icon( $settings['styles_carousel_arrows_icon_left'], [ 'aria-hidden' => 'true' ] ); ?>
                     </a>
-                    <a class="wdk-slider-next wdk-categories-carousel_arrow">
+                    <a title="<?php echo esc_attr__('next slider', 'wpdirectorykit');?>" href="#" class="wdk-slider-next wdk-categories-carousel_arrow">
                         <?php \Elementor\Icons_Manager::render_icon( $settings['styles_carousel_arrows_icon_right'], [ 'aria-hidden' => 'true' ] ); ?>
                     </a>
                 </div>

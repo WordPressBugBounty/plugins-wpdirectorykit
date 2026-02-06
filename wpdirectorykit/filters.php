@@ -521,4 +521,20 @@ add_filter('init', function($init){
     }
 });
 
+add_filter( 'wdk/listings/results', function($listings) {
+    global $Winter_MVC_WDK;
+    $Winter_MVC_WDK->model('field_m');
+    $Winter_MVC_WDK->load_helper('listing');
+
+    $listings_ids = array();
+    foreach($listings as $listing) {
+        $listings_ids[] = $listing->post_id;
+    }
+
+    if(!empty($listings_ids)) {
+        $Winter_MVC_WDK->listing_m->update_listings_views($listings_ids);
+    }
+
+    return $listings;
+} )
 ?>

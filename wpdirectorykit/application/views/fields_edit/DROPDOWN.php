@@ -33,6 +33,7 @@ if(!isset($field->columns_number))$field->columns_number = '';
 if(!isset($field->prefix))$field->prefix = '';
 if(!isset($field->suffix))$field->suffix = '';
 if(!isset($field->default))$field->default = '';
+if(!isset($field->empty_default))$field->empty_default = '';
 
 $required = '';
 if(isset($field->is_required) && $field->is_required == 1)
@@ -58,14 +59,14 @@ $button_suffix = '';
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?> <?php echo esc_attr($field->class); ?> <?php if(!empty($form) && method_exists($form, 'hasError') && $form->hasError($field_id)):?> field-error <?php endif;?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
-        <?php echo wmvc_select_option($field_id, $values, wmvc_show_data($field_id, $db_data, $field->default), "id='".$field_id."'"); ?>
+        <?php echo wmvc_select_option($field_id, $values, !empty(wmvc_show_data($field_id, $db_data, $field->default)) ? wmvc_show_data($field_id, $db_data, $field->default) : $field->empty_default, "id='".$field_id."'"); ?>
         <span class="suffix"><?php
-            echo esc_html($field->prefix);
+            echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
-            echo esc_html($field->suffix);
+            echo esc_html__($field->suffix, 'wpdirectorykit');
         ?><?php if(($field_id=='wdk_listing_page' || $field_id=='wdk_results_page')):?>
         <?php if(!empty(wmvc_show_data($field_id, $db_data, '')) && get_post_status(wmvc_show_data($field_id, $db_data, '')) == 'publish'):?>
             <a class="button button-primary" target="_blank" href="<?php echo get_permalink(wmvc_show_data($field_id, $db_data, ''));?>" style="margin-top: -5px;">
@@ -82,6 +83,11 @@ $button_suffix = '';
         <?php if(!empty($field->hint)):?>
         <p class="wdk-hint">
             <?php echo esc_html($field->hint); ?>
+        </p>
+        <?php endif;?>
+        <?php if(!empty($form) && method_exists($form, 'hasError') && $form->getError($field_id)):?>
+        <p class="wdk-hint wdk-error">
+            <?php echo wp_kses_post($form->getError($field_id)); ?>
         </p>
         <?php endif;?>
     </div>

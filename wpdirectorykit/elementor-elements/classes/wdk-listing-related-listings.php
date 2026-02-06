@@ -640,7 +640,7 @@ class WdkListingRelatedListings extends WdkElementorBase {
                             'max' => 100,
                         ]
                     ],
-                    'size_units' => [ 'px', 'vw' ],
+                    'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                     'default' => [
                         'size' => 220,
                         'unit' => 'px',

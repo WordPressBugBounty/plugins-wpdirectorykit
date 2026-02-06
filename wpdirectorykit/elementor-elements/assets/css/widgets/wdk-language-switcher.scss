@@ -1,0 +1,79 @@
+.wdk-language-switcher-drop {
+    position: relative;
+    z-index: 100;
+
+    .wdk-language-switcher-btn-toggle {
+        font-family: "Montserrat", Sans-serif;
+        font-size: 14px;
+        color: #161616;
+        background-color: #FFFFFF;
+        border-style: solid;
+        border-width: 0;
+        border-color: transparent;
+        border-radius: 3px 3px 3px 3px; 
+        padding: 13px 9px 13px 9px;
+        transition: all .15s;
+        &:hover {
+            color: #0074E4;
+        }
+        &:focus {
+            outline: none;
+        }
+
+        i {
+            margin-left: 3px;
+        }
+    }
+
+    &.wdk-show .wdk-language-switcher-menu  {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .wdk-language-switcher-menu {
+        position: absolute;
+        border: 1px solid #c4c4c4;
+        background: #fff;
+        top: 100%;
+        left: 0;
+        z-index: 100;
+        visibility: hidden;
+        opacity: 0;
+        transition: all .15s;
+        white-space: nowrap;
+        .item {
+            display: block;
+            text-decoration: none;
+            padding: 10px 15px;
+            color: #000;
+            background: #fff;
+            transition: all .15s;
+            font-size: 13px;
+            &:hover {
+                color: #fff;
+                background: #0074e4;
+            }
+        }
+
+        .item:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+    }
+}
+
+.wdk-language-switcher-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    .item {
+        text-decoration: none;
+        padding: 10px 15px;
+        color: #000;
+        transition: all .15s;
+        font-size: 13px;
+        &:hover {
+            color: #0074e4;
+        }
+    }
+}

@@ -73,7 +73,7 @@ class WDK_Extension_Hider_Addons {
         );
 
         $this->addons []  = array(
-            'title' => __('Multy Currency', 'wpdirectorykit'),
+            'title' => __('Multi Currency', 'wpdirectorykit'),
             'slug' => 'wdk_currency_conversion',
             'is_activated_slug' => 'run_wdk_currency_conversion',
         );

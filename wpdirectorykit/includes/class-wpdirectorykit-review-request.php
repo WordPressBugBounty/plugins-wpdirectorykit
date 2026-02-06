@@ -287,7 +287,7 @@ class wpdirectorykit_Modules_Reviews {
 				'open_count'     => array(
 					'triggers' => array(
 						'50_opens'  => array(
-							'message'    => sprintf( $open_message, 50 ),
+							'message'    => (strpos($open_message, '%d') !== false) ? sprintf( $open_message, 50 ) : $open_message,
 							'conditions' => array(
 								get_option( 'wpdirectorykit_total_open_count', 0 ) > 50,
 							),
@@ -295,7 +295,7 @@ class wpdirectorykit_Modules_Reviews {
 							'pri'        => 10,
 						),
 						'100_opens' => array(
-							'message'    => sprintf( $open_message, 100 ),
+							'message'    => (strpos($open_message, '%d') !== false) ? sprintf( $open_message, 100 ) : $open_message,
 							'conditions' => array(
 								get_option( 'wpdirectorykit_total_open_count', 0 ) > 100,
 
@@ -304,7 +304,7 @@ class wpdirectorykit_Modules_Reviews {
 							'pri'        => 20,
 						),
 						'500_opens' => array(
-							'message'    => sprintf( $open_message, 500 ),
+							'message'    => (strpos($open_message, '%d') !== false) ? sprintf( $open_message, 500 ) : $open_message,
 							'conditions' => array(
 								get_option( 'wpdirectorykit_total_open_count', 0 ) > 500,
 							),

@@ -1,0 +1,182 @@
+// Define your breakpoints and spacers
+$breakpoints: (
+  '': 0,
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px
+);
+
+$direction_points: (
+  'l': 'left',
+  't': 'top',
+  'b': 'bottom',
+  'r': 'right',
+);
+
+$spacers: (
+  0: 0,
+  5: 5px,
+  10: 10px,
+  15: 15px,
+  20: 20px,
+  25: 25px,
+  30: 30px,
+  35: 35px,
+  40: 40px,
+  50: 50px,
+  100: 100px 
+);
+  
+// Mixin for generating media queries
+@mixin media-breakpoint-up($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) { 
+    @content;
+  }
+} 
+
+// Function to get infix for breakpoint
+@function breakpoint-infix($breakpoint, $breakpoints) {
+  @return if(map-has-key($breakpoints, $breakpoint), "-" + $breakpoint, "");
+}
+
+// Generate margin and padding utilities
+@each $breakpoint in map-keys($breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    // Margin utilities
+    @each $direction in ('t', 'r', 'b', 'l') {
+      @each $size, $length in $spacers { 
+        .m#{$direction}#{if($infix !='-', $infix+"-", "-")}#{$size} {
+          margin-#{map-get($direction_points, $direction)}: $length;
+        }
+      }
+    }
+
+    // Padding utilities
+    @each $direction in ('t', 'r', 'b', 'l') {
+      @each $size, $length in $spacers {
+        .p#{$direction}#{if($infix !='-', $infix+"-", "-")}#{$size} {
+          padding-#{map-get($direction_points, $direction)}: $length;
+        }
+      }
+    }
+
+    // gap utilities
+    
+    @each $size, $length in $spacers {
+      .wdk-gap#{if($infix !='-', $infix+"-", "-")}#{$size} {
+        gap: $length;
+      }
+    }
+  }
+} 
+
+// ==========================
+// Flex utilities maps
+// ==========================
+$display-utils: (
+  flex: flex,
+  inline-flex: inline-flex
+);
+
+$justify-content-utils: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+  evenly: space-evenly
+);
+
+$align-items-utils: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  baseline: baseline,
+  stretch: stretch
+);
+
+$align-content-utils: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+  stretch: stretch
+);
+
+$align-self-utils: (
+  auto: auto,
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  baseline: baseline,
+  stretch: stretch
+);
+
+$flex-direction-utils: (
+  row: row,
+  row-reverse: row-reverse,
+  column: column,
+  column-reverse: column-reverse
+);
+
+$flex-wrap-utils: (
+  wrap: wrap,
+  nowrap: nowrap,
+  wrap-reverse: wrap-reverse
+);
+
+// ==========================
+// Generate flex utilities
+// ==========================
+@function breakpoint-infix($breakpoint, $breakpoints) {
+  @if $breakpoint == '' {
+    @return '';
+  }
+  @return '-' + $breakpoint;
+}
+
+
+@each $breakpoint in map-keys($breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints); // '' for base, '-sm', '-md', etc.
+
+    // Display
+    @each $key, $val in $display-utils {
+      .wdk-d#{$infix}-#{$key} { display: $val !important; }
+    }
+
+    // Justify-content
+    @each $key, $val in $justify-content-utils {
+      .wdk-justify-content#{$infix}-#{$key} { justify-content: $val !important; }
+    } 
+
+    // Align-items
+    @each $key, $val in $align-items-utils {
+      .wdk-align-items#{$infix}-#{$key} { align-items: $val !important; }
+    }
+
+    // Align-content
+    @each $key, $val in $align-content-utils {
+      .wdk-align-content#{$infix}-#{$key} { align-content: $val !important; }
+    }
+
+    // Align-self
+    @each $key, $val in $align-self-utils {
+      .wdk-align-self#{$infix}-#{$key} { align-self: $val !important; }
+    }
+
+    // Flex-direction
+    @each $key, $val in $flex-direction-utils {
+      .wdk-flex#{$infix}-#{$key} { flex-direction: $val !important; }
+    }
+
+    // Flex-wrap
+    @each $key, $val in $flex-wrap-utils {
+      .wdk-flex#{$infix}-#{$key} { flex-wrap: $val !important; }
+    }
+  }
+}

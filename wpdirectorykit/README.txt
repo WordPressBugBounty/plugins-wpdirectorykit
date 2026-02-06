@@ -1,11 +1,11 @@
 === WP Directory Kit ===
-Contributors: listingthemes
+Contributors: listingthemes, wpdirectorykit
 Donate link: https://wpdirectorykit.com/donate/
 Tags: directory,business directory,directory plugin,real estate,listing,classified ads,member directory
 Requires at least: 5.2
-Tested up to: 6.6
-Stable tag: 1.3.8
-Requires PHP: 5.6
+Tested up to: 6.9
+Stable tag: 1.5.0
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,21 +17,25 @@ Very easy to use and install, plugin will allow you to manage Listings, Categori
 
 As part of project solution we also build WordPress Theme for Real Estate Agency:
 
-<a href="https://wpdirectorykit.com/themes/nexproperty.html">NexProperty</a>
+<a href="https://wpdirectorykit.com/themes/nexproperty.html">NexProperty - Property WordPress Theme</a>
 
-<a href="https://wpdirectorykit.com/themes/real-estate-golden.html">Real Estate Golden</a>
+<a href="https://wpdirectorykit.com/themes/real-estate-golden.html">Real Estate Golden - WordPress Theme</a>
 
-<a href="https://wpdirectorykit.com/themes/moison.html">Realtor Directory Moison</a>
+<a href="https://wpdirectorykit.com/themes/moison.html">Realtor Directory Moison - WordPress Real Estate Theme</a>
 
-<a href="https://wpdirectorykit.com/themes/apartment.html">Apartment Theme</a>
+<a href="https://wpdirectorykit.com/themes/apartment.html">Apartment - WordPress Real Estate Theme</a>
 
-<a href="https://wpdirectorykit.com/themes/real-estate-villa.html">Villa Theme</a>
+<a href="https://wpdirectorykit.com/themes/real-estate-villa.html">Villa - WordPress Real Estate Theme</a>
 
-<a href="https://wpdirectorykit.com/themes/real-estate-dark-house.html">Dark House Theme</a>
+<a href="https://wpdirectorykit.com/themes/real-estate-dark-house.html">Dark House - WordPress Real Estate Theme</a>
+
+<a href="https://wpdirectorykit.com/themes/real-estate-realista.html">Real Estate Realista - WordPress Theme</a>
+
+<a href="https://wpdirectorykit.com/themes/real-estate-yillow.html">Real Estate Yillow - WordPress Theme</a>
 
 WordPress Theme for Car Dealers, <a href="https://wpdirectorykit.com/themes/car-dealer-nexcars.html">NexCars</a> 
 
-WordPress Theme for Clasified ADS, <a href="https://www.wpdirectorykit.com/themes/classified-ads-directory.html">Classified ADS</a> 
+WordPress Theme for Classified ADS, <a href="https://www.wpdirectorykit.com/themes/classified-ads-directory.html">Classified ADS</a> 
 
 Full-Service Real Estate Website Solution for your Apartment, Villa, House, basic tourism services, or even a complete Agency based on WP Directory Kit, <a href="https://webapartman.com/">WebApartman.com</a> 
 
@@ -86,7 +90,7 @@ Documentation: <a href="http://wpdirectorykit.com/documentation/">http://wpdirec
 	<li><a href="https://wpdirectorykit.com/plugins/wp-directory-membership.html">Membership Subscriptions & Features</a></li>
     <li><a href="https://wpdirectorykit.com/plugins/wp-directory-booking-calendar.html">Booking & Calendar</a></li>
 	<li><a href="https://wpdirectorykit.com/plugins/wp-directory-import-export.html">Import/Export from other portal, idx or similar</a></li>
-    <li><a href="https://wpdirectorykit.com/plugins/wp-directory-multy-currency.html">Multy Currency</a></li>
+    	<li><a href="https://wpdirectorykit.com/plugins/wp-directory-multy-currency.html">Multi Currency</a></li>
 	<li><a href="https://wpdirectorykit.com/plugins/wp-directory-favorites.html">Favorites</a></li>
     <li><a href="https://wpdirectorykit.com/plugins/wp-directory-review-system.html">Review system</a></li>
     <li><a href="https://wpdirectorykit.com/plugins/wp-directory-profile-picture-uploader.html">Profile picture uploader</a></li>
@@ -105,6 +109,8 @@ Documentation: <a href="http://wpdirectorykit.com/documentation/">http://wpdirec
     <li><a href="https://wpdirectorykit.com/plugins/wp-directory-messages-chat.html">WDK Live Messages Chat</a></li>
     <li><a href="https://wpdirectorykit.com/mobile-app.html">Mobile Apps for iOS and Android</a></li>
 </ul>
+
+Contact for security issues: https://wpdirectorykit.com/contact/
 
 == Installation ==
 
@@ -189,6 +195,77 @@ First you map fields then import this CSV/XML file into WP Directory Kit Plugin
 
 == Changelog ==
 
+= 1.5.0 =
+* Fixed security 
+
+= 1.4.9 =
+* Fixed security 
+
+= 1.4.8 =
+* Fixed security 
+
+= 1.4.7 =
+* Fixed security 
+* Added option disable/enable remove .00 from price
+
+= 1.4.6 =
+* Fixed security 
+
+= 1.4.5 =
+* Fixed security 
+
+= 1.4.4 =
+* Fixed security 
+
+= 1.4.3 =
+* Fix compatible sql query
+
+= 1.4.2 =
+* Fix auto select section on edit fields page
+* Filter emails data
+* Bug Fix
+* Bug Custom Order
+* Updated Elementor demo page layout
+* Improve auto select field id, New Elementor Control For Fields, integrated for general elements search form, wdk-field
+
+= 1.4.1 =
+* Live Card Elementor Builder
+* Fixed security issue allowing access to non-activated listings
+
+= 1.4.0 =
+* Elementor Element Wdk Results Listings added Filter based on rank - search_rank=1 search_rank_min=1 search_rank_max=3
+* Added views listings and showed in results statistic in dash manage listings
+* Custom Listing field UPLOAD FILES
+* Map Disable rectangle option
+* Validation View added for near each fields
+* Updated Hider Feature
+* Fix optimization issues
+* Wp BLock fix compatible with Translate plugins Last Listings
+* improve Related Listings
+* improve styles customization for Elementor Element Field Value
+* New Option "Custom Field, like extern link for listing preview"
+* Elements Wdk Locations Grid Cover / Wdk Categories Grid Cover allow gradient color for mask
+* Improve size_units for elements option, support [ 'px','em', 'vw', '%', 'custom' ] 
+* Element WDK Listing Field, new option "Show Like Star" for adding custom rating
+* Support Custom Elementor layout for Listings results (grid/list), simular listings on listing preview page
+* Bug with map 2x finger label
+* Number format settings options
+* Free Api Detect Address fix
+* Element results listings, improve order option
+* Elementor Custom Listing Layout For Results Map Listings
+
+
+= 1.3.9 =
+* Elementor Element Wdk Language Switcher, view dropdown/list/column (tested with TranslatePress, PolyLang)
+* Elementor Element Search From align option
+* Elementor Element Wdk Button Share
+* Wp Block Wdk Button Share
+* Element Wdk Button, add support for link shortcode and for title, new option open in new tab
+* Fix Conflict select2 with WOO
+* Wdk map results rectangle auto search option (on|off), if off added button search on map after created rectangle
+* SEO optimization
+
+
 = 1.3.8 =
 * calendar dates format issue fix
 * initial blocks testing
@@ -246,7 +323,7 @@ First you map fields then import this CSV/XML file into WP Directory Kit Plugin
 * More map layouts + Thunderforest Map, Jawg  Map Layout for Results Map and Listings Preview Map
 * Google Map Layout for Results Map and Listings Preview Map integrate
 * WDK Hidder (Listings options/plugins) extension added for new element Container
-* WDK Hidder added Listing have images and Listing havn't images
+* WDK Hidder added Listing have images and Listing haven't images
 * Elementor compatibility
 
 = 1.2.8 =

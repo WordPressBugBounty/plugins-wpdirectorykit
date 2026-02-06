@@ -82,6 +82,22 @@ $text_color: #161616;
         align-items: center;
         flex-wrap: wrap;
 
+        a.title-in:hover,
+        a.title-in {
+            color: inherit;
+            text-decoration: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+            font-family: inherit;
+            font-style: inherit;
+            font-variant: inherit;
+            font-stretch: inherit;
+            font-optical-sizing: inherit;
+            font-kerning: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+        }
+        
         img {
             margin-right: 10px;
         }

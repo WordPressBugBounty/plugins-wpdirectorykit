@@ -17,12 +17,26 @@ class Field_m extends Winter_MVC_Model {
     public $fields_list = NULL;
 
     public $fields_validations = array();
+    public $fields_autosuggestions = array();
     
 	public function __construct(){
         $this->fields_validations = array(
             'is_numerical'=> __('Numerical', 'wpdirectorykit'),
             'is_phone'=> __('Phone', 'wpdirectorykit'),
+            'is_phone|wdk_viber'=> __('Phone(viber)', 'wpdirectorykit'),
+            'is_phone|wdk_whatsapp'=> __('Phone(whatsApp)', 'wpdirectorykit'),
             'is_email'=> __('Email', 'wpdirectorykit'),
+        );
+
+        $this->fields_autosuggestions = array(
+            'google_api_cities'=> __('Google Api Cities', 'wpdirectorykit'),
+            'google_api_countries'=> __('Google Api Countries', 'wpdirectorykit'),
+            'rapid_api_cities'=> __('Rapid Api Cities', 'wpdirectorykit'),
+            'rapid_api_countries'=> __('Rapid Api Countries', 'wpdirectorykit'),
+            'countries'=> __('Countries', 'wpdirectorykit'),
+            'db_locations'=> __('Db Locations', 'wpdirectorykit'),
+            'db_categories'=> __('Db Categories', 'wpdirectorykit'),
+            'db_selft_field'=> __('Current Field Values', 'wpdirectorykit'),
         );
 
         parent::__construct();
@@ -170,6 +184,28 @@ class Field_m extends Winter_MVC_Model {
     public function is_related($item_id, $user_id, $method = 'edit')
     {
         return false;
+    }
+
+    
+
+    public function delete($field_id, $user_id=NULL) {
+
+        if(!$this->check_deletable($field_id, $user_id)) return false;
+
+        $this->load->model('listingfield_m');
+
+        /* remove from listing fields */
+        $field_data = $this->get($field_id, TRUE);
+
+        if($field_data)
+            $this->listingfield_m->delete_table_column($field_data, $field_id);
+
+
+        parent::delete($field_id);
+
+        do_action('wpdirectorykit/model/field/delete', $field_id);
+
+        return true;
     }
 }
 ?>

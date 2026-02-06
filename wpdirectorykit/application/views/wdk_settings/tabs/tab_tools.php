@@ -13,5 +13,8 @@
     <a href="#" class="button button-primary" id="optimization_listingfields_table"><?php echo __('Optimization Listing Fields Table','wpdirectorykit'); ?></a>               
 </div>
 <div class="wdk-field-edit">
-    <a href="#" class="button button-primary ajax_query" data-function="generated_strings"><?php echo __('Generate translation strings','wpdirectorykit'); ?></a>               
+    <a href="#" class="button button-primary ajax_query" data-function="generated_strings"><?php echo __('Generate translation strings','wpdirectorykit'); ?></a>               
+</div>
+<div class="wdk-field-edit">
+    <a href="#" class="button button-primary ajax_query" data-function="optimization_db_fields"><?php echo __('Optimization db fields','wpdirectorykit'); ?></a>               
 </div>

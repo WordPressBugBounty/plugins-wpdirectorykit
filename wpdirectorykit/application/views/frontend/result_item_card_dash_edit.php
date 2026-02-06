@@ -143,14 +143,14 @@ $resul_item_config = wdk_resultitem();
                             <?php echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));?>
                             <?php if(function_exists('run_wdk_currency_conversion')):?>
                                 <?php  
-                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
-                                        echo esc_html(wdk_number_format_i18n($value));
+                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                        echo esc_html(wdk_filter_decimal(wdk_number_format_i18n($value)));
                                 ?>
                             <?php else:?>
                                 <?php if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER'):?>
                                     <?php  
-                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
-                                        echo esc_html(wdk_number_format_i18n($value));
+                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                        echo esc_html(wdk_filter_decimal(wdk_number_format_i18n($value)));
                                     ?>
                                 <?php else:?>
                                     <?php echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));?>
@@ -163,7 +163,7 @@ $resul_item_config = wdk_resultitem();
                 </div>
             </div>
             <div class="wdk-right">
-                <a href="<?php echo esc_url($url);?>" class="wdk-btn"><?php echo esc_html(wmvc_show_data('content_button_text', $settings, ''));?><?php wdk_viewe($content_button_icon); ?></a>
+                <a href="<?php echo esc_url($url);?>" title="<?php esc_attr__('Open Listing', 'wpdirectorykit');?>" class="wdk-btn"><?php echo esc_html(wmvc_show_data('content_button_text', $settings, ''));?><?php wdk_viewe($content_button_icon); ?></a>
             </div>
         </div>
     <?php if($layout_type == 'list'):?>

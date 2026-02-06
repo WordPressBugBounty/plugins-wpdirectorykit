@@ -985,6 +985,7 @@
 
 .wdk-dashwidget-element .wdk-map .infobox.wdk-infobox-basic .title {
   margin: 0;
+  font-size: 18px;
 }
 
 .wdk-dashwidget-element .wdk-map.infobox-basic .leaflet-container a.leaflet-popup-close-button {

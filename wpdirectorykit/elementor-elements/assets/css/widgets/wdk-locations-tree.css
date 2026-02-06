@@ -44,6 +44,22 @@
   flex-wrap: wrap;
 }
 
+.wdk-locations-tree .title a.title-in:hover,
+.wdk-locations-tree .title a.title-in {
+  color: inherit;
+  text-decoration: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+  font-stretch: inherit;
+  font-optical-sizing: inherit;
+  font-kerning: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+}
+
 .wdk-locations-tree .title img {
   margin-right: 10px;
 }

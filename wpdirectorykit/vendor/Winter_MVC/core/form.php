@@ -73,28 +73,25 @@ class MVC_Form {
                         {
                             if(isset($this->error_messages[$one_rule]))
                             {
-                                $this->messages[] = $this->error_messages[$one_rule];
+                                $this->messages[$rule['field']] = $this->error_messages[$one_rule];
                             }
                             else
                             {
-                                $this->messages[] = __('Field', 'wmvc_win').' '.$rule['label'].' '.__('must be', 'wmvc_win').' '.__($one_rule, 'wmvc_win');
+                                $this->messages[$rule['field']] = __('Field', 'wmvc_win').' '.$rule['label'].' '.__('must be', 'wmvc_win').' '.__($one_rule, 'wmvc_win');
                             }
                         }
                     }
                     elseif(function_exists('wmvc_validation_'.$wmvc_rule))
                     {
-                        
-                      
-                       
                         if(call_user_func('wmvc_validation_'.$wmvc_rule, $this, $rule['label'], $_POST[$rule['field']], $wmvc_rule_parameter) === FALSE)
                         {
                             if(isset($this->error_messages[$wmvc_rule]))
                             {
-                                $this->messages[] = $this->error_messages[$wmvc_rule];
+                                $this->messages[$rule['field']] = $this->error_messages[$wmvc_rule];
                             }
                             else
                             {    
-                                $this->messages[] = __('Field', 'wmvc_win').' '.$rule['label'].' '.__('must be', 'wmvc_win').' '.__($wmvc_rule, 'wmvc_win');
+                                $this->messages[$rule['field']] = __('Field', 'wmvc_win').' '.$rule['label'].' '.__('must be', 'wmvc_win').' '.__($wmvc_rule, 'wmvc_win');
                             }
                         }
                     }
@@ -106,7 +103,7 @@ class MVC_Form {
             }
             elseif(in_array('required', $field_rules))
             {
-                $this->messages[] = __('Field is required:', 'wmvc_win').' '.$rule['label'];
+                $this->messages[$rule['field']] = __('Field is required:', 'wmvc_win').' '.$rule['label'];
             }
         }
 
@@ -208,6 +205,22 @@ class MVC_Form {
         }
 
         return join("\n", $this->messages);
+    }
+
+    public function hasError($field_id = '') {
+        if($field_id && !empty($this->messages[$field_id])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getError($field_id = '') {
+        if($field_id && !empty($this->messages[$field_id])) {
+            return $this->messages[$field_id];
+        }
+
+        return false;
     }
 
 }

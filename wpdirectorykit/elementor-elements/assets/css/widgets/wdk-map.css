@@ -1029,6 +1029,7 @@
 
 .wdk-element .wdk-map .infobox.wdk-infobox-basic .title {
   margin: 0;
+  font-size: 18px;
 }
 
 .wdk-element .wdk-map.infobox-basic .leaflet-container a.leaflet-popup-close-button {
@@ -1321,6 +1322,46 @@
   color: #fff;
 }
 
+.wdk-element .wdk-map .wdk-map-info-label {
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px 15px;
+  min-height: 35px;
+  -webkit-transition: color 0.3s, background-color 0.3s;
+  -o-transition: color 0.3s, background-color 0.3s;
+  transition: color 0.3s, background-color 0.3s;
+  -webkit-box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.2) !important;
+  text-align: center;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin: 10px;
+  margin-right: auto;
+  opacity: .8;
+}
+
+.wdk-element .wdk-map .wdk-map-info-label:hover {
+  background-color: #66676b;
+  color: #fff;
+}
+
+@media (pointer: coarse) {
+  .wdk-element .wdk-map .wdk-map-info-label.only_mobile {
+    display: flex !important;
+  }
+}
+
+@media (pointer: fine) {
+  .wdk-element .wdk-map .wdk-map-info-label.only_mobile {
+    display: none !important;
+  }
+}
+
 .wdk-element .wdk-map .wdk_map_results .leaflet-top.leaflet-right {
   transform: translateY(0);
   top: initial;
@@ -1328,6 +1369,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  justify-content: flex-end;
 }
 
 .wdk-element .wdk-map .wdk_map_results .leaflet-top.leaflet-right .leaflet-control-custom {

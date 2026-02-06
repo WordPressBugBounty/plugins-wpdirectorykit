@@ -34,10 +34,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <?php if(!empty($images) && 1 < wmvc_count($images)):?>
                     </div>
                         <div class="wdk-listing-sliders-grid-images_arrows">
-                            <a class="wdk-slider-prev wdk-listing-sliders-grid-images_arrow">
+                            <a title="<?php echo esc_attr__('prev slider', 'wpdirectorykit');?>" href="#" class="wdk-slider-prev wdk-listing-sliders-grid-images_arrow">
                                 <?php \Elementor\Icons_Manager::render_icon( $settings['styles_carousel_arrows_icon_left'], [ 'aria-hidden' => 'true' ] ); ?>
                             </a>
-                            <a class="wdk-slider-next wdk-listing-sliders-grid-images_arrow">
+                            <a title="<?php echo esc_attr__('next slider', 'wpdirectorykit');?>" href="#" class="wdk-slider-next wdk-listing-sliders-grid-images_arrow">
                                 <?php \Elementor\Icons_Manager::render_icon( $settings['styles_carousel_arrows_icon_right'], [ 'aria-hidden' => 'true' ] ); ?>
                             </a>
                         </div>

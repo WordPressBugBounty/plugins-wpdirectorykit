@@ -37,6 +37,11 @@ class WdkElementorBase extends Widget_Base {
                         $this->enqueue_styles_scripts();
                 }
 
+                
+                $this->WMVC = &wdk_get_instance();
+                $this->WMVC->model('listingfield_m');
+                $this->WMVC->model('listing_m');
+                $this->WMVC->load_helper('listing');
                 parent::__construct($data, $args);
         }
         
@@ -162,11 +167,6 @@ class WdkElementorBase extends Widget_Base {
 	protected function render() {
                 $this->enqueue_styles_scripts();
                 $this->add_page_settings_css();
-
-                $this->WMVC = &wdk_get_instance();
-                $this->WMVC->model('listingfield_m');
-                $this->WMVC->model('listing_m');
-                $this->WMVC->load_helper('listing');
 	}
 
         

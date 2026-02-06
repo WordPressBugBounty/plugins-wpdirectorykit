@@ -12,12 +12,14 @@ if (!defined('ABSPATH')) {
 }
 
 function iaprojektiranje_block_product_field_enqueue_assets() {
-    wp_enqueue_script(
-        'my-custom-block',
-         WPDIRECTORYKIT_URL.'/blocks/inc/block-product-field/block.js',
-        array('wp-blocks', 'wp-element', 'wp-editor', 'wp-i18n', 'wp-api-fetch'),
-        22
-    );
+    if(is_user_logged_in()) {
+        wp_enqueue_script(
+            'my-custom-block',
+            WPDIRECTORYKIT_URL.'/blocks/inc/block-product-field/block.js',
+            array('wp-blocks', 'wp-element', 'wp-editor', 'wp-i18n', 'wp-api-fetch'),
+            22
+        );
+    }
     wp_enqueue_style(
         'wdk-listings-list',
         WPDIRECTORYKIT_URL. 'elementor-elements/assets/css/widgets/wdk-listings-list.css',
@@ -35,7 +37,7 @@ add_action('enqueue_block_editor_assets', 'iaprojektiranje_block_product_field_e
 add_action('enqueue_block_assets', 'iaprojektiranje_block_product_field_enqueue_assets');
 
 function iaprojektiranje_block_product_field_register_meta() {
-    register_rest_route('wdk-blocks/v1', '/last-listings/', array(
+    register_rest_route('wdk-blocks/v1', '/last-listings', array(
         'methods' => 'GET',
         'callback' => 'iaprojektiranje_block_product_field_get_meta',
         'permission_callback' => '__return_true',
@@ -109,6 +111,7 @@ function iaprojektiranje_block_product_field_get_meta(WP_REST_Request $request) 
     $output = wdk_block_view('block-product-field/views/view-block.php', $data);
     wp_send_json_success($output);
 }
+
 function my_vanilla_js_block_register_block() {
     register_block_type('my-plugin/wdk-latest-listing-block', array(
         'editor_script' => 'wdk-latest-listing-block',

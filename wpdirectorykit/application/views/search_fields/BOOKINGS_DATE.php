@@ -59,10 +59,10 @@ if(get_option('wdk_bookings_is_hours_enabled')) {
     <div class="wdk-field-group">
         <div class="wdk-row min_max_row">
             <div class="wdk-col wdk-col-6" style="width: 50%;">
-                <input class="wdk-control <?php echo esc_attr($date_class );?> date_from center" <?php if(get_option('wdk_bookings_calendar_single')):?> data-wdksingle = 'true' <?php endif; ?> name="<?php echo esc_attr($field_key); ?>_from" type="text" id="<?php echo esc_attr($field_attr_id.'_from'); ?>" value="<?php echo esc_attr($field_value_from); ?>" placeholder="<?php echo esc_attr($placeholder_from);?>">
+                <input inputmode="none" autocomplete="off"  class="wdk-control <?php echo esc_attr($date_class );?> date_from center" <?php if(get_option('wdk_bookings_calendar_single')):?> data-wdksingle = 'true' <?php endif; ?> name="<?php echo esc_attr($field_key); ?>_from" type="text" id="<?php echo esc_attr($field_attr_id.'_from'); ?>" value="<?php echo esc_attr($field_value_from); ?>" placeholder="<?php echo esc_attr($placeholder_from);?>">
             </div>
             <div class="wdk-col wdk-col-6" style="width: 50%;">
-                <input class="wdk-control <?php echo esc_attr($date_class );?> date_to center" <?php if(get_option('wdk_bookings_calendar_single')):?> data-wdksingle = 'true' <?php endif; ?> name="<?php echo esc_attr($field_key); ?>_to" type="text" id="<?php echo esc_attr($field_attr_id.'_to'); ?>" value="<?php echo esc_attr($field_value_to); ?>" placeholder="<?php echo esc_attr($placeholder_to);?>">
+                <input inputmode="none" autocomplete="off"  class="wdk-control <?php echo esc_attr($date_class );?> date_to center" <?php if(get_option('wdk_bookings_calendar_single')):?> data-wdksingle = 'true' <?php endif; ?> name="<?php echo esc_attr($field_key); ?>_to" type="text" id="<?php echo esc_attr($field_attr_id.'_to'); ?>" value="<?php echo esc_attr($field_value_to); ?>" placeholder="<?php echo esc_attr($placeholder_to);?>">
             </div>
         </div>
     </div>

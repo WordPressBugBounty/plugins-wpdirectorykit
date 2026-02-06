@@ -30,6 +30,7 @@ $wdk_text_more_button = esc_html(wmvc_show_data('text_more_button', $settings));
 $current_url = '';
 
 $results_page = wmvc_show_data('conf_link', $settings);
+
 if(!is_array($results_page) && !empty($results_page)) {
     //$results_page = get_permalink($results_page);
 } else {
@@ -48,7 +49,7 @@ if(function_exists('PLL'))
 {
     $results_page = pll_get_post($results_page);
 }
-
+$results_page_id = $results_page;
 $results_page = get_permalink($results_page);
 
 $form_opened = '';
@@ -62,7 +63,8 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
         <?php if
             (
                 wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_ajax_results') &&
-                isset($settings['is_ajax_enable']) && $settings['is_ajax_enable'] == 'yes'
+                isset($settings['is_ajax_enable']) && $settings['is_ajax_enable'] == 'yes' 
+                && $results_page_id == get_queried_object_id()
             ):?>
                 ajax_results_enabled
         <?php endif;?>
@@ -70,8 +72,6 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
         <form data-current-link="<?php echo esc_url($current_url);?>" data-scrollto="<?php echo esc_attr(wmvc_show_data('search_scroll', $settings));?>" class="wdk-search-form wdk-skip-empty
          <?php if(wmvc_show_data('auto_search_enable', $settings) == 'yes'):?> auto_search <?php endif;?>
         <?php echo esc_html($form_opened);?> <?php if(!wdk_get_option('wdk_results_page')):?> wdk-result-page-notdefined <?php endif;?>" action="<?php echo esc_url($results_page);?>">
-            <input name="rectangle_ne" type="hidden" class="wdk-hidden" value="<?php echo isset($_GET['rectangle_ne']) ? esc_attr(sanitize_text_field($_GET['rectangle_ne'])) : '';?>"/>
-            <input name="rectangle_sw" type="hidden" class="wdk-hidden" value="<?php echo isset($_GET['rectangle_sw']) ? esc_attr(sanitize_text_field($_GET['rectangle_sw'])) : '';?>"/>
             <?php
                 $field_id = $tab_field ;
                 $field_values = wdk_field_option ($field_id, 'values_list');
@@ -94,9 +94,9 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
                 <?php foreach ($values as $key => $value):?>
                 <?php if(empty($value)) continue;?>
                 <input type="radio" name="field_<?php echo esc_attr($field_id);?>" id="<?php echo esc_html($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>" value="<?php echo esc_attr($value);?>" <?php if($field_value == $value):?>checked="checked"<?php endif;?>>
-                <label for="<?php echo esc_html($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>"><?php echo esc_html($value);?> 
+                <label for="<?php echo esc_html($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>"><?php echo esc_html__($value, 'wpdirectorykit');?> 
                     <?php if(wmvc_show_data('tabs_count', $settings) == 'yes'):?>
-                        <span class="tab_count"><?php echo esc_html(wmvc_show_data($value, $this->data['counts'][$field_id], 0));?></span>
+                        <span class="tab_count"><?php echo esc_html__(wmvc_show_data($value, $this->data['counts'][$field_id], 0), 'wpdirectorykit');?></span>
                     <?php endif;?>
                 </label>
                 <?php endforeach;?>
@@ -130,10 +130,10 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
                                         </div>
                                     <?php endif;?>
                                     <div class="wdk-field-group wdk-field-group-reset">
-                                        <button id="wdk-start-primary" type="reset" class="wdk-search-start wdk-search-reset wdk-click-load-animation">&nbsp;&nbsp;<?php echo esc_html(wmvc_show_data('text_reset_button', $settings)); ?>&nbsp;<i class="fa fa-spinner fa-spin fa-ajax-indicator" style="display: none;"></i>&nbsp;</button>
+                                        <button title="<?php echo esc_attr__('Reset','wpdirectorykit');?>" id="wdk-start-primary" type="reset" class="wdk-search-start wdk-search-reset wdk-click-load-animation">&nbsp;&nbsp;<?php echo esc_html(wmvc_show_data('text_reset_button', $settings)); ?>&nbsp;<i class="fa fa-spinner fa-spin fa-ajax-indicator" style="display: none;"></i>&nbsp;</button>
                                     </div>
                                     <div class="wdk-field-group wdk-field-group-search">
-                                        <button id="wdk-start-primary" type="submit" class="wdk-search-start wdk-click-load-animation">
+                                        <button title="<?php echo esc_attr__('Search','wpdirectorykit');?>" id="wdk-start-primary" type="submit" class="wdk-search-start wdk-click-load-animation">
                                             <?php if(wmvc_show_data('field_button_icon_position', $settings) == 'left') :?>
                                                 <?php \Elementor\Icons_Manager::render_icon( $settings['field_button_icon'], [ 'aria-hidden' => 'true', "class"=>'icon_search' ] ); ?>
                                             <?php endif;?>

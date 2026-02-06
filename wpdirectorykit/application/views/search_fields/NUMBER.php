@@ -58,7 +58,10 @@ if(!empty(wmvc_show_data('values_list', $field_data)) && strpos(wmvc_show_data('
     $values = explode(',', wmvc_show_data('values_list', $field_data));
     $values = array_combine($values, $values);
 
-   array_walk($values, function(&$item) use($clear_prefix, $clear_suffix) {$item = $clear_prefix.$item.$clear_suffix;});
+    array_walk($values, function(&$item) use($clear_prefix, $clear_suffix, $field_data) {
+            $item = $clear_prefix.((wdk_field_option(wmvc_show_data('idfield',$field_data), 'is_price_format') && wdk_field_option(wmvc_show_data('idfield',$field_data), 'field_type') == 'NUMBER') ? wdk_number_format_i18n($item) : $item).$clear_suffix;
+        }
+    );
 }
 wdk_search_fields_toggle();
 ?>

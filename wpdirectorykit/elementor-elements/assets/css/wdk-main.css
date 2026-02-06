@@ -303,10 +303,37 @@
   font-style: italic;
 }
 
+.wdk-field-value {
+  line-height: 1;
+}
+
 .wdk-field-value .value {
   line-height: 1.8;
   margin: 0;
   padding: 0;
+}
+
+.wdk-field-value .value a:hover,
+.wdk-field-value .value a {
+  color: inherit;
+  text-decoration: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+  font-stretch: inherit;
+  font-optical-sizing: inherit;
+  font-kerning: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+}
+
+.wdk-field-value-stars-lst {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
 
 .wdk-button-login .dash-span {

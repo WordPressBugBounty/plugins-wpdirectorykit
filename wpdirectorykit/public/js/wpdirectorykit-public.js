@@ -89,6 +89,15 @@
                 }
             });
 
+            $.each($("form.wdk-search-form.map").serializeArray(), function (i, k) {
+                if (k.value != '' && k.name.indexOf('skip') == -1) {
+                    if (str_parameters != "") {
+                        str_parameters += "&";
+                    }
+                    str_parameters += k.name + "=" + encodeURIComponent(k.value); 
+                }
+            });
+
             $.each($(".wdk-search-popup .toggle-btn:visible"), function (i, k) {
                 let el = $($(this).attr('data-wdk-target'));
                 if(el && el.length) {
@@ -130,9 +139,12 @@
         }
 
         /* set current page for search results if exists results widget and enabled in setttings*/
-        if($('form.wdk-search-form').length && $('.wdk-listings-results').length && $("form.wdk-search-form").attr('data-current-link') != '') {
-            $('form.wdk-search-form').attr('action', $("form.wdk-search-form").attr('data-current-link'));
-        }
+        $('form.wdk-search-form').each(function() {
+            var $form = $(this);
+            if ($('.wdk-listings-results').length && $('.wdk-listings-results#results').length && $form.attr('data-current-link')) {
+                $form.attr('action', $form.attr('data-current-link'));
+            }
+        });
 
         $("form.wdk-search-form").on('submit', function (e) {
             e.preventDefault();
@@ -150,7 +162,7 @@
             $("form.wdk-search-form").first().trigger('submit')
         });
 
-        $("form.wdk-search-form .wdk-search-start").on('click', function (e) {
+        $("form.wdk-search-form .wdk-search-start:not(.wdk-search-reset)").on('click', function (e) {
             e.preventDefault();
             var url = wdk_start_search($(this).closest('form'));
             $(this).closest('form').addClass('loading')
@@ -183,14 +195,58 @@
             $("form.wdk-search-form .wdk-search-reset").off().on('click', function (e) {
                 e.preventDefault();
                 let this_form = jQuery(this).closest('form');
-                this_form.find('input:not([type="checkbox"]):not([name="element_id"]):not([type="radio"]):not([type="hidden"]),textarea,select').val('');
-                this_form.find('select').val(jQuery(this).find('option:first').val()).trigger('change')
-                this_form.find('input[type="checkbox"]').prop('checked', false); 
-                this_form.find('input[type="radio"]').prop('checked', false); 
-                this_form.find('.wdk-field.LOCATION .wdk_dropdown_tree button:first-child').html(this_form.find('.wdk-field.LOCATION .list_items li:first').text()); 
-                this_form.find('.wdk-field.CATEGORY .wdk_dropdown_tree button:first-child').html(this_form.find('.wdk-field.CATEGORY .list_items li:first').text()); 
-                this_form.find('input[name="rectangle_ne"],input[name="rectangle_sw"] ').val('');
-               
+                jQuery('input:not([type="checkbox"]):not([name="element_id"]):not([type="radio"]):not([type="hidden"]),textarea,select').val('');
+                jQuery('select').val(jQuery(this).find('option:first').val())
+                jQuery('input[type="checkbox"]').prop('checked', false); 
+                jQuery('input[type="radio"]').prop('checked', false); 
+                jQuery('.wdk-field.LOCATION .wdk_dropdown_tree button:first-child').html(jQuery('.wdk-field.LOCATION .list_items li:first').text()); 
+                jQuery('.wdk-field.CATEGORY .wdk_dropdown_tree button:first-child').html(jQuery('.wdk-field.CATEGORY .list_items li:first').text()); 
+                jQuery('input[name="rectangle_ne"],input[name="rectangle_sw"] ').val('');
+
+                // Reset Select2 fields with .select_ajax class
+                jQuery('.select_ajax').each(function() {
+                    if (typeof jQuery(this).select2 === 'function') {
+                        jQuery(this).val(null).trigger('change'); // Clear selection and notify Select2
+                    }
+                }); 
+
+                // Remove all query params starting with 'search_' or 'field_' and hash '#results' from the URL on reset
+                if (window.history && window.history.replaceState) {
+                    let url = window.location.href;
+                    let parser = document.createElement('a');
+                    parser.href = url;
+
+                    // Get query string and hash
+                    let query = parser.search.replace(/^\?/, '');
+                    let hash = parser.hash;
+
+                    // Split query into key-value pairs
+                    let params = query ? query.split('&') : [];
+                    let filteredParams = [];
+
+                    // Remove params whose key starts with 'search_' or 'field_'
+                    params.forEach(function(param) {
+                        let key = param.split('=')[0];
+                        if (!(key.startsWith('search_') || key.startsWith('field_'))) {
+                            filteredParams.push(param);
+                        }
+                    });
+
+                    // Rebuild the URL without the removed params and hash
+                    let newQuery = filteredParams.length ? '?' + filteredParams.join('&') : '';
+                    let newUrl = parser.protocol + '//' + parser.host + parser.pathname + newQuery;
+
+                    // Remove hash if it is '#results'
+                    if (hash && hash !== '#results') {
+                        newUrl += hash;
+                    }
+
+                    window.history.replaceState({}, document.title, newUrl);
+                }
+
+                if(this_form.hasClass('auto_search')) {
+                    $("form.wdk-search-form").first().trigger('submit')
+                }
                 return false;
             })
         };
@@ -210,10 +266,14 @@
 						self.parent().find('.db-date').val(wdk_date_sql_normalize(self.datepicker("getDate"), self)).trigger('input');
 					}
 				}).on( "change", function() {
-					self.parent().find('.db-date').val(wdk_date_sql_normalize(self.datepicker("getDate"), self));
+                    if(self.val() == '') {
+						self.parent().find('.db-date').val('');
+					} else {
+                        self.parent().find('.db-date').val(wdk_date_sql_normalize(self.datepicker("getDate"), self));
+					}
 				});
                 
-                if(self.parent().find('.db-date').val() == '') {
+                if(self.parent().find('.db-date').val() == '' && false) {
                     self.parent().find('.db-date').val(wdk_date_notime_sql_normalize());
                 }
             })
@@ -424,9 +484,136 @@
             moreContentDiv.before(readMoreButtonWrapper);
             moreContentDiv.remove();
         });
+
+        $('.wdk-language-switcher-drop .wdk-language-switcher-btn-toggle').on('click', function (e) { 
+			e.preventDefault();
+			$(this).closest('.wdk-language-switcher-drop').toggleClass('wdk-show');
+		});
+        // Add click event to each share link
+        document.querySelectorAll('.wdk-device-share-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); 
+                shareUrl(link.getAttribute('href')); 
+            });
+        });
+
+        $('.wdk-search_sensitive_link').on('click',function(e) {
+            e.preventDefault();
+            var href = $(this).attr('href'),
+            search_url = wdk_start_search($("form.wdk-search-form"));
+
+            if(search_url == href) {
+                window.location.href = href;
+                return;
+            }
+
+            // Parse the href to extract search_location and search_category
+            var urlParams = new URLSearchParams(href.split('?')[1]);
+            var searchLocation = urlParams.get('search_location');
+            var searchCategory = urlParams.get('search_category');
+
+            // Parse the search_url to update with new params
+            var searchParams = new URLSearchParams(search_url.split('?')[1]);
+
+            if (searchLocation) {
+                searchParams.set('search_location', searchLocation);
+            }
+            if (searchCategory) {
+                searchParams.set('search_category', searchCategory);
+            }
+
+            var updatedSearchUrl = search_url.split('?')[0] + '?' + searchParams.toString();
+            window.location.href = updatedSearchUrl;
+
+        })
+        resetSearchFields();
     });
 
 })(jQuery);
+
+
+
+var resetSearchFields = () => {
+    jQuery(".wdk-control[type='text']:not(.wdk-hidden)").each(function(){
+        var $searchField = jQuery(this);
+        // Create reset button
+        var $resetButton = jQuery("<span>&times;</span>")
+            .css({
+                cursor: "pointer",
+                display: "none", // Initially hidden
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontSize: "18px"
+            });
+        
+        /* Text Fields */
+        
+        // Wrap input field in a relative container
+        var $wrapper = jQuery("<div></div>")
+            .css({ position: "relative" })
+            .insertBefore($searchField);
+        
+        $wrapper.append($searchField).append($resetButton);
+        
+        // Show/hide reset button based on input
+        $searchField.on("input", function () {
+            $resetButton.toggle(!!$searchField.val()); // Toggle visibility based on input
+        });
+        
+        // Clear field when reset button is clicked
+        $resetButton.on("click", function () {
+            $searchField.val("").trigger("input").focus(); // Reset field and trigger input event to hide button
+        });
+    });
+    /* Tree Fields */
+
+    jQuery(`input[name="search_location"],input[name="search_category"]`).each(function(){
+
+        var $searchField = jQuery(this);
+        var resetButton;
+    
+        // Show/hide reset button based on input
+        $searchField.on("change", function () {
+                if (jQuery(this).val() !== "") {
+                    // Wrap input field in a relative container
+                    var $wrapper = $searchField.closest('.wdk-field-group').find('.wdk_dropdown_tree button:first-child')
+                        .css({ position: "relative" });
+                        console.log($wrapper);
+                        console.log(resetButton);
+                    if (!resetButton) {
+                        resetButton = jQuery("<span>&times;</span>")
+                        .css({
+                            cursor: "pointer",
+                            position: "absolute",
+                            right: "10px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            fontSize: "18px"
+                        })
+                        .on("click", function (e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+    
+                            $searchField.val("").trigger("input").focus();
+                            resetButton.remove();
+                            resetButton = null;
+                            $searchField.closest('.wdk-field-group').find('.wdk_dropdown_tree button:first-child').html( $searchField.closest('.wdk-field-group').find('.list_items li:first').text()); 
+                          
+                            return false;
+                        });
+                    $wrapper.append(resetButton);
+                    }
+                } else if (resetButton) {
+                    resetButton.remove();
+                    resetButton = null;
+                }
+        });
+
+    });
+
+};
 
 /* slider for result listings thumbnails */
 if (typeof wdk_result_listings_thumbnail_slider != 'function') {
@@ -439,11 +626,15 @@ if (typeof wdk_result_listings_thumbnail_slider != 'function') {
                     if(_this.closest('.wdk_results_listings_slider_ini').length){return true;}
                 }
 
-                if(false && _this.closest('.slick-slide').hasClass('slick-cloned')){return true;}
-
-                if(_this.find('.wdk_js_gallery_slider').hasClass('slick-initialized')) {
-                    _this.find('.wdk_js_gallery_slider').slick("unslick");
+                if (_this.closest('.slick-slide').hasClass('slick-cloned')) {
+                    return true;
                 }
+
+                // Check if the slider exists and is initialized
+                if (_this.find('.wdk_js_gallery_slider').length > 0 && _this.find('.wdk_js_gallery_slider').hasClass('slick-initialized')) {
+                    _this.find('.wdk_js_gallery_slider').slick('unslick');
+                }
+
 
                 _this.find('.wdk_js_gallery_slider').slick({
                     dots: true,
@@ -555,7 +746,7 @@ var wdk_date_notime_sql_normalize = (date = '', datepicker_el = null) => {
 }
 
 if (typeof wdk_generate_marker_ajax_popup != 'function') {
-var wdk_generate_marker_ajax_popup = (ajax_url, listing_post_id, lat, lng,innerMarker, wdk_jpopup_customOptions, auto = false, clusters_enabled = true) => {
+var wdk_generate_marker_ajax_popup = (ajax_url, listing_post_id, lat, lng,innerMarker, wdk_jpopup_customOptions, auto = false, clusters_enabled = true, custom_layout_id = '') => {
 
     if(auto) {
         var marker = L.marker(
@@ -585,7 +776,8 @@ var wdk_generate_marker_ajax_popup = (ajax_url, listing_post_id, lat, lng,innerM
         "action": 'wdk_public_action',
         "page": 'wdk_frontendajax',
         "function": 'map_infowindow',
-        "listing_post_id": listing_post_id
+        "listing_post_id": listing_post_id,
+        "custom_layout_id": custom_layout_id,
       };
   
     let favorite_init = false;
@@ -679,3 +871,22 @@ var wdk_generate_marker_nopopup = (lat, lng,innerMarker) => {
     return marker;
 }
 }
+
+// Share URL function
+var shareUrl = (url = window.location.href) => {
+    // Check if the browser supports the Web Share API
+    if (!navigator.share) {
+        console.log("Web Share API not supported.");
+        return;
+    }
+
+    navigator.share({
+        url: url, // Share the current page URL
+    })
+    .then(() => {
+        console.log("Shared successfully!");
+    })
+    .catch((error) => {
+        console.error("Sharing failed:", error);
+    });
+};

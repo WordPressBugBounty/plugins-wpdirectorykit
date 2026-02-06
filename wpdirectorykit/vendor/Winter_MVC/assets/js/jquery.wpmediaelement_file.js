@@ -58,7 +58,7 @@ jQuery.fn.wpMediaElementFile = function (options)
         options.frame = wp.media({
             title: options.frame.title,
             library: {
-                type: 'image'
+                type: ['application', 'image', 'video']
             },
             button: {
                 text: options.frame.button

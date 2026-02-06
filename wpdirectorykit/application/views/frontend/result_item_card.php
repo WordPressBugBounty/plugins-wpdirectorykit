@@ -33,6 +33,13 @@ if(wdk_is_listing_page_enabled()) {
     $url = get_permalink($listing);
 }
 
+if(wdk_get_option('wdk_custom_listings_link_field')){
+    $custom_link = wdk_field_value(wdk_get_option('wdk_custom_listings_link_field'), $listing);
+    if(!empty($custom_link)) {
+        $url = $custom_link;
+    }
+}
+
 $title_part =  wdk_resultitem_fields_section_value(1, 2, $listing);
 $subtitle_part = wdk_resultitem_fields_section_value(1, 3, $listing);
 $over_image_bottom =  wdk_resultitem_fields_section_value(1, 1, $listing);
@@ -47,6 +54,16 @@ $slides_count_limit = 5;
 
 global $wdk_listing_result_id;
 $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
+
+$parsed_url = parse_url($url);
+$site_host  = parse_url(home_url(), PHP_URL_HOST);
+$url_host   = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+
+$is_external = $url_host && $url_host !== $site_host;
+if(empty($url_host)) {
+   $is_external = true;
+}
+
 
 ?>
 <div class="wdk-listing-card <?php echo esc_attr($layout_type);?> <?php if($layout_type == 'carousel'):?> grid <?php endif;?> <?php if(wdk_get_option('wdk_is_featured_enabled', FALSE) && wmvc_show_data('is_featured', $listing, '') == 1):?> is_featured <?php endif;?> <?php if(!$infobox && wmvc_show_data('is_multiline_enabled', $resul_item_config, '') == 1):?> is_multiline_enabled <?php endif;?>">
@@ -80,21 +97,22 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
                         <?php endif;?>
                         <?php foreach ($images as $key=>$image_src):?>
                             <?php if($key >= $slides_count_limit) break;?>
+                            <?php if(empty($image_src)) continue;?>
                             <div>
                                 <img src="<?php echo esc_url($image_src);?>" alt=""  class="wdk-image">
-                                <a href="<?php echo esc_url($url);?>" class="wdk-thumbnail_link" title="<?php echo esc_attr(wmvc_show_data('post_title', $listing)) ;?>"></a>
+                                <a href="<?php echo esc_url($url);?>" class="wdk-thumbnail_link" title="<?php echo esc_attr(wmvc_show_data('post_title', $listing)) ;?>"  <?php echo $is_external ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>></a>
                             </div>
                         <?php endforeach;?>
                     </div>
                     <div class="wdk_js_gallery_slider-carousel_arrows">
-                        <a href="#prev" class="wdk-slider-prev">
+                        <a href="#prev" class="wdk-slider-prev" title="<?php echo esc_attr__('prev slider', 'wpdirectorykit');?>">
                             <?php if(!empty($settings['thumbn_slider_arrow_left']['value'])):?>
                                 <?php \Elementor\Icons_Manager::render_icon( $settings['thumbn_slider_arrow_left'], [ 'aria-hidden' => 'true' ] ); ?>
                             <?php else:?>
                                 <span class="dashicons dashicons-arrow-left-alt2"></span>
                             <?php endif;?>
                         </a>
-                        <a href="#next" class="wdk-slider-next">
+                        <a href="#next" class="wdk-slider-next" title="<?php echo esc_attr__('next slider', 'wpdirectorykit');?>">
                             <?php if(!empty($settings['thumbn_slider_arrow_right']['value'])):?>
                                 <?php \Elementor\Icons_Manager::render_icon( $settings['thumbn_slider_arrow_right'], [ 'aria-hidden' => 'true' ] ); ?>
                             <?php else:?>
@@ -144,18 +162,41 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
             <?php endif;?>
         <?php endif;?>
 
-        <a href="<?php echo esc_url($url);?>" class="wdk-thumbnail_link" title="<?php echo esc_attr(wmvc_show_data('post_title', $listing)) ;?>"></a>
+        <a href="<?php echo esc_url($url);?>"  <?php echo $is_external ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> class="wdk-thumbnail_link" title="<?php echo esc_attr(wmvc_show_data('post_title', $listing)) ;?>"></a>
         <?php if(!empty($over_image_top)):?>
             <div class="wdk-over-image-top">
             <?php foreach ($over_image_top as $key => $field):?>
-                <?php if(wmvc_show_data('field_id', $field) == 'agent_image'):?>
+                <?php if(in_array(wmvc_show_data('field_id', $field), array('agent_image','agent_email','agent_name'))):?>
                     <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
                     <?php if(!empty($user)): ?>
-                        <?php if(!empty($user['profile_url'])) :?>
-                            <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link"><img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>"></a>
-                        <?php else:?>
-                            <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
+                        <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link">
                         <?php endif;?>
+                            <?php
+                                switch (wmvc_show_data('field_id', $field)) {
+                                    case 'agent_image':
+                                        ?>
+                                        <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
+                                        <?php
+                                        break;
+                                    case 'agent_email':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('user_email', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                    case 'agent_name':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('display_name', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                }
+                            ?>
+
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            </a>
+                        <?php endif;?>
+                        </span>
                     <?php endif;?>
                 <?php continue; endif;?>
                 <span class='wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>'>
@@ -166,7 +207,7 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
                         $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                         echo esc_html(wdk_number_format_i18n($value));
                     } else {
-                        echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));
+                        echo esc_html__(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))), 'wpdirectorykit');
                     }
                     
                     echo esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));
@@ -178,14 +219,37 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
         <?php if(!empty($over_image_bottom) || function_exists('run_wdk_favorites')):?>
             <div class="wdk-over-image-bottom">
             <?php  if(!empty($over_image_bottom)) foreach ($over_image_bottom as $key => $field):?>
-                <?php if(wmvc_show_data('field_id', $field) == 'agent_image'):?>
+                <?php if(in_array(wmvc_show_data('field_id', $field), array('agent_image','agent_email','agent_name'))):?>
                     <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
                     <?php if(!empty($user)): ?>
-                        <?php if(!empty($user['profile_url'])) :?>
-                            <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link"><img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>"></a>
-                        <?php else:?>
-                            <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
+                        <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link">
                         <?php endif;?>
+                            <?php
+                                switch (wmvc_show_data('field_id', $field)) {
+                                    case 'agent_image':
+                                        ?>
+                                        <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
+                                        <?php
+                                        break;
+                                    case 'agent_email':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('user_email', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                    case 'agent_name':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('display_name', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                }
+                            ?>
+
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            </a>
+                        <?php endif;?>
+                        </span>
                     <?php endif;?>
                 <?php continue; endif;?>
                 <span class='wdk-item wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>'>
@@ -207,10 +271,10 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
             
             <?php if(function_exists('run_wdk_favorites')): ?>
                 <span class="wdk-favorites-actions">
-                    <a href="#" data-post_type="wdk-listing" data-post_id="<?php echo esc_attr(wmvc_show_data('post_id', $listing));?>" class="wdk-add-favorites-action <?php echo (esc_attr($favorite_added))?'wdk-hidden':''; ?>"  data-ajax="<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>">
+                    <a title="<?php echo esc_attr__('Favorite', 'wpdirectorykit');?>"  href="#" data-post_type="wdk-listing" data-post_id="<?php echo esc_attr(wmvc_show_data('post_id', $listing));?>" class="wdk-add-favorites-action <?php echo (esc_attr($favorite_added))?'wdk-hidden':''; ?>"  data-ajax="<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>">
                         <i class="fa fa-heart-o"></i>
                     </a>
-                    <a href="#" data-post_type="wdk-listing" data-post_id="<?php echo esc_attr(wmvc_show_data('post_id', $listing));?>" class="wdk-remove-favorites-action <?php echo (!esc_attr($favorite_added))?'wdk-hidden':''; ?>" data-ajax="<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>">
+                    <a title="<?php echo esc_attr__('Favorite', 'wpdirectorykit');?>"  href="#" data-post_type="wdk-listing" data-post_id="<?php echo esc_attr(wmvc_show_data('post_id', $listing));?>" class="wdk-remove-favorites-action <?php echo (!esc_attr($favorite_added))?'wdk-hidden':''; ?>" data-ajax="<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>">
                         <i class="fa fa-heart"></i>
                     </a>
                     <i class="fa fa-spinner fa-spin fa-custom-ajax-indicator"></i>
@@ -230,18 +294,41 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
         <?php if(!empty($title_part)):?>
             <div class="wdk-title">
                 <h2 class="title">
-                    <a href="<?php echo esc_url($url);?>" title="<?php echo esc_attr(wmvc_show_data('post_title', $listing)) ;?>">
+                    <a href="<?php echo esc_url($url);?>"  <?php echo $is_external ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> title="<?php echo esc_attr(wmvc_show_data('post_title', $listing)) ;?>">
                         <?php foreach ($title_part as $key => $field):?>
-                            <?php if(wmvc_show_data('field_id', $field) == 'agent_image'):?>
-                                <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
-                                <?php if(!empty($user)): ?>
-                                    <?php if(!empty($user['profile_url'])) :?>
-                                        <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link"><img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>"></a>
-                                    <?php else:?>
+                            <?php if(in_array(wmvc_show_data('field_id', $field), array('agent_image','agent_email','agent_name'))):?>
+                    <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
+                    <?php if(!empty($user)): ?>
+                        <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link">
+                        <?php endif;?>
+                            <?php
+                                switch (wmvc_show_data('field_id', $field)) {
+                                    case 'agent_image':
+                                        ?>
                                         <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
-                                    <?php endif;?>
-                                <?php endif;?>
-                            <?php continue; endif;?>
+                                        <?php
+                                        break;
+                                    case 'agent_email':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('user_email', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                    case 'agent_name':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('display_name', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                }
+                            ?>
+
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            </a>
+                        <?php endif;?>
+                        </span>
+                    <?php endif;?>
+                <?php continue; endif;?>
                             <span class='wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>'>
                             <?php 
                                 echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));
@@ -265,16 +352,39 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
             <div class="wdk-subtitle-part">
                 <div class="wdk-stroke">
                     <?php foreach ($subtitle_part as $key => $field):?>
-                        <?php if(wmvc_show_data('field_id', $field) == 'agent_image'):?>
-                            <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
-                            <?php if(!empty($user)): ?>
-                                <?php if(!empty($user['profile_url'])) :?>
-                                    <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link"><img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>"></a>
-                                <?php else:?>
-                                    <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
-                                <?php endif;?>
-                            <?php endif;?>
-                        <?php continue; endif;?>
+                        <?php if(in_array(wmvc_show_data('field_id', $field), array('agent_image','agent_email','agent_name'))):?>
+                    <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
+                    <?php if(!empty($user)): ?>
+                        <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link">
+                        <?php endif;?>
+                            <?php
+                                switch (wmvc_show_data('field_id', $field)) {
+                                    case 'agent_image':
+                                        ?>
+                                        <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
+                                        <?php
+                                        break;
+                                    case 'agent_email':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('user_email', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                    case 'agent_name':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('display_name', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                }
+                            ?>
+
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            </a>
+                        <?php endif;?>
+                        </span>
+                    <?php endif;?>
+                <?php continue; endif;?>
                         <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
                         <?php 
                             echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));
@@ -347,16 +457,39 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
         <?php endif;?>
         <?php if(!empty($features_part)):?>
             <div class="wdk-features-part">
-                <?php foreach ($features_part as $key => $field):?><?php if(wmvc_show_data('field_id', $field) == 'agent_image'):?>
-                                <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
-                                <?php if(!empty($user)): ?>
-                                    <?php if(!empty($user['profile_url'])) :?>
-                                        <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link"><img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>"></a>
-                                    <?php else:?>
+                <?php foreach ($features_part as $key => $field):?> <?php if(in_array(wmvc_show_data('field_id', $field), array('agent_image','agent_email','agent_name'))):?>
+                    <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
+                    <?php if(!empty($user)): ?>
+                        <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link">
+                        <?php endif;?>
+                            <?php
+                                switch (wmvc_show_data('field_id', $field)) {
+                                    case 'agent_image':
+                                        ?>
                                         <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
-                                    <?php endif;?>
-                                <?php endif;?>
-                            <?php continue; endif;?><?php if(wmvc_show_data('field_type', $field) == 'CHECKBOX'):?>
+                                        <?php
+                                        break;
+                                    case 'agent_email':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('user_email', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                    case 'agent_name':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('display_name', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                }
+                            ?>
+
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            </a>
+                        <?php endif;?>
+                        </span>
+                    <?php endif;?>
+                <?php continue; endif;?><?php if(wmvc_show_data('field_type', $field) == 'CHECKBOX'):?>
                         <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>"><?php echo esc_html(esc_html(wmvc_show_data('field_label', $field, '')));?></span>
                     <?php else:?> 
                         <?php if(!wdk_filter_decimal(wmvc_show_data('value', $field))) continue;?>
@@ -394,28 +527,51 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
                 <div class="wdk-price">
                 <?php if(!empty($price_part)):?>
                     <?php foreach ($price_part as $key => $field):?>
-                        <?php if(wmvc_show_data('field_id', $field) == 'agent_image'):?>
-                            <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
-                            <?php if(!empty($user)): ?>
-                                <?php if(!empty($user['profile_url'])) :?>
-                                    <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link"><img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>"></a>
-                                <?php else:?>
-                                    <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
-                                <?php endif;?>
-                            <?php endif;?>
-                        <?php continue; endif;?>
+                        <?php if(in_array(wmvc_show_data('field_id', $field), array('agent_image','agent_email','agent_name'))):?>
+                    <?php $user = wdk_get_user_data(wmvc_show_data('user_id_editor', $listing));?>
+                    <?php if(!empty($user)): ?>
+                        <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            <a href="<?php echo esc_url($user['profile_url']);?>" class="agent_logo_link">
+                        <?php endif;?>
+                            <?php
+                                switch (wmvc_show_data('field_id', $field)) {
+                                    case 'agent_image':
+                                        ?>
+                                        <img class="agent_logo" src="<?php echo esc_url(wmvc_show_data('avatar', $user));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user['userdata']));?>">
+                                        <?php
+                                        break;
+                                    case 'agent_email':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('user_email', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                    case 'agent_name':
+                                        ?>
+                                            <?php echo esc_html(wmvc_show_data('display_name', $user['userdata']));?>
+                                        <?php
+                                        break;
+                                }
+                            ?>
+
+                        <?php if(!empty($user['profile_url']) && !empty($field['add_profile_link'])) :?>
+                            </a>
+                        <?php endif;?>
+                        </span>
+                    <?php endif;?>
+                <?php continue; endif;?>
                         <span class="wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
                             <?php echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));?>
                             <?php if(function_exists('run_wdk_currency_conversion') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER'):?>
                                 <?php  
-                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
-                                        echo esc_html(wdk_number_format_i18n($value));
+                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                        echo esc_html(wdk_filter_decimal(wdk_number_format_i18n($value)));
                                 ?>
                             <?php else:?>
                                 <?php if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER'):?>
                                     <?php  
-                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
-                                        echo esc_html(wdk_number_format_i18n($value));
+                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                        echo esc_html(wdk_filter_decimal(wdk_number_format_i18n($value)));
                                     ?>
                                 <?php else:?>
                                     <?php echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field)))), wmvc_show_data('field_id', $field))));?>
@@ -429,9 +585,55 @@ $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
                 </div>
             </div>
             <div class="wdk-right">
-                <a href="<?php echo esc_url($url);?>" class="wdk-btn"><?php echo wmvc_show_data('content_button_text', $settings, '');?><?php wdk_viewe($content_button_icon); ?></a>
+                <a href="<?php echo esc_url($url);?>"  <?php echo $is_external ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> title="<?php esc_attr__('Open Listing', 'wpdirectorykit');?>" class="wdk-btn"><?php echo wmvc_show_data('content_button_text', $settings, '');?><?php wdk_viewe($content_button_icon); ?></a>
             </div>
         </div>
+        <?php if($layout_type == 'grid' && wmvc_show_data('is_show_agent_details', $resul_item_config, '')):?>
+
+            <?php if(wmvc_show_data('user_id_editor', $listing, false, TRUE, TRUE) && wdk_get_user_data(wmvc_show_data('user_id_editor', $listing, false, TRUE, TRUE))):?>
+                <div class="wdk-listing-item-agent wdk-subtitle-part">
+                    <?php
+
+                        $user_editor_data = array(
+                            'display_name'=> wmvc_show_data('user_id_editor_display_name', $listing, false, TRUE, TRUE),
+                            'user_login'=>wmvc_show_data('user_id_editor_user_login', $listing, false, TRUE, TRUE),
+                            'wdk_slug'=>wmvc_show_data('user_id_editor_wdk_slug', $listing, false, TRUE, TRUE),
+                            'avatar'=>wmvc_show_data('user_id_editor_avatar', $listing, false, TRUE, TRUE),
+                        );
+                        
+                        /* query user data */
+                        if(empty($user_editor_data['display_name'])) {
+                            $user_editor_data = array(
+                                'display_name'=> wdk_get_user_field (wmvc_show_data('user_id_editor', $listing, false, TRUE, TRUE), 'display_name'),
+                                'user_login'=>wdk_get_user_field (wmvc_show_data('user_id_editor', $listing, false, TRUE, TRUE), 'user_login'),
+                                'wdk_slug'=>wdk_get_user_field (wmvc_show_data('user_id_editor', $listing, false, TRUE, TRUE), 'wdk_slug'),
+                                'avatar'=>wdk_get_user_data(wmvc_show_data('user_id_editor', $listing, false, TRUE, TRUE))['avatar'],
+                            );
+                        }
+
+                        $profile_url = wdk_generate_profile_permalink($user_editor_data);
+                    ?>
+                    <div class="agent-thumbnail">
+                        <?php if(!empty($profile_url) && $profile_url !='#') :?>
+                            <a href="<?php echo esc_url($profile_url);?>"><img src="<?php echo esc_url(wmvc_show_data('avatar', $user_editor_data, false, TRUE, TRUE));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user_editor_data, false, TRUE, TRUE));?>"></a>
+                        <?php else:?>
+                            <img src="<?php echo esc_url(wmvc_show_data('avatar', $user_editor_data, false, TRUE, TRUE));?>" alt="<?php echo esc_attr(wmvc_show_data('display_name', $user_editor_data, false, TRUE, TRUE));?>">
+                        <?php endif;?>
+                    </div>
+                    <div class="agent-cont">
+                        <span class="by"><?php echo esc_html__('Listing By', 'wpdirectorykit');?></span>
+                        <h4 class="title">
+                            <?php if(!empty($profile_url) && $profile_url !='#') :?>
+                                <a href="<?php echo esc_url($profile_url);?>"><?php echo esc_html(wmvc_show_data('display_name', $user_editor_data, false, TRUE, TRUE));?></a>
+                            <?php else:?>
+                                <?php echo esc_html(wmvc_show_data('display_name', $user_editor_data, false, TRUE, TRUE));?>
+                            <?php endif;?>
+                        </h4>
+                    </div>
+                </div>
+            <?php endif;?>
+        <?php endif;?>
+
     <?php if($layout_type == 'list'):?>
     </div>
     <?php endif;?>

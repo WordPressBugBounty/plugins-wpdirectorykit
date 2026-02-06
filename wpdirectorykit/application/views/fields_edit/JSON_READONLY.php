@@ -38,7 +38,7 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <span class="regular-span" style="">
@@ -50,6 +50,7 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
                 <?php foreach ($json_data as $key => $value) : ?>
                     <?php if(in_array(strtolower($key), array('element_id','eli_id','eli_type','eli_page_id','action','message'))) continue;?>
                     <?php if (!empty($value)) : ?>
+                    <?php if(in_array($key, array('eli_id', 'eli_type','ID','filter','action','send_action_type', 'g-recaptcha-response'))) continue; ?>
                         <p>
                             <?php if(filter_var($value, FILTER_VALIDATE_URL ) || strpos( $value, 'http' ) !== FALSE):?>
                                 <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)),'wpdirectorykit'); ?>:</strong> <a href="<?php echo esc_url($value);?>"><?php echo wp_kses_post($value); ?></a><br />

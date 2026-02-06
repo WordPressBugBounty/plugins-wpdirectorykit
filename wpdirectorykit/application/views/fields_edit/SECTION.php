@@ -35,7 +35,7 @@ if(isset($field->is_required) && $field->is_required == 1)
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
     <h3 class="title"><?php echo esc_html($field_label).esc_html($required); ?></h3>
     <input class="regular-text" name="<?php echo esc_attr($field_id); ?>" type="hidden" id="<?php echo esc_attr($field_id); ?>" value="">
 </div>

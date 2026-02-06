@@ -1,7 +1,9 @@
-const wdk_map_draw = (wdk_map, options = null) => {
+const wdk_map_draw = (wdk_map, options = null, autosearch = true) => {
     var $ = jQuery,
         map = wdk_map,
-        editableLayers, drawPluginOptions, drawControl, removeButtonControl,outGreyMask;
+        editableLayers, drawPluginOptions, drawControl, removeButtonControl,outGreyMask,searchButtonControl;
+
+    const { __ } = wp.i18n; 
 
     const event_init = () => {
         editableLayers = new L.FeatureGroup();
@@ -14,14 +16,7 @@ const wdk_map_draw = (wdk_map, options = null) => {
                 polyline: false,
                 polygon: false,
                 circle: false,
-                rectangle: {
-                    shapeOptions: {
-                        clickable: false,
-                        color: '#ff7800',
-                        weight: 1,
-                    },
-                    showRadius: true,
-                },
+                rectangle: false,
                 circlemarker: false,
                 marker: false,
                 showArea: true,
@@ -66,8 +61,8 @@ const wdk_map_draw = (wdk_map, options = null) => {
                 // Get coordinates of the polygon
                 var coordinates = layer.getLatLngs();
                 if(coordinates) {
-                    $('.wdk-search-form').find('input[name="rectangle_ne"]').val(coordinates[0][1].lat+','+coordinates[0][1].lng);
-                    $('.wdk-search-form').find('input[name="rectangle_sw"]').val(coordinates[0][3].lat+','+coordinates[0][3].lng);
+                    $('.wdk-search-form.map').find('input[name="rectangle_ne"]').val(coordinates[0][1].lat+','+coordinates[0][1].lng);
+                    $('.wdk-search-form.map').find('input[name="rectangle_sw"]').val(coordinates[0][3].lat+','+coordinates[0][3].lng);
                     event_rectange_changed();
                 }
             }
@@ -89,7 +84,7 @@ const wdk_map_draw = (wdk_map, options = null) => {
 
             onAdd: function (map) {
                 var container = L.DomUtil.create('div', 'custom-draw-button');
-                container.innerHTML = 'Search by Drawing';
+                container.innerHTML = __('Search by Drawing', 'wpdirectorykit');
                 container.onclick = function () {
                     new L.Draw.Rectangle(map, drawControl.options.draw.rectangle).enable();
                 };
@@ -99,6 +94,31 @@ const wdk_map_draw = (wdk_map, options = null) => {
 
         // Add the custom control to the map
         map.addControl(new CustomControl());
+        
+        // Custom control for the "Search" button
+        var CustomControl = L.Control.extend({
+            options: {
+                position: 'topright' // Position of the control
+            },
+
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'custom-draw-button');
+                container.innerHTML = __('Search', 'wpdirectorykit');
+                container.classList.add("wdk-search-start-button");
+                container.style.display = 'none';
+
+                container.onclick = function () {
+                    $('.wdk-search-form .wdk-search-start[type="submit"]').trigger('click');
+                };
+                return container;
+            }
+        });
+
+        // Add the custom control to the map
+        if(!autosearch) {
+            searchButtonControl = new CustomControl();
+            map.addControl(searchButtonControl);
+        }
     };
 
     const setRectangle = (layer, fitBounds = true) => {
@@ -112,10 +132,13 @@ const wdk_map_draw = (wdk_map, options = null) => {
         }
 
         removeButtonControl.getContainer().style.display = 'block';
+
+        if(searchButtonControl)
+            searchButtonControl.getContainer().style.display = 'flex';
     };
 
     const event_rectange_changed  = (coordinates = '') => {
-        if(true) {
+        if(autosearch) {
             $('.wdk-search-form .wdk-search-start[type="submit"]').trigger('click');
         }
     };
@@ -125,10 +148,10 @@ const wdk_map_draw = (wdk_map, options = null) => {
         removeButtonControl.getContainer().style.display = 'none';
            
         // Clear the input fields
-        $('.wdk-search-form').find('input[name="rectangle_ne"]').val('');
-        $('.wdk-search-form').find('input[name="rectangle_sw"]').val('');
-
+        $('.wdk-search-form.map').find('input[name="rectangle_ne"]').val('');
+        $('.wdk-search-form.map').find('input[name="rectangle_sw"]').val('');
         removeOuther();
+        event_rectange_changed();
     };
 
 
@@ -166,6 +189,8 @@ const wdk_map_draw = (wdk_map, options = null) => {
         }
 
         removeButtonControl.getContainer().style.display = 'block';
+        if(searchButtonControl)
+            searchButtonControl.getContainer().style.display = 'flex';
     };
 
     const removeOuther = () => {

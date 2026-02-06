@@ -70,12 +70,12 @@ __('Pharmacies','wpdirectorykit');
 __('m','wpdirectorykit');
 __('Bakery','wpdirectorykit');
 __('m','wpdirectorykit');
-__('Restourant','wpdirectorykit');
+__('Restaurant','wpdirectorykit');
 __('m','wpdirectorykit');
-__('Coffe shop','wpdirectorykit');
+__('Coffee shop','wpdirectorykit');
 __('m','wpdirectorykit');
 __('Stars','wpdirectorykit');
 __(',1,2,3,4,5','wpdirectorykit');
-__('Bads','wpdirectorykit');
+__('Beds','wpdirectorykit');
 
 ?>

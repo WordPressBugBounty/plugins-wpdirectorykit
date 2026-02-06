@@ -138,7 +138,7 @@ class WdkListingFieldsSection extends WdkElementorBase {
      * @access protected
      */
     protected function render() {
-        parent::render();
+ 
         global $wdk_listing_id;
 
         $this->data['id_element'] = $this->get_id();
@@ -192,6 +192,7 @@ class WdkListingFieldsSection extends WdkElementorBase {
         }
 
         echo $this->view('wdk-listing-fields-section', $this->data); 
+        parent::render();
     }
 
 

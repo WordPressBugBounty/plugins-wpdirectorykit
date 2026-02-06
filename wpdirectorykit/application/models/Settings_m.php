@@ -161,6 +161,15 @@ class Settings_m extends Winter_MVC_Model {
             ),
         );
 
+        $this->fields_list_tabs['templates'] []  = array(
+                'field' => 'wdk_multilingual_float_language_picker', 
+                'field_label' => __('Float Language Picker', 'wpdirectorykit'), 
+                'field_type' => 'CHECKBOX', 
+                'hint' => __('Multilingual float language picker required WDK Multilingual addon', 'wpdirectorykit'), 
+                'hint' => wdk_sprintf(__('Multilingual float language picker required %1$s WDK Multilingual addon%2$s','wpdirectorykit'),'<a target="_blank" href="https://wpdirectorykit.com/plugins.html">','</a>'), 
+                'rules' => '', 
+        );
+          
         /* Fields */ 
         $this->fields_list_tabs['fields'] = array(
             array('field' => 'wdk_seo_keywords', 'field_label' => __('SEO Listing Page Keywords', 'wpdirectorykit'), 'hint' => __('Set field for meta tag keywords', 'wpdirectorykit'), 'field_type' => 'DROPDOWN', 'values' => $fields_list, 'rules' => ''),
@@ -238,12 +247,18 @@ class Settings_m extends Winter_MVC_Model {
                        
             array('field' => 'wdk_is_category_enabled', 'field_label' => __('Enable Categories', 'wpdirectorykit'), 'hint' => __('If you don\'t need categories features you can disable that here', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
             array('field' => 'wdk_is_location_enabled', 'field_label' => __('Enable Locations', 'wpdirectorykit'), 'hint' => __('If you don\'t need location features you can disable that here', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => '', 'class' => ''),
-            array('field' => 'wdk_is_address_enabled', 'field_label' => __('Enable Address', 'wpdirectorykit'), 'hint' => __('Select regular page which ill be used for listing preview page on frontend, you can create new one also for this purpose', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
-            array('field' => 'wdk_is_featured_enabled', 'field_label' => __('Enable Field and Feature Featured Listing', 'wpdirectorykit'), 'hint' => __('Select regular page which ill be used for listing preview page on frontend, you can create new one also for this purpose', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
-            array('field' => 'wdk_is_rank_enabled', 'field_label' => __('Enable Field and Feature Rank Listing', 'wpdirectorykit'), 'hint' => __('Select regular page which ill be used for listing preview page on frontend, you can create new one also for this purpose', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
-            array('field' => 'wdk_is_user_editor_enabled', 'field_label' => __('Enable Field and Feature Agent Listing', 'wpdirectorykit'), 'hint' => __('Select regular page which ill be used for listing preview page on frontend, you can create new one also for this purpose', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
-            array('field' => 'wdk_is_post_content_enable', 'field_label' => __('Enable Field and Feature Post Content Listing', 'wpdirectorykit'), 'hint' => __('Select regular page which ill be used for listing preview page on frontend, you can create new one also for this purpose', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
-            array('field' => 'wdk_is_alt_agent_enabled', 'field_label' => __('Enable Field and Feature Agent Listing', 'wpdirectorykit'), 'hint' => __('Select regular page which ill be used for listing preview page on frontend, you can create new one also for this purpose', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
+            array('field' => 'wdk_is_address_enabled', 'field_label' => __('Enable Address', 'wpdirectorykit'), 'hint' => __('Enable this option to display the address field on the listing submission page', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
+            array('field' => 'wdk_is_featured_enabled', 'field_label' => __('Enable Field and Feature Featured Listing', 'wpdirectorykit'), 'hint' => __('Enable this option to allow marking listings as Featured on the submission page.', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
+            array('field' => 'wdk_is_rank_enabled', 'field_label' => __('Enable Field and Feature Rank Listing', 'wpdirectorykit'), 'hint' => __('Enable this option to allow assigning a rank to listings on the submission page.', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
+            array('field' => 'wdk_is_user_editor_enabled', 'field_label' => __('Enable Field and Feature Agent Listing', 'wpdirectorykit'), 'hint' => __('Enable this option to allow selecting an agent for the listing.', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
+            array('field' => 'wdk_is_post_content_enable', 'field_label' => __('Enable Field and Feature Post Content Listing', 'wpdirectorykit'), 'hint' => __('Enable this option to show the post content field on the submission page.', 'wpdirectorykit'), 'field_type' => 'CHECKBOX', 'rules' => ''),
+            array(
+                'field' => 'wdk_is_alt_agent_enabled',
+                'field_label' => __('Enable Alternate Agent for Listing', 'wpdirectorykit'),
+                'hint' => __('Enable this option to allow assigning an alternate agent to the listing.', 'wpdirectorykit'),
+                'field_type' => 'CHECKBOX',
+                'rules' => '',
+            ),
             array(
                 'field' => 'wdk_sub_listings_enable', 
                 'field_label' => __('Related Listings', 'wpdirectorykit'), 
@@ -257,17 +272,64 @@ class Settings_m extends Winter_MVC_Model {
                 'rules' => '', 
             ),
             array(
-                'field' => 'wdk_number_format_decimal_point', 
-                'field_label' => __('Number Format Decimal point', 'wpdirectorykit'), 
-                'hint' => __('Default based on location Number Format Decimal point', 'wpdirectorykit'), 
-                'field_type' => 'INPUTBOX', 
+                'field' => 'wdk_enable_filter_zero_decimal', 
+                'field_label' => __('Enable filter zero decimal', 'wpdirectorykit'), 
+                'field_type' => 'CHECKBOX', 
                 'rules' => '', 
+            ),
+            array(
+                'field' => 'wdk_number_format_decimal_point', 
+                'field_label' => __('Number Decimal Places', 'wpdirectorykit'), 
+                'hint' => __('Default based on language selected in WordPress', 'wpdirectorykit'), 
+                'field_type' => 'DROPDOWN',
+                'empty_default' => esc_attr((!empty(get_option('wdk_number_format_decimal_point')) ? get_option('wdk_number_format_decimal_point') : get_option('decimal_point', ','))), 
+                'values' => array(
+                    '.' => __('Dot (.)', 'wpdirectorykit'),
+                    "'" => __('Quote (\')', 'wpdirectorykit'),
+                    ',' => __('Comma (,)', 'wpdirectorykit'),
+                    ' ' => __('Space', 'wpdirectorykit'),
+                ), 
+                'rules' => ''
             ),
             array(
                 'field' => 'wdk_number_format_thousands_sep', 
                 'field_label' => __('Number Format Thousands sep', 'wpdirectorykit'), 
-                'hint' => __('Default based on location Number Thousands sep', 'wpdirectorykit'), 
-                'field_type' => 'INPUTBOX', 
+                'hint' => __('Default based on language selected in WordPress', 'wpdirectorykit'), 
+                'field_type' => 'DROPDOWN', 
+                'empty_default' => esc_attr((!empty(get_option('wdk_number_format_thousands_sep')) ? get_option('wdk_number_format_thousands_sep') : get_option('thousands_separator', ','))), 
+                'rules' => '', 
+                'values' => array(
+                    '.' => __('Dot (.)', 'wpdirectorykit'),
+                    ',' => __('Comma (,)', 'wpdirectorykit'),
+                    "'" => __('Quote (\')', 'wpdirectorykit'),
+                    ' ' => __('Space', 'wpdirectorykit'),
+                ), 
+            ),
+            array(
+                'field' => 'wdk_number_format_decimals', 
+                'field_label' => __('Number Format Decimal count', 'wpdirectorykit'), 
+                'hint' => __('Default based on language selected in WordPress', 'wpdirectorykit'), 
+                'field_type' => 'NUMBER', 
+                'min' => '0', 
+                'max' => '5', 
+                'step' => '1', 
+                'rules' => '', 
+                'empty_default' => esc_attr(get_option('wdk_number_format_decimals', get_option('wdk_number_format_decimals', get_option('woocommerce_price_num_decimals', 2)))), 
+            ),
+            array(
+                'field' => 'wdk_number_format_decimals', 
+                'field_label' => __('Current Number Format', 'wpdirectorykit'), 
+                'hint' => __('Example price format based on WordPress language or above configuration (1234567.89)', 'wpdirectorykit'), 
+                'field_type' => 'RAW', 
+                'rules' => '', 
+                'raw' => '<span id="wdk_example_price_format" class="label label-info" style="font-size:14px">'.wdk_number_format_i18n(1234567.89).'</span>', 
+            ),
+            array(
+                'field' => 'wdk_custom_listings_link_field', 
+                'field_label' => __('Custom Field, like extern link for listing preview', 'wpdirectorykit'), 
+                'hint' => __('Value for this field, replace listing preview link if not empty', 'wpdirectorykit'), 
+                'field_type' => 'DROPDOWN',
+                'values' => $fields_list_inputs, 
                 'rules' => '', 
             ),
         );
@@ -284,6 +346,20 @@ class Settings_m extends Winter_MVC_Model {
             array(
                 'field' => 'wdk_recaptcha_secret_key', 
                 'field_label' => __('Recaptcha site secret key', 'wpdirectorykit'), 
+                'hint' => __('Add Google Recaptcha secret key', 'wpdirectorykit'), 
+                'field_type' => 'INPUTBOX', 
+                'rules' => '', 
+            ),
+            array(
+                'field' => 'wdk_recaptcha_site_key_v3', 
+                'field_label' => __('Recaptcha site key v3', 'wpdirectorykit'), 
+                'hint' => __('Please add Recaptcha site and Secret keys for enable recaptcha Add Google Recaptcha site key (use V3 recaptcha key)', 'wpdirectorykit').'. '.wdk_sprintf(__('Get key %1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="https://www.google.com/recaptcha/admin">','</a>'), 
+                'field_type' => 'INPUTBOX', 
+                'rules' => '', 
+            ),
+            array(
+                'field' => 'wdk_recaptcha_secret_key_v3', 
+                'field_label' => __('Recaptcha site secret key v3', 'wpdirectorykit'), 
                 'hint' => __('Add Google Recaptcha secret key', 'wpdirectorykit'), 
                 'field_type' => 'INPUTBOX', 
                 'rules' => '', 
@@ -413,6 +489,59 @@ class Settings_m extends Winter_MVC_Model {
                 'hint' => __('Allow ajax load listings for map, results container. Reload results with pagination/search form. After activate settings, also action "Reload content with ajax" in elementor options', 'wpdirectorykit'), 
                 'field_type' => 'CHECKBOX', 
                 'rules' => '', 
+            ),
+        );
+
+         /* Autosuggestion */ 
+        $this->fields_list_tabs['autosuggestion'] = array(
+            array(
+                'field' => 'wdk_autosuggestion_google_api_key', 
+                'field_label' => __('Google Api Key', 'wdk-autosuggestion'), 
+                'field_type' => 'INPUTBOX', 
+                'rules' => '', 
+            ),
+            array(
+                'field' => 'wdk_autosuggestion_google_cities', 
+                'field_label' => __('Autosuggestion Google Cities', 'wdk-autosuggestion'), 
+                'field_type' => 'TEXTAREA', 
+                'rules' => '', 
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Google Api Key)', 'wdk-autosuggestion'),
+            ),
+            array(
+                'field' => 'wdk_autosuggestion_google_countries', 
+                'field_label' => __('Autosuggestion Google Countries', 'wdk-autosuggestion'), 
+                'field_type' => 'TEXTAREA', 
+                'rules' => '', 
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Google Api Key)', 'wdk-autosuggestion'),
+            ),
+
+            array(
+                'field' => 'wdk_autosuggestion_rapidapi_api_key', 
+                'field_label' => __('Rapidapi', 'wdk-autosuggestion'), 
+                'field_type' => 'INPUTBOX', 
+                'rules' => '', 
+                'hint' => wdk_sprintf(__('Please add Rapid Api Key, Get key %1$s here %2$s, then activate GeoDB Cities API','wpdirectorykit'),'<a target="_blank" href="https://rapidapi.com/products/pricing/">','</a>'), 
+            ),
+            array(
+                'field' => 'wdk_autosuggestion_rapidapi_cities', 
+                'field_label' => __('Autosuggestion Rapid Api Cities', 'wdk-autosuggestion'), 
+                'field_type' => 'TEXTAREA', 
+                'rules' => '', 
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Rapid Api Key)', 'wdk-autosuggestion'),
+            ),
+            array(
+                'field' => 'wdk_autosuggestion_rapidapi_countries', 
+                'field_label' => __('Autosuggestion Rapid Api Countries', 'wdk-autosuggestion'), 
+                'field_type' => 'TEXTAREA', 
+                'rules' => '', 
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Rapid Api Key)', 'wdk-autosuggestion'),
+            ),
+            array(
+                'field' => 'wdk_autosuggestion_countriesapi_countries', 
+                'field_label' => __('Autosuggestion REST Countries API Countries', 'wdk-autosuggestion'), 
+                'field_type' => 'TEXTAREA', 
+                'rules' => '', 
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3', 'wdk-autosuggestion'),
             ),
         );
 

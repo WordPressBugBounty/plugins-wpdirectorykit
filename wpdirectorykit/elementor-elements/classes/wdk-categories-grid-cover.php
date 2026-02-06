@@ -1132,7 +1132,7 @@ class WdkCategoriesGridCover extends WdkElementorBase {
                         'max' => 100,
                     ],
                 ],
-                'size_units' => [ 'px', 'vw' ],
+                'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                 'selectors' => [
                     '{{WRAPPER}} .wdk-categories-card-cover' => 'height: {{SIZE}}{{UNIT}}',
                 ],
@@ -1185,27 +1185,26 @@ class WdkCategoriesGridCover extends WdkElementorBase {
 			]
 		);
 
-        $this->add_responsive_control(
-            't_content_basic_mask',
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
             [
-                'label' => esc_html__( 'Mask', 'wpdirectorykit' ),
+                'name' => 't_content_basic_mask',
                 'description' => esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wdk-categories-card-cover .mask' => 'background-color: {{VALUE}};',
-                ],
+                'label' =>  esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
+                'types' => [ 'classic', 'gradient', 'video' ],
+                'selector' => '{{WRAPPER}} .wdk-categories-card-cover .mask',
             ]
         );
 
-        $this->add_responsive_control(
-            't_content_basic_mask_hover',
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
             [
-                'label' => esc_html__( 'Mask Hover', 'wpdirectorykit' ),
+                'name' => 't_content_basic_mask_hover',
+                'label' =>  esc_html__( 'Mask Hover', 'wpdirectorykit' ),
+                'types' => [ 'classic', 'gradient', 'video' ],
+                'selector' => '{{WRAPPER}} .wdk-categories-card-cover:hover .mask',
                 'description' => esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wdk-categories-card-cover:hover .mask' => 'background-color: {{VALUE}};',
-                ],
             ]
         );
 
@@ -1318,7 +1317,7 @@ class WdkCategoriesGridCover extends WdkElementorBase {
                                 'max' => 100,
                             ],
                         ],
-                        'size_units' => [ 'px', 'vw' ],
+                        'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                         'selectors' => [
                             '{{WRAPPER}} .wdk-categories-card-cover .wdk-categories-card-body .wdk-category-btn' => 'font-size: {{SIZE}}{{UNIT}}',
                         ],

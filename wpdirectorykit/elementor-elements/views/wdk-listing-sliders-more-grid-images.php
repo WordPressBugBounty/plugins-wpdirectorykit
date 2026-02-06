@@ -77,7 +77,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <?php if($settings['gallery_enable'] != 'yes' && $settings['gallery_main_enable'] == 'true'):?> wdk_js_gallery <?php endif;?>
                 ">
                 <div class="banner-thumbs">
-                <div class="banner-grid <?php if(count($images) == 1):?> full_width <?php endif;?> wdk_listing_slider_box wdk-listing-sliders-more-grid-images_arrows_in wdk-listing-sliders-more-grid-images_dots_in <?php echo esc_attr($settings['layout_carousel_animation_style']).'_animation';?> <?php echo esc_attr(join(' ', [$settings['styles_carousel_arrows_position'],$settings['direction']]));?>">
+                <div class="banner-grid <?php if(count($images) == 1):?> full_width <?php endif;?> wdk_listing_slider_box wdk-listing-sliders-more-grid-images_arrows_in wdk-listing-sliders-more-grid-images_dots_in <?php echo esc_attr((isset($settings['layout_carousel_animation_style'])) ? $settings['layout_carousel_animation_style'] : '').'_animation';?> <?php echo esc_attr(join(' ', [(isset($settings['styles_carousel_arrows_position'])) ?  $settings['styles_carousel_arrows_position'] : '',(isset($settings['direction'])) ? $settings['direction'] : '']));?>">
                     <div class="wdk_listing_slider_ini">
                     <?php foreach($images as $image):?>
                         <?php if(!wmvc_show_data('wdk_listing_video_disabled',$settings, false) && wdk_file_extension_type(wmvc_show_data('src',$image)) == 'video'):?>
@@ -97,10 +97,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <?php if(!empty($images) && 1 < wmvc_count($images)):?>
                         </div>
                             <div class="wdk-listing-sliders-more-grid-images_arrows">
-                                <a class="wdk-slider-prev wdk-listing-sliders-more-grid-images_arrow">
+                                <a title="<?php echo esc_attr__('prev slider', 'wpdirectorykit');?>" href="#" class="wdk-slider-prev wdk-listing-sliders-more-grid-images_arrow">
                                     <?php \Elementor\Icons_Manager::render_icon( $settings['styles_carousel_arrows_icon_left'], [ 'aria-hidden' => 'true' ] ); ?>
                                 </a>
-                                <a class="wdk-slider-next wdk-listing-sliders-more-grid-images_arrow">
+                                <a title="<?php echo esc_attr__('next slider', 'wpdirectorykit');?>" href="#" class="wdk-slider-next wdk-listing-sliders-more-grid-images_arrow">
                                     <?php \Elementor\Icons_Manager::render_icon( $settings['styles_carousel_arrows_icon_right'], [ 'aria-hidden' => 'true' ] ); ?>
                                 </a>
                             </div>

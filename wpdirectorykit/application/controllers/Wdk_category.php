@@ -119,6 +119,11 @@ class Wdk_category extends Winter_MVC_Controller {
                     'label' => __('Color', 'wpdirectorykit'),
                     'rules' => ''
                 ),
+                array(
+                    'field' => 'titles_for_search',
+                    'label' => __('Alternative titles for search', 'wpdirectorykit'),
+                    'rules' => ''
+                ),
         );
 
         if($this->form->run($rules))

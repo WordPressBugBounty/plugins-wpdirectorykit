@@ -123,6 +123,11 @@ class Listingfield_m extends Winter_MVC_Model {
             $sql = "ALTER TABLE `{$table}`
                 ADD `$column_name` TEXT NULL DEFAULT NULL;";
         }
+        else if($field_data['field_type'] == 'FILEUPLOAD')
+        {
+            $sql = "ALTER TABLE `{$table}`
+                ADD `$column_name` TEXT NULL DEFAULT NULL;";
+        }
         else if($field_data['field_type'] == 'TEXTAREA_WYSIWYG')
         {
             $sql = "ALTER TABLE `{$table}`
@@ -149,6 +154,20 @@ class Listingfield_m extends Winter_MVC_Model {
 
         if(!isset($existing_fields[$column_name]))
             $query_result = $wpdb->query( $sql );
+    }
+
+    // Create table column for new added or edited fields
+    public function delete_table_column($field_data, $field_id)
+    {
+        global $wpdb;
+
+        $table = $wpdb->prefix . 'wdk_listings_fields';
+        $column_name = 'field_'.$field_id.'_'.wmvc_show_data('field_type',$field_data);
+
+        $sql = "ALTER TABLE `{$table}`
+                    DROP `$column_name`;";
+
+        $query_result = $wpdb->query( $sql );
     }
 
 }

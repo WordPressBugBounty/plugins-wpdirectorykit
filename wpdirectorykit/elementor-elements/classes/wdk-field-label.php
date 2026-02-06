@@ -208,20 +208,6 @@ class WdkFieldLabel extends WdkElementorBase {
         $fields_list = array('' => esc_html__('Not Selected', 'wpdirectorykit'));
         $order_i = 0;
 
-        $fields_list [(++$order_i).'__section'] = esc_html__('-- Section Custom fields --', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__idlisting'] = esc_html__('Id listing', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__post_id'] = esc_html__('Post Id', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__counter_views'] = esc_html__('Views counter', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__lat'] = esc_html__('Gps Lat', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__lng'] = esc_html__('Gps Lng', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__date'] = esc_html__('Date', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__date_modified'] = esc_html__('Date Modified', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__post_title'] = esc_html__('WP Title', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__post_content'] = esc_html__('WP Content', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__address'] = esc_html__('Address', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__category_id'] = esc_html__('Category', 'wpdirectorykit');
-        $fields_list [(++$order_i).'__location_id'] = esc_html__('Location', 'wpdirectorykit');
-
         foreach($fields_data as $field)
         {
             if(wmvc_show_data('field_type', $field) == 'SECTION') {

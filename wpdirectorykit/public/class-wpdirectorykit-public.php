@@ -113,6 +113,7 @@ class Wpdirectorykit_Public {
 		wp_register_style( 'wdk-listing-related-listings-table', WPDIRECTORYKIT_URL. 'elementor-elements/assets/css/widgets/wdk-listing-related-listings-table.css', array(), $this->version, 'all' );
 		wp_register_style( 'wdk-search-popup', WPDIRECTORYKIT_URL. 'elementor-elements/assets/css/widgets/wdk-search-popup.css', array(), $this->version, 'all' );
 		wp_register_style( 'wdk-tabs', WPDIRECTORYKIT_URL. 'elementor-elements/assets/css/widgets/wdk-tabs.css', array(), $this->version, 'all' );
+		wp_register_style( 'wdk-language-switcher', WPDIRECTORYKIT_URL. 'elementor-elements/assets/css/widgets/wdk-language-switcher.css', array(), $this->version, 'all' );
 		wp_register_style( 'wdk-notify', plugin_dir_url( __FILE__ ) . 'css/wdk-notify.css', array(), $this->version, 'all' );
 		wp_register_style( 'wdk-modal', plugin_dir_url( __FILE__ ) . 'css/wdk-modal.css', array(), $this->version, 'all' );
 		wp_register_style( 'wdk-hover', plugin_dir_url( __FILE__ ) . 'css/wdk-hover.css', array(), $this->version, 'all' );
@@ -122,7 +123,7 @@ class Wpdirectorykit_Public {
 		wp_register_style( 'leaflet-fullscreen', plugin_dir_url( __FILE__ ) . 'js/openstreetmap/leaflet.fullscreen.css', array(), '1.7.1', 'all' );
 		wp_register_style( 'ion.range-slider', plugin_dir_url( __FILE__ ) . 'js/ion.range-slider/css/ion.range-slider.min.css', array(), '2.3.1', 'all' );
 		wp_register_style( 'wdk-slider-range', plugin_dir_url( __FILE__ ) . 'css/wdk-slider-range.css', array(), '1.0', 'all' );
-		wp_register_style( 'select2', plugin_dir_url( __FILE__ ) . 'js/select2/css/select2.min.css', array(), '4.0.13', 'all' );
+		wp_register_style( 'select2-select2', plugin_dir_url( __FILE__ ) . 'js/select2/css/select2.min.css', array(), '4.0.13', 'all' );
 		wp_register_style( 'wdk-treefield-dropdown', plugin_dir_url( __FILE__ ) . 'js/wdk_treefield_dropdown/wdk_treefield_dropdown.css', array(), '1.0', 'all' );
 		wp_register_style( 'leaflet-draw', plugin_dir_url( __FILE__ ) . 'js/leaflet-draw/leaflet.draw.css', array(), '1.0', 'all' );
 	
@@ -153,6 +154,9 @@ class Wpdirectorykit_Public {
 			$custom_css .= " 
 							.wdk-element .wdk-map .wdk_marker-container.category_id_".esc_attr(wmvc_show_data('idcategory', $category),'',TRUE, TRUE)." .wdk_face.front i {
 								color: ".esc_attr(wmvc_show_data('category_color', $category),'',TRUE, TRUE).";
+							}
+							.wdk-element .wdk-map .wdk_marker-container.category_id_".esc_attr(wmvc_show_data('idcategory', $category),'',TRUE, TRUE).":hover .wdk_face.front i {
+								color:#fff;
 							}
 							.wdk-element .wdk-map .wdk_marker-container.category_id_".esc_attr(wmvc_show_data('idcategory', $category),'',TRUE, TRUE)." .wdk_marker-container:hover .wdk_marker-card::after,
 							.wdk-element .wdk-map .wdk_marker-container.category_id_".esc_attr(wmvc_show_data('idcategory', $category),'',TRUE, TRUE)." .wdk_marker-card::before {
@@ -209,12 +213,12 @@ class Wpdirectorykit_Public {
 		wp_register_script('slick', plugin_dir_url( __FILE__ ).'js/slick/slick.min.js', array( 'jquery' ), '1.8', false );
 		wp_register_script('ion.range-slider', plugin_dir_url( __FILE__ ).'js/ion.range-slider/js/ion.range-slider.min.js', array( 'jquery' ), '2.3.1', false );
 		wp_register_script('wdk-slider-range', plugin_dir_url( __FILE__ ).'js/wdk-slider-range.js', array( 'jquery' ), '1.0', false );
-		wp_register_script('select2', plugin_dir_url( __FILE__ ).'js/select2/js/select2.min.js', array( 'jquery' ), '4.0.13', false );
+		wp_register_script('select2-select2', plugin_dir_url( __FILE__ ).'js/select2/js/select2.min.js', array( 'jquery' ), '4.0.13', false );
 		wp_register_script('wdk-select2', plugin_dir_url( __FILE__ ).'js/wdk-select2.js', array( 'jquery' ), '4.0.13', false );
 		wp_register_script('leaflet-googlemutant', plugin_dir_url( __FILE__ ).'js/leaflet-gridlayer-googlemutant/leaflet-googlemutant.js', array( 'jquery' ), '4.0.13', false );
 		wp_register_script('wdk-ajax-loading-listings', plugin_dir_url( __FILE__ ).'js/wdk-ajax-loading-listings.js', array( 'jquery' ), '1.0', false );
 		wp_register_script('leaflet-draw', plugin_dir_url( __FILE__ ).'js/leaflet-draw/leaflet.draw.js', array( 'jquery' ), '1.0', false );
-		wp_register_script('wdk-map-rectangle', plugin_dir_url( __FILE__ ).'js/wdk-map-rectangle.js', array( 'jquery', 'leaflet-draw' ), '1.0', false );
+		wp_register_script('wdk-map-rectangle', plugin_dir_url( __FILE__ ).'js/wdk-map-rectangle.js', array( 'jquery', 'leaflet-draw', 'wp-i18n' ), '1.0', false );
 		wp_register_script('wdk-tabs', WPDIRECTORYKIT_URL. 'elementor-elements/assets/js/wdk-tabs.js', array( 'jquery', 'leaflet-draw' ), '1.0', false );
 		
 

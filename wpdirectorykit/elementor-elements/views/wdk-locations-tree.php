@@ -59,7 +59,6 @@ $hide_childs = false;
                             <div class="wdk-col">
                                 <div class="location-block">
                             <?php endif;?>
-
                                     <h3 class="title <?php if(wmvc_show_data('show_icon', $settings) == 'yes' && wmvc_show_data('layout_image_type', $settings) == 'image'):?> image_top <?php endif;?>">
                                         <?php if(wmvc_show_data('show_icon', $settings) == 'yes'):?>
                                             <?php if(wmvc_show_data('layout_image_type', $settings) == 'icon'):?>
@@ -74,7 +73,7 @@ $hide_childs = false;
                                                 <span class="wdk-font-icon" style="background-color: <?php echo esc_attr(wmvc_show_data('location_color', $value));?>;"><i class="<?php echo esc_attr(wmvc_show_data('font_icon_code', $value));?>"></i></span>
                                             <?php endif;?>
                                         <?php endif;?>
-                                        <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_location='.wmvc_show_data('idlocation', $value)));?>#results">
+                                        <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_location='.wmvc_show_data('idlocation', $value)));?>#results" class="title-in">
                                             <?php echo wmvc_show_data('location_title', $value);?>
                                         </a>
                                     </h3>

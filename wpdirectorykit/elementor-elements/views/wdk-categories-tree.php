@@ -87,7 +87,7 @@ $more_helper_class = '';
                                                 <span class="wdk-font-icon" style="background-color: <?php echo esc_attr(wmvc_show_data('category_color', $value));?>;"><i class="<?php echo esc_attr(wmvc_show_data('font_icon_code', $value));?>"></i></span>
                                             <?php endif;?>
                                         <?php endif;?>
-                                        <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_category='.wmvc_show_data('idcategory', $value)));?>#results">
+                                        <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_category='.wmvc_show_data('idcategory', $value)));?>#results" class="title-in">
                                             <?php echo wmvc_show_data('category_title', $value);?>
                                         </a>
                                     </h3>

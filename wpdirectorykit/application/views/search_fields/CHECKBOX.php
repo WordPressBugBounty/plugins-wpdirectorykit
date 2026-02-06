@@ -26,13 +26,15 @@ if(isset($_GET[$field_key]) && $_GET[$field_key] == 1) {
     $field_value = true;
 }
 
+$prefix_unique = uniqid();
+
 wdk_search_fields_toggle();
 ?>
 <div class="wdk-field wdk-col wdk_search_<?php echo esc_attr($field_key);?> <?php echo esc_attr(wmvc_show_data('field_type', $field_data)); ?> <?php echo esc_attr(wmvc_show_data('class', $field_data)); ?> 
     wdk_field_id_<?php echo esc_attr(wmvc_show_data('idfield',$field_data));?>">
     <div class="wdk-field-group">
-        <label for="<?php echo esc_attr($field_attr_id); ?>" class="wdk-field-label">
-            <input class="wdk-control" name="<?php echo esc_attr($field_key); ?>" <?php if($field_value):?> checked="checked" <?php endif;?> type="checkbox" id="<?php echo esc_attr($field_attr_id); ?>" value="1">
+        <label for="<?php echo esc_attr($prefix_unique.$field_attr_id); ?>" class="wdk-field-label">
+            <input class="wdk-control" name="<?php echo esc_attr($field_key); ?>" <?php if($field_value):?> checked="checked" <?php endif;?> type="checkbox" id="<?php echo esc_attr($prefix_unique.$field_attr_id); ?>" value="1">
             <?php echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?>
         </label>
     </div>

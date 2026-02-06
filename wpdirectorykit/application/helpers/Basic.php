@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-function wdk_generate_fields($fields, $db_data)
+function wdk_generate_fields($fields, $db_data, $form = NULL)
 {
     if(is_array($fields))
     foreach($fields as $field)
@@ -151,7 +151,8 @@ if ( ! function_exists('wdk_generate_search_form'))
                             "prefix" => wmvc_show_data('prefix', $field_data),
                             "suffix" => wmvc_show_data('suffix', $field_data),
                             "values_list" => wmvc_show_data('values_list', $field_data),
-                            "placeholder" => wmvc_show_data('placeholder', $field_data)
+                            "placeholder" => wmvc_show_data('placeholder', $field_data),
+                            "is_select_2_ajax_field_db_suggestion" => wmvc_show_data('is_select_2_ajax_field_db_suggestion', $used_field),
                         );
                     }
                 }
@@ -391,7 +392,8 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
     static $available_fields_listings = NULL;
     static $available_fields_static = array();
     static $list_fields_static = NULL;
-    
+    $fields_type =  array();
+
     /* add if missing columns */
     if(!in_array('post_id', $columns)) {
         $columns[] = $Winter_MVC_WDK->db->prefix.'wdk_listings.post_id';
@@ -409,8 +411,8 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
     if(isset($custom_parameters['order_by'])) {
 
         if(isset($_GET_clone['order_by']) && !empty($_GET_clone['order_by'])) {
-            $_GET_clone['order_by'] = $custom_parameters['order_by'].', '.$_GET_clone['order_by'];
-        } else {
+            $_GET_clone['order_by'] = ((!empty($custom_parameters['order_by'])) ? $custom_parameters['order_by'].', ':'').sanitize_text_field($_GET_clone['order_by']);
+        } elseif(!empty( $custom_parameters['order_by'])) {
             $_GET_clone['order_by'] =  $custom_parameters['order_by'];
         }
 
@@ -427,10 +429,10 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
 
     $smart_search = '';
     if(isset($_GET_clone['search']))
-        $smart_search = sanitize_text_field($_GET_clone['search']);
+        $smart_search = wdk_esc_sql(sanitize_text_field($_GET_clone['search']));
     
     if(isset($_GET_clone['field_search']))
-        $smart_search = sanitize_text_field($_GET_clone['field_search']);
+        $smart_search = wdk_esc_sql(sanitize_text_field($_GET_clone['field_search']));
         
     if(!isset($available_fields_static[$model_name]))
     {
@@ -465,6 +467,8 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
        
         $field_id = wmvc_show_data('idfield',$field_data);
         $field_type = wmvc_show_data('field_type',$field_data);
+
+        $fields_type[$field_id] = $field_type;
         $column_name ='field_'.$field_id.'_'.$field_type;
         if(!isset($available_fields_listings[$column_name])) continue;
 
@@ -484,7 +488,7 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
             $_GET_clone['field_'.$field_id.'_'.$field_type.'_min'] = apply_filters( 'wdk-currency-conversion/convert/default_value',sanitize_text_field($_GET_clone['field_'.$field_id.'_min']), $field_id);
         }
         if(isset($_GET_clone['field_'.$field_id.'_exactly'])) {
-            $_GET_clone['field_'.$field_id.'_'.$field_type.'_exactly'] = wdk_clean($_GET_clone['field_'.$field_id.'_exactly']);
+            $_GET_clone['field_'.$field_id.'_'.$field_type.'_exactly'] = wdk_clean_mixed($_GET_clone['field_'.$field_id.'_exactly']);
         }
 
         $columns[] = $column_name;
@@ -541,7 +545,7 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
 
     if(isset($_GET_clone['field_post_id'])) {
         $column_name ='ID_exactly';
-        $_GET_clone[$column_name] = intval($_GET_clone['field_post_id']);
+        $_GET_clone[$column_name] = sanitize_text_field($_GET_clone['field_post_id']);
         $columns[] = $column_name;
         $external_columns[] = $column_name;
     }
@@ -588,9 +592,23 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
         $external_columns[] = $column_name;
     }
 
-    if (isset($_GET_clone['search_rank_'.NONCE_KEY])) {
+    if (isset($_GET_clone['search_rank'])) {
         $column_name ='`rank`';
-        $_GET_clone[$column_name] = $_GET_clone['search_rank_'.NONCE_KEY];
+        $_GET_clone[$column_name] = $_GET_clone['search_rank'];
+        $columns[] = $column_name;
+        $external_columns[] = $column_name;
+    }
+
+    if (isset($_GET_clone['search_rank_min'])) {
+        $column_name ='`rank`_min';
+        $_GET_clone[$column_name] = $_GET_clone['search_rank_min'];
+        $columns[] = $column_name;
+        $external_columns[] = $column_name;
+    }
+
+    if (isset($_GET_clone['search_rank_max'])) {
+        $column_name ='`rank`_max';
+        $_GET_clone[$column_name] = $_GET_clone['search_rank_max'];
         $columns[] = $column_name;
         $external_columns[] = $column_name;
     }
@@ -624,6 +642,8 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
         unset($_GET_clone['search']);
         unset($_GET_clone['field_search']);
         
+        $WMVC->db->join($WMVC->listing_m->_table_name.' ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'posts'.'.ID', NULL, 'LEFT');
+
         // For quick/smart search
         if(wmvc_count($columns) > 0 && !empty($smart_search))
         {
@@ -760,26 +780,26 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                     if($key == 'field_booking_guest')
                     {
                         if(!$wdk_bookings_joinded){
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_price ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_price.post_id', NULL, 'LEFT');
-                            $WMVC->db->distinct($WMVC->listing_m->_table_name.'.post_id');
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_reservation ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_price.post_id', NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_price ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_price.post_id', NULL, 'LEFT');
+                            $WMVC->db->distinct($WMVC->db->prefix.'posts.ID');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_reservation ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_reservation.post_id', NULL, 'LEFT');
                             $wdk_bookings_joinded = true;
                             $gen_q.= $WMVC->db->prefix.'wdk_booking_price.is_activated = 1 AND ';
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_calendar ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_calendar.post_id', NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_calendar ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_calendar.post_id', NULL, 'LEFT');
                         }
 
-                        $gen_q.= $WMVC->db->prefix."wdk_booking_calendar.guests <='".intval($val)."' AND ";
+                        $gen_q.= $WMVC->db->prefix."wdk_booking_calendar.guests >='".intval($val)."' AND ";
                        
                     }
                     elseif($key == 'field_booking_date_from')
                     {
                         if(!$wdk_bookings_joinded){
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_price ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_price.post_id', NULL, 'LEFT');
-                            $WMVC->db->distinct($WMVC->listing_m->_table_name.'.post_id');
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_reservation ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_price.post_id', NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_price ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_price.post_id', NULL, 'LEFT');
+                            $WMVC->db->distinct($WMVC->db->prefix.'posts.ID');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_reservation ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_reservation.post_id', NULL, 'LEFT');
                             $wdk_bookings_joinded = true;
                             $gen_q.= $WMVC->db->prefix.'wdk_booking_price.is_activated = 1 AND ';
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_calendar ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_calendar.post_id', NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_calendar ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_calendar.post_id', NULL, 'LEFT');
                         }
 
                         if(wdk_is_date($val))
@@ -799,7 +819,7 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                                 $gen_search_from = wdk_normalize_date_db($_GET_clone['field_booking_date_from'], 'Y-m-d H:i:s', 'Y-m-d');
                                 $gen_search_to = wdk_normalize_date_db($_GET_clone['field_booking_date_to'], 'Y-m-d H:i:s', 'Y-m-d');
                          
-                            $gen_q.= $WMVC->listing_m->_table_name.".post_id NOT IN ( 
+                            $gen_q.= $WMVC->db->prefix."posts.ID NOT IN ( 
                                                     SELECT post_id
                                                     FROM ".$WMVC->db->prefix."wdk_booking_reservation
                                                     WHERE 
@@ -814,7 +834,7 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                                 $gen_search_from = wdk_normalize_date_db($_GET_clone['field_booking_date_from']);
                                 $gen_search_to = wdk_normalize_date_db($_GET_clone['field_booking_date_to']);
                                 
-                            $gen_q.= $WMVC->listing_m->_table_name.".post_id NOT IN ( 
+                            $gen_q.= $WMVC->db->prefix."posts.ID NOT IN ( 
                                     SELECT post_id
                                     FROM ".$WMVC->db->prefix."wdk_booking_reservation
                                     WHERE 
@@ -831,11 +851,11 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                     elseif($key == 'field_booking_date_to')
                     {
                         if(!$wdk_bookings_joinded){
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_price ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_price.post_id',NULL, 'LEFT');
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_reservation ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_price.post_id',NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_price ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_price.post_id',NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_reservation ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_reservation.post_id',NULL, 'LEFT');
                             $wdk_bookings_joinded = true;
                             $gen_q.= $WMVC->db->prefix.'wdk_booking_price.is_activated = 1 AND ';
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_calendar ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_booking_calendar.post_id', NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_booking_calendar ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_booking_calendar.post_id', NULL, 'LEFT');
                         }
                       
                         if(wdk_is_date($val))
@@ -853,6 +873,13 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                     elseif(substr($key, -8) == '_exactly')
                     {
                         $col_name = substr($key, 0, -8);
+
+                        if(is_string($val) && strpos($val, ',') !== FALSE){
+                            $val =explode(',', $val);
+                        } elseif(is_string($val)){
+                            $val =array($val);
+                        }
+
                         if(is_array($val))
                         {
                             $sql_search = '';
@@ -962,7 +989,7 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                         
                         if(is_array($val)) {
 
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_listings_users ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_listings_users.post_id', NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_listings_users ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'wdk_listings_users.post_id', NULL, 'LEFT');
                             $WMVC->db->distinct($WMVC->listing_m->_table_name.'.post_id');
                             $sql_search = '';
                             foreach ($val as $v) {
@@ -979,7 +1006,7 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                                 $gen_q.=" ( ".$sql_search." )  AND ";
 
                         } elseif(is_string($val) && !empty($val)) {
-                            $WMVC->db->join($WMVC->db->prefix.'wdk_listings_users ON '.$WMVC->listing_m->_table_name.'.post_id = '.$WMVC->db->prefix.'wdk_listings_users.post_id', NULL, 'LEFT');
+                            $WMVC->db->join($WMVC->db->prefix.'wdk_listings_users ON '.$WMVC->db->prefix.'posts.post_id = '.$WMVC->db->prefix.'wdk_listings_users.post_id', NULL, 'LEFT');
                             $WMVC->db->distinct($WMVC->listing_m->_table_name.'.post_id');
                             $sql_search ="  ".$WMVC->listing_m->_table_name.".`user_id_editor` = ".intval($val)." OR `".$WMVC->db->prefix."wdk_listings_users`.`user_id` = ".intval($val)." ";
                             $gen_q.=" ( ".$sql_search." )  AND ";
@@ -1138,8 +1165,13 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                         if(!empty($sql_search))
                             $gen_q.=" ( ".$sql_search." )  AND ";
                     }
+                } elseif ($val == 0) {
+                    $col_name = $key;
+                    $val = esc_sql($val);
+                    if(in_array($col_name, ['`rank`'])) {
+                        $gen_q.=" ( ".$col_name." = 0 OR ".$col_name." IS NULL )  AND ";
+                    }
                 }
-
             }
             
             $gen_q = substr($gen_q, 0, -5);
@@ -1176,10 +1208,88 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
         // [/RECTANGLE SEARCH]
         
         // order
-        if(isset($_GET_clone['order_by']))
-        {
-            $_GET_clone['order_by'] = str_replace('post_id', $WMVC->db->prefix.'wdk_listings.post_id', $_GET_clone['order_by']);
-            $WMVC->db->order_by($_GET_clone['order_by']);
+        if (isset($_GET_clone['order_by'])) {
+            // Merge available fields + system columns
+            $order_columns = array_fill_keys([
+                'post_id',
+                'counter_views',
+                'date_modified',
+                'post_title',
+                'address',
+                'category_id',
+                'location_id',
+                'rank'
+            ], true);
+ 
+            $order_columns = apply_filters('wdk/listings/order_columns', $order_columns);
+         
+            $_GET_clone['order_by'] = str_replace(
+                'post_id',
+                $WMVC->db->prefix . 'wdk_listings.post_id',
+                sanitize_text_field($_GET_clone['order_by'])
+            );
+
+            // Fix common typos: ask → asc, desk → desc
+            $_GET_clone['order_by'] = str_ireplace([' ask', ' desk'], [' asc', ' desc'], $_GET_clone['order_by']);
+            
+            /* we no need field type in get link now */
+            $_GET_clone['order_by'] = str_ireplace(['_NUMBER', '_SECTION', '_TEXTAREA', '_DATE', '_DROPDOWN', '_DROPDOWNMULTIPLE', '_CHECKBOX'], '', $_GET_clone['order_by']);
+
+            // Parse order_by string into parts
+            $order_by_array = explode(',', $_GET_clone['order_by']);
+            $final_order_by = [];
+            foreach ($order_by_array as $order_part) {
+                $order_part = trim($order_part);
+
+                // detect direction asc/desc
+                $direction = 'DESC';
+                if (stripos($order_part, ' asc') !== false) {
+                    $direction = 'ASC';
+                } elseif (stripos($order_part, ' desc') !== false) {
+                    $direction = 'DESC';
+                } 
+
+                $order_part = str_ireplace(['desc', 'asc'], '', $order_part);
+                $order_part = str_replace(' ', '', $order_part);
+
+                // Try to detect field_(id)
+                if (preg_match('/field_(\d+)\b/', $order_part, $matches)) {
+
+                    $search_field_id = $matches[1];
+                    if (!empty($fields_type[$search_field_id])) {
+                        $field_name = "field_{$search_field_id}_{$fields_type[$search_field_id]}";
+
+                        // Check if field exists in order_columns
+                        if (isset($available_fields_listings[$field_name])) {
+                            $final_order_by[] = $field_name . ' ' . $direction;
+                        }
+                    }
+
+                    // else → skip invalid field automatically
+
+                } else {
+                    // Extract only the part after the last '.' if exists, else use entire string
+                    $col_field = $order_part;
+                    if (strpos($col_field, '.') !== false) {
+                        $parts = explode('.', $col_field);
+                        $col_field = end($parts);
+                    }
+
+                    // Check if field exists in order_columns
+                    if (isset($order_columns[$col_field]) || isset($available_fields_listings[$col_field])) {
+                        $final_order_by[] = $order_part . ' ' . $direction;
+                    }
+                }
+            }
+            
+            // Apply final order if any valid fields left
+            if (!empty($final_order_by)) {
+                $_GET_clone['order_by'] = implode(', ', $final_order_by);
+                $WMVC->db->order_by($_GET_clone['order_by']);
+            } else {
+                $WMVC->db->order_by('');
+            }
+
         }
 
     }
@@ -1198,7 +1308,7 @@ function wdk_users_prepare_search_query_GET($columns = array(), $model_name = NU
     if(isset($custom_parameters['order_by'])) {
 
         if(isset($_GET_clone['order_by']) && !empty($_GET_clone['order_by'])) {
-            $_GET_clone['order_by'] = $custom_parameters['order_by'].', '.$_GET_clone['order_by'];
+            $_GET_clone['order_by'] = $custom_parameters['order_by'].', '.sanitize_text_field($_GET_clone['order_by']);
         } else {
             $_GET_clone['order_by'] =  $custom_parameters['order_by'];
         }
@@ -1214,7 +1324,7 @@ function wdk_users_prepare_search_query_GET($columns = array(), $model_name = NU
     
     $smart_search = '';
     if(isset($_GET_clone['profile_search']))
-        $smart_search = sanitize_text_field($_GET_clone['profile_search']);
+        $smart_search = wdk_esc_sql(sanitize_text_field($_GET_clone['profile_search']));
         
     $available_fields = array('user_login','user_nicename','user_email','user_url','display_name');
 
@@ -1383,7 +1493,7 @@ function wdk_users_prepare_search_query_GET($columns = array(), $model_name = NU
         if(isset($_GET_clone['order_by']))
         {
             $_GET_clone['order_by'] = str_replace('post_id', $WMVC->db->prefix.'wdk_favorite.post_id', $_GET_clone['order_by']);
-            $WMVC->db->order_by($_GET_clone['order_by']);
+            $WMVC->db->order_by(wdk_esc_sql(sanitize_text_field($_GET_clone['order_by'])));
         }
 
     }
@@ -1401,7 +1511,7 @@ function wdk_messages_prepare_search_query_GET($columns = array(), $model_name =
     
     $smart_search = '';
     if(isset($_GET_clone['search']))
-        $smart_search = sanitize_text_field($_GET_clone['search']);
+        $smart_search = wdk_esc_sql(sanitize_text_field($_GET_clone['search']));
         
     $available_fields = $WMVC->$model_name->get_available_fields();
 
@@ -1554,7 +1664,7 @@ function wdk_messages_prepare_search_query_GET($columns = array(), $model_name =
         if(isset($_GET_clone['order_by']))
         {
             $_GET_clone['order_by'] = str_replace('post_id', $WMVC->db->prefix.'wdk_messages.post_id', $_GET_clone['order_by']);
-            $WMVC->db->order_by($_GET_clone['order_by']);
+            $WMVC->db->order_by(wdk_esc_sql(sanitize_text_field($_GET_clone['order_by'])));
         }
 
     }
@@ -1723,10 +1833,10 @@ if(!function_exists('wdk_search_fields_toggle')){
                         <input type='checkbox' style="display: none !important" value='1' <?php if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_search_additional_opened']) == 1):?> checked <?php endif;?> name='wdk_search_additional_opened' />   
                     </div>
                     <div class="wdk-field-group wdk-field-group-reset">
-                        <button id="wdk-reset-primary" type="reset" class="wdk-search-start wdk-search-reset wdk-click-load-animation"><?php echo esc_html($wdk_text_reset_button);?></button>
+                        <button title="<?php echo esc_attr__('Reset','wpdirectorykit');?>" id="wdk-reset-primary" type="reset" class="wdk-search-start wdk-search-reset wdk-click-load-animation"><?php echo esc_html($wdk_text_reset_button);?></button>
                     </div>
                     <div class="wdk-field-group wdk-field-group-search">
-                        <button id="wdk-start-primary" type="submit" class="wdk-search-start wdk-click-load-animation">&nbsp;&nbsp;<?php echo esc_html($wdk_text_search_button);?>&nbsp;<i class="fa fa-spinner fa-spin fa-ajax-indicator" style="display: none;"></i>&nbsp;</button>
+                        <button title="<?php echo esc_attr__('Search','wpdirectorykit');?>" id="wdk-start-primary" type="submit" class="wdk-search-start wdk-click-load-animation">&nbsp;&nbsp;<?php echo esc_html($wdk_text_search_button);?>&nbsp;<i class="fa fa-spinner fa-spin fa-ajax-indicator" style="display: none;"></i>&nbsp;</button>
 
                         <?php if(function_exists('run_wdk_save_search') && get_option('wdk_save_search_show_on_searchform')):?>
                         <div class="section-widget-control right">
@@ -1799,6 +1909,7 @@ if ( ! function_exists('wdk_treefield_option'))
                                 "page": 'wdk_frontendajax',
                                 "function": 'treefieldid',
                                 "action": 'wdk_public_action',
+                                "wdk_secure": '<?php echo wp_create_nonce( 'wdk_secure_treefieldid' );?>',
                                 "table": '<?php echo esc_js($table); ?>',
                                 "filter_ids": '<?php echo esc_js($filter_ids); ?>',
                                 "start_id": '<?php if(!empty($filter_ids)) esc_js($selected); else echo ""; ?>',
@@ -1908,6 +2019,7 @@ if ( ! function_exists('wdk_treefield_option_checkboxes'))
                                 "page": 'wdk_frontendajax',
                                 "function": 'treefieldid_checkboxes',
                                 "action": 'wdk_public_action',
+                                "wdk_secure": '<?php echo wp_create_nonce( 'wdk_secure_treefieldid_checkboxes' );?>',
                                 "table": '<?php echo esc_js($table); ?>',
                                 "filter_ids": '<?php echo esc_js($filter_ids); ?>',
                                 "empty_value": '<?php echo esc_js($empty_value); ?>',
@@ -1938,12 +2050,17 @@ if ( ! function_exists('wdk_filter_decimal'))
 {
 	function wdk_filter_decimal($string = '')
 	{
-        if(substr($string, -3, 3) === ".00") {
-            return substr($string, 0, -3);
-        }
-        if(substr($string, -3, 1) === "." && substr($string, -1, 1) === "0") {
-            return substr($string, 0, -1);
-        }
+        if(wdk_get_option('wdk_enable_filter_zero_decimal')) {
+            if(substr($string, -3, 3) === ",00") {
+                return substr($string, 0, -3);
+            }
+            if(substr($string, -3, 3) === ".00") {
+                return substr($string, 0, -3);
+            }
+            if(substr($string, -3, 1) === "." && substr($string, -1, 1) === "0") {
+                return substr($string, 0, -1);
+            }
+        } 
 
         return $string;
 	}
@@ -2095,6 +2212,97 @@ if ( ! function_exists('wdk_url_suffix'))
 	}
 }
 
+
+/**
+ * Insert an attachment from a remote URL.
+ *
+ * @param string $url Remote file URL.
+ * @param int|null $parent_post_id Post ID to attach the image to.
+ * @return int|false Attachment ID or false on failure.
+ */
+function wdk_insert_attachment_from_cloud_url($url, $parent_post_id = null) {
+    // Request with headers (Google blocks requests without UA sometimes)
+    $response = wp_remote_get($url, array(
+        'timeout' => 30,
+        'redirection' => 5,
+        'headers' => array(
+            'User-Agent' => 'Mozilla/5.0 (WordPress)',
+            'Referer'    => home_url()
+        )
+    ));
+
+    if (is_wp_error($response)) {
+        return false;
+    }
+
+    $code = wp_remote_retrieve_response_code($response);
+    if ($code != 200) {
+        return false;
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    if (empty($body)) {
+        return false;
+    }
+
+    // Try to get filename from URL or headers
+    $filename = basename(parse_url($url, PHP_URL_PATH));
+
+    // If filename empty (Google Drive case)
+    if (!$filename || strpos($filename, '.') === false) {
+        // Try content-disposition header
+        $headers = wp_remote_retrieve_headers($response);
+        if (!empty($headers['content-disposition']) &&
+            preg_match('/filename="?([^"]+)"?/i', $headers['content-disposition'], $matches)) {
+            $filename = sanitize_file_name($matches[1]);
+        }
+    }
+
+    // If still no extension, detect from mime
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    if (empty($ext)) {
+        $data = getimagesizefromstring($body);
+        if (!$data || empty($data['mime'])) {
+            return false;
+        }
+        $ext = wdk_mime2ext($data['mime']);
+        $filename = time() . '-' . wp_generate_password(6, false) . '.' . $ext;
+    }
+
+    // Save file to uploads dir
+    $upload = wp_upload_bits($filename, null, $body);
+    if (!empty($upload['error'])) {
+        return false;
+    }
+
+    $file_path = $upload['file'];
+    $file_name = basename($file_path);
+    $file_type = wp_check_filetype($file_name, null);
+    $wp_upload_dir = wp_upload_dir();
+
+    $post_info = array(
+        'guid'           => $wp_upload_dir['url'] . '/' . $file_name,
+        'post_mime_type' => $file_type['type'],
+        'post_title'     => sanitize_file_name(pathinfo($file_name, PATHINFO_FILENAME)),
+        'post_content'   => '',
+        'post_status'    => 'inherit',
+    );
+
+    // Insert attachment
+    $attach_id = wp_insert_attachment($post_info, $file_path, $parent_post_id);
+
+    if (!$attach_id) {
+        return false;
+    }
+
+    // Generate metadata
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    $attach_data = wp_generate_attachment_metadata($attach_id, $file_path);
+    wp_update_attachment_metadata($attach_id, $attach_data);
+
+    return $attach_id;
+}
+
 /**
  * Insert an attachment from an URL address.
  *
@@ -2119,7 +2327,7 @@ function wdk_insert_attachment_from_url($url, $parent_post_id = null) {
     }
 
     /* if unsoported extension */
-    if(in_array(wdk_file_extension($filename), array('php','asp'))){
+    if(in_array(wdk_file_extension($filename), array('php','asp')) || strlen(wdk_file_extension($filename)) > 5){
         $data = getimagesizefromstring($response['body']);
         if(!$data) return false;
         if(empty($data['mime'])) return false;
@@ -2218,23 +2426,22 @@ if(!function_exists('wdk_generate_profile_permalink')) {
 
     function wdk_generate_profile_permalink($profile = array())
     {
-      
         $profile_slug = '';
-        if(wmvc_show_data('user_login', $profile, false)){
-            $profile_slug =  wmvc_show_data('user_login', $profile);
-            if(wmvc_show_data('wdk_slug', $profile))
-                $profile_slug = wmvc_show_data('wdk_slug', $profile);
-        } else if(is_intval($profile)){
+        if(is_intval($profile)){
             $profile_data = get_userdata($profile);
-            if(wmvc_show_data('wdk_slug', $profile, false)){
+            if(wmvc_show_data('wdk_slug', $profile_data, false)){
                 $profile_slug = wmvc_show_data('wdk_slug', $profile);
             }elseif(wmvc_show_data('user_login', $profile_data, false)){
                 $profile_slug = wmvc_show_data('user_login', $profile_data);
             } else {
                 $profile_slug = $profile;
             }
-        }
-
+        } else if(wmvc_show_data('user_login', $profile, false)){
+            $profile_slug =  wmvc_show_data('user_login', $profile);
+            if(wmvc_show_data('wdk_slug', $profile))
+                $profile_slug = wmvc_show_data('wdk_slug', $profile);
+        } 
+       
         $user_profile_page = get_option('wdk_membership_profile_preview_page');
         if(!$user_profile_page) {
             return '#';
@@ -2495,7 +2702,7 @@ function wdk_upload_file($field_name, $file_id)
         </a>
         <a class="delete-custom-img <?php if ( ! $you_have_file  ) { echo 'hidden'; } ?>" 
         href="#">
-            <?php echo esc_html__('Remove file','wmvc_win') ?>
+            <?php echo esc_html__('Remove all files','wmvc_win') ?>
         </a>
     </p>
     <?php //endif; ?>
@@ -2564,15 +2771,11 @@ function wdk_upload_multi_files($field_name, $image_ids='', $texts = array())
     static $media_element_counter = 0;
 
     if(!isset($texts['file_select']))$texts['file_select'] = esc_html__('Select file','wmvc_win');
-    if(!isset($texts['file_remove']))$texts['file_remove'] = esc_html__('Remove file','wmvc_win');
+    if(!isset($texts['file_remove']))$texts['file_remove'] = esc_html__('Remove all files','wmvc_win');
 
     $media_element_counter++;
     
     $img_field = $field_name.'_'.$media_element_counter;
-    
-    wp_register_script( 'wpmediaelement_file', WPDIRECTORYKIT_URL . 'admin/js/jquery.wpmediaelement_file.js', array( 'jquery' ), false, false );
-    wp_enqueue_script(  'wpmediaelement_file' );
-    wp_enqueue_media();
     
     wp_enqueue_script(  'wpmediamultiple' );
     wp_enqueue_script(  'jquery-ui-mouse' );
@@ -2644,7 +2847,10 @@ function wdk_upload_multi_files($field_name, $image_ids='', $texts = array())
                                     frame: {
                                         title: '".esc_js(__('Select or Upload Media Of Your Chosen Persuasion','wpdirectorykit'))."',
                                         button: '".esc_js(__('Use this media','wpdirectorykit'))."',
-                                    }
+                                    },
+                                     library: {
+                                        type: ['application', 'image', 'video']
+                                    },
                                 });
                                 /* order */
                                 var re_order = function(media_element){
@@ -2754,6 +2960,50 @@ if(!function_exists('wdk_access_check')) {
 
     }
 }
+
+if ( ! function_exists('wdk_recaptcha_field_v3'))
+{
+    function wdk_recaptcha_field_v3($wdk_recaptcha_site_key=null, $wdk_recaptcha_secret_key=null, $load_script=true)
+    {
+        static $counter = 0;
+
+        if(empty($wdk_recaptcha_site_key) && empty($wdk_recaptcha_site_key)) {
+            $wdk_recaptcha_site_key = get_option('wdk_recaptcha_site_key_v3');
+            $wdk_recaptcha_secret_key = get_option('wdk_recaptcha_secret_key_v3');
+        }
+        
+        if($wdk_recaptcha_site_key && $wdk_recaptcha_secret_key)
+        {
+            if($load_script && $counter===0)
+            {
+                echo "<script src='https://www.google.com/recaptcha/api.js?render=".esc_attr(trim($wdk_recaptcha_site_key))."'></script>";
+            }
+            $counter++;
+            ?>
+            <input type="hidden" name="g-recaptcha-response" id="recaptcha_called_v3_count_<?php echo esc_html($counter);?>">
+            <script>
+                (function(){
+                    const field_token = document.getElementById('recaptcha_called_v3_count_<?php echo esc_html($counter);?>');
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('<?php echo esc_attr(trim($wdk_recaptcha_site_key));?>', {action: 'submit'}).then(function(token) {
+                            field_token.value = token;
+                        });
+                    });
+
+                    // Reload token after form submit
+                    field_token.closest('form').addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        grecaptcha.execute('<?php echo esc_attr(trim($wdk_recaptcha_site_key));?>', {action: 'submit'}).then(function(token) {
+                            field_token.value = token;
+                        });
+                    });
+                })();
+            </script>
+            <?php
+        }
+    }
+}
+
 
 if ( ! function_exists('wdk_recaptcha_field'))
 {
@@ -2890,7 +3140,7 @@ function wdk_get_post()
         {
             return wdk_clean($_POST);
         }
-        else
+        elseif(is_string($val))
         {
             if(strpos($val, '<iframe') === 0)
                 $val = str_replace("'",'"', $val);
@@ -2931,7 +3181,7 @@ function wdk_clean($array)
         {
             $arr_cleaned[sanitize_text_field($key)] = wdk_clean($val);
         }
-        else
+        elseif(is_string($val))
         {
             $arr_cleaned[sanitize_text_field($key)] = wp_kses_post($val);
         }
@@ -2939,6 +3189,32 @@ function wdk_clean($array)
     }
 
     //dump($arr_cleaned);
+
+    return $arr_cleaned;
+}
+
+function wdk_clean_mixed($item)
+{
+    $arr_cleaned = array();
+
+    if(is_array($item))
+    {
+        foreach($item as $key=>$val)
+        {
+            if(is_array($val))
+            {
+                $arr_cleaned[sanitize_text_field($key)] = wdk_clean_mixed($val);
+            }
+            else
+            {
+                $arr_cleaned[sanitize_text_field($key)] = wp_kses_post($val);
+            }
+        }
+    }
+    else
+    {
+        return wp_kses_post($item);
+    }
 
     return $arr_cleaned;
 }
@@ -3014,13 +3290,13 @@ if ( ! function_exists('wdk_treefield_select_ajax'))
                         $results = $WMVC->$table->get();
                         foreach ($results as $item) {
                             if($item)
-                                $form .= '<option selected="selected" value="'.esc_attr(wmvc_show_data($column_key, $item, false, TRUE, TRUE)).'">'.esc_html(wmvc_show_data($column_print, $item, false, TRUE, TRUE)).'</option>';
+                                $form .= '<option selected="selected" value="'.esc_attr(wmvc_show_data($column_key, $item, false, TRUE, TRUE)).'">'.esc_html__(wmvc_show_data($column_print, $item, false, TRUE, TRUE),'wpdirectorykit').'</option>';
                         }
                     }
                 } elseif(is_intval($selected)) {
                     $db_item = $WMVC->$table->get($selected, TRUE);
                     if($db_item)
-                        $form .= '<option selected="selected" value="'.esc_attr(wmvc_show_data($column_key, $db_item, false, TRUE, TRUE)).'">'.esc_attr(wmvc_show_data($column_print, $db_item, false, TRUE, TRUE)).'</option>';
+                        $form .= '<option selected="selected" value="'.esc_attr(wmvc_show_data($column_key, $db_item, false, TRUE, TRUE)).'">'.esc_html__(wmvc_show_data($column_print, $db_item, false, TRUE, TRUE),'wpdirectorykit').'</option>';
                 } 
             } else {
                 //$form .= '<option value="" selected="selected">'.esc_html__('Not selected', 'wpdirectorykit').'</option>';
@@ -3030,9 +3306,9 @@ if ( ! function_exists('wdk_treefield_select_ajax'))
         //load javascript library
         if($counter==0)
         {
-            wp_enqueue_script('select2');
+            wp_enqueue_script('select2-select2');
             wp_enqueue_script('wdk-select2');
-            wp_enqueue_style('select2');
+            wp_enqueue_style('select2-select2');
         }
         ?>
         <?php
@@ -3078,9 +3354,9 @@ if ( ! function_exists('wdk_user_select_ajax'))
         //load javascript library
         if($counter==0)
         {
-            wp_enqueue_script('select2');
+            wp_enqueue_script('select2-select2');
             wp_enqueue_script('wdk-select2');
-            wp_enqueue_style('select2');
+            wp_enqueue_style('select2-select2');
         }
         ?>
         <?php
@@ -3339,7 +3615,15 @@ if ( ! function_exists('wdk_get_gps'))
         if(!isset($results[$address])) {
             $results[$address] = NULL;
             $url = 'https://nominatim.openstreetmap.org/search?format=json&q=' . $address;
-            $request    = wp_remote_get( $url );
+
+            // Add required User-Agent header
+            $args = [
+                'timeout' => 10,
+                'headers' => [
+                    'User-Agent' => get_bloginfo('name') . '/1.0 (' . get_bloginfo('admin_email') . ')',
+                ],
+            ];
+            $request    = wp_remote_get( $url, $args);
             $response = '';
 
             // request failed
@@ -3497,6 +3781,30 @@ if ( ! function_exists('wdk_is_phone'))
     }	
 }	
  
+if ( ! function_exists('is_wdk_whatsapp'))
+{
+    // Validation phone
+    /**
+    * @param string $value phone in string
+    * @return bool
+    */
+    function is_wdk_whatsapp($value = '') {
+        return true;
+    }	
+}	
+ 
+if ( ! function_exists('is_wdk_viber'))
+{
+    // Validation phone
+    /**
+    * @param string $value phone in string
+    * @return bool
+    */
+    function is_wdk_viber($value = '') {
+        return true;
+    }	
+}	
+ 
 if ( ! function_exists('wdk_filter_phone'))
 {
     // Validation phone
@@ -3634,7 +3942,10 @@ if ( ! function_exists('wdk_number_format_i18n'))
         $value = filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $value = (float)str_replace(array(","," ",'&nbsp;'), "", $value);
 
-        return number_format_i18n($value);
+        // Allow decimal precision to be filtered (default is 0)
+        $decimals = apply_filters('wdk_number_format_decimals', ((wdk_get_option('wdk_number_format_decimals')) ? wdk_get_option('wdk_number_format_decimals') : 0));
+
+        return number_format_i18n($value, $decimals);
     }
 }
     
@@ -3769,7 +4080,18 @@ if ( ! function_exists('wdk_generated_cached_row_userdata'))
         $user_data['agency_name'] = wmvc_show_data('cacheduser_agency_name', $row);
         $user_data['description'] = wmvc_show_data('cacheduser_description', $row);
         $user_data['user_url'] = wmvc_show_data('cacheduser_user_url', $row);
-        $user_data['roles'] = explode(',', wmvc_show_data('cacheduser_roles', $value));
+        $user_data['roles'] = explode(',', wmvc_show_data('cacheduser_roles', $row));
+        $user_data['wdk_slug'] = wmvc_show_data('cacheduser_wdk_slug', $row);
+        $user_data['user_login'] = wmvc_show_data('cacheduser_user_login', $row);
+        $user_data['user_id'] = wmvc_show_data('cacheduser_user_id', $row);
+   
+        if(function_exists('wdk_generate_profile_permalink') && $user_data['profile_url'] == '#') {
+            if($user_data['user_login']) {
+                $user_data['profile_url'] = wdk_generate_profile_permalink($user_data);
+            } else {
+                $user_data['profile_url'] = wdk_generate_profile_permalink(wmvc_show_data('user_id', $user_data));
+            }
+        }
 
         return $user_data;
 	}
@@ -4370,6 +4692,11 @@ if ( ! function_exists('wdk_generate_missing_image_sizes'))
             return true;
         }
 
+        // Check if the attachment is an image
+        if (!wp_attachment_is_image($attachment_id)) {
+            return false;
+        }
+
         $file = get_attached_file( $attachment_id );
         require_once(ABSPATH . "wp-admin" . '/includes/image.php');
         $metadata = wp_generate_attachment_metadata($attachment_id, $file);
@@ -4387,4 +4714,596 @@ if ( ! function_exists('wdk_generate_missing_image_sizes'))
     }
 }
 
+if (!function_exists('wdk_get_languages')) {
+
+    function wdk_get_languages($lang_code_id = null)
+    {
+        $lang_pattern = ['title' => '', 'lang_code' => '', 'id' => '', 'icon' => '', 'url' => ''];
+        $languages = [];
+
+        // [qTranslate X]
+        if (function_exists('qtranxf_getSortedLanguages')) {
+            global $q_config;
+
+            if (empty($q_config)) {
+                // Initialize qTranslate X language settings if needed
+                // qtranxf_init_language();
+            }
+
+            $all_langs = qtranxf_getSortedLanguages();
+            if (count($all_langs) > 0) {
+                foreach ($all_langs as $key => $lang_code) {
+                    $languages[$key + 1] = array_merge(
+                        $lang_pattern,
+                        [
+                            'title' => $q_config['language_name'][$lang_code],
+                            'lang_code' => $lang_code,
+                            'id' => $key + 1,
+                            'icon' => '',
+                            'url' => wdk_get_language_url($lang_code),
+                        ]
+                    );
+                }
+            }
+        }
+        // [/qTranslate X]
+
+        // [WPML]
+        if (function_exists('icl_get_languages')) {
+            $wpml_langs = icl_get_languages('orderby=KEY&order=DIR&link_empty_to=str');
+            $k = 1;
+            foreach ($wpml_langs as $key => $lang_data) {
+                $languages[$k] = array_merge(
+                    $lang_pattern,
+                    [
+                        'title' => (!empty($lang_data['translated_name'])) ? $lang_data['translated_name'] : $lang_data['native_name'],
+                        'lang_code' => $lang_data['language_code'],
+                        'id' => $k,
+                        'icon' => (!empty($lang_data['country_flag_url'])) ? $lang_data['country_flag_url'] : WPDIRECTORYKIT_URL.'public/img/flags/'.$lang_data['language_code'].'.png',
+                        'url' => wdk_get_language_url($lang_data['language_code']),
+                    ]
+                );
+                $k++;
+            }
+        } elseif (has_filter('wpml_active_languages')) {
+            $wpml_langs = apply_filters('wpml_active_languages', null) ?: get_query_var('lang', 'all');
+            if (is_array($wpml_langs)) {
+                foreach ($wpml_langs as $lang_data) {
+                    if (!isset($lang_data['code']) && isset($lang_data['language_code'])) {
+                        $lang_data['code'] = $lang_data['language_code'];
+                    }
+                    if (empty($lang_data['translated_name']) && !empty($lang_data['native_name'])) {
+                        $lang_data['translated_name'] = $lang_data['native_name'];
+                    }
+                    $languages[$lang_data['id']] = array_merge(
+                        $lang_pattern,
+                        [
+                            'title' => (!empty($lang_data['translated_name'])) ? $lang_data['translated_name'] : $lang_data['native_name'],
+                            'lang_code' => $lang_data['code'],
+                            'id' => $lang_data['id'],
+                            'icon' => (!empty($lang_data['country_flag_url'])) ? $lang_data['country_flag_url'] : WPDIRECTORYKIT_URL.'public/img/flags/'.$lang_data['language_code'].'.png',
+                            'url' => wdk_get_language_url($lang_data['code']),
+                        ]
+                    );
+                }
+            }
+        }
+        // [/WPML]
+
+        // [TranslatePress]
+        if (function_exists('trp_custom_language_switcher')) {
+            $k = 1;
+            foreach (trp_custom_language_switcher() as $lang_data) {
+                $languages[$k++] = array_merge(
+                    $lang_pattern,
+                    [
+                        'title' => $lang_data['language_name'],
+                        'lang_code' => $lang_data['language_code'],
+                        'id' => $k,
+                        'icon' => $lang_data['flag_link'],
+                        'url' => $lang_data['current_page_url'],
+                    ]
+                );
+            }
+        }
+        // [/TranslatePress]
+
+        if (!empty($lang_code_id)) {
+            foreach ($languages as $lang) {
+                if (($lang['id'] == $lang_code_id) || ($lang['lang_code'] == $lang_code_id)) {
+                    return $lang['id'] == $lang_code_id ? $lang['lang_code'] : $lang['id'];
+                }
+            }
+            return false;
+        }
+
+        return $languages;
+    }
+}
+
+if (!function_exists('wdk_default_language')) {
+    function wdk_default_language()
+    {
+        // [qTranslate X]
+        if (function_exists('qtranxf_getLanguageDefault')) {
+            return qtranxf_getLanguageDefault();
+        }
+        // [/qTranslate X]
+
+        // [WPML]
+        if (function_exists('icl_get_languages')) {
+            $wpml_langs = icl_get_languages('orderby=KEY&order=DIR&link_empty_to=str');
+            foreach ($wpml_langs as $lang_data) {
+                if ($lang_data['major'] == 1) {
+                    return $lang_data['code'];
+                }
+            }
+        } elseif (has_filter('wpml_default_language')) {
+            return apply_filters('wpml_default_language', null);
+        }
+        // [/WPML]
+
+        return 'en';
+    }
+}
+
+if (!function_exists('wdk_current_language')) {
+    function wdk_current_language()
+    {
+        if (function_exists('trp_get_languages')) {
+            global $TRP_LANGUAGE;
+            $trp = TRP_Translate_Press::get_trp_instance();
+            $settings = $trp->get_component('settings')->get_settings();
+            $translation_languages = $trp->get_component('languages')->get_language_names($settings['publish-languages']);
+            if (isset($translation_languages[$TRP_LANGUAGE])) {
+                return $translation_languages[$TRP_LANGUAGE];
+            }
+        }
+
+        // [qTranslate X]
+        if (function_exists('qtranxf_getLanguage')) {
+            return qtranxf_getLanguage();
+        }
+        // [/qTranslate X]
+
+        // [WPML]
+        if (function_exists('icl_get_languages')) {
+            $wpml_langs = icl_get_languages('orderby=KEY&order=DIR&link_empty_to=str');
+            foreach ($wpml_langs as $lang_data) {
+                if ($lang_data['active'] == 1) {
+                    return (!empty($lang_data['native_name'])) ? $lang_data['native_name'] : $lang_data['language_code'];
+                }
+            }
+        } elseif (has_filter('wpml_current_language')) {
+            return apply_filters('wpml_current_language', null);
+        }
+        // [/WPML]
+
+        return 'en';
+    }
+}
+
+if (!function_exists('wdk_current_language_id')) {
+    function wdk_current_language_id()
+    {
+        $lang_id = wdk_get_languages(wdk_current_language());
+        return is_numeric($lang_id) ? $lang_id : wdk_default_language_id();
+    }
+}
+
+if (!function_exists('wdk_default_language_id')) {
+    function wdk_default_language_id()
+    {
+        $lang_id = wdk_get_languages(wdk_default_language());
+        return is_numeric($lang_id) ? $lang_id : '1';
+    }
+}
+
+if (!function_exists('wdk_get_language_name')) {
+    function wdk_get_language_name($id_or_code)
+    {
+        $langs = wdk_get_languages();
+        foreach ($langs as $lang) {
+            if ($lang['lang_code'] == $id_or_code || $lang['id'] == $id_or_code) {
+                return $lang['title'];
+            }
+        }
+        return '';
+    }
+}
+
+if (!function_exists('wdk_get_language_url')) {
+    function wdk_get_language_url($lang_code)
+    {
+        // [qTranslate X]
+        if (function_exists('qtranxf_convertURL')) {
+            return qtranxf_convertURL('', $lang_code, false, true);
+        }
+        // [/qTranslate X]
+
+        // [WPML]
+        if (function_exists('icl_get_languages')) {
+            $wpml_langs = icl_get_languages('orderby=KEY&order=DIR&link_empty_to=str');
+            foreach ($wpml_langs as $lang_data) {
+                if ($lang_data['language_code'] == $lang_code) {
+                    return $lang_data['url'];
+                }
+            }
+        } elseif (has_filter('wpml_active_languages')) {
+            $wpml_langs = apply_filters('wpml_active_languages', null);
+            foreach ($wpml_langs as $lang_data) {
+                if (!isset($lang_data['language_code']) && isset($lang_data['language_code'])) {
+                    $lang_data['language_code'] = $lang_data['language_code'];
+                }
+                if (empty($lang_data['translated_name']) && !empty($lang_data['native_name'])) {
+                    $lang_data['translated_name'] = $lang_data['native_name'];
+                }
+                $url = wdk_wpml_ls_language_url($lang_data['url'], $lang_data);
+                if ($lang_data['language_code'] == $lang_code) {
+                    return $url;
+                }
+            }
+        }
+        // [/WPML]
+
+        return '';
+    }
+}
+
+function wdk_set_user_default_language($user_id = null)
+{
+    if (is_null($user_id)) {
+        $user_id = get_current_user_id();
+    }
+
+    $get_language = get_user_meta($user_id, 'user_language', true);
+
+    if (!$get_language && (function_exists('icl_get_languages') || has_filter('wpml_active_languages'))) {
+        do_action('wpml_switch_language', $get_language);
+    }
+}
+
+function wdk_set_language($lang_code = null)
+{
+    if (!is_null($lang_code) && (function_exists('icl_get_languages') || has_filter('wpml_active_languages'))) {
+        do_action('wpml_switch_language', $lang_code);
+    }
+}
+
+function wdk_wpml_ls_language_url($url, $data)
+{
+    global $sitepress;
+
+    if (is_object($sitepress)) {
+        $sitepress_settings = $sitepress->get_settings();
+    }
+
+    return $url;
+}
+
+add_filter('wpml_ls_language_url', 'wdk_wpml_ls_language_url', 10, 3);
+
+if (!function_exists('wdk_calculate_nights')) {
+    /**
+     * Calculate the number of nights between two dates
+     *
+     * This function takes two date strings as input and calculates the number of nights
+     * (i.e., the difference in days) between them. It returns the total number of nights 
+     * between the provided start and end dates. The date format must be valid for PHP's 
+     * DateTime class.
+     *
+     * @param      string    $start_date   The start date in 'Y-m-d' format.
+     * @param      string    $end_date     The end date in 'Y-m-d' format.
+     * @return     int       The number of nights (days between the two dates).
+     */
+    function wdk_calculate_nights($start_date, $end_date) {
+        
+        /* normalize date */
+        $start_date = wdk_normalize_date_db($start_date, 'Y-m-d H:i:s', 'Y-m-d');
+        $end_date = wdk_normalize_date_db($end_date, 'Y-m-d H:i:s', 'Y-m-d');
+
+        // Create DateTime objects for start and end dates
+        $start = new DateTime($start_date);
+        $end = new DateTime($end_date);
+
+        // Calculate the difference between the two dates
+        $difference = $start->diff($end);
+
+        // Return the number of nights (difference in days)
+        return $difference->days;
+    }
+}
+
+if ( ! function_exists('wdk_select_db_field_ajax'))
+{
+    /**
+	 * Return select2 ajax
+	 *
+	 * @param      string    option       Option key
+	 * @return     string    alt or title
+	 */
+	function wdk_select_db_field_ajax($name = '', $selected = NULL, $empty_value='', $filter_id = '')
+	{
+        $WMVC = &wdk_get_instance();
+        
+	    static $counter = 0;
+		$form = '<select data-ajax="'.admin_url('admin-ajax.php').'" name="'.$name.'" data-id="'.$filter_id.'" data-placeholder="'.$empty_value.'" class="form-control wdk_select2_field_suggestion" id="wdk_select2_field_'.$filter_id.'_'.$counter.'" multiple="">';
+            if($selected) {
+                if(is_array($selected)) {
+                    /* where in */
+                    foreach ($selected as $item) {
+                        $form .= '<option selected="selected" value="'.esc_attr($item).'">'.esc_html($item).'</option>';
+                    }
+                } elseif(is_string($selected)) {
+                    $form .= '<option selected="selected" value="'.esc_attr($selected).'">'.esc_html($selected).'</option>';
+                } 
+            } else {
+                //$form .= '<option value="" selected="selected">'.esc_html__('Not selected', 'wpdirectorykit').'</option>';
+            }
+        $form .= '</select>';
+        
+        //load javascript library
+        if($counter==0)
+        {
+            wp_enqueue_script('select2-select2');
+            wp_enqueue_script('wdk-select2');
+            wp_enqueue_style('select2-select2');
+        }
+        ?>
+        <?php
+        $counter++;
+		return $form;
+
+    }
+}
+
+if ( ! function_exists('wdk_next_month_payment_day'))
+{
+    /**
+    * Gets the next payment date one month later, considering the number of days in the next month.
+    *
+    * @param string $currentDate The current payment date in 'Y-m-d H:i:s' format.
+    * @return string|false The next payment date in 'Y-m-d H:i:s' format or false on error.
+    */
+    function wdk_next_month_payment_day($currentDate, $time = false, $wanted_day = NULL) {
+        $nextDate = null;
+        $timestamp = strtotime($currentDate);
+        $daysInNextMonth = date('t', strtotime('+1 month', strtotime(date('Y-m', $timestamp))));
+        $currentDay = (int)date('d', $timestamp);
+
+        $timeFormat = $time ? "H:i:s" : "00:00:00";
+
+            
+        // Determine the wanted day
+        if ($wanted_day !== NULL) {
+            $wanted_day = (int)date('d', strtotime($wanted_day));
+        } else {
+            $wanted_day = (int)date('d', $timestamp);
+        }
+
+        $nextMonth = strtotime('first day of next month', $timestamp);
+        $daysInNextMonth = date('t', $nextMonth);
+
+        // Adjust for the wanted day
+        if ($wanted_day > $daysInNextMonth || 
+            ( 
+                get_option('wdk_membership_next_month_calculation_with_last_day')
+
+                && (
+                    $currentDay >= 30 ||  $currentDay == date('t', $timestamp)
+                )
+            )
+            ) {
+            // If the wanted day exceeds the max days of the next month, use the last day of the month
+            $nextDate = date("Y-m-{$daysInNextMonth} {$timeFormat}", $nextMonth);
+        } else {
+            // Otherwise, set the exact wanted day
+            $nextDate = date("Y-m-{$wanted_day} {$timeFormat}", $nextMonth);
+        }
+
+        return ($nextDate) ? $nextDate : false;
+    }
+}
+
+if ( ! function_exists('wdk_next_year_payment_day'))
+{
+    /**
+    * Gets the next payment date one year later, considering the number of days in the next month.
+    *
+    * @param string $currentDate The current payment date in 'Y-m-d H:i:s' format.
+    * @return string|false The next payment date in 'Y-m-d H:i:s' format or false on error.
+    */
+
+    function wdk_next_year_payment_day($currentDate, $time = false) {
+        $nextDate = null;
+        $timestamp = strtotime($currentDate);
+        $nextYearTimestamp = strtotime('+1 year', strtotime(date('Y-m', $timestamp)));
+        $daysInNextMonth = date('t', $nextYearTimestamp);
+        $currentDay = date('j', $timestamp);
+        $timeFormat = "00:00:00";
+        if($time) {
+            $timeFormat = "H:i:s";
+        }
+        if ($currentDay > $daysInNextMonth) {
+            $nextDate = date('Y-m-d '.$timeFormat, strtotime('last day of this month', $nextYearTimestamp));
+        } else {
+            $nextDate = date('Y-m-d '.$timeFormat, strtotime('+1 year', $timestamp));
+        }
+    
+        return ($nextDate) ? $nextDate : false;
+    }
+}
+
+if ( ! function_exists('wdk_generate_auto_login_link'))
+{
+    function wdk_generate_auto_login_link( $user_id = null ) {
+        $token = substr(md5($user_id.NONCE_KEY.'wpdirectorykit'),0,10);
+        
+        $login_url = site_url( "/?auto-login=1&user_id={$user_id}&token={$token}" );
+        return $login_url;
+    }
+}
+
+if ( ! function_exists('wdk_get_user_subscription_id'))
+{
+    function wdk_get_user_subscription_id($user_id = null) {
+        global $Winter_MVC_wdk_membership;
+        if(!isset($Winter_MVC_wdk_membership)) {
+            return false;
+        }
+        $Winter_MVC_wdk_membership->model('subscription_user_m');
+        $user_subscription = $Winter_MVC_wdk_membership->subscription_user_m->get_by(array('user_id'=>$user_id), TRUE);
+        return wmvc_show_data('subscription_id', $user_subscription, '', TRUE, TRUE);
+    }
+}
+
+if ( ! function_exists('is_wdk_related_validation'))
+    /**
+     * IS WDK related validation
+     * 
+     * @return bool true if exists dash
+     */
+    {
+        function is_wdk_related_validation($param)
+        {
+
+            if(empty($param)) {
+                return TRUE;
+            }
+            
+            $listing_id = (!empty($_GET['id'])) ? intval(sanitize_text_field($_GET['id'])) : null;
+
+
+            global $Winter_MVC_WDK;
+            $Winter_MVC_WDK->model('listing_m');
+
+            $Winter_MVC_WDK->db->select('post_id');
+            $Winter_MVC_WDK->db->where(array(
+                    '(post_id IN ('.esc_sql(sanitize_text_field($param)).'))' => NULL,
+                    '((`listing_related_ids` IS NOT NULL AND `listing_related_ids` !="") OR (`listing_parent_post_id` IS NOT NULL AND `listing_parent_post_id` !=0))' => NULL,
+                    ));
+
+            if($listing_id) {
+                $Winter_MVC_WDK->db->where(array(
+                    '`listing_parent_post_id` !='.esc_sql($listing_id).'' => NULL,
+                ));
+            }
+
+            $Winter_MVC_WDK->db->from($Winter_MVC_WDK->listing_m->_table_name);
+            $Winter_MVC_WDK->db->limit(5);
+
+            $Winter_MVC_WDK->db->get();
+            if ($Winter_MVC_WDK->db->num_rows() > 0) {
+                $db_results = $Winter_MVC_WDK->db->results();
+            } else {
+                $db_results = null;
+            }
+
+            if (!empty($db_results)) {
+                return false;
+            }
+
+            return TRUE;
+        }
+    }
+
+	/**
+	 * Renders an Elementor template by its title or post ID.
+	 *
+	 * Attempts to find and render an Elementor layout/template using the post title or post ID.
+	 * If the post is found and public, its rendered Elementor content is returned, otherwise post content fallback or error.
+	 *
+	 * @since 1.0.0
+	 * @param string|int $title The title (or ID if $id=true) of the Elementor template to render.
+	 * @param bool $id Optional. If true, $title is treated as a post ID. If false (default), searches by title.
+	 * @return string|false Rendered template HTML on success, public/content fallback, or error message/false on failure.
+	 */
+	function wdk_render_elementor_template( $title, $id = false ) {
+	    // Initialize variables.
+	    $layout_id = null;
+	    $template_content = '';
+
+	    // Determine the layout/post ID.
+	    if ( ! $id ) {
+	        // Search by post title. Returns WP_Post/object or null.
+	        $found_post = wdk_page_by_title( $title, OBJECT, ['elementor_library','page'] );
+	        $layout_id = $found_post ? $found_post->ID : null;
+
+	        // Support WPML translation if present.
+	        // The filter may change $layout_id to a translated post's ID if needed.
+	        $layout_id = apply_filters( 'wpml_object_id', $layout_id, 'elementor_library', true );
+	    } else {
+	        // ID provided directly.
+	        $layout_id = intval($title);
+	    }
+   
+	    // Early return if no valid layout found.
+	    if ( empty( $layout_id ) ) {
+	        return false;
+	    }
+
+	    // Get post object (Elementor template or WP Page).
+	    $post_data = get_post( $layout_id );
+      
+
+	    // Validate post: should exist, be published, and not password protected.
+	    if ( ! $post_data || $post_data->post_status !== 'publish' || post_password_required( $post_data ) ) {
+	        return esc_html__( 'Layout is not public', 'wpdirectorykit' );
+	    }
+      
+	    // Render content depending on post type.
+	    if (
+	        ( isset($post_data->post_type) && $post_data->post_type === 'elementor_library' ) ||
+	        ( isset($post_data->post_type) && $post_data->post_type === 'page' )
+	    ) {
+	        // Try to render using Elementor's frontend builder.
+	        if ( class_exists('\Elementor\Plugin') && method_exists('\Elementor\Plugin', 'instance') ) {
+	            $elementor_instance = \Elementor\Plugin::instance();
+	            $content = $elementor_instance->frontend->get_builder_content_for_display( $layout_id );
+	            $template_content = ! empty( $content ) ? $content : $post_data->post_content;
+	        } else {
+	            // Elementor not present; fallback to post content.
+	            $template_content = $post_data->post_content;
+	        }
+	    } else {
+	        // Non-Elementor post types, fallback to post content.
+	        $template_content = $post_data->post_content;
+	    }
+
+	    /**
+	     * Filter: Allows modification of the rendered Elementor template content before returning.
+	     *
+	     * @param string $template_content The rendered template content.
+	     * @param int    $layout_id        The ID of the layout/template.
+	     * @param WP_Post $post_data       The WP_Post object of the layout/template.
+	     */
+	    return apply_filters( 'wdk_render_elementor_template_output', $template_content, $layout_id, $post_data );
+	}
+
+    if(!function_exists('wdk_esc_sql')) {
+        function wdk_esc_sql ($value = '') {
+            return esc_sql(trim(preg_replace([
+                '/\bselect\b/i',
+                '/\binsert\b/i',
+                '/\bupdate\b/i',
+                '/\bdelete\b/i',
+                '/\bunion\b/i',
+                '/\bextractvalue\b/i',
+                '/\bversion\s*\(\)/i',
+                '/\bdatabase\s*\(\)/i',
+                '/\bconcat\s*\(/i',
+                '/\bdrop\b/i',
+                '/\bsleep\s*\(/i',
+                '/\bbenchmark\s*\(/i',
+                '/--/',
+                '/#/i',
+                '/\/\*/',
+    
+                // EXTRA BLOCK YOU REQUESTED
+                '/\\\\/',     // remove backslash \
+                '/\|/',       // remove |
+                '/%/',        // remove %
+            ], '', sanitize_text_field($value))));
+        }
+    }
 ?>

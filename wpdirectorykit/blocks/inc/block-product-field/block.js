@@ -28,7 +28,7 @@
             const [postHTML, setPostHTML] = useState('');
 
             useEffect(() => {
-                wp.apiFetch({ path: `/wdk-blocks/v1/last-listings/&postCount=${postCount}` }).then(posts => {
+                wp.apiFetch({ path: `/wdk-blocks/v1/last-listings/?postCount=${postCount}` }).then(posts => {
                     setPostHTML(posts.data);
                 });
             }, [postCount]);

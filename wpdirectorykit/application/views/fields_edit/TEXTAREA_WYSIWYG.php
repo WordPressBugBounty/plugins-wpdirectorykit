@@ -38,25 +38,30 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
 
 ?>
 
-<div class="wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
+<div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?> <?php if(!empty($form) && method_exists($form, 'hasError') && $form->hasError($field_id)):?> field-error <?php endif;?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
             <?php 
-            wp_editor(wmvc_show_data(esc_attr($field_id), $db_data, ''), esc_attr($field_id), array (
-                    'textarea_rows' => 6,
-                    'media_buttons' => FALSE,
-                    'wpautop' => true,
-                    'teeny'         => TRUE,
-                    'tinymce'       => true,
-                    'teeny' => true,
-                    'dfw' => false,
-                    'quicktags' => true
-            )); 
+            wp_editor(wmvc_show_data(esc_attr($field_id), $db_data, ''), esc_attr($field_id),  apply_filters('wpdirectorykit/fields_editor/textarea_wysiwyg/config', array(
+                        'textarea_rows' => 6,
+                        'media_buttons' => false,
+                        'wpautop'       => true,
+                        'teeny'         => true,
+                        'tinymce'       => true,
+                        'dfw'           => false,
+                        'quicktags'     => true,
+                    ))
+            ); 
             ?>
 
         <?php if(!empty($field->hint)):?>
         <p class="wdk-hint">
             <?php echo esc_html($field->hint); ?>
+        </p>
+        <?php endif;?>
+        <?php if(!empty($form) && method_exists($form, 'hasError') && $form->getError($field_id)):?>
+        <p class="wdk-hint wdk-error">
+            <?php echo wp_kses_post($form->getError($field_id)); ?>
         </p>
         <?php endif;?>
     </div>

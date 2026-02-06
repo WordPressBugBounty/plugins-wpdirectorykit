@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const alignment = container.getAttribute('data-alignment') || 'none';
         const content = container.getAttribute('data-content') || '';
 
-        wp.apiFetch({ path: `/wdk-blocks/v1/last-listings/&postCount=${postCount}` }).then(posts => {
-            container.innerHTML =(posts.data);
+        wp.apiFetch({ path: `/wdk-blocks/v1/last-listings/?postCount=${postCount}` }).then(posts => {
+            container.innerHTML = posts.data;
         });
 
     });

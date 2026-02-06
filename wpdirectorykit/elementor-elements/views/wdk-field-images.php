@@ -8,9 +8,19 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
 ?>
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
+    <?php if(wmvc_show_data('cover_in_listing_link', $settings) == 'yes'):?>
+        <?php
+            global $wdk_listing_id;
+            $url = '#';
+            if(wdk_is_listing_page_enabled() && isset($wdk_listing_id)) {
+                $url = get_permalink($wdk_listing_id);
+            }
+        ?>
+        <a href="<?php echo $url;?>" class="complete_link"></a>
+    <?php endif;?>
+
     <div class="wdk-field-images <?php if(wmvc_show_data('enable_js_gallery', $settings, false, TRUE, TRUE)):?> wdk_js_gallery <?php endif;?>">
         <div class="wdk-row">
             <?php if(count($images)>0):?>
@@ -37,6 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <div class="wdk-listing-image-card">
                             <?php endif;?>
                                 <img src="<?php echo esc_url($image);?>" class="wdk-listing-image <?php if($settings['enable_fixed_height']!='yes'):?> auto_height <?php endif;?>" alt="<?php echo esc_attr__('thumb', 'wpdirectorykit');?>">
+                                <div class="mask"></div>
                             <?php if(wmvc_show_data('enable_js_gallery', $settings, false, TRUE, TRUE)):?> 
                                 </a>
                             <?php else:?>

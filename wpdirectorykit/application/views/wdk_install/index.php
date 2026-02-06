@@ -38,12 +38,14 @@ if ( ! defined( 'ABSPATH' ) ) {
         ?>
         <div  class="notice notice-error">
             <p>
-                <?php echo __('First please install / activate required plugins','wpdirectorykit'); ?>
+                <?php echo __('You don\'t have required plugins installed, do you want to install it first?','wpdirectorykit'); ?>
                 <a href="<?php echo esc_url($tgma_link); ?>" class="button button-primary">
                     <?php echo __('Begin to install / activate','wpdirectorykit'); ?>
                 </a>
             </p>
         </div>
+
+        
         <?php endif;?>
         <form method="post" action="" novalidate="novalidate">
             <?php wp_nonce_field( 'wdk-settings_import', '_wpnonce'); ?>
@@ -65,10 +67,26 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </div>
             </div>
             <?php if(!$installed || true):?>
-                <input type="submit" name="submit" id="submit" class="button button-primary event-ajax-indicator" value="<?php echo __('Import demo data', 'wpdirectorykit'); ?>"> <span class="wdk-ajax-indicator wdk-infinity-load color-primary dashicons dashicons-update-alt hidden" style="margin-top: 4px;margin-left: 4px;"></span>
-            <?php endif;?>
+
+                <?php if(!function_exists('eli_installer') || !function_exists('run_elementinvader') || !is_plugin_active('elementor/elementor.php')):?>
+                <?php 
+                $tgma_link = '';
+                if(file_exists(get_template_directory().'/includes/tgm_pa/class-tgm-plugin-activation.php') || file_exists(get_template_directory().'/tgm_pa/class-tgm-plugin-activation.php')) {
+                    $tgma_link = get_admin_url() . "themes.php?page=tgmpa-install-plugins";
+                } else {
+                    $tgma_link = get_admin_url() . "plugins.php?page=tgmpa-install-plugins";
+                }
+                ?>
+                    <a href="<?php echo esc_url($tgma_link); ?>" class="button button-primary">
+                        <?php echo __('Begin to install / activate','wpdirectorykit'); ?>
+                    </a>
+                <?php else:?>
+                    <input type="submit" name="submit" id="submit" class="button button-primary event-ajax-indicator" value="<?php echo __('Import demo data', 'wpdirectorykit'); ?>"> <span class="wdk-ajax-indicator wdk-infinity-load color-primary dashicons dashicons-update-alt hidden" style="margin-top: 4px;margin-left: 4px;"></span>
+                <?php endif;?>
+            
+                <?php endif;?>
             <?php if(!empty($import_log) && stripos($import_log,'alert-succes') !== FALSE && stripos($import_log,'alert-danger') === FALSE):?>
-                <a href="<?php echo esc_url(home_url());?>" class="button button-secondary" target="_blank"><?php echo __('Check your results page now', 'wpdirectorykit'); ?></a>
+                <a href="<?php echo esc_url(home_url());?>" class="button button-secondary" target="_blank"><?php echo __('Check your results page now', 'wpdirectorykit'); ?></a>
             <?php endif;?>
         </form>
     </div>

@@ -489,7 +489,7 @@ class WdkLocationsGrid extends WdkElementorBase {
                         'max' => 100,
                     ],
                 ],
-                'size_units' => [ 'px', 'vw' ],
+                'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                 'default' => [
                     'size' => 350,
                     'unit' => 'px',

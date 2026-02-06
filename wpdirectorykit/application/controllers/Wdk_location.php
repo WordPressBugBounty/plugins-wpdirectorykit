@@ -115,6 +115,11 @@ class Wdk_location extends Winter_MVC_Controller {
                     'label' => __('Related SVG Map Location', 'wpdirectorykit'),
                     'rules' => ''
                 ),
+                array(
+                    'field' => 'titles_for_search',
+                    'label' => __('Alternative titles for search', 'wpdirectorykit'),
+                    'rules' => ''
+                ),
         );
 
         global $wp_filesystem;

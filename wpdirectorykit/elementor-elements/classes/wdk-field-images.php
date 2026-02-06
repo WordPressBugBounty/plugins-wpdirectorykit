@@ -338,8 +338,9 @@ class WdkFieldImages extends WdkElementorBase {
 
         $selectors = array(
             'normal' => '{{WRAPPER}} .wdk-field-images .wdk-listing-image',
+            'hover' => '{{WRAPPER}} .wdk-field-images:hover .wdk-listing-image, {{WRAPPER}} .complete_link:hover  .wdk-field-images .wdk-listing-image, .wdk-listings-results .hover_link:hover {{WRAPPER}} .wdk-listing-image',
         );
-        $this->generate_renders_tabs($selectors, 'layout_image_dynamic', 'block');
+        $this->generate_renders_tabs($selectors, 'layout_image_dynamic', ['background','border','border_radius','padding','shadow','transition', 'css_filters'],);
 
         $this->add_control(
 			'enable_fixed_height',
@@ -368,7 +369,7 @@ class WdkFieldImages extends WdkElementorBase {
                         'max' => 100,
                     ],
                 ],
-                'size_units' => [ 'px', 'vw' ],
+                'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                 'selectors' => [
                     '{{WRAPPER}} .wdk-field-images .wdk-listing-image' => 'height: {{SIZE}}{{UNIT}}',
                 ],
@@ -392,7 +393,7 @@ class WdkFieldImages extends WdkElementorBase {
                 'key'=>'card',
                 'label'=> esc_html__('Card', 'wpdirectorykit'),
                 'selector'=>'.wdk-field-images .wdk-listing-image-card',
-                'selector_hover'=>'.wdk-field-images .wdk-listing-image-card%1$s',
+                'selector_hover'=>'{{WRAPPER}} .wdk-field-images .wdk-listing-image-card%1$s, .wdk-listings-results .hover_link:hover {{WRAPPER}} .wdk-listing-image',
                 'options'=>'block',
             ],
         ];
@@ -405,10 +406,82 @@ class WdkFieldImages extends WdkElementorBase {
                     'tab' =>  Controls_Manager::TAB_STYLE,
                 ]
             );
-       
+
+            if($item['key'] == 'card') {
+                // Card Mask Option
+                $this->add_control(
+                    'card_mask_header',
+                    [
+                        'label' => esc_html__('Card Mask', 'wpdirectorykit'),
+                        'type' => \Elementor\Controls_Manager::HEADING,
+                        'separator' => 'before',
+                    ]
+                );
+                $this->add_group_control(
+                    \Elementor\Group_Control_Background::get_type(),
+                    [
+                        'name' => 'card_mask',
+                        'description' => esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
+                        'label' =>  esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
+                        'types' => [ 'classic', 'gradient', 'video' ],
+                        'selector' => '{{WRAPPER}} .wdk-field-images .wdk-listing-image-card:after',
+                    ]
+                );
+
+                // Card Mask Hover Option
+                $this->add_control(
+                    'card_mask_hover_header',
+                    [
+                        'label' => esc_html__('Card Mask Hover', 'wpdirectorykit'),
+                        'type' => \Elementor\Controls_Manager::HEADING,
+                        'separator' => 'before',
+                    ]
+                );
+                $this->add_group_control(
+                    \Elementor\Group_Control_Background::get_type(),
+                    [
+                        'name' => 'card_mask_hover',
+                        'label' =>  esc_html__( 'Mask Hover', 'wpdirectorykit' ),
+                        'types' => [ 'classic', 'gradient', 'video' ],
+                        'selector' => '{{WRAPPER}} .wdk-field-images .wdk-listing-image-card:hover .mask, .wdk-listings-results .hover_link:hover {{WRAPPER}}  .wdk-locations-card-cover .mask',
+                        'description' => esc_html__( 'Set mask for thumbnail color', 'wpdirectorykit' ),
+                    ]
+                );
+
+                // Card Mask Transition Option
+                $this->add_control(
+                    'card_mask_transition',
+                    [
+                        'label' => esc_html__('Card Mask Transition', 'wpdirectorykit'),
+                        'type' => \Elementor\Controls_Manager::SLIDER,
+                        'size_units' => [ 's', 'ms' ],
+                        'range' => [
+                            's' => [
+                                'min' => 0,
+                                'max' => 2,
+                                'step' => 0.05,
+                            ],
+                            'ms' => [
+                                'min' => 0,
+                                'max' => 2000,
+                                'step' => 10,
+                            ],
+                        ],
+                        'default' => [
+                            'size' => 0.3,
+                            'unit' => 's',
+                        ],
+                        'selectors' => [
+                            '{{WRAPPER}} .wdk-field-images .wdk-listing-image-card .mask' => 'transition: all {{SIZE}}{{UNIT}};',
+                        ],
+                        'separator' => 'none',
+                    ]
+                );
+            }
+
             $selectors = array(
                 'normal' => '{{WRAPPER}} '.$item['selector'],
-                'hover'=>'{{WRAPPER}} '.$item['selector_hover'],
+                'hover'=>$item['selector_hover'],
             );
             $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
 

@@ -3,7 +3,6 @@
 }
 
 .wdk-locations-card-cover {
-  margin-bottom: 15px;
   position: relative;
   height: 370px;
   display: flex;
@@ -120,6 +119,15 @@
 .wdk-locations-card-cover:after {
   right: 0;
   left: auto;
+}
+
+.wdk-locations-card-cover .mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transition: all 0.4s ease-in-out;
 }
 
 .wdk-locations-card-cover .overlay {

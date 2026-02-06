@@ -364,7 +364,7 @@ class WdkListinAgent extends WdkElementorBase {
                         'max' => 100,
                     ],
                 ],
-                'size_units' => [ 'px', 'vw' ],
+                'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                 'default' => [
                     'size' => 90,
                     'unit' => 'px',
@@ -406,7 +406,7 @@ class WdkListinAgent extends WdkElementorBase {
                         'max' => 100,
                     ],
                 ],
-                'size_units' => [ 'px', 'vw' ],
+                'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                 'selectors' => [
                     '{{WRAPPER}} .wdk-element .wdk-listing-agent .agent-thumbnail img' => 'max-height: {{SIZE}}{{UNIT}};',
                 ],
@@ -442,7 +442,7 @@ class WdkListinAgent extends WdkElementorBase {
                         'max' => 100,
                     ],
                 ],
-                'size_units' => [ 'px', 'vw' ],
+                'size_units' => [ 'px','em', 'vw', '%', 'custom' ],
                 'default' => [
                     'size' => 250,
                     'unit' => 'px',
@@ -477,7 +477,7 @@ class WdkListinAgent extends WdkElementorBase {
             'wdk_facebook' => __('Facebook', 'wpdirectorykit'),
             'wdk_youtube' => __('Youtube', 'wpdirectorykit'),
             'wdk_address' => __('Address', 'wpdirectorykit'),
-            'wdk_country' => __('Country', 'wdk-membership'),
+            'wdk_country' => __('Country', 'wpdirectorykit'),
             'wdk_city' => __('City', 'wpdirectorykit'),
             'wdk_position_title' => __('Position Title', 'wpdirectorykit'),
             'wdk_linkedin' => __('Linkedin', 'wpdirectorykit'),

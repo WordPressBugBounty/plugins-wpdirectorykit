@@ -51,7 +51,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <select name="order_by" class='wdk-order'>
                         <?php if(!empty($custom_order)):?>
                             <?php foreach ($custom_order as $item):?>
-                                <option value="<?php echo wmvc_show_data('key', $item);?>" <?php echo (wmvc_show_data('order_by', $_GET, '') == wmvc_show_data('key', $item))?'selected="selected"':''; ?>><?php echo esc_html__(wmvc_show_data('title', $item), 'wpdirectorykit');?></option>
+                                <?php
+                                    if (strpos($item['key'], '__') !== FALSE) {
+                                        $item['key'] = substr($item['key'], strpos($item['key'], '__') + 2);
+                                    }
+                                    if(!empty($item['order_type'])) {
+                                        $item['key'] .= ' '.$item['order_type'];
+                                    }
+                                ?>
+                                <option value="<?php echo esc_attr($item['key']);?>" <?php echo (wmvc_show_data('order_by', $_GET, '') == $item['key'])?'selected="selected"':''; ?>><?php echo esc_html__(wmvc_show_data('title', $item), 'wpdirectorykit');?></option>
                             <?php endforeach;?>
                         <?php else:?>
                             <option value="post_id DESC" <?php echo !empty(wmvc_show_data('order_by', $_GET, '') =='post_id DESC')?'selected="selected"':''; ?>><?php echo esc_html__('Sort by: Latest', 'wpdirectorykit');?></option>
@@ -85,73 +93,65 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php endif;?>
             <?php foreach($results as $listing):?>
                 <div class="wdk-col">
+                    <div class="wdk-card--wrapper <?php if(isset($settings['is_complete_link']) && $settings['is_complete_link'] == 'yes'):?> hover_link  elementor-clickable <?php endif;?>" <?php if(isset($settings['is_complete_link']) && $settings['is_complete_link'] == 'yes'):?> onclick="location.href='<?php echo esc_url( get_permalink($listing) ); ?>'" <?php endif;?>>
                     <?php if
                     (
                         wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_listing_card_elementor_layout') &&
                         isset($settings['is_custom_layout_enable']) && $settings['is_custom_layout_enable'] == 'yes'
                         && isset($settings['custom_layout_id_list']) && isset($settings['custom_layout_id_grid'])
                     ):?>
-                    <?php if($settings['layout_type'] == 'list' && !empty($settings['custom_layout_id_list'])):?>
+                    <?php if($settings['layout_type'] == 'list' && (!empty($settings['custom_layout_id_list']) || !empty($settings['custom_layout_live_list']))):?>
                     <?php
                         $content = '';
-                        $post_data = get_post($settings['custom_layout_id_list']);
-
                         global $wdk_listing_id;
                         $wdk_listing_id = wmvc_show_data('post_id', $listing);
-                        if($post_data){
-                            if($post_data->post_type == 'page' || $post_data->post_type == 'elementor_library') {
-                                $elementor_instance = \Elementor\Plugin::instance();
-                                $content = $elementor_instance->frontend->get_builder_content_for_display($settings['custom_layout_id_list']);
-                                if(empty($content ))
-                                    $content = $post_data->post_content;
-                            } else {
-                                $content = $post_data->post_content;
-                            }
-                        }
+                        $content = wdk_render_elementor_template( empty( $settings['custom_layout_id_list'] ) ? $settings['custom_layout_live_list'] : $settings['custom_layout_id_list'], true);
                     ?>
-                    <?php if(!$is_edit_mode):?>
-                    <?php echo wp_kses_post($content);?>
+                    <?php if(true || !$is_edit_mode):?>
+                        <?php
+                        $allowed_tags = array_merge(
+                            wp_kses_allowed_html('post'),
+                            array('style' => array())
+                        );
+                        echo wp_kses($content, $allowed_tags);
+                        ?>
                     <?php else:?>
                         <?php echo esc_html__( 'Listings Card Grid From Extern Layout', 'wpdirectorykit' );?>
                     <?php endif;?>
-                    <?php elseif($settings['layout_type'] == 'grid'  && !empty($settings['custom_layout_id_grid'])):?>
+                    <?php elseif(($settings['layout_type'] == 'grid' || $settings['layout_type'] == 'carousel')  && (!empty($settings['custom_layout_id_grid']) || !empty($settings['custom_layout_live_grid']))):?>
                     <?php
                         $content = '';
-                        $post_data = get_post($settings['custom_layout_id_grid']);
-
                         global $wdk_listing_id;
                         $wdk_listing_id = wmvc_show_data('post_id', $listing);
-                        if($post_data){
-                            if($post_data->post_type == 'page' || $post_data->post_type == 'elementor_library') {
-                                $elementor_instance = \Elementor\Plugin::instance();
-                                $content = $elementor_instance->frontend->get_builder_content_for_display($settings['custom_layout_id_grid']);
-                                if(empty($content ))
-                                    $content = $post_data->post_content;
-                            } else {
-                                $content = $post_data->post_content;
-                            }
-                        }
+                        $content = wdk_render_elementor_template( empty( $settings['custom_layout_id_grid'] ) ? $settings['custom_layout_live_grid'] : $settings['custom_layout_id_grid'], true);
                     ?>
-                    <?php if(!$is_edit_mode):?>
-                    <?php echo wp_kses_post($content);?>
+                    <?php if(true || !$is_edit_mode):?>
+                        <?php
+                        $allowed_tags = array_merge(
+                            wp_kses_allowed_html('post'),
+                            array('style' => array())
+                        );
+                        echo wp_kses($content, $allowed_tags);
+                        ?>
                     <?php else:?>
                         <?php echo esc_html__( 'Listings Card List From Extern Layout', 'wpdirectorykit' );?>
                     <?php endif;?>
-                   <?php else:?>
-                    <?php echo wdk_listing_card($listing, $settings);?>
-                    <?php endif;?>
-                   <?php else:?>
+                    <?php else:?>
                         <?php echo wdk_listing_card($listing, $settings);?>
-                    <?php endif;?>
+                        <?php endif;?>
+                        <?php else:?>
+                            <?php echo wdk_listing_card($listing, $settings);?>
+                            <?php endif;?>
+                        </div>
                 </div>
             <?php endforeach;?> 
             <?php if($settings['layout_type'] == 'carousel'):?>
                 </div>
                     <div class="wdk_slider_arrows">
-                        <a class="wdk-slider-prev wdk_lr_slider_arrow">
+                        <a title="<?php echo esc_attr__('prev slider', 'wpdirectorykit');?>" href="#" class="wdk-slider-prev wdk_lr_slider_arrow">
                             <?php \Elementor\Icons_Manager::render_icon( $settings['styles_carousel_arrows_icon_left'], [ 'aria-hidden' => 'true' ] ); ?>
                         </a>
-                        <a class="wdk-slider-next wdk_lr_slider_arrow">
+                        <a title="<?php echo esc_attr__('next slider', 'wpdirectorykit');?>" href="#" class="wdk-slider-next wdk_lr_slider_arrow">
                             <?php \Elementor\Icons_Manager::render_icon( $settings['styles_carousel_arrows_icon_right'], [ 'aria-hidden' => 'true' ] ); ?>
                         </a>
                     </div>
@@ -173,6 +173,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             var el = $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_results_listings_slider_ini').slick({
                 dots: true,
                 arrows: true,
+                rtl: localStorage.getItem('siteDirection') == "rtl" ? true : false,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_centerMode', $settings))):?>
                 centerMode: <?php echo wmvc_show_data('layout_carousel_is_centerMode', $settings, 'true');?>,
                 <?php endif;?>

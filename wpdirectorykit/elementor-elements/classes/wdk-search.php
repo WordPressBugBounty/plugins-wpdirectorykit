@@ -121,9 +121,9 @@ class WdkSearch extends WdkElementorBase {
         $this->data['settings'] = $this->get_settings();
         $this->data['counts'] = array();
 
-        wp_enqueue_script('select2');
+        wp_enqueue_script('select2-select2');
         wp_enqueue_script('wdk-select2');
-        wp_enqueue_style('select2');
+        wp_enqueue_style('select2-select2');
         global $wdk_visible_filters_limit;
         global $wdk_enable_search_fields_toggle;
 
@@ -349,14 +349,25 @@ class WdkSearch extends WdkElementorBase {
         $order_i = 0;
         foreach($fields as $field)
         {
-            $fields_list[(++$order_i).'__'.wmvc_show_data('idfield', $field)] = '#'.wmvc_show_data('idfield', $field).' '.wmvc_show_data('field_label', $field);
+            $fields_list[wmvc_show_data('idfield', $field)] = '#'.wmvc_show_data('idfield', $field).' '.wmvc_show_data('field_label', $field);
         }
+
+        // build raw_options preserving order
+        $raw = [];
+        foreach ( $fields_list as $k => $v ) {
+            $raw[] = [
+                'value' => (string) $k,
+                'label' => $v,
+            ];
+        }
+
         $this->add_control(
             'tab_field',
             [
                     'label' => __( 'Tab', 'wpdirectorykit' ),
-                    'type' => Controls_Manager::SELECT2,
+                    'type' => \Wdk\Includes\Controls\Wdk_Field_Selector::INIT,
                     'options' => $fields_list,
+                    'raw_options' => $raw, 
                     'default' => 'results', 
             ]
         );
@@ -450,36 +461,47 @@ class WdkSearch extends WdkElementorBase {
 
             $fields_data = wdk_cached_field_get();
             $fields_list = array('' => esc_html__('Not Selected', 'wpdirectorykit'));
-            $order_i = 0;
             $fields_allow_types = array();
             $fields_allow_tree_types = array();
 
-            $fields_list [(++$order_i).'__section'] = esc_html__('-- Section Custom fields --', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__search'] = esc_html__('Smart Search', 'wpdirectorykit');
+            $fields_list ['section'] = esc_html__('-- Section Custom fields --', 'wpdirectorykit');
+            $fields_list ['search'] = esc_html__('Smart Search', 'wpdirectorykit');
 
-            if(function_exists('run_wdk_bookings'))
-                $fields_list [(++$order_i).'__booking_date'] = esc_html__('Booking Date', 'wpdirectorykit');
+            if(function_exists('run_wdk_bookings')) {
+                $fields_list ['booking_date'] = esc_html__('Booking Date', 'wpdirectorykit');
+                $fields_list ['booking_guest'] = esc_html__('Booking Guests', 'wpdirectorykit');
+            }
 
-            $fields_list [(++$order_i).'__post_title'] = esc_html__('WP Title', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__address'] = esc_html__('Address', 'wpdirectorykit');
-            $fields_list [(++$order_i).'__category_id'] = esc_html__('Category', 'wpdirectorykit');
-            $fields_allow_tree_types[] = $order_i.'__category_id';
-            $fields_list [(++$order_i).'__location_id'] = esc_html__('Location', 'wpdirectorykit');
-            $fields_allow_tree_types[] = $order_i.'__location_id';
+            $fields_list ['post_title'] = esc_html__('WP Title', 'wpdirectorykit');
+            $fields_list ['post_title'] = esc_html__('WP Title', 'wpdirectorykit');
+            $fields_list ['address'] = esc_html__('Address', 'wpdirectorykit');
+            $fields_list ['category_id'] = esc_html__('Category', 'wpdirectorykit');
+            $fields_allow_tree_types[] = 'category_id';
+            $fields_list ['location_id'] = esc_html__('Location', 'wpdirectorykit');
+            $fields_allow_tree_types[] = 'location_id';
 
             foreach($fields_data as $field)
             {
                 if(in_array(wmvc_show_data('field_type', $field),array('TEXTAREA','TEXTAREA_WYSIWYG'))) {
                     continue;
                 } else if(in_array(wmvc_show_data('field_type', $field),array('SECTION'))) {
-                    $fields_list [(++$order_i).'section__'.wmvc_show_data('idfield', $field)] = '-- '.esc_html__('Section', 'wpdirectorykit').' '.wmvc_show_data('field_label', $field).' --';
+                    $fields_list ['section__'.wmvc_show_data('idfield', $field)] = '-- '.esc_html__('Section', 'wpdirectorykit').' '.wmvc_show_data('field_label', $field).' --';
                 } else {
-                    $fields_list[(++$order_i).'__'.wmvc_show_data('idfield', $field)] = '#'.wmvc_show_data('idfield', $field).' '.wmvc_show_data('field_label', $field).'['.wmvc_show_data('field_type', $field).']';
+                    $fields_list[wmvc_show_data('idfield', $field)] = '#'.wmvc_show_data('idfield', $field).' '.wmvc_show_data('field_label', $field).'['.wmvc_show_data('field_type', $field).']';
                 }
 
                 if(wmvc_show_data('field_type', $field) == 'NUMBER') {
-                    $fields_allow_types[] = $order_i.'__'.wmvc_show_data('idfield', $field);
+                    $fields_allow_types[] = ''.wmvc_show_data('idfield', $field);
                 }
+            }
+
+            // build raw_options preserving order
+            $raw = [];
+            foreach ( $fields_list as $k => $v ) {
+                $raw[] = [
+                    'value' => (string) $k,
+                    'label' => $v,
+                ];
             }
 
             $repeater = new Repeater();
@@ -489,9 +511,10 @@ class WdkSearch extends WdkElementorBase {
                 'field_id',
                 [
                     'label' => __( 'Field id', 'wpdirectorykit' ),
-                    'type' => \Elementor\Controls_Manager::SELECT2,
+                    'type' => \Wdk\Includes\Controls\Wdk_Field_Selector::INIT,
                     'default' => '',
                     'options' => $fields_list,
+                    'raw_options' => $raw, 
                     'separator' => 'after',
                 ]
             );
@@ -669,6 +692,39 @@ class WdkSearch extends WdkElementorBase {
                         'wdk_map_results' => esc_html__('Map', 'wpdirectorykit'),
                     ],
                     'default' => 'results', 
+            ]
+        );
+
+        
+        $this->add_responsive_control(
+            'form_fields_align',
+            [
+                'label' => __( 'Align', 'wpdirectorykit' ),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                            'title' => esc_html__( 'Left', 'wpdirectorykit' ),
+                            'icon' => 'eicon-text-align-left',
+                    ],
+                    'center' => [
+                            'title' => esc_html__( 'Center', 'wpdirectorykit' ),
+                            'icon' => 'eicon-text-align-center',
+                    ],
+                    'right' => [
+                            'title' => esc_html__( 'Right', 'wpdirectorykit' ),
+                            'icon' => 'eicon-text-align-right',
+                    ],
+                ],
+                'render_type' => 'template',
+                'selectors_dictionary' => [
+                    'left' => 'justify-content: flex-start;',
+                    'center' => 'justify-content: center;',
+                    'right' => 'justify-content: flex-end;',
+                ],
+
+                'selectors' => [
+                    '{{WRAPPER}} .wdk-search .wdk-search-form > .wdk-row ' => '{{VALUE}};',
+                ],
             ]
         );
 
@@ -943,6 +999,21 @@ class WdkSearch extends WdkElementorBase {
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
+
+        $this->add_responsive_control(
+			'button_wrapper',
+			[
+				'label' => __( 'Button Wrapper Hide', 'wpdirectorykit' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => __( 'Show', 'wpdirectorykit' ),
+				'label_off' => __( 'Hide', 'wpdirectorykit' ),
+				'return_value' => 'none',
+				'default' => '',
+                'selectors' => [
+                    '{{WRAPPER}} .wdk-search .wdk-col-btns' => 'display: {{VALUE}};',
+                ],
+			]
+		);
 
         $this->add_responsive_control(
             'button_column_inline',
@@ -1529,7 +1600,7 @@ class WdkSearch extends WdkElementorBase {
             [
                 'key'=>'field_button',
                 'label'=> esc_html__('Search Button', 'wpdirectorykit'),
-                'selector_hide'=>'{{WRAPPER}} .wdk-field .wdk-field-btn button.wdk-search-start',
+                'selector_hide'=>'{{WRAPPER}} .wdk-field .wdk-field-group-search button.wdk-search-start',
                 'selector'=>'{{WRAPPER}} .wdk-field button.wdk-search-start',
                 'selector_hover'=>'{{WRAPPER}} .wdk-field button.wdk-search-start%1$s',
                 'options'=>'full',
@@ -2034,9 +2105,9 @@ class WdkSearch extends WdkElementorBase {
         wp_enqueue_style('wdk-treefield');
 
         
-        wp_enqueue_script('select2');
+        wp_enqueue_script('select2-select2');
         wp_enqueue_script('wdk-select2');
-        wp_enqueue_style('select2');
+        wp_enqueue_style('select2-select2');
 
         wp_enqueue_script( 'ion.range-slider' );
         wp_enqueue_style('ion.range-slider');

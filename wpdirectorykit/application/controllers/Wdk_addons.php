@@ -24,7 +24,7 @@ class Wdk_addons extends Winter_MVC_Controller {
         );
 
         $this->data['addons'] []  = array(
-            'title' => __('Multy Currency', 'wpdirectorykit'),
+            'title' => __('Multi Currency', 'wpdirectorykit'),
             'description' =>__('Automatically import and sync wanted currencies available in API and auto conver on Homepage Based on Switcher selection', 'wpdirectorykit'),
             'thumbnail' => 'https://wpdirectorykit.com/img/plugins/wp-multi-currency.jpg',
             'link' => 'https://wpdirectorykit.com/wp/directory-purchase/',

@@ -194,7 +194,7 @@ class WdkButton extends WdkElementorBase {
         $this->add_control(
             'link_id',
             [
-                'label' => __('Secial attr id for link', 'wpdirectorykit'),
+                'label' => __('Special attr id for link', 'wpdirectorykit'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'default' => '',
             ]
@@ -225,6 +225,19 @@ class WdkButton extends WdkElementorBase {
                 'default' => 'left',
             ]
         );
+
+        $this->add_control(
+            'link_in_new_tab',
+            [
+                'label' => __( 'Open Link in New tab', 'wpdirectorykit' ),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
+                'return_value' => 'true',
+                'default' => '',
+            ]
+        );
+
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -356,7 +369,7 @@ class WdkButton extends WdkElementorBase {
 
             $selectors = array(
                 'normal' => '{{WRAPPER}} .wdk-element .wdk-element-button',
-                'hover'=>'{{WRAPPER}} .wdk-element .wdk-element-button%1$s'
+                'hover'=>'{{WRAPPER}} .wdk-element .wdk-element-button%1$s, .wdk-listings-results .hover_link:hover {{WRAPPER}} .wdk-element .wdk-element-button'
             );
             $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
 
@@ -383,7 +396,7 @@ class WdkButton extends WdkElementorBase {
 
             $selectors = array(
                 'normal' => '{{WRAPPER}} .wdk-element .wdk-element-button i,{{WRAPPER}} .wdk-element .wdk-element-button svg',
-                'hover'=>'{{WRAPPER}} .wdk-element .wdk-element-button%1$s i,{{WRAPPER}} .wdk-element .wdk-element-button%1$s svg'
+                'hover'=>'{{WRAPPER}} .wdk-element .wdk-element-button%1$s i,{{WRAPPER}} .wdk-element .wdk-element-button%1$s svg, .wdk-listings-results .hover_link:hover {{WRAPPER}} .wdk-element .wdk-element-button i'
             );
             $this->generate_renders_tabs($selectors, $item['key'].'_dynamic', $item['options']);
 

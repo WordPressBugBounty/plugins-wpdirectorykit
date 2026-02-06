@@ -35,7 +35,8 @@ $results_page = get_permalink($results_page);
             <?php if(count($results) > 0):?>
                 <?php foreach ($results as $key => $value):?>
                 <li class="wdk-item">
-                    <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_location='.wmvc_show_data('idlocation', $value)));?><?php echo (wmvc_show_data('conf_query_params', $this->data['settings'], false)) ? '&'.wmvc_show_data('conf_query_params', $this->data['settings']):''; ?>#results"  class="wdk-link">
+                    <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_location='.wmvc_show_data('idlocation', $value)));?><?php echo (wmvc_show_data('conf_query_params', $this->data['settings'], false)) ? '&'.wmvc_show_data('conf_query_params', $this->data['settings']):''; ?>#results"  
+                    class="wdk-link <?php if(wmvc_show_data('enable_search_sensitive', $settings)):?> wdk-search_sensitive_link <?php endif;?>">
                     <?php if(wmvc_show_data('show_icon', $settings) == 'true'):?>
                             <?php if(wmvc_show_data('icon_id', $value, false)):?>
                                 <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo wmvc_show_data('location_title', $value);?>" class="wdk-icon">
