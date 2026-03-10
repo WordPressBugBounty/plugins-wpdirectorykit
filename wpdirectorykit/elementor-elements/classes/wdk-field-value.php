@@ -214,7 +214,7 @@ class WdkFieldValue extends WdkElementorBase
                     } elseif (wdk_field_option(wmvc_show_data('idfield', $this->data['settings']['field_id']), 'validation') == 'is_phone|wdk_viber') {
                         $this->data['field_value'] = '<a class="value" href="viber://chat?number=' . wdk_filter_viber_phone($this->data['field_value']) . '">' . $this->_generate_label() . '</a>';
                     } elseif (wdk_field_option(wmvc_show_data('idfield', $this->data['settings']['field_id']), 'validation') == 'is_phone|wdk_whatsapp') {
-                        $this->data['field_value'] = '<a class="value" href="//wa.me/' . wdk_filter_phone($this->data['field_value']) . '">' . $this->_generate_label() . '</a>';
+                        $this->data['field_value'] = '<a class="value" target="_blank" href="//wa.me/' . wdk_filter_phone($this->data['field_value']) . '">' . $this->_generate_label() . '</a>';
                     }
                 } elseif ($this->data['settings']['field_id'] == 'category_id') {
                     if (wdk_field_value($this->data['settings']['field_id'], $wdk_listing_id)) {

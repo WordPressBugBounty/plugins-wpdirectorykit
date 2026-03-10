@@ -34,6 +34,8 @@ const wdk_select_init = ($wrapper = 'body') => {
                 "action": 'wdk_public_action',
                 "page": 'wdk_frontendajax',
                 "function": 'select_2_ajax',
+                "wdk_secure": wdk_script_parameters.wpApiSettings.wdk_secure_nonce,
+                
             }; 
 
             if(self.hasClass('select2-hidden-accessible')) return true;
@@ -74,6 +76,7 @@ const wdk_select_init = ($wrapper = 'body') => {
                             "action": 'wdk_public_action',
                             "page": 'wdk_frontendajax',
                             "function": 'select_2_ajax',
+                            "wdk_secure": wdk_script_parameters.wpApiSettings.wdk_secure_nonce,
                             "table": $(this).attr('data-table') || '',
                         };
                     },
@@ -101,6 +104,7 @@ const wdk_select_init = ($wrapper = 'body') => {
                 "action": 'wdk_public_action',
                 "page": 'wdk_frontendajax',
                 "function": 'select_2_ajax_user',
+                "wdk_secure": wdk_script_parameters.wpApiSettings.wdk_secure_nonce,
             }; 
 
             if(self.hasClass('select2-hidden-accessible')) return true;
@@ -124,6 +128,7 @@ const wdk_select_init = ($wrapper = 'body') => {
                             "page_result":  term.page || 1,
                             "action": 'wdk_public_action',
                             "page": 'wdk_frontendajax',
+                            "wdk_secure": wdk_script_parameters.wpApiSettings.wdk_secure_nonce,
                             "function": 'select_2_ajax_user',
                         };
                     },
@@ -170,6 +175,7 @@ const wdk_select_init = ($wrapper = 'body') => {
             "action": 'wdk_public_action',
             "page": 'wdk_frontendajax',
             "function": 'select_2_ajax_field_db_suggestion',
+            "wdk_secure": wdk_script_parameters.wpApiSettings.wdk_secure_nonce,
             "field_id": $(this).attr('data-id'),
         }; 
         
@@ -195,6 +201,7 @@ const wdk_select_init = ($wrapper = 'body') => {
                         "action": 'wdk_public_action',
                         "page": 'wdk_frontendajax',
                         "function": 'select_2_ajax_field_db_suggestion',
+                        "wdk_secure": wdk_script_parameters.wpApiSettings.wdk_secure_nonce,
                         "field_id": $(this).attr('data-id'),
                     };
                 },

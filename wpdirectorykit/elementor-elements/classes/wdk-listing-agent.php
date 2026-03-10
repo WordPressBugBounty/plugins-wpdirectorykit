@@ -172,8 +172,8 @@ class WdkListinAgent extends WdkElementorBase {
         $this->data['listing_agency'] = false;
         if($this->data['settings']['listing_agency_disabled'] !='yes') {
             if(function_exists('run_wdk_membership') && file_exists(WDK_MEMBERSHIP_PATH.'application/models/Agency_agent_m.php')) {
-                if(wmvc_show_data('user_id_editor', $listing, '',TRUE, TRUE)) {
-                    $Winter_MVC_wdk_membership->model('agency_agent_m');
+                if(!empty($Winter_MVC_wdk_membership) && wmvc_show_data('user_id_editor', $listing, '',TRUE, TRUE)) {
+                    $Winter_MVC_wdk_membership->model('agency_agent_m'); 
                     $agent_id = wmvc_show_data('user_id_editor', $listing, '',TRUE, TRUE);
                     $agent_agency = $Winter_MVC_wdk_membership->agency_agent_m->get_by(array('agent_id' => $agent_id, 'status' => 'CONFIRMED'), TRUE);
                     if($agent_agency) {

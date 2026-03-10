@@ -223,15 +223,12 @@ class Wpdirectorykit_Public {
 		
 
 		if( wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_listing_popup')) {
-			wp_register_script('wdk-popup-listings', plugin_dir_url( __FILE__ ).'js/wdk-popup-listings.js', array( 'jquery' ), '1.0', false );
+			wp_register_script('wdk-popup-listings', plugin_dir_url( __FILE__ ).'js/wdk-popup-listings.js', array( 'jquery', 'jquery-confirm' ), '1.0', false );
 			wp_enqueue_script('wdk-popup-listings');
+			wp_enqueue_style('jquery-confirm');
         }
-		
-		$params = array(
-            'ajax_url' => admin_url( 'admin-ajax.php' )
-        );
+	
 		wp_register_script('wdk-treefield-dropdown', plugin_dir_url( __FILE__ ).'js/wdk_treefield_dropdown/wdk_treefield_dropdown.js', array( 'jquery' ), '1.0', false );
-		wp_localize_script( 'wdk-treefield-dropdown', 'script_parameters', $params);
 
 		wp_register_script('jquery-confirm', plugin_dir_url( __FILE__ ).'js/jquery-confirm/js/jquery-confirm.js', array( 'jquery' ), '3.3.4', false );
 
@@ -261,10 +258,16 @@ class Wpdirectorykit_Public {
 				"read_more"=> esc_html__("Read More", 'wpdirectorykit'),
 				"read_less"=> esc_html__("Read Less", 'wpdirectorykit'),
 			),
+			'wpApiSettings' => [
+				'root'=> esc_url_raw(rest_url()),
+				'nonce'=> wp_create_nonce('wp_rest'),
+				'wdk_secure_nonce'=> wp_create_nonce('wdk_secure_ajax'),
+			]
         );
 		
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wpdirectorykit-public.js', array( 'jquery' ), $this->version, false );
         wp_localize_script( $this->plugin_name, 'script_parameters', $params);
+        wp_localize_script( $this->plugin_name, 'wdk_script_parameters', $params);
 		
 		wp_register_style('jquery-ui', WPDIRECTORYKIT_URL. 'public/css/jquery-ui.css', array(), '1.12.1' );
 		

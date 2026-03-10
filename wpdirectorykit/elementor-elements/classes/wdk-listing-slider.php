@@ -139,12 +139,53 @@ class WdkListingSlider extends WdkElementorBase {
         $this->data['id_element'] = $this->get_id();
         $this->data['settings'] = $this->get_settings();
 
+        $this->data['plans_exists'] = false;
         $this->data['images'] = array();
+        $this->data['images_fields'] = array();
+
         if(!Plugin::$instance->editor->is_edit_mode()) {
             $this->data['images'] = wdk_listing_images_data (array('listing_images'=>wdk_field_value ('listing_images', $wdk_listing_id)), 'full');
             $this->data['images'] = array_slice($this->data['images'], ($this->data['settings']['offset_images']-1), $this->data['settings']['limit_images']);
         } else {
             $this->data['images'] = array_fill(0, $this->data['settings']['limit_images'], wdk_placeholder_image_src());
+        }
+
+        if(!Plugin::$instance->editor->is_edit_mode() && !empty($this->data['settings']['plans_enable'])) {
+            $plan_images = wdk_listing_images_data(wdk_field_value('listing_plans_documents', $wdk_listing_id), 'full');
+            if (!empty($plan_images) && is_array($plan_images)) {
+                foreach ($plan_images as $k => $v) {
+                    $this->data['images']['plans__'.$k] = $v;
+                }
+                $this->data['plans_exists'] = true;
+            }
+        }
+
+        if(!empty($this->data['settings']['gallery_fields'])) {
+            foreach ($this->data['settings']['gallery_fields'] as $key => $field_id) {
+                if(strpos( $field_id,'__') !== FALSE){
+                    $field_id = substr( $field_id, strpos($field_id, '__')+2);
+                }
+
+                $this->data['images_fields'][$field_id] = [];
+
+                $field_value = wdk_field_value($field_id, $wdk_listing_id);
+                $images = $this->data['images_fields'][$field_id] = wdk_files_data($field_value, 'full');
+                if (!empty($images) && is_array($images)) {
+                    foreach ($images as $k => $v) {
+                        $this->data['images'][$field_id.'__'.$k] = $v;
+                    }
+                }
+            }
+        }
+
+        if(!empty($this->data['settings']['embed_fields'])) {
+            foreach ($this->data['settings']['embed_fields'] as $key => $field_id) {
+                if(strpos( $field_id,'__') !== FALSE){
+                    $field_id = substr( $field_id, strpos($field_id, '__')+2);
+                }
+                $images =  $this->data['images_fields'][$field_id] = wdk_field_value($field_id, $wdk_listing_id);
+                $this->data['images'][$field_id.'__'.$key] = $images;
+            }
         }
 
         $this->data['is_edit_mode']= false;          
@@ -177,6 +218,61 @@ class WdkListingSlider extends WdkElementorBase {
                 'label_off' => __( 'Off', 'wdk-listing-sliders' ),
                 'return_value' => 'yes',
                 'default' => '',
+            ]
+        );
+                
+        $this->add_control(
+            'plans_enable',
+            [
+                'label' => __( 'Plans Enable', 'wdk-listing-sliders' ),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __( 'On', 'wdk-listing-sliders' ),
+                'label_off' => __( 'Off', 'wdk-listing-sliders' ),
+                'return_value' => 'yes',
+                'default' => '',
+            ]
+        );
+
+        
+        $fields_data = wdk_cached_field_get();
+        $fields_list_files = array('' => esc_html__('Not Selected', 'wpdirectorykit'));
+        $fields_list_embed = array('' => esc_html__('Not Selected', 'wpdirectorykit'));
+        $order_i = 0;
+        foreach($fields_data as $field)
+        {
+            if(wmvc_show_data('field_type', $field) == 'FILEUPLOAD') {
+                $fields_list_files[(++$order_i).'__'.wmvc_show_data('idfield', $field)] = '#'.wmvc_show_data('idfield', $field).' '.wmvc_show_data('field_label', $field).'['.wmvc_show_data('field_type', $field).']';
+            }
+            if(wmvc_show_data('field_type', $field) == 'INPUTBOX') {
+                $fields_list_embed[(++$order_i).'__'.wmvc_show_data('idfield', $field)] = '#'.wmvc_show_data('idfield', $field).' '.wmvc_show_data('field_label', $field).'['.wmvc_show_data('field_type', $field).']';
+            }
+        }
+
+
+        $this->add_control(
+            'gallery_fields',
+            [
+                'label' => __( 'Add Custom Gallery Fields', 'wpdirectorykit' ),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => $fields_list_files,
+                'multiple' => true,
+                'default' => [],
+                'label_block' => true,
+                'description' => __( 'Select one or more fields to use as gallery sources.', 'wpdirectorykit' ),
+            ]
+        );
+
+        $this->add_control(
+            'embed_fields',
+            [
+                'label' => __( 'Add Embed Fields', 'wpdirectorykit' ),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => $fields_list_embed,
+                'multiple' => true,
+                'default' => [],
+                'label_block' => true,
+                'separator' => 'after',
+                'description' => __( 'Select one or more fields to use as embed sources.', 'wpdirectorykit' ),
             ]
         );
                 

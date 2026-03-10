@@ -1,12 +1,9 @@
-jQuery(document).ready(function($){
-    //wdk_ajax_loading_listings();
-});
 
 
 const wdk_popup_listings = ($url = '') => {
     var $ = jQuery,
     theme_jc = null;
-
+    console.log('wdk_popup_listings');
     $('.wdk_listing_popup').off().on('click', function(e){
         e.preventDefault();
 
@@ -22,7 +19,8 @@ const wdk_popup_listings = ($url = '') => {
         }
         */
 
-        var url = $(this).attr('data-listing_url');
+        let url = $(this).attr('data-listing_url');
+        let id = $(this).attr('data-listing_id');
 
         if(theme_jc)
             theme_jc.close();
@@ -44,7 +42,25 @@ const wdk_popup_listings = ($url = '') => {
                   action: function() {}
                 }, 
             },
+            content: '<iframe src="'+url+'?popup=1" style="width:100%;height:90vh;border:0;"></iframe>'
+            /*
             content: function () {
+                var self = this;
+                return $.ajax({
+                    url: wdk_script_parameters.wpApiSettings.root + 'wdk/v1/listing_content',
+                    type: 'POST',
+                    data: {
+                        id: id
+                    }
+                }).done(function (response) {
+
+                    self.setContent(response.html);
+
+                }).fail(function(){
+                    self.setContent('Something went wrong.');
+                });
+            }*/
+            /*content: function () {
                 var self = this;
                 return $.ajax({
                     url: url,
@@ -62,14 +78,19 @@ const wdk_popup_listings = ($url = '') => {
                         }
                     });
                 
-                    self.setContent(tempContainer);
+                   // self.setContent(tempContainer);
+                    self.setContent('test');
 
                 }).fail(function(){
                     self.setContent('Something went wrong.');
                 });
             }
+                */
         });
         return false;
     })
 }
+jQuery(document).ready(function($){
+    wdk_popup_listings();
+});
 

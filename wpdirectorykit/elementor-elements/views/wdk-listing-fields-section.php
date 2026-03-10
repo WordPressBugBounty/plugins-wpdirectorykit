@@ -125,7 +125,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                             $field_value  = '<a href="viber://chat?number='.wdk_filter_viber_phone($field_value) .'">'.$field_value .'</a>';
                                         }
                                         elseif(wdk_field_option (wmvc_show_data('idfield', $field), 'validation') == 'is_phone|wdk_whatsapp') {
-                                            $field_value  = '<a href="//wa.me/'.wdk_filter_phone($field_value) .'">'.$field_value .'</a>';
+                                            $field_value  = '<a target="_blank" href="//wa.me/'.wdk_filter_phone($field_value) .'">'.$field_value .'</a>';
                                         }
                                     }
                                     elseif(wmvc_show_data('idfield', $field) == 'category_id') {

@@ -550,7 +550,7 @@ if (! defined('ABSPATH')) {
                                         <th scope="row"><label for="is_activated"><?php echo __('Is Activated', 'wpdirectorykit'); ?></label></th>
                                         <td>
                                             <input name="is_activated" type="checkbox" id="is_activated" value="1" <?php echo !empty(wmvc_show_data('is_activated', $db_data, '')) ? 'checked' : ''; ?>><label for="is_activated"><?php echo __('Make it available for public', 'wpdirectorykit'); ?></label>
-                                            <p class="description" id="is_activated-description"><?php echo __('When listing is activated will be visible on frontend', 'wpdirectorykit'); ?></p>
+                                            <p class="description" id="is_activated-description"><?php echo __('When enabled, the listing becomes visible on the frontend. The listing owner can activate or deactivate the listing at any time.', 'wpdirectorykit'); ?></p>
                                         </td>
                                     </tr>
                                     <?php if (function_exists('run_wdk_membership')): ?>
@@ -558,7 +558,7 @@ if (! defined('ABSPATH')) {
                                             <th scope="row"><label for="is_approved"><?php echo __('Is Approved', 'wpdirectorykit'); ?></label></th>
                                             <td>
                                                 <input name="is_approved" type="checkbox" id="is_approved" value="1" <?php echo !empty(wmvc_show_data('is_approved', $db_data, '')) ? 'checked' : ''; ?>><label for="is_approved"><?php echo __('Make it approved for public', 'wpdirectorykit'); ?></label>
-                                                <p class="description" id="is_approved-description"><?php echo __('When listing is approved will be visible on frontend', 'wpdirectorykit'); ?> (<?php echo __('only admin can approve', 'wpdirectorykit'); ?>)</p>
+                                                <p class="description" id="is_approved-description"><?php echo __('When approved, the listing is eligible to be shown on the frontend, but it must also be activated. Approval can be granted by an admin, and for certain membership packages, listings may be auto-approved if configured.', 'wpdirectorykit'); ?> (<?php echo __('only admin can approve', 'wpdirectorykit'); ?>)</p>
                                             </td>
                                         </tr>
                                     <?php endif; ?>

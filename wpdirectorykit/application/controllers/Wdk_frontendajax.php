@@ -240,7 +240,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 				} else {
 					
 					if(!empty($parameters['filter_ids'])){
-						$this->db->where(array( esc_sql($this->$table->_table_name.'.'.$this->$table->_primary_key).' IN ('.esc_sql($parameters['filter_ids']).')' => NULL));
+						$this->db->where(array( esc_sql($this->$table->_table_name.'.'.$this->$table->_primary_key).' IN ('.esc_sql(preg_replace('/[^0-9,]/', '', $parameters['filter_ids'])).')' => NULL));
 					}
 
 					$tree_results = $this->$table->get_pagination(intval($parameters['limit']),intval($parameters['offset']), $where );
@@ -253,7 +253,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 				}
 				
 				if(!empty($parameters['filter_ids'])){
-					$this->db->where(array( esc_sql($this->$table->_table_name.'.'.$this->$table->_primary_key).' IN ('.esc_sql($parameters['filter_ids']).')' => NULL));
+					$this->db->where(array( esc_sql($this->$table->_table_name.'.'.$this->$table->_primary_key).' IN ('.esc_sql(preg_replace('/[^0-9,]/', '', $parameters['filter_ids'])).')' => NULL));
 				}
 				
 				if($table == 'user_m') {
@@ -472,7 +472,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
             } 
 
 			if(!empty($parameters['filter_ids'])){
-				$this->db->where(array( esc_sql($this->$table->_table_name.'.'.$this->$table->_primary_key).' IN ('.esc_sql($parameters['filter_ids']).')' => NULL));
+				$this->db->where(array( esc_sql($this->$table->_table_name.'.'.$this->$table->_primary_key).' IN ('.esc_sql(preg_replace('/[^0-9,]/', '', $parameters['filter_ids'])).')' => NULL));
 			}
 
 			if(!empty($parameters['hide_fields'])) {
@@ -553,6 +553,9 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
   
     public function select_2_ajax($output="", $atts=array(), $instance=NULL)
     {
+
+		check_ajax_referer('wdk_secure_ajax', 'wdk_secure');
+
 		$this->load->load_helper('listing');
 		$this->load->model('listing_m');
 		$this->load->model('listingfield_m');
@@ -570,6 +573,12 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		if(empty($parameters['table'])) return false;
 
 		$model_name = $parameters['table'];
+
+		// allow only 'listing_m', 'category_m', or 'location_m' for security
+		$allowed_models = array('listing_m', 'category_m', 'location_m');
+		if (!in_array($model_name, $allowed_models)) {
+			return false;
+		}
 
 		$key_column = '';
 		$print_column = '';

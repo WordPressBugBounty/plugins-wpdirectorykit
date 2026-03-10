@@ -66,7 +66,11 @@ if(empty($url_host)) {
 
 
 ?>
-<div class="wdk-listing-card <?php echo esc_attr($layout_type);?> <?php if($layout_type == 'carousel'):?> grid <?php endif;?> <?php if(wdk_get_option('wdk_is_featured_enabled', FALSE) && wmvc_show_data('is_featured', $listing, '') == 1):?> is_featured <?php endif;?> <?php if(!$infobox && wmvc_show_data('is_multiline_enabled', $resul_item_config, '') == 1):?> is_multiline_enabled <?php endif;?>">
+<div 
+data-listing_url ="<?php echo esc_url($url); ?>" 
+data-listing_id ="<?php echo esc_attr($wdk_listing_result_id); ?>" 
+
+class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_listing_popup')):?> wdk_listing_popup <?php endif;?> <?php echo esc_attr($layout_type);?> <?php if($layout_type == 'carousel'):?> grid <?php endif;?> <?php if(wdk_get_option('wdk_is_featured_enabled', FALSE) && wmvc_show_data('is_featured', $listing, '') == 1):?> is_featured <?php endif;?> <?php if(!$infobox && wmvc_show_data('is_multiline_enabled', $resul_item_config, '') == 1):?> is_multiline_enabled <?php endif;?>">
     <div class="wdk-thumbnail">
 
         <?php if(wdk_get_option('wdk_card_slider_enable') && !$infobox):?>

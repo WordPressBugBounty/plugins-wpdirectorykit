@@ -64,7 +64,7 @@ class MVC_Loader {
         wp_register_script( 'wpmediamultiple',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediamultiple.js'), array(), false, false );
         $params = array(
             'text' =>array(
-				'frame_title' => esc_html__('Select or Upload Media Of Your Chosen Persuasion', 'wpdirectorykit'),
+				'frame_title' => esc_html__('Upload and select your images here for use with your listing', 'wpdirectorykit'),
 				'frame_button' => esc_html__('Use this media', 'wpdirectorykit'),
 			),
         );

@@ -256,7 +256,7 @@
         if ($('.wdk-fielddate').length && typeof $.datepicker != 'undefined') {
 
             $('.wdk-fielddate').each(function () {
-                let dateFormat = script_parameters.format_date_js;
+                let dateFormat = wdk_script_parameters.format_date_js;
 				var self = $(this);
 
                 if (self.attr('date-format'))
@@ -283,7 +283,7 @@
         if ($('.wdk-fielddatetime').length && typeof $.datepicker != 'undefined') {
 
             $('.wdk-fielddatetime').each(function () {
-                let dateFormat = script_parameters.format_datetime_js;
+                let dateFormat = wdk_script_parameters.format_datetime_js;
 
 				var self = $(this);
                 if (self.attr('date-format'))
@@ -356,7 +356,7 @@
 				return date;
 			} 
 
-			dateFormat = script_parameters.format_date_js;
+			dateFormat = wdk_script_parameters.format_date_js;
 			if ($('.wdk-fielddate_from').attr('date-format'))
 				dateFormat = $('.wdk-fielddate_from').attr('date-format');	
 				
@@ -403,11 +403,11 @@
 		}
         if(typeof $.fn.wdkSuggestion == 'function') {
 
-            if(typeof script_parameters.settings_wdk_field_search_suggestion_disable != 'undefined' && script_parameters.settings_wdk_field_search_suggestion_disable == 1) {
+            if(typeof wdk_script_parameters.settings_wdk_field_search_suggestion_disable != 'undefined' && wdk_script_parameters.settings_wdk_field_search_suggestion_disable == 1) {
 
             } else {
                 $('#wdk_field_search').wdkSuggestion({
-                    ajax_url: script_parameters.ajax_url,
+                    ajax_url: wdk_script_parameters.ajax_url,
                     ajax_param: { 
                         "action": 'wdk_public_action',
                         "page": 'wdk_frontendajax',
@@ -469,14 +469,14 @@
         
             // Create a "Read More" button
             var readMoreButtonWrapper = $("<div class='wdk-textarea-load-more-wrapper'><a class='wdk-textarea-load-more-button'></a></div>"),
-            readMoreButton = readMoreButtonWrapper.find('a').text(script_parameters.text.read_more);
+            readMoreButton = readMoreButtonWrapper.find('a').text(wdk_script_parameters.text.read_more || '');
             readMoreButton.on("click", function() {
                 // Toggle the visibility of the additional content
                 additionalContent.slideToggle();
-                if (readMoreButton.text() === script_parameters.text.read_more) {
-                    readMoreButton.text(script_parameters.text.read_less);
+                if (readMoreButton.text() === wdk_script_parameters.text.read_more) {
+                    readMoreButton.text(wdk_script_parameters.text.read_less);
                 } else {
-                    readMoreButton.text(script_parameters.text.read_more);
+                    readMoreButton.text(wdk_script_parameters.text.read_more);
                 }
             });
         

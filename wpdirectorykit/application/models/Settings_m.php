@@ -159,6 +159,14 @@ class Settings_m extends Winter_MVC_Model {
                 'field_type' => 'CHECKBOX', 
                 'rules' => '', 
             ),
+
+            array(
+                'field' => 'wdk_disable_custom_muber_format', 
+                'field_label' => __('Remove images from media when listing is removed', 'wpdirectorykit'), 
+                'hint' => __('Disable the custom number format and use the default WordPress number formatting.', 'wpdirectorykit'),
+                'field_type' => 'CHECKBOX', 
+                'rules' => '', 
+            ),
         );
 
         $this->fields_list_tabs['templates'] []  = array(
@@ -274,6 +282,13 @@ class Settings_m extends Winter_MVC_Model {
             array(
                 'field' => 'wdk_enable_filter_zero_decimal', 
                 'field_label' => __('Enable filter zero decimal', 'wpdirectorykit'), 
+                'field_type' => 'CHECKBOX', 
+                'rules' => '', 
+            ),
+            array(
+                'field' => 'wdk_disable_custom_muber_format', 
+                'field_label' => __('Disable the custom number format', 'wpdirectorykit'), 
+                'hint' => __('Disable the custom number format and use the default WordPress number formatting.', 'wpdirectorykit'),
                 'field_type' => 'CHECKBOX', 
                 'rules' => '', 
             ),
@@ -430,6 +445,14 @@ class Settings_m extends Winter_MVC_Model {
             array(
                 'field' => 'wdk_disable_toolbar_on_content_editor', 
                 'field_label' => __('Disable toolbar on content editor', 'wpdirectorykit'), 
+                'field_type' => 'CHECKBOX', 
+                'rules' => '', 
+            ),
+            
+            array(
+                'field' => 'wdk_remove_direct_listing_images', 
+                'field_label' => __('Remove images from media when listing is removed', 'wpdirectorykit'), 
+                'hint' => __('Enable this option to remove attached images from the media library automatically when a listing is deleted.', 'wpdirectorykit'),
                 'field_type' => 'CHECKBOX', 
                 'rules' => '', 
             ),

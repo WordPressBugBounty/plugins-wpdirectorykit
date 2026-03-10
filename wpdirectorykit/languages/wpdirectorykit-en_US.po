@@ -2,26 +2,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Directory Kit\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
+"Last-Translator: \n"
+"Language-Team: English (United States)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2022-08-15 10:47+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"PO-Revision-Date: 2026-02-02 12:40+0000\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.5.5; wp-5.8.2\n"
+"X-Loco-Version: 2.5.2; wp-6.5.5\n"
 "X-Domain: wpdirectorykit\n"
 
 #: elementor-elements/classes/wdk-elementor-base.php:736
 #, php-format
-msgid " %1$sGet our Addons%2$s for more awesome elements and powerful features!"
+msgid ""
+" %1$sGet our Addons%2$s for more awesome elements and powerful features!"
 msgstr ""
 
-#: application/views/wdk/index.php:70
-#: application/views/wdk/index.php:153
+#: application/views/wdk/index.php:70 application/views/wdk/index.php:153
 #: application/views/wdk_messages/index.php:24
 #: application/views/wdk_messages/index.php:58
 msgid "#ID"
@@ -34,7 +34,9 @@ msgstr ""
 
 #: application/views/wdk_fields/index.php:120
 #, php-format
-msgid "%1$s This fields and section can be restructured, replaced/moved with drag & drop, resized etc. How to add new feilds?%2$s"
+msgid ""
+"%1$s This fields and section can be restructured, replaced/moved with drag & "
+"drop, resized etc. How to add new feilds?%2$s"
 msgstr ""
 
 #: elementor-extensions/class-hider.php:238
@@ -69,8 +71,7 @@ msgstr ""
 msgid "7 numbers"
 msgstr ""
 
-#: application/views/wdk/index.php:81
-#: application/views/wdk/index.php:163
+#: application/views/wdk/index.php:81 application/views/wdk/index.php:163
 #: application/views/wdk_category/index.php:25
 #: application/views/wdk_category/index.php:57
 #: application/views/wdk_location/index.php:25
@@ -184,8 +185,7 @@ msgid "addons and premium"
 msgstr ""
 
 #: elementor-extensions/class-hider.php:246
-#: application/controllers/Wdk_listing.php:159
-#: application/helpers/Basic.php:73
+#: application/controllers/Wdk_listing.php:159 application/helpers/Basic.php:73
 #: elementor-elements/classes/wdk-field-icon.php:192
 #: elementor-elements/classes/wdk-field-label.php:165
 #: elementor-elements/classes/wdk-field-label.php:209
@@ -230,17 +230,20 @@ msgid "Admin can manage currencies"
 msgstr ""
 
 #: application/views/wdk_listing/index.php:44
-msgid "After you enter address system will try to autodetect and pin location on map, then you can drag and drop pin on map to fine tune location"
+msgid ""
+"After you enter address system will try to autodetect and pin location on "
+"map, then you can drag and drop pin on map to fine tune location"
 msgstr ""
 
-#: custom_user_roles.php:10
-#: application/views/wdk_listing/index.php:89
+#: custom_user_roles.php:10 application/views/wdk_listing/index.php:89
 msgid "Agent"
 msgstr ""
 
 #: elementor-elements/classes/wdk-listing-agent-avatar.php:212
 #: elementor-elements/classes/wdk-listing-agent-field.php:246
-msgid "Agent id, where  0 is user edit, then 1,2,3,4 ... is alternative agent by index"
+msgid ""
+"Agent id, where  0 is user edit, then 1,2,3,4 ... is alternative agent by "
+"index"
 msgstr ""
 
 #: elementor-elements/classes/wdk-listing-agent-avatar.php:211
@@ -363,7 +366,9 @@ msgid "All Our Themes"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:94
-msgid "Allow Visitor to calculate Mortgage / Loan Prices based on related listing price or enter values manually."
+msgid ""
+"Allow Visitor to calculate Mortgage / Loan Prices based on related listing "
+"price or enter values manually."
 msgstr ""
 
 #: application/views/wdk_addons_bookings/index.php:36
@@ -383,7 +388,9 @@ msgid "Alternative Agents"
 msgstr ""
 
 #: application/models/Settings_m.php:61
-msgid "Always auto activate approved listings (all agents listings will be auto activated if agent approved)"
+msgid ""
+"Always auto activate approved listings (all agents listings will be auto "
+"activated if agent approved)"
 msgstr ""
 
 #: application/models/Settings_m.php:57
@@ -414,7 +421,9 @@ msgstr ""
 
 #: application/views/wdk_install/index.php:24
 #: application/views/wdk_settings/index.php:33
-msgid "Are you sure? All Listings, fields, categories, locations will be completely removed"
+msgid ""
+"Are you sure? All Listings, fields, categories, locations will be completely "
+"removed"
 msgstr ""
 
 #: application/views/wdk/index.php:193
@@ -484,7 +493,9 @@ msgid "Auto Approve Listings"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:28
-msgid "Automatically import and sync wanted currencies available in API and auto conver on Homepage Based on Switcher selection"
+msgid ""
+"Automatically import and sync wanted currencies available in API and auto "
+"conver on Homepage Based on Switcher selection"
 msgstr ""
 
 #: elementor-elements/classes/wdk-categories-carousel.php:429
@@ -630,7 +641,9 @@ msgid "bottom"
 msgstr ""
 
 #. Description of the plugin
-msgid "Build your Directory portal, demos for Real Estate Agency and Car Dealership included"
+msgid ""
+"Build your Directory portal, demos for Real Estate Agency and Car Dealership "
+"included"
 msgstr ""
 
 #: application/views/wdk/index.php:171
@@ -708,7 +721,9 @@ msgid "By:"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:39
-msgid "Calendar and Availability Rates/Prices per Hour/Day/Week... Reservations from Listing Page based on Availability."
+msgid ""
+"Calendar and Availability Rates/Prices per Hour/Day/Week... Reservations "
+"from Listing Page based on Availability."
 msgstr ""
 
 #: elementor-elements/classes/wdk-search.php:165
@@ -786,10 +801,8 @@ msgstr ""
 msgid "categories not found"
 msgstr ""
 
-#: elementor-extensions/class-hider.php:247
-#: application/controllers/Wdk.php:69
-#: application/controllers/Wdk_listing.php:149
-#: application/helpers/Basic.php:55
+#: elementor-extensions/class-hider.php:247 application/controllers/Wdk.php:69
+#: application/controllers/Wdk_listing.php:149 application/helpers/Basic.php:55
 #: elementor-elements/classes/wdk-field-icon.php:193
 #: elementor-elements/classes/wdk-field-label.php:210
 #: elementor-elements/classes/wdk-field-value.php:304
@@ -797,8 +810,7 @@ msgstr ""
 #: elementor-elements/classes/wdk-map.php:223
 #: application/views/fields_edit/SAVE_SEARCH_QUERY.php:74
 #: application/views/fields_edit/SAVE_SEARCH_QUERY_READONLY.php:61
-#: application/views/wdk/index.php:38
-#: application/views/wdk/index.php:72
+#: application/views/wdk/index.php:38 application/views/wdk/index.php:72
 #: application/views/wdk/index.php:155
 #: application/views/wdk_listing/index.php:50
 msgid "Category"
@@ -1077,7 +1089,9 @@ msgid "Configuration"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:127
-msgid "Connect with social network, show Facebook comments directly on your listing preview pages."
+msgid ""
+"Connect with social network, show Facebook comments directly on your listing "
+"preview pages."
 msgstr ""
 
 #: admin/class-wpdirectorykit-admin.php:260
@@ -1175,7 +1189,9 @@ msgid "Currencies Addon"
 msgstr ""
 
 #: application/views/wdk_addons_currencies/index.php:29
-msgid "Currencies can be synced automatically by exchangeratesapi.io on daily basis via cronjob"
+msgid ""
+"Currencies can be synced automatically by exchangeratesapi.io on daily basis "
+"via cronjob"
 msgstr ""
 
 #: application/views/wdk_addons_currencies/index.php:20
@@ -1271,8 +1287,7 @@ msgstr ""
 #: application/controllers/Wdk_messages.php:68
 #: elementor-elements/classes/wdk-field-label.php:205
 #: elementor-elements/classes/wdk-field-value.php:299
-#: application/views/wdk/index.php:74
-#: application/views/wdk/index.php:157
+#: application/views/wdk/index.php:74 application/views/wdk/index.php:157
 #: application/views/wdk_category/index.php:24
 #: application/views/wdk_category/index.php:56
 #: application/views/wdk_location/index.php:24
@@ -1413,8 +1428,7 @@ msgstr ""
 msgid "Default Sizes"
 msgstr ""
 
-#: application/views/wdk/index.php:117
-#: application/views/wdk/index.php:172
+#: application/views/wdk/index.php:117 application/views/wdk/index.php:172
 msgid "Delete"
 msgstr ""
 
@@ -1520,11 +1534,13 @@ msgid "Drag and drop pin to desired location"
 msgstr ""
 
 #: application/views/wdk_resultitem/resultitem_edit.php:102
-msgid "Drag fields from left side to right side, right side represents result card"
+msgid ""
+"Drag fields from left side to right side, right side represents result card"
 msgstr ""
 
 #: application/views/wdk_searchform/searchform_edit.php:109
-msgid "Drag fields from left side to right side, right side represents search form"
+msgid ""
+"Drag fields from left side to right side, right side represents search form"
 msgstr ""
 
 #: elementor-elements/classes/wdk-listing-map.php:218
@@ -1589,8 +1605,7 @@ msgstr ""
 msgid "Edit Categories <a href=\"%1$s\" target=\"_blank\"> open </a>"
 msgstr ""
 
-#: custom_post_type.php:23
-#: filters.php:225
+#: custom_post_type.php:23 filters.php:225
 msgid "Edit Listing"
 msgstr ""
 
@@ -2011,8 +2026,7 @@ msgstr ""
 msgid "Filter by category"
 msgstr ""
 
-#: application/views/wdk/index.php:40
-#: application/views/wdk/index.php:41
+#: application/views/wdk/index.php:40 application/views/wdk/index.php:41
 msgid "Filter by keyword"
 msgstr ""
 
@@ -2037,7 +2051,9 @@ msgid "First please install / activate required plugins"
 msgstr ""
 
 #: application/views/wdk_fields/index.php:34
-msgid "First please install / activate required plugins, then you can import demo data"
+msgid ""
+"First please install / activate required plugins, then you can import demo "
+"data"
 msgstr ""
 
 #: application/models/Settings_m.php:52
@@ -2074,7 +2090,9 @@ msgid "For Booking please login"
 msgstr ""
 
 #: application/views/wdk_install/index.php:58
-msgid "For import max_execution_time should be more then 120s, please contact with admin host to increase"
+msgid ""
+"For import max_execution_time should be more then 120s, please contact with "
+"admin host to increase"
 msgstr ""
 
 #: elementor-elements/classes/wdk-search.php:303
@@ -2102,7 +2120,9 @@ msgid "Frontend availability dates filtering"
 msgstr ""
 
 #: application/views/wdk_fields/field_edit.php:85
-msgid "Full width is 12 columns, so define wanted columns allocation number for this field"
+msgid ""
+"Full width is 12 columns, so define wanted columns allocation number for "
+"this field"
 msgstr ""
 
 #: application/views/wdk_settings/index.php:22
@@ -2208,12 +2228,19 @@ msgstr ""
 
 #: includes/class-wpdirectorykit-review-request.php:253
 #, php-format
-msgid "Hey, I noticed you recently hit %d popup views on your site – that’s awesome!. I would very much appreciate if you could quickly give it a 5-star rating on WordPress, just to help us spread the word."
+msgid ""
+"Hey, I noticed you recently hit %d popup views on your site – that’s awesome!"
+". I would very much appreciate if you could quickly give it a 5-star rating "
+"on WordPress, just to help us spread the word."
 msgstr ""
 
 #: includes/class-wpdirectorykit-review-request.php:254
 #, php-format
-msgid "Hey, you've been using WP Directory Kit for %s on your site - I hope that its been helpful. I would very much appreciate if you could quickly give it a 5-star rating on WordPress, just to help us spread the word and motivate us to make it even better."
+msgid ""
+"Hey, you've been using WP Directory Kit for %s on your site - I hope that "
+"its been helpful. I would very much appreciate if you could quickly give it "
+"a 5-star rating on WordPress, just to help us spread the word and motivate "
+"us to make it even better."
 msgstr ""
 
 #: application/views/email/membership_purchased.php:39
@@ -2462,11 +2489,12 @@ msgid "Icon used for marker/pin on map or special places on website"
 msgstr ""
 
 #: application/views/wdk_category/category_edit.php:74
-msgid "Icon used for marker/pin on map or special places on website, you can found icon classes on font awesome website"
+msgid ""
+"Icon used for marker/pin on map or special places on website, you can found "
+"icon classes on font awesome website"
 msgstr ""
 
-#: application/controllers/Wdk.php:54
-#: application/controllers/Wdk.php:55
+#: application/controllers/Wdk.php:54 application/controllers/Wdk.php:55
 #: elementor-elements/classes/wdk-listing-similar-listings.php:261
 #: elementor-elements/classes/wdk-listings-carousel.php:314
 #: elementor-elements/classes/wdk-listings-list.php:307
@@ -2514,8 +2542,7 @@ msgstr ""
 
 #: elementor-elements/classes/wdk-categories-grid.php:682
 #: application/views/email/save_search_new_listings.php:45
-#: application/views/wdk/index.php:73
-#: application/views/wdk/index.php:156
+#: application/views/wdk/index.php:73 application/views/wdk/index.php:156
 #: application/views/wdk_category/category_edit.php:108
 #: application/views/wdk_location/location_edit.php:61
 msgid "Image"
@@ -2648,7 +2675,9 @@ msgstr ""
 
 #: application/views/wdk_category/category_edit.php:59
 #: application/views/wdk_location/location_edit.php:48
-msgid "Index for sorting/ordering, you can leave it empty and will be auto added to end of parent list"
+msgid ""
+"Index for sorting/ordering, you can leave it empty and will be auto added to "
+"end of parent list"
 msgstr ""
 
 #: elementor-elements/classes/wdk-categories-carousel.php:417
@@ -2676,7 +2705,7 @@ msgstr ""
 
 #: elementor-extensions/class-contact-form.php:286
 msgid "Interested for listing"
-msgstr ""
+msgstr "Interested for listing"
 
 #: application/controllers/Wdk_listing.php:184
 #: application/views/wdk_listing/index.php:153
@@ -3017,8 +3046,7 @@ msgstr ""
 msgid "Listing Preview page or Listings Result page missing"
 msgstr ""
 
-#: custom_post_type.php:33
-#: filters.php:350
+#: custom_post_type.php:33 filters.php:350
 #: admin/class-wpdirectorykit-admin.php:172
 #: admin/class-wpdirectorykit-admin.php:173
 #: application/controllers/Wdk_settings.php:153
@@ -3049,10 +3077,8 @@ msgstr ""
 msgid "lng"
 msgstr ""
 
-#: elementor-extensions/class-hider.php:248
-#: application/controllers/Wdk.php:64
-#: application/controllers/Wdk_listing.php:154
-#: application/helpers/Basic.php:64
+#: elementor-extensions/class-hider.php:248 application/controllers/Wdk.php:64
+#: application/controllers/Wdk_listing.php:154 application/helpers/Basic.php:64
 #: elementor-elements/classes/wdk-field-icon.php:194
 #: elementor-elements/classes/wdk-field-label.php:211
 #: elementor-elements/classes/wdk-field-value.php:305
@@ -3107,7 +3133,9 @@ msgid "Login Title"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:61
-msgid "Login, Registration, Frontend Dashboard, Search for Agent, and every Agent have own page with their Listings and Details."
+msgid ""
+"Login, Registration, Frontend Dashboard, Search for Agent, and every Agent "
+"have own page with their Listings and Details."
 msgstr ""
 
 #: elementor-elements/classes/wdk-button-login.php:250
@@ -3431,8 +3459,7 @@ msgstr ""
 msgid "Missing results page"
 msgstr ""
 
-#: application/helpers/Basic.php:24
-#: application/helpers/Basic.php:150
+#: application/helpers/Basic.php:24 application/helpers/Basic.php:150
 msgid "Missing VIEW file: "
 msgstr ""
 
@@ -3445,7 +3472,9 @@ msgid "Monday"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:149
-msgid "Monetize your website with payments packages and all WooCommerce payment gateways supported."
+msgid ""
+"Monetize your website with payments packages and all WooCommerce payment "
+"gateways supported."
 msgstr ""
 
 #: application/helpers/Basic.php:109
@@ -3557,7 +3586,8 @@ msgid "New Message waiting"
 msgstr ""
 
 #: elementor-extensions/class-ajax-handler.php:376
-msgid "New Reservation approved, please confirm as paid when you receive payment"
+msgid ""
+"New Reservation approved, please confirm as paid when you receive payment"
 msgstr ""
 
 #: elementor-extensions/class-ajax-handler.php:448
@@ -3673,8 +3703,7 @@ msgstr ""
 #: elementor-extensions/class-hider.php:235
 #: application/controllers/Wdk_fields.php:40
 #: application/controllers/Wdk_settings.php:159
-#: application/models/Settings_m.php:21
-#: application/models/Settings_m.php:30
+#: application/models/Settings_m.php:21 application/models/Settings_m.php:30
 #: elementor-elements/classes/wdk-categories-carousel.php:174
 #: elementor-elements/classes/wdk-categories-grid-cover.php:191
 #: elementor-elements/classes/wdk-categories-grid.php:175
@@ -3903,8 +3932,7 @@ msgstr ""
 msgid "Order"
 msgstr ""
 
-#: application/controllers/Wdk.php:79
-#: application/views/wdk/index.php:43
+#: application/controllers/Wdk.php:79 application/views/wdk/index.php:43
 msgid "Order By"
 msgstr ""
 
@@ -4074,8 +4102,7 @@ msgstr ""
 msgid "Pets allowed field hide"
 msgstr ""
 
-#: custom_user_fields.php:8
-#: elementor-extensions/class-ajax-handler.php:105
+#: custom_user_fields.php:8 elementor-extensions/class-ajax-handler.php:105
 #: elementor-elements/classes/wdk-listing-agent-field.php:217
 #: elementor-elements/classes/wdk-listing-agent.php:407
 #: application/views/email/membership_contact_owner.php:78
@@ -4093,7 +4120,9 @@ msgid "Phone"
 msgstr ""
 
 #: application/models/Settings_m.php:65
-msgid "Please add Recaptcha site and Secret keys for enable recaptcha Add Google Recaptcha site key (use V2 recaptcha key)"
+msgid ""
+"Please add Recaptcha site and Secret keys for enable recaptcha Add Google "
+"Recaptcha site key (use V2 recaptcha key)"
 msgstr ""
 
 #: application/views/wdk_change_currency/index.php:23
@@ -4207,8 +4236,7 @@ msgstr ""
 msgid "Possible max"
 msgstr ""
 
-#: application/controllers/Wdk.php:58
-#: application/controllers/Wdk.php:59
+#: application/controllers/Wdk.php:58 application/controllers/Wdk.php:59
 msgid "Post Date"
 msgstr ""
 
@@ -4219,8 +4247,7 @@ msgstr ""
 msgid "Post Id"
 msgstr ""
 
-#: application/controllers/Wdk.php:56
-#: application/controllers/Wdk.php:57
+#: application/controllers/Wdk.php:56 application/controllers/Wdk.php:57
 msgid "Post Title"
 msgstr ""
 
@@ -4286,15 +4313,21 @@ msgid "Purchase again subscription"
 msgstr ""
 
 #: application/views/wdk_addons_bookings/index.php:16
-msgid "Purchase Booking Addon from 4.99$/month in yearly subscription for one website and support our work!"
+msgid ""
+"Purchase Booking Addon from 4.99$/month in yearly subscription for one "
+"website and support our work!"
 msgstr ""
 
 #: application/views/wdk_addons_membership/index.php:16
-msgid "Purchase Membership Addon from 4.99$/month in yearly subscription for one website and support our work!"
+msgid ""
+"Purchase Membership Addon from 4.99$/month in yearly subscription for one "
+"website and support our work!"
 msgstr ""
 
 #: application/views/wdk_addons_currencies/index.php:16
-msgid "Purchase Multiple Currency Conversion Addon from 4.99$/month in yearly subscription for one website and support our work!"
+msgid ""
+"Purchase Multiple Currency Conversion Addon from 4.99$/month in yearly "
+"subscription for one website and support our work!"
 msgstr ""
 
 #: application/views/email/reservation_user_payment_notify.php:52
@@ -4368,15 +4401,16 @@ msgid "Report Abuse"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:138
-msgid "Report Abuse button will allow your visitors to report abused listings directly to admin."
+msgid ""
+"Report Abuse button will allow your visitors to report abused listings "
+"directly to admin."
 msgstr ""
 
 #: application/views/wdk_fields/field_edit.php:100
 msgid "Required"
 msgstr ""
 
-#: filters.php:43
-#: filters.php:53
+#: filters.php:43 filters.php:53
 msgid "Required subscription for \"View Listings Details\", please"
 msgstr ""
 
@@ -4431,7 +4465,9 @@ msgid "Reservation waiting for approvement, please"
 msgstr ""
 
 #: application/views/email/reservation_waiting_for_approve_visitor.php:43
-msgid "Reservation waiting for approvement, we will inform you on approvement or owner will contact you"
+msgid ""
+"Reservation waiting for approvement, we will inform you on approvement or "
+"owner will contact you"
 msgstr ""
 
 #: elementor-extensions/class-ajax-handler.php:331
@@ -4633,8 +4669,7 @@ msgstr ""
 msgid "Save Search"
 msgstr ""
 
-#: application/helpers/Basic.php:91
-#: application/helpers/Basic.php:985
+#: application/helpers/Basic.php:91 application/helpers/Basic.php:985
 #: elementor-elements/classes/wdk-search.php:218
 msgid "Search"
 msgstr ""
@@ -4749,8 +4784,7 @@ msgstr ""
 msgid "Section Title"
 msgstr ""
 
-#: application/views/wdk/index.php:69
-#: application/views/wdk/index.php:152
+#: application/views/wdk/index.php:69 application/views/wdk/index.php:152
 msgid "Select All"
 msgstr ""
 
@@ -4770,13 +4804,16 @@ msgstr ""
 msgid "Select Order"
 msgstr ""
 
-#: application/models/Settings_m.php:54
-#: application/models/Settings_m.php:55
-msgid "Select regular page which ill be used for listing preview page on frontend, you can create new one also for this purpose"
+#: application/models/Settings_m.php:54 application/models/Settings_m.php:55
+msgid ""
+"Select regular page which ill be used for listing preview page on frontend, "
+"you can create new one also for this purpose"
 msgstr ""
 
 #: application/models/Settings_m.php:56
-msgid "Select regular page which ill be used for results page on frontend, you can create new one also for this purpose"
+msgid ""
+"Select regular page which ill be used for results page on frontend, you can "
+"create new one also for this purpose"
 msgstr ""
 
 #: application/models/Settings_m.php:60
@@ -4922,7 +4959,9 @@ msgid "show field label"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:17
-msgid "Show nicely designed energy efficiency on Listing preview page based on Field selected"
+msgid ""
+"Show nicely designed energy efficiency on Listing preview page based on "
+"Field selected"
 msgstr ""
 
 #: elementor-elements/classes/wdk-listings-results.php:317
@@ -4998,7 +5037,9 @@ msgid "Slug used for listing preview page, if empty, default will be used"
 msgstr ""
 
 #: application/views/wdk_install/index.php:23
-msgid "Some data already exists, please remove all data if you want to full import again"
+msgid ""
+"Some data already exists, please remove all data if you want to full import "
+"again"
 msgstr ""
 
 #: elementor-elements/views/wdk-listings-results.php:32
@@ -5184,7 +5225,9 @@ msgid "support from 4.99$/month in yearly subscription"
 msgstr ""
 
 #: application/views/wdk_addons_membership/index.php:38
-msgid "support from just 29$ in subscription or from 4.99$/month in yearly subscription"
+msgid ""
+"support from just 29$ in subscription or from 4.99$/month in yearly "
+"subscription"
 msgstr ""
 
 #: elementor-elements/classes/wdk-listing-agent-field.php:228
@@ -5276,7 +5319,9 @@ msgid "Thanks on payment!"
 msgstr ""
 
 #: elementor-extensions/class-ajax-handler.php:455
-msgid "Thanks on reservation, after owner approvement you will receive details for payment"
+msgid ""
+"Thanks on reservation, after owner approvement you will receive details for "
+"payment"
 msgstr ""
 
 #: application/views/email/reservation_user_payment_notify.php:47
@@ -5342,8 +5387,7 @@ msgstr ""
 
 #: application/controllers/Wdk_category.php:49
 #: application/controllers/Wdk_listing.php:139
-#: application/controllers/Wdk_location.php:49
-#: application/helpers/Basic.php:82
+#: application/controllers/Wdk_location.php:49 application/helpers/Basic.php:82
 #: elementor-elements/classes/wdk-categories-carousel.php:243
 #: elementor-elements/classes/wdk-categories-carousel.php:938
 #: elementor-elements/classes/wdk-categories-grid-cover.php:261
@@ -5373,8 +5417,7 @@ msgstr ""
 #: elementor-elements/views/wdk-listing-fields-section.php:120
 #: elementor-elements/views/wdk-listing-fields-section.php:126
 #: application/views/email/save_search_new_listings.php:44
-#: application/views/wdk/index.php:71
-#: application/views/wdk/index.php:154
+#: application/views/wdk/index.php:71 application/views/wdk/index.php:154
 #: application/views/wdk_category/category_edit.php:42
 #: application/views/wdk_category/index.php:21
 #: application/views/wdk_category/index.php:53
@@ -5395,7 +5438,9 @@ msgid "Title Part"
 msgstr ""
 
 #: application/views/wdk_demo_import/step_1.php:26
-msgid "To ensure the best experience, installing the following plugins is strongly recommended, and in some cases required."
+msgid ""
+"To ensure the best experience, installing the following plugins is strongly "
+"recommended, and in some cases required."
 msgstr ""
 
 #: elementor-elements/classes/wdk-categories-carousel.php:604
@@ -5510,7 +5555,11 @@ msgid "Url"
 msgstr ""
 
 #: elementor-elements/classes/wdk-elementor-base.php:141
-msgid "Use \"selector\" to target wrapper element. Examples:<br>selector {color: red;} // For main element<br>selector .child-element {margin: 10px;} // For child element<br>.my-class {text-align: center;} // Or use any custom selector"
+msgid ""
+"Use \"selector\" to target wrapper element. Examples:<br>selector {color: "
+"red;} // For main element<br>selector .child-element {margin: 10px;} // For "
+"child element<br>.my-class {text-align: center;} // Or use any custom "
+"selector"
 msgstr ""
 
 #: elementor-elements/classes/wdk-button-addlisting.php:228
@@ -5522,7 +5571,9 @@ msgid "Use wp price format based on language ( Only for number field type)"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:50
-msgid "Users will be able to rate listing or profiles based on configurable multiple criterias/options individually."
+msgid ""
+"Users will be able to rate listing or profiles based on configurable "
+"multiple criterias/options individually."
 msgstr ""
 
 #: application/controllers/Wdk_fields.php:120
@@ -5633,7 +5684,9 @@ msgid "Visitor Contact Details"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:83
-msgid "Visitors will be able to Save any listing as Favorite for later use, Manage from User Frontend Dashboard."
+msgid ""
+"Visitors will be able to Save any listing as Favorite for later use, Manage "
+"from User Frontend Dashboard."
 msgstr ""
 
 #: elementor-elements/elementor-init.php:273
@@ -5818,7 +5871,9 @@ msgid "WooCommerce support for Online Booking payments"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:105
-msgid "WordPress support only Gravatar, with this plugin visitors will be able to upload own image directly from Dashboard."
+msgid ""
+"WordPress support only Gravatar, with this plugin visitors will be able to "
+"upload own image directly from Dashboard."
 msgstr ""
 
 #: elementor-elements/classes/wdk-listing-map.php:266
@@ -5863,7 +5918,9 @@ msgid "X"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:72
-msgid "XML Export, CSV/XML Import via popular Plugin Wp All Import and VIsual Fields Mapping."
+msgid ""
+"XML Export, CSV/XML Import via popular Plugin Wp All Import and VIsual "
+"Fields Mapping."
 msgstr ""
 
 #: elementor-extensions/class-contact-form.php:159
@@ -5874,7 +5931,10 @@ msgstr ""
 
 #: elementor-elements/classes/wdk-listing-map.php:279
 #: elementor-elements/classes/wdk-map.php:361
-msgid "You can add some custom map by link example https://leaflet-extras.github.io/leaflet-providers/preview/ or create your custom style and put link for example on maps.cloudmade.com/editor"
+msgid ""
+"You can add some custom map by link example https://leaflet-extras.github."
+"io/leaflet-providers/preview/ or create your custom style and put link for "
+"example on maps.cloudmade.com/editor"
 msgstr ""
 
 #: application/views/email/reservation_user_payment_notify_not_expired.php:53
@@ -5917,11 +5977,15 @@ msgid "Your Reservation Waiting For Approvement"
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:160
-msgid "Your visitors will be able to compare listings, so will see up to 4 listings at once in table."
+msgid ""
+"Your visitors will be able to compare listings, so will see up to 4 listings "
+"at once in table."
 msgstr ""
 
 #: application/controllers/Wdk_addons.php:171
-msgid "Your visitors will be able to Save Search, run it from Frontend Dash and receive Email Alerts when new/changed listing become available."
+msgid ""
+"Your visitors will be able to Save Search, run it from Frontend Dash and "
+"receive Email Alerts when new/changed listing become available."
 msgstr ""
 
 #: elementor-elements/classes/wdk-listing-agent-field.php:222

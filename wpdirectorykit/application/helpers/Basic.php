@@ -2845,7 +2845,7 @@ function wdk_upload_multi_files($field_name, $image_ids='', $texts = array())
                             if( typeof jQuery.fn.wpMediaMultiple == 'function')
                                 $('#".esc_js($field_name)."meta-box-id.postbox-upload-multiple').wpMediaMultiple({
                                     frame: {
-                                        title: '".esc_js(__('Select or Upload Media Of Your Chosen Persuasion','wpdirectorykit'))."',
+                                        title: '".esc_js(__('Upload and select your images here for use with your listing','wpdirectorykit'))."',
                                         button: '".esc_js(__('Use this media','wpdirectorykit'))."',
                                     },
                                      library: {
@@ -3945,6 +3945,16 @@ if ( ! function_exists('wdk_number_format_i18n'))
         // Allow decimal precision to be filtered (default is 0)
         $decimals = apply_filters('wdk_number_format_decimals', ((wdk_get_option('wdk_number_format_decimals')) ? wdk_get_option('wdk_number_format_decimals') : 0));
 
+        if(!get_option('wdk_disable_custom_muber_format')) {
+            global $wp_locale;
+            return number_format(
+                $value,
+                $decimals,
+                $wp_locale->number_format['decimal_point'],
+                $wp_locale->number_format['thousands_sep']
+            );
+        } 
+       
         return number_format_i18n($value, $decimals);
     }
 }

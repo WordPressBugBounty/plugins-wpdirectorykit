@@ -511,14 +511,16 @@ add_filter('tiny_mce_before_init', function($init){
 *  configuration number_format_i18n
 */
 add_filter('init', function($init){ 
-    if(get_option('wdk_number_format_decimal_point') || get_option('wdk_number_format_thousands_sep')) {
-        global $wp_locale;
-        if(get_option('wdk_number_format_decimal_point'))
-            $wp_locale->number_format['decimal_point'] = get_option('wdk_number_format_decimal_point');
-        
-        if(get_option('wdk_number_format_thousands_sep'))
-            $wp_locale->number_format['thousands_sep'] = get_option('wdk_number_format_thousands_sep');
-    }
+
+    if(!get_option('wdk_disable_custom_muber_format'))
+        if(get_option('wdk_number_format_decimal_point') || get_option('wdk_number_format_thousands_sep')) {
+            global $wp_locale;
+            if(get_option('wdk_number_format_decimal_point'))
+                $wp_locale->number_format['decimal_point'] = get_option('wdk_number_format_decimal_point');
+            
+            if(get_option('wdk_number_format_thousands_sep'))
+                $wp_locale->number_format['thousands_sep'] = get_option('wdk_number_format_thousands_sep');
+        }
 });
 
 add_filter( 'wdk/listings/results', function($listings) {
@@ -536,5 +538,15 @@ add_filter( 'wdk/listings/results', function($listings) {
     }
 
     return $listings;
-} )
+} );
+
+add_filter('body_class', function($classes){
+
+    if(isset($_GET['popup'])){
+        $classes[] = 'popup-mode';
+    }
+
+    return $classes;
+
+});
 ?>

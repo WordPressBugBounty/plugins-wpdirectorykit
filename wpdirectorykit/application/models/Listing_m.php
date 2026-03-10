@@ -335,6 +335,20 @@ class Listing_m extends Winter_MVC_Model {
 
         $this->load->model('listingfield_m');
         $this->load->model('listingusers_m');
+        
+        /* remove images direct */
+        if ( get_option('wdk_remove_direct_listing_images', false)) {
+            global $Winter_MVC_WDK;
+            $Winter_MVC_WDK->load_helper('listing');
+
+            $listing_images = wdk_field_value('listing_images', $post_id);
+            if(!empty($listing_images)) {
+                $image_ids = explode(',', $listing_images);
+                foreach ($image_ids as $key => $image_id) {
+                    wp_delete_attachment($image_id, true);
+                }
+            }
+        }
 
         /* remove listing */
         parent::delete($post_id);
@@ -343,6 +357,10 @@ class Listing_m extends Winter_MVC_Model {
 
         /* remove post */
         wp_delete_post($post_id, true);
+
+        // Delete listing images if setting enabled
+
+
 
         do_action('wpdirectorykit/model/listing/delete', $post_id);
 

@@ -60,7 +60,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
                             <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-telegram"></i><?php echo esc_html($value);?></a></div>
                         <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>
-                            <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="//wa.me/<?php echo esc_attr(wdk_filter_phone($value));?>"><i class="fa fa-whatsapp"></i><?php echo esc_html($value);?></a></div>
+                            <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a target="_blank" href="//wa.me/<?php echo esc_attr(wdk_filter_phone($value));?><?php echo '?text=' . rawurlencode(wdk_server_current_url()) . '%20' . ( ! empty(wmvc_show_data('wdk_whatsapp_message', $userdata)) ? rawurlencode(wmvc_show_data('wdk_whatsapp_message', $userdata, '')) : '' ); ?>"><i class="fa fa-whatsapp"></i><?php echo esc_html($value);?></a></div>
                         <?php elseif(strpos($meta['meta_field'],'viber') !== FALSE):?>
                             <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="viber://chat?number=<?php echo esc_attr(wdk_filter_phone($value));?>"><i class="fab fa-viber"></i><?php echo esc_html($value);?></a></div>
                         <?php elseif(filter_var($value, FILTER_VALIDATE_URL) !== FALSE):?>
@@ -126,7 +126,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-telegram"></i><?php echo esc_html($value);?></a></div>
                             <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>
-                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="//wa.me/<?php echo esc_attr(wdk_filter_phone($value));?>"><i class="fa fa-whatsapp"></i><?php echo esc_html($value);?></a></div>
+                                <div class="meta-item <?php echo esc_html($meta['meta_field']);?>">
+                                    <a href="https://wa.me/<?php echo esc_attr(wdk_filter_phone($value)); ?><?php echo '?text=' . rawurlencode(wdk_server_current_url()) . '%20' . ( ! empty(wmvc_show_data('wdk_whatsapp_message', $userdata)) ? rawurlencode(wmvc_show_data('wdk_whatsapp_message', $userdata, '')) : '' ); ?>">
+                                        <i class="fa fa-whatsapp"></i><?php echo esc_html($value); ?>
+                                    </a>
+                                </div>
                             <?php elseif(strpos($meta['meta_field'],'viber') !== FALSE):?>
                                 <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="viber://chat?number=<?php echo esc_attr(wdk_filter_phone($value));?>"><i class="fab fa-viber"></i><?php echo esc_html($value);?></a></div>
                             <?php elseif(filter_var($value, FILTER_VALIDATE_URL) !== FALSE):?>
@@ -198,7 +202,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <?php elseif(strpos($meta['meta_field'],'telegram') !== FALSE):?>
                                     <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="<?php echo esc_url($value);?>"><i class="fa fa-telegram"></i><?php echo esc_html($value);?></a></div>
                                 <?php elseif(strpos($meta['meta_field'],'whatsapp') !== FALSE):?>
-                                    <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="//wa.me/<?php echo esc_attr(wdk_filter_phone($value));?>"><i class="fa fa-whatsapp"></i><?php echo esc_html($value);?></a></div>
+                                    <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a target="_blank" href="//wa.me/<?php echo esc_attr(wdk_filter_phone($value));?><?php echo '?text=' . rawurlencode(wdk_server_current_url()) . '%20' . ( ! empty(wmvc_show_data('wdk_whatsapp_message', $userdata)) ? rawurlencode(wmvc_show_data('wdk_whatsapp_message', $userdata, '')) : '' ); ?>"><i class="fa fa-whatsapp"></i><?php echo esc_html($value);?></a></div>
                                 <?php elseif(strpos($meta['meta_field'],'viber') !== FALSE):?>
                                     <div class="meta-item <?php echo esc_html($meta['meta_field']);?>"><a href="viber://chat?number=<?php echo esc_attr(wdk_filter_phone($value));?>"><i class="fab fa-viber"></i><?php echo esc_html($value);?></a></div>
                                 <?php elseif(filter_var($value, FILTER_VALIDATE_URL) !== FALSE):?>
