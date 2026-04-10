@@ -82,6 +82,21 @@ function wpdirectorykit_register_required_plugins()
             'slug'      => 'classified-ads',
             'required'  => false,
         ),
+        array(
+            'name'      => 'Add To Home Screen on iOS and PWA',
+            'slug'      => 'add-to-home-screen-on-ios-pwa',
+            'required'  => false,
+        ),
+        array(
+            'name'      => 'Bikit Business Directory',
+            'slug'      => 'bikit-business-directory',
+            'required'  => false,
+        ),
+        array(
+            'name'      => 'Directorykit Car Dealer Addon',
+            'slug'      => 'directorykit-car-dealer-addon',
+            'required'  => false,
+        ),
 
         /*
         array(
