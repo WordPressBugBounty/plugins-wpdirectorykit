@@ -1602,3 +1602,11 @@ body .select2-container--default.select2-container--focus .select2-selection--mu
         margin-bottom: 5px;
     }
 }
+
+.wdk-notice-upgrade {
+    background: #fcf0f1;
+    border-left-color: #d63a3c;
+    .dashicons-warning {
+        color: #d63a3c;
+    }
+}

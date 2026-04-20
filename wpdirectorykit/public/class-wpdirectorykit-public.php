@@ -223,9 +223,9 @@ class Wpdirectorykit_Public {
 		
 
 		if( wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_listing_popup')) {
-			wp_register_script('wdk-popup-listings', plugin_dir_url( __FILE__ ).'js/wdk-popup-listings.js', array( 'jquery', 'jquery-confirm' ), '1.0', false );
+			wp_register_script('wdk-popup-listings', plugin_dir_url( __FILE__ ).'js/wdk-popup-listings.js', array( 'jquery', 'jquery-confirm' ), '1.6', false );
 			wp_enqueue_script('wdk-popup-listings');
-			wp_enqueue_style('jquery-confirm');
+			wp_enqueue_style('jquery-confirm'); 
         }
 	
 		wp_register_script('wdk-treefield-dropdown', plugin_dir_url( __FILE__ ).'js/wdk_treefield_dropdown/wdk_treefield_dropdown.js', array( 'jquery' ), '1.0', false );

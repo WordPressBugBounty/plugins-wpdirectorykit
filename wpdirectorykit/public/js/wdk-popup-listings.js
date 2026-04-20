@@ -1,10 +1,11 @@
 
 
-const wdk_popup_listings = ($url = '') => {
+function wdk_popup_listings ($url = '') {
     var $ = jQuery,
     theme_jc = null;
+    
     console.log('wdk_popup_listings');
-    $('.wdk_listing_popup').off().on('click', function(e){
+    $('body:not(.popup-mode) .wdk_listing_popup').off().on('click', function(e){
         e.preventDefault();
 
         /*
@@ -27,7 +28,11 @@ const wdk_popup_listings = ($url = '') => {
 
         theme_jc = $.confirm({
             backgroundDismiss: true, // this will just close the modal
+            boxClass: 'my-custom-popup',
             columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1 listing_popup', 
+            onOpenBefore: function () {
+                this.$el.addClass('listing_popup');
+            },
             title: false,
             boxWidth: '1200px',
             useBootstrap: false,

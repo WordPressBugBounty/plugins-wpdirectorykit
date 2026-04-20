@@ -218,6 +218,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                     wdk_init_compare_elem();
                 }
 
+                if (typeof wdk_popup_listings == 'function') {
+                    wdk_popup_listings();
+                }
+
             });
 
             wdk_slick_slider_init(el, ()=>{
@@ -229,6 +233,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                 
                 if (typeof wdk_init_compare_elem == 'function') {
                     wdk_init_compare_elem();
+                }
+
+                
+                if (typeof wdk_popup_listings == 'function') {
+                    wdk_popup_listings();
                 }
             });
         })

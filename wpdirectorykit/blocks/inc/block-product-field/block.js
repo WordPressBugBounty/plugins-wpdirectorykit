@@ -6,7 +6,12 @@
 
     registerBlockType('my-plugin/wdk-latest-listing-block', {
         title: 'Latest Listings',
-        icon: 'heart',
+        icon: el('svg', { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
+            el('path', {
+                d: 'M4 6H20V8H4V6ZM4 10H20V20H4V10ZM6 12V18H18V12H6ZM8 2H16V4H8V2Z',
+                fill: 'currentColor'
+            })
+        ),
         category: 'wdk-blocks',
         attributes: {
             content: {

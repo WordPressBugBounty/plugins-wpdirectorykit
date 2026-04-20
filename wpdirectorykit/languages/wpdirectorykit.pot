@@ -10044,7 +10044,7 @@ msgid "Thanks"
 msgstr ""
 
 #: elementor-extensions/class-ajax-handler.php:783
-msgid "Thanks on message"
+msgid "Thanks for the message."
 msgstr ""
 
 #: application/views/email/reservation_completed_visitor.php:130

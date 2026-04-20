@@ -166,11 +166,11 @@ class WdkListingSlider extends WdkElementorBase {
                     $field_id = substr( $field_id, strpos($field_id, '__')+2);
                 }
 
-                $this->data['images_fields'][$field_id] = [];
-
+                
                 $field_value = wdk_field_value($field_id, $wdk_listing_id);
-                $images = $this->data['images_fields'][$field_id] = wdk_files_data($field_value, 'full');
+                $images = wdk_files_data($field_value, 'full');
                 if (!empty($images) && is_array($images)) {
+                    $this->data['images_fields'][$field_id] = $images;
                     foreach ($images as $k => $v) {
                         $this->data['images'][$field_id.'__'.$k] = $v;
                     }
@@ -183,7 +183,10 @@ class WdkListingSlider extends WdkElementorBase {
                 if(strpos( $field_id,'__') !== FALSE){
                     $field_id = substr( $field_id, strpos($field_id, '__')+2);
                 }
-                $images =  $this->data['images_fields'][$field_id] = wdk_field_value($field_id, $wdk_listing_id);
+                $images = wdk_field_value($field_id, $wdk_listing_id);
+                if(!empty($images)) {
+                    $this->data['images_fields'][$field_id] = $images;
+                }
                 $this->data['images'][$field_id.'__'.$key] = $images;
             }
         }
@@ -232,6 +235,7 @@ class WdkListingSlider extends WdkElementorBase {
                 'default' => '',
             ]
         );
+        
 
         
         $fields_data = wdk_cached_field_get();
@@ -263,6 +267,20 @@ class WdkListingSlider extends WdkElementorBase {
         );
 
         $this->add_control(
+            'auto_start_video',
+            [
+                'label' => __( 'Auto Start Video', 'wpdirectorykit' ),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
+                'return_value' => 'yes',
+                'default' => '',
+                'description' => __( 'Enable this option to automatically start videos when the slide becomes active.', 'wpdirectorykit' ),
+            ]
+        );
+   
+
+        $this->add_control(
             'embed_fields',
             [
                 'label' => __( 'Add Embed Fields', 'wpdirectorykit' ),
@@ -271,8 +289,27 @@ class WdkListingSlider extends WdkElementorBase {
                 'multiple' => true,
                 'default' => [],
                 'label_block' => true,
-                'separator' => 'after',
+              
                 'description' => __( 'Select one or more fields to use as embed sources.', 'wpdirectorykit' ),
+            ]
+        );
+
+        $this->add_responsive_control(
+            'tabs_direction',
+            [
+                    'label' => __( 'Direction Tabs', 'wpdirectorykit' ),
+                    'type' => Controls_Manager::SELECT,
+                    'options' => [
+                        '' => esc_html__('Default', 'wpdirectorykit'),
+                        'row' => esc_html__('Row', 'wpdirectorykit'),
+                        'row-reverse' => esc_html__('Row reverse', 'wpdirectorykit'),
+                        'column' => esc_html__('Column', 'wpdirectorykit'),
+                        'column-reverse' => esc_html__('Column reverse', 'wpdirectorykit'),
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .wdk-listing-slider .wdk-listing-slider--tabs' => 'flex-direction: {{UNIT}}',
+                    ],
+                    'separator' => 'after',
             ]
         );
                 

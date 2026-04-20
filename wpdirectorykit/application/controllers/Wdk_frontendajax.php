@@ -1312,7 +1312,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
 			$get_settings_el_results = new WdkGetElementSettings($parameters['el_results_page_id'],$parameters['el_results_id'],$parameters['el_results_type']); 
 			$settings_el_results = $get_settings_el_results->get_settings();
-			$settings_el_results = $settings_el_results['settings'];
+			$settings_el_results = $settings_el_results['settings']  ?? [];
 
 			if(wmvc_show_data('per_page', $settings_el_results, false)) {
 				$options['limit'] = wmvc_show_data('per_page', $settings_el_results, false);

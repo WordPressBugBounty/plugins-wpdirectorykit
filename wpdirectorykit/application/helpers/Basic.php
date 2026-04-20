@@ -1210,16 +1210,16 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
         // order
         if (isset($_GET_clone['order_by'])) {
             // Merge available fields + system columns
-            $order_columns = array_fill_keys([
-                'post_id',
-                'counter_views',
-                'date_modified',
-                'post_title',
-                'address',
-                'category_id',
-                'location_id',
-                'rank'
-            ], true);
+            $order_columns = [
+                'post_id' => $WMVC->db->prefix . 'wdk_listings.post_id',
+                'counter_views' => $WMVC->db->prefix . 'wdk_listings.counter_views',
+                'date_modified' => $WMVC->db->prefix . 'wdk_listings.date_modified',
+                'post_title' => $WMVC->db->prefix . 'posts.post_title',
+                'address' => $WMVC->db->prefix . 'wdk_listings.address',
+                'category_id' => $WMVC->db->prefix . 'wdk_listings.category_id',
+                'location_id' => $WMVC->db->prefix . 'wdk_listings.location_id',
+                'rank' => $WMVC->db->prefix . 'wdk_listings.rank'
+            ];
  
             $order_columns = apply_filters('wdk/listings/order_columns', $order_columns);
          
@@ -1238,6 +1238,7 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
             // Parse order_by string into parts
             $order_by_array = explode(',', $_GET_clone['order_by']);
             $final_order_by = [];
+
             foreach ($order_by_array as $order_part) {
                 $order_part = trim($order_part);
 
@@ -1250,7 +1251,7 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                 } 
 
                 $order_part = str_ireplace(['desc', 'asc'], '', $order_part);
-                $order_part = str_replace(' ', '', $order_part);
+                $order_part = esc_sql(sanitize_textarea_field(str_replace(' ', '', $order_part)));
 
                 // Try to detect field_(id)
                 if (preg_match('/field_(\d+)\b/', $order_part, $matches)) {
@@ -1276,8 +1277,9 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                     }
 
                     // Check if field exists in order_columns
-                    if (isset($order_columns[$col_field]) || isset($available_fields_listings[$col_field])) {
-                        $final_order_by[] = $order_part . ' ' . $direction;
+                    if (isset($order_columns[$col_field])) {
+                        $safe_column = $order_columns[$col_field];
+                        $final_order_by[] = "$safe_column $direction";
                     }
                 }
             }

@@ -4,7 +4,7 @@ Donate link: https://wpdirectorykit.com/donate/
 Tags: directory,business directory,directory plugin,real estate,listing,classified ads,member directory
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -192,8 +192,13 @@ First you map fields then import this CSV/XML file into WP Directory Kit Plugin
 11. Directory Fields Management visually
 12. Directory Search Form Designer
 13. Elementor Listing Preview build visual builder
+14. Block Share page Button
+15. Block Latest Listings
 
 == Changelog ==
+
+= 1.5.2 =
+* Fixed security 
 
 = 1.5.1 =
 * Option Removed images, when listing removed

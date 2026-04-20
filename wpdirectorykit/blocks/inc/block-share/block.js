@@ -6,8 +6,13 @@
     const { PanelBody, RangeControl, TextControl, SelectControl, Icon, TabPanel, __experimentalBoxControl } = wp.components;
 
     registerBlockType('wpdirectorykit/wdk-block-share', {
-        title: 'Share Button',
-        icon: 'share-alt',
+        title: 'Share Page Button',
+        icon: el('svg', { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
+            el('path', {
+                d: 'M18 8a3 3 0 0 0-2.23 1.01l-6.06-3.34a3 3 0 1 0-.65 1.31l6 3.3a3 3 0 0 0 0 2.44l-6 3.3A3 3 0 1 0 9.71 17.03l6.06-3.34A3 3 0 1 0 18 8z',
+                fill: 'currentColor'
+            })
+        ),
         category: 'wdk-blocks',
         attributes: {
             linkText: {

@@ -549,4 +549,278 @@ add_filter('body_class', function($classes){
     return $classes;
 
 });
+
+add_action('init', function() {
+    $required_version = '1.0.5';
+    $plugin_file = 'wdk-membership/wdk-membership.php';
+
+    if ( !file_exists(WP_PLUGIN_DIR .'/'. $plugin_file) ) {
+        return;
+    }
+
+    if ( ! function_exists( 'get_plugins' ) ) {
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+    }
+
+    $plugin_data = get_plugin_data(WP_PLUGIN_DIR .'/'. $plugin_file);
+    
+    if ( is_plugin_active($plugin_file) && isset($plugin_data['Version']) && version_compare($plugin_data['Version'], $required_version, '<') ) {
+
+        if ( isset($_GET['page']) && !empty($plugin_data['TextDomain']) && strpos($_GET['page'], $plugin_data['TextDomain']) === 0 ) {
+            $message = '<span class="dashicons dashicons-warning"></span> &nbsp;&nbsp;' . esc_html__('Important!','wpdirectorykit') . '<br>';
+            $message .= wdk_sprintf(
+                __('%1$sYou need to update WDK Membership Addon to ensure compatibility with the latest plugin version. You can download the latest addons from your Gumroad account: %4$shttps://gumroad.com/library%3$s%2$s or update via freemius, depends where you purchased our premium plugin.
+                %1$sIf you prefer to continue using older plugin versions, please note that this increases security risks and is not recommended. However, you can roll back to a previous version using the following plugin: %5$shttps://wordpress.org/plugins/wp-rollback/%3$s%2$s
+                %1$sIf you experience any issues or need assistance, feel free to contact us through any available channel. We continue to provide fully human-based support: %6$shttps://wpdirectorykit.com/contact/%3$s%2$s','wpdirectorykit'),
+                '<p>',
+                '</p>',
+                '</a>',
+                '<a target="_blank" href="https://gumroad.com/library">',
+                '<a target="_blank" href="https://wordpress.org/plugins/wp-rollback/">',
+                '<a target="_blank" href="https://wpdirectorykit.com/contact/">'
+            );
+            wdk_notify_admin('wdk_notify_wpdirectorykit_required_version_' . $plugin_data['TextDomain'], $message, '', 'notice notice-error wdk-notice-upgrade');
+        }
+    }
+});
+
+
+
+add_action('admin_footer', function() {
+
+    if (file_exists(WPDIRECTORYKIT_PATH . 'premium_functions.php')) {
+        return;
+    }
+   
+    if (!current_user_can('manage_options')) {
+       return;
+    }
+
+    $user_id = get_current_user_id();
+    $last_closed = (int) get_user_meta($user_id, '_wdk_admin_popup_closed', true);
+
+    // 14 days = 1209600 seconds
+    if ($last_closed && (time() - $last_closed) < 1209600) {
+        return;
+    }
 ?>
+<div id="wdk-admin-popup">
+    <div class="wdk-admin-popup-inner">
+        <button id="wdk-admin-popup-close" class="wdk-admin-popup-close">&times;</button>
+
+        <div class="wdk-popup-header">
+            <h2>🚀 <?php echo esc_html__('Welcome to our free WP Directory Kit plugin!', 'wpdirectorykit'); ?></h2>
+        </div>
+
+        <div class="wdk-popup-content">
+
+            <p>💬 <?php echo esc_html__('If you encounter any issues, please contact us via Telegram, WhatsApp, or email.', 'wpdirectorykit'); ?></p>
+
+            <p class="wdk-contact">
+                <strong>📩 <?php echo esc_html__('Telegram', 'wpdirectorykit'); ?>:</strong>
+                <a href="https://t.me/wpdirectorykit" target="_blank">https://t.me/wpdirectorykit</a><br>
+
+                <strong>📱 <?php echo esc_html__('WhatsApp', 'wpdirectorykit'); ?>:</strong>
+                <a href="https://wa.me/+385959055516" target="_blank">https://wa.me/+385959055516</a>
+            </p>
+
+            <p class="wdk-links">
+                ✨ <?php echo esc_html__('Check out our premium features here:', 'wpdirectorykit'); ?><br>
+                <a href="https://wpdirectorykit.com/plugins/" target="_blank">https://wpdirectorykit.com/plugins/</a>
+            </p>
+
+            <p class="wdk-links">
+                🎨 <?php echo esc_html__('and other cool designs here:', 'wpdirectorykit'); ?><br>
+                <a href="https://wpdirectorykit.com/themes/" target="_blank">https://wpdirectorykit.com/themes/</a>
+            </p>
+
+            <p class="wdk-features">
+                ⚙️ <?php echo esc_html__('We offer everything you need for a professional directory website, including login and registration, a front-end dashboard, agent search, individual agent pages, booking, multi-currency support, import tools, favorites, reviews, listing comparisons, SVG maps, live chat, and much more!', 'wpdirectorykit'); ?>
+            </p>
+
+            <p class="wdk-footer-note">
+                ❤️ <?php echo esc_html__('Please consider supporting our work by purchasing one of our premium features — we’ll do our very best to assist you!', 'wpdirectorykit'); ?>
+            </p>
+
+             <!-- ACTION BUTTONS -->
+             <div class="wdk-actions">
+                <button class="wdk-btn wdk-dismiss wdk-admin-popup-close"><?php echo esc_html__('Not interested', 'wpdirectorykit'); ?></button>
+
+                <a href="https://wpdirectorykit.com/plugins/" target="_blank" class="wdk-btn wdk-primary wdk-premium">
+                    <?php echo esc_html__('Check premium plugins', 'wpdirectorykit'); ?>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <?php
+        $popup_css = '
+        #wdk-admin-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .3s ease;
+        }
+        #wdk-admin-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .wdk-admin-popup-inner {
+            background: linear-gradient(135deg, #ffffff, #f9fafb);
+            padding: 35px;
+            width: 700px;
+            max-width: calc(100% - 30px);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            transform: translateY(20px);
+            transition: all .3s ease;
+            position: relative;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+        }
+        #wdk-admin-popup.show .wdk-admin-popup-inner {
+            transform: translateY(0);
+        }
+        #wdk-admin-popup-close {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            border: none;
+            background: transparent;
+            font-size: 22px;
+            cursor: pointer;
+            opacity: .6;
+        }
+        #wdk-admin-popup-close:hover {
+            opacity: 1;
+        }
+        .wdk-popup-header h2 {
+            margin: 0 0 15px;
+            font-size: 22px;
+        }
+        .wdk-popup-content p {
+            margin: 12px 0;
+            color: #444;
+        }
+        .wdk-contact {
+            background: #f3f4f6;
+            padding: 12px;
+            border-radius: 10px;
+        }
+        .wdk-links {
+            background: #eef2ff;
+            padding: 12px;
+            border-radius: 10px;
+        }
+        .wdk-features {
+            font-size: 13px;
+            color: #555;
+        }
+        .wdk-footer-note {
+            font-size: 13px;
+            color: #777;
+        }
+        .wdk-popup-content a {
+            color: #4f46e5;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .wdk-popup-content a:hover {
+            text-decoration: underline;
+        }
+        .wdk-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+        .wdk-btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all .15s;
+        }
+        .wdk-btn:hover {
+            filter: brightness(0.95);
+            text-decoration: none;
+        }
+        .wdk-dismiss {
+            background: #eee;
+        }
+        .wdk-popup-content .wdk-primary {
+            background: #4f46e5;
+            color: #fff;
+            text-decoration: none;
+        }
+        ';
+        
+        // Enqueue a WordPress built-in style to attach inline CSS to, or register a custom handle.
+        wp_register_style('wdk-admin-popup', false);
+        wp_enqueue_style('wdk-admin-popup');
+        wp_add_inline_style('wdk-admin-popup', $popup_css);
+    ?>
+<?php
+$popup_js = "
+document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.getElementById('wdk-admin-popup');
+
+    if (popup) {
+        setTimeout(() => popup.classList.add('show'), 2000);
+
+        const closeBtns = document.querySelectorAll('.wdk-admin-popup-close');
+
+        function closePopup() {
+            popup.classList.remove('show');
+
+            fetch(ajaxurl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'action=wdk_close_popup'
+            });
+        }
+
+        if (closeBtns && closeBtns.length > 0) {
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', closePopup);
+            });
+        }
+
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                closePopup();
+            }
+        });
+   
+    }
+});
+";
+wp_register_script('wdk-admin-popup', false);
+wp_enqueue_script('wdk-admin-popup');
+wp_add_inline_script('wdk-admin-popup', $popup_js);
+?>
+</div>
+<?php
+});
+
+add_action('wp_ajax_wdk_close_popup', function() {
+    if (!current_user_can('manage_options')) {
+        wp_die();
+    }
+
+    update_user_meta(get_current_user_id(), '_wdk_admin_popup_closed', time());
+
+    wp_die();
+});

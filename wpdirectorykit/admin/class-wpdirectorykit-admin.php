@@ -137,18 +137,23 @@ class Wpdirectorykit_Admin
                 'noResults' => esc_html__('No results found', 'wpdirectorykit'),
                 'searching' => esc_html__('Searching…', 'wpdirectorykit'),
                 'removeAllItems' => esc_html__('Remove all items', 'wpdirectorykit'),
+                "read_more"=> esc_html__("Read More", 'wpdirectorykit'),
+				"read_less"=> esc_html__("Read Less", 'wpdirectorykit'),
             ),
+			'wpApiSettings' => [
+				'root'=> esc_url_raw(rest_url()),
+				'nonce'=> wp_create_nonce('wp_rest'),
+				'wdk_secure_nonce'=> wp_create_nonce('wdk_secure_ajax'),
+			]
         );
         wp_localize_script('wdk-select2', 'wdk_select2_script_parameters', $params);
 
         wp_register_script('jquery-confirm',  WPDIRECTORYKIT_URL . 'public/js/jquery-confirm/js/jquery-confirm.js', array('jquery'), '3.3.4', false);
         wp_register_script('wdk-dependfields-submitform',  WPDIRECTORYKIT_URL . 'public/js/wdk-dependfields-submitform.js', array('jquery'), false, false);
 
-        $params = array(
-            'ajax_url' => admin_url('admin-ajax.php')
-        );
         wp_register_script('wdk-treefield-dropdown', WPDIRECTORYKIT_URL . 'public/js/wdk_treefield_dropdown/wdk_treefield_dropdown.js', array('jquery'), '1.0', false);
         wp_localize_script('wdk-treefield-dropdown', 'script_parameters', $params);
+        wp_localize_script('wdk-treefield-dropdown', 'wdk_script_parameters', $params);
 
         wp_register_script('wdk-dependfields-edit', plugin_dir_url(__FILE__) . 'js/wdk-dependfields-edit.js', array('jquery'), $this->version, false);
         $params = array(
@@ -163,9 +168,19 @@ class Wpdirectorykit_Admin
             'format_datetime' => wdk_convert_date_format_js(get_option('date_format') . ' ' . get_option('time_format')),
             'format_date_js' => wdk_convert_date_format_jquery(get_option('date_format')),
             'format_datetime_js' => wdk_convert_date_format_jquery(get_option('date_format') . ' ' . get_option('time_format')),
+            'text' => array(
+				"read_more"=> esc_html__("Read More", 'wpdirectorykit'),
+				"read_less"=> esc_html__("Read Less", 'wpdirectorykit'),
+			),
+			'wpApiSettings' => [
+				'root'=> esc_url_raw(rest_url()),
+				'nonce'=> wp_create_nonce('wp_rest'),
+				'wdk_secure_nonce'=> wp_create_nonce('wdk_secure_ajax'),
+			]
         );
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/wpdirectorykit-admin.js', array('jquery'), $this->version, false);
         wp_localize_script($this->plugin_name, 'script_parameters', $params);
+        wp_localize_script($this->plugin_name, 'wdk_script_parameters', $params);
     }
 
     /**

@@ -16,7 +16,7 @@
  * Plugin Name:       WP Directory Kit
  * Plugin URI:        https://wpdirectorykit.com/plugins/wpdirectorykit.html
  * Description:       Build your Directory portal, demos for Real Estate Agencies and Car Dealership included
- * Version:           1.5.1
+ * Version:           1.5.2
  * Requires PHP:      7.0
  * Author:            wpdirectorykit.com
  * Author URI:        https://wpdirectorykit.com
@@ -42,7 +42,7 @@ if (! defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('WPDIRECTORYKIT_VERSION', '1.5.1');
+define('WPDIRECTORYKIT_VERSION', '1.5.2');
 define('WPDIRECTORYKIT_NAME', 'wdk');
 define('WPDIRECTORYKIT_PATH', plugin_dir_path(__FILE__));
 define('WPDIRECTORYKIT_URL', plugin_dir_url(__FILE__));
@@ -110,31 +110,53 @@ run_wpdirectorykit();
 function wdk_notify_admin($key = '', $text = 'Custom Text of message', $callback_filter = '', $class = 'notice notice-error')
 {
     $key = 'wdk_notify_' . $key;
-    $key_diss = $key . '_dissmiss';
+    $key_dismiss = $key . '_dismiss';
 
-    $wdk_notinstalled_admin_notice__error = function () use ($key_diss, $text, $class, $callback_filter) {
-        global $wpdb;
+    add_action('admin_notices', function () use ($key_dismiss, $text, $class, $callback_filter) {
+
         $user_id = get_current_user_id();
-        if (!get_user_meta($user_id, $key_diss)) {
-            if (!empty($callback_filter)) if ($callback_filter()) return false;
 
-            $message = '';
-            $message .= $text;
-            printf('<div class="%1$s" style="position:relative;"><p>%2$s</p><a href="?' . $key_diss . '"><button type="button" class="notice-dismiss"></button></a></div>', esc_html($class), ($message));  // WPCS: XSS ok, sanitization ok.
+        // Already dismissed
+        if (get_user_meta($user_id, $key_dismiss, true)) {
+            return;
         }
-    };
 
-    add_action('admin_notices', function () use ($wdk_notinstalled_admin_notice__error) {
-        $wdk_notinstalled_admin_notice__error();
+        // Optional filter
+        if (!empty($callback_filter) && $callback_filter()) {
+            return;
+        }
+
+        // Nonce URL
+        $url = wp_nonce_url(
+            add_query_arg($key_dismiss, '1'),
+            $key_dismiss . '_nonce'
+        );
+
+        ?>
+        <div class="<?php echo esc_attr($class); ?> is-dismissible">
+            <p><?php echo $text; // safe if you control it ?></p>
+            <a href="<?php echo esc_url($url); ?>"><button type="button" class="notice-dismiss"></button></a>
+        </div>
+        <?php
     });
 
-    $wdk_notinstalled_admin_notice__error_dismissed = function () use ($key_diss) {
+    // Handle dismiss
+    add_action('admin_init', function () use ($key_dismiss) {
+
+        if (!isset($_GET[$key_dismiss])) {
+            return;
+        }
+
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], $key_dismiss . '_nonce')) {
+            return;
+        }
+
         $user_id = get_current_user_id();
-        if (isset($_GET[$key_diss]))
-            add_user_meta($user_id, $key_diss, 'true', true);
-    };
-    add_action('admin_init', function () use ($wdk_notinstalled_admin_notice__error_dismissed) {
-        $wdk_notinstalled_admin_notice__error_dismissed();
+
+        update_user_meta($user_id, $key_dismiss, 1);
+
+        wp_redirect(remove_query_arg([$key_dismiss, '_wpnonce']));
+        exit;
     });
 
     return true;

@@ -1977,3 +1977,11 @@ body .wdk_dropdown_tree .list_container .list_scroll ul li {
 .wdk-listing-card .wdk-footer .wdk-btn a {
   transition: all .15s;
 }
+
+
+.listing_popup .jconfirm-content-pane .jconfirm-content > div, .listing_popup .jconfirm-content-pane .jconfirm-content, .listing_popup .jconfirm-content-pane {
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column;
+ 
+}

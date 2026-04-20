@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-function iaprojektiranje_block_product_field_enqueue_assets() {
+function wdk_block_product_field_enqueue_assets() {
     if(is_user_logged_in()) {
         wp_enqueue_script(
             'my-custom-block',
@@ -33,19 +33,19 @@ function iaprojektiranje_block_product_field_enqueue_assets() {
         22
     );
 }
-add_action('enqueue_block_editor_assets', 'iaprojektiranje_block_product_field_enqueue_assets');
-add_action('enqueue_block_assets', 'iaprojektiranje_block_product_field_enqueue_assets');
+add_action('enqueue_block_editor_assets', 'wdk_block_product_field_enqueue_assets');
+add_action('enqueue_block_assets', 'wdk_block_product_field_enqueue_assets');
 
-function iaprojektiranje_block_product_field_register_meta() {
+function wdk_block_product_field_register_meta() {
     register_rest_route('wdk-blocks/v1', '/last-listings', array(
         'methods' => 'GET',
-        'callback' => 'iaprojektiranje_block_product_field_get_meta',
+        'callback' => 'wdk_block_product_field_get_meta',
         'permission_callback' => '__return_true',
     ));
 }
-add_action('rest_api_init', 'iaprojektiranje_block_product_field_register_meta');
+add_action('rest_api_init', 'wdk_block_product_field_register_meta');
 
-function iaprojektiranje_block_product_field_get_meta(WP_REST_Request $request) {
+function wdk_block_product_field_get_meta(WP_REST_Request $request) {
 
     $post_count = $request->get_param('postCount');
 

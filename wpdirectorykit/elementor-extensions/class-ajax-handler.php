@@ -780,7 +780,7 @@ class AjaxHandler {
                     $ret = wdk_mail($owner_email, $message_title, $data_message, 'new_message', '', NULL, $email);
                     if( $ret) {
                         add_filter( 'eli/ajax-handler/filter_output', function($filter_output){
-                            $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-success" role="alert">'.esc_html__('Thanks on message', 'wpdirectorykit').'</div>';
+                            $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-success" role="alert">'.esc_html__('Thanks for the message.', 'wpdirectorykit').'</div>';
                             return $filter_output;
                         } );
                         add_filter( 'eli/ajax-handler/filter_from_data', function ($form_data = array()) {
