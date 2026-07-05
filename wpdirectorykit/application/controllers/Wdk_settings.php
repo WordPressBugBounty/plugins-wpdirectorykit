@@ -255,6 +255,11 @@ class Wdk_settings extends Winter_MVC_Controller {
                 'description' => __('User Email Confirm request','wpdirectorykit').'<br>'.'<em>Data vars $subject(string), $data(sting|array)</em>',
                 'template' => 'wdk_membership_confirm_email_user_request',
             ),
+            array(
+                'description' => __('Agency agent invitation email (sent to agent when agency invites them)','wpdirectorykit').'<br>'.'<em>Data vars $subject(string), $agency_name(string), $agent_name(string), $agency_profile_link(string), $confirmation_link(string)</em>',
+                'template' => 'agency_agent_submit',
+            ),
+       
         );
 	}
 
@@ -325,7 +330,7 @@ class Wdk_settings extends Winter_MVC_Controller {
 
         $redirect_url = admin_url("admin.php?page=wdk_settings&is_updated");
         if(isset($_GET['redirect_url']) && strpos($_GET['redirect_url'], 'http') === FALSE && strpos($_GET['redirect_url'], '//') === FALSE)
-            $redirect_url = admin_url(sanitize_text_field($_GET['redirect_url']));
+            $redirect_url = admin_url(sanitize_text_field(wp_unslash($_GET['redirect_url'])));
 
         wp_redirect($redirect_url);
         exit;
@@ -426,7 +431,7 @@ class Wdk_settings extends Winter_MVC_Controller {
         $this->data['db_data']['multipurpose'] = 'real-estate.xml';
 
         if(isset($_GET['multipurpose']))
-            $this->data['db_data']['multipurpose'] = sanitize_text_field($_GET['multipurpose']);
+            $this->data['db_data']['multipurpose'] = sanitize_text_field(wp_unslash($_GET['multipurpose']));
 
         $this->data['import_log'] = '';
         $this->data['info_log_message'] = '';
@@ -476,7 +481,7 @@ class Wdk_settings extends Winter_MVC_Controller {
 
         $plugin = 'elementor/elementor.php';
         if (in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins' ))) && !class_exists('Elementor\Plugin') ) {
-            $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Your Elementor Plugin is not fully active, usually this happen because of old PHP version on server, in such case eventually you can try older Elementor Version or Update PHP on your server').'</div>';
+            $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Your Elementor Plugin is not fully active, usually this happen because of old PHP version on server, in such case eventually you can try older Elementor Version or Update PHP on your server', 'wpdirectorykit').'</div>';
             $this->data['required_plugins'] = true;
         }
 
@@ -572,14 +577,14 @@ class Wdk_settings extends Winter_MVC_Controller {
         /* remove fields */
         $this->db->delete($this->location_m->_table_name);
 
-        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Locations removed').'</div>';
+        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Locations removed', 'wpdirectorykit').'</div>';
         /* end remove fields */
 
         /* remove fields */
         $this->db->delete($this->category_m->_table_name);
         $this->db->delete($this->dependfields_m->_table_name);
 
-        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Categories removed').'</div>';
+        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Categories removed', 'wpdirectorykit').'</div>';
         /* end remove fields */
 
         /* remove fields */
@@ -590,21 +595,21 @@ class Wdk_settings extends Winter_MVC_Controller {
             $this->db->query('ALTER TABLE '.$this->listingfield_m->_table_name.' DROP COLUMN '.$field_name.'');
         }   
 
-        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Fields removed').'</div>';
+        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Fields removed', 'wpdirectorykit').'</div>';
         /* end remove fields */
 
         /* remove listings */
         $this->db->delete($this->listing_m->_table_name);
         $this->db->delete($this->listingfield_m->_table_name);
 
-        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Listings removed').'</div>';
+        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Listings removed', 'wpdirectorykit').'</div>';
         /* end remove listings */
 
 
         /* remove listings */
         $this->db->delete($this->resultitem_m->_table_name);
         $this->db->delete($this->searchform_m->_table_name);
-        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Result Card And Search form removed').'</div>';
+        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Result Card And Search form removed', 'wpdirectorykit').'</div>';
         /* end remove listings */
 
         
@@ -618,7 +623,7 @@ class Wdk_settings extends Winter_MVC_Controller {
         $this->db->query('TRUNCATE TABLE `'.$this->resultitem_m->_table_name.'`');
         $this->db->query('TRUNCATE TABLE `'.$this->searchform_m->_table_name.'`');
 
-        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Tables reset').'</div>';
+        $this->data['data_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Tables reset', 'wpdirectorykit').'</div>';
         /* end reset autoincrement */
 
         $wdk_posts = get_posts( array( 'post_type' => 'wdk-listing', 'numberposts' => -1));
@@ -825,7 +830,7 @@ class Wdk_settings extends Winter_MVC_Controller {
     private function demo_page_listing($purpose = '') {
 
         if((get_option('wdk_listing_page')) && get_post_status(get_option('wdk_listing_page')) =='publish'){
-            $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Listing Preview Page already exists').'</div>';
+            $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Listing Preview Page already exists', 'wpdirectorykit').'</div>';
             return false;
         }
 
@@ -867,7 +872,7 @@ class Wdk_settings extends Winter_MVC_Controller {
         if($page_listing_preview)
             update_option( 'wdk_listing_page', $page_listing_preview->ID, TRUE);
         
-        $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Listing Preview Page imported').'</div>';
+        $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Listing Preview Page imported', 'wpdirectorykit').'</div>';
 
         return true;
     }
@@ -876,7 +881,7 @@ class Wdk_settings extends Winter_MVC_Controller {
     private function demo_page_results($purpose = '') {
 
         if((get_option('wdk_results_page')) && get_post_status(get_option('wdk_results_page')) == 'publish'){
-            $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Results Listings Page already exists').'</div>';
+            $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Results Listings Page already exists', 'wpdirectorykit').'</div>';
             return false;
         }
 
@@ -919,7 +924,7 @@ class Wdk_settings extends Winter_MVC_Controller {
         
         update_option( 'wdk_results_page', $page_results->ID, TRUE);
         
-        $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Results Listings Page imported').'</div>';
+        $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Results Listings Page imported', 'wpdirectorykit').'</div>';
 
         
         $menus = get_registered_nav_menus();
@@ -1097,7 +1102,7 @@ class Wdk_settings extends Winter_MVC_Controller {
                 $insert_id = $this->resultitem_m->insert($data, NULL);
             }
 
-            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Search Form & Result Card imported').'</div>';
+            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Search Form & Result Card imported', 'wpdirectorykit').'</div>';
             return true;
         }
 
@@ -1124,7 +1129,7 @@ class Wdk_settings extends Winter_MVC_Controller {
                 $this->_recursive_add_locations($location_data);
             }  
 
-            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Locations imported').'</div>';
+            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Locations imported', 'wpdirectorykit').'</div>';
             return true;
         }
 
@@ -1203,7 +1208,7 @@ class Wdk_settings extends Winter_MVC_Controller {
               }
               $this->db->updateBatch( $this->category_m->_table_name, $values, 'idcategory');
 
-            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Categories imported').'</div>';
+            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Categories imported', 'wpdirectorykit').'</div>';
             return true;
         }
 
@@ -1380,7 +1385,7 @@ class Wdk_settings extends Winter_MVC_Controller {
                     $this->listingfield_m->create_table_column($field_data, $insert_id);
             }  
 
-            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Fields imported').'</div>';
+            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Fields imported', 'wpdirectorykit').'</div>';
             return true;
         }
 
@@ -1642,7 +1647,7 @@ class Wdk_settings extends Winter_MVC_Controller {
                 $this->listingfield_m->insert_custom_fields($fields, $data_listings_fields, NULL);
             }  
 
-            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Listings imported').'</div>';
+            $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Listings imported', 'wpdirectorykit').'</div>';
             return true;
         }
 

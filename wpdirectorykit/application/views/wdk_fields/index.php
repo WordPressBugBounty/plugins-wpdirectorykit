@@ -152,8 +152,6 @@ wp_enqueue_script( 'jquery-ui-sortable', false, array('jquery') );
                     data_fields_list+=$( this ).attr('rel')+';';
                 });
 
-                //console.log(data_fields_list);
-
                 var data = {
                     'page': 'wdk_fields',
                     'function': 'ajax_save_order',

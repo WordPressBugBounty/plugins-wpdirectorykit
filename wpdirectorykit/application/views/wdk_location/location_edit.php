@@ -241,7 +241,6 @@ wp_localize_script('wdk-geo-map-lib', 'wdk_geo_map_script_parameters', $params);
             if ($(this).val() != '' && $(this).val() != 0) {
                 jQuery('.postbox.postbox-map').show();
             } else {
-                console.log('test')
                 jQuery('.postbox.postbox-map').hide();
             }
 

@@ -860,7 +860,6 @@ wp_enqueue_script('jquery-ui-sortable', false, array('jquery'));
 
                 data_fields_sublist += jQuery(this).attr('data-idlisting');
             });
-            console.log(el_wrapper.find('input[name="' + $field_name + '"]'));
             el_wrapper.find('input[name="' + $field_name + '"]').val(data_fields_sublist);
         }
 

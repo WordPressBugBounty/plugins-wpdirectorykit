@@ -183,6 +183,14 @@ class Settings_m extends Winter_MVC_Model {
             array('field' => 'wdk_seo_keywords', 'field_label' => __('SEO Listing Page Keywords', 'wpdirectorykit'), 'hint' => __('Set field for meta tag keywords', 'wpdirectorykit'), 'field_type' => 'DROPDOWN', 'values' => $fields_list, 'rules' => ''),
             array('field' => 'wdk_seo_description', 'field_label' => __('SEO Listing Page Description', 'wpdirectorykit'), 'hint' => __('Set field for meta tag description', 'wpdirectorykit'), 'field_type' => 'DROPDOWN', 'values' => $fields_list, 'rules' => ''),
            
+            array( 
+                'field'  => 'wdk_seo_listing_title', 
+                'field_label' => __('SEO Title', 'wpdirectorykit'), 
+                'field_type' => 'SEO_INPUTBOX', 
+                'hint' => wdk_sprintf(__('Example: %1$s', 'wpdirectorykit'), '{field_title} - {field_location} - {field_33}'), 
+                'rules' => '', 
+            ),
+           
             array(
                 'field'  => 'wdk_multi_locations_search_field_type', 
                 'field_label' => __('Location field Search', 'wpdirectorykit'), 

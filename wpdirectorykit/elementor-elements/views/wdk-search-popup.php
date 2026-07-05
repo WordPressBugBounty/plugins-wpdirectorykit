@@ -80,7 +80,7 @@ $results_page = get_permalink($results_page);
                             <?php 
                         switch (wmvc_show_data('action_list_field_id', $custom_button)):
                             case 'button_reset':
-                                echo '<button type="button" class="wdk-btn wdk-button-search-reset">'.(!empty(wmvc_show_data('placeholder', $custom_button)) ? wmvc_show_data('placeholder', $custom_button) : esc_html__('Reset', 'wpdirectorykit')).'</button>';
+                                echo '<button type="button" class="wdk-btn wdk-button-search-reset wdk-search-reset">'.(!empty(wmvc_show_data('placeholder', $custom_button)) ? wmvc_show_data('placeholder', $custom_button) : esc_html__('Reset', 'wpdirectorykit')).'</button>';
                                 break;
                                 case 'button_search':
                                     echo '<button type="submit" class="wdk-btn wdk-button-search-start wdk-click-load-animation">'.(!empty(wmvc_show_data('placeholder', $custom_button)) ? wmvc_show_data('placeholder', $custom_button) : esc_html__('Search', 'wpdirectorykit')).'</button>';

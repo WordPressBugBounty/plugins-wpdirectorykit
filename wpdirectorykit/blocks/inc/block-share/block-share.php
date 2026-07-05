@@ -11,27 +11,25 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-function wdk_block_block_share_enqueue_assets()
-{
-    if(is_user_logged_in()) {
+add_action('enqueue_block_editor_assets', function () {
+    if (is_user_logged_in()) {
         wp_enqueue_script(
             'wdk-block-share-backend',
             WPDIRECTORYKIT_URL . '/blocks/inc/block-share/block.js',
             array('wp-blocks', 'wp-element', 'wp-editor', 'wp-i18n', 'wp-api-fetch'),
-            22
+            23
         );
     }
+});
 
+add_action('wdk_block_block_share_enqueue_assets', function () {
     wp_enqueue_script(
         'wdk-block-share-frontend',
         WPDIRECTORYKIT_URL . '/blocks/inc/block-share/frontend.js',
         array(),
         22
     );
-}
-add_action('enqueue_block_editor_assets', 'wdk_block_block_share_enqueue_assets');
-add_action('enqueue_block_assets', 'wdk_block_block_share_enqueue_assets');
-
+});
 
 
 add_action('init', function ()

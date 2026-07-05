@@ -32,7 +32,7 @@ if(isset($predefinedfields_query) && !empty($predefinedfields_query[$field_key])
 }
 
 if(isset($_GET[$field_key])) {
-    $field_value = sanitize_text_field($_GET[$field_key]);
+    $field_value = sanitize_text_field(wp_unslash($_GET[$field_key]));
 }
 
 $suffix = '';

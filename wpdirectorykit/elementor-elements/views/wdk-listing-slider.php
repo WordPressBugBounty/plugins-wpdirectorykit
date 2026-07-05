@@ -210,8 +210,8 @@ if (! defined('ABSPATH')) {
 <script>
 jQuery(document).ready(function($){
     function initTabSlider(tab_key) {
-        var sliderSelector = '#wdk_slider_' + tab_key;
-        var thumbsSelector = '#banner_thumbs_' + tab_key;
+        var sliderSelector = '#wdk_el_<?php echo esc_html($id_element); ?> #wdk_slider_' + tab_key;
+        var thumbsSelector = '#wdk_el_<?php echo esc_html($id_element); ?> #banner_thumbs_' + tab_key;
 
         // destroy before re-init
         if ($(sliderSelector).hasClass('slick-initialized')) {

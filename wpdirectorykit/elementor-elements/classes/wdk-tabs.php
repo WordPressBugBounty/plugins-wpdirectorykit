@@ -215,13 +215,13 @@ class WdkTabs extends WdkElementorBase {
                 'label' => __( 'Field id', 'wpdirectorykit' ),
                 'default' => [
                     [
-                        'tab_name' => esc_html__('Tab 1', 'elementinvader-addons-for-elementor'),
+                        'tab_name' => esc_html__('Tab 1', 'wpdirectorykit'),
                         'tab_target' => 'tab_1',
                         'tab_css_class' => '',
                         'tab_icon' => 'fas fa-list',
                     ],
                     [
-                        'tab_name' => esc_html__('Tab 1', 'elementinvader-addons-for-elementor'),
+                        'tab_name' => esc_html__('Tab 1', 'wpdirectorykit'),
                         'tab_target' => 'tab_1',
                         'tab_css_class' => '',
                         'tab_icon' => 'fas fa-list',

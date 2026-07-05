@@ -50,12 +50,15 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
                 <?php foreach ($json_data as $key => $value) : ?>
                     <?php if(in_array(strtolower($key), array('element_id','eli_id','eli_type','eli_page_id','action','message'))) continue;?>
                     <?php if (!empty($value)) : ?>
-                    <?php if(in_array($key, array('eli_id', 'eli_type','ID','filter','action','send_action_type', 'g-recaptcha-response'))) continue; ?>
+                    <?php if(in_array($key, array('eli_id', 'eli_type', 'eli_nonce','eli_token','_wp_http_referer', 'ID','filter','action','send_action_type', 'g-recaptcha-response'))) continue; ?>
                         <p>
+                            <?php if(!is_intval($key)):?>
+                                <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)),'wpdirectorykit'); ?>:</strong> 
+                            <?php endif;?>
                             <?php if(filter_var($value, FILTER_VALIDATE_URL ) || strpos( $value, 'http' ) !== FALSE):?>
-                                <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)),'wpdirectorykit'); ?>:</strong> <a href="<?php echo esc_url($value);?>"><?php echo wp_kses_post($value); ?></a><br />
+                                <a href="<?php echo esc_url($value);?>"><?php echo wp_kses_post($value); ?></a><br />
                             <?php else : ?>
-                                <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)),'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
+                                <?php echo wp_kses_post($value); ?><br />
                             <?php endif; ?>
                         </p>
                     <?php endif; ?>

@@ -32,11 +32,11 @@ if(isset($predefinedfields_query) && !empty($predefinedfields_query[$field_key.'
 }
 
 if(isset($_GET[$field_key.'_from'])) {
-    $field_value_from = sanitize_text_field($_GET[$field_key.'_from']);
+    $field_value_from = sanitize_text_field(wp_unslash($_GET[$field_key.'_from']));
 }
 
 if(isset($_GET[$field_key.'_to'])) {
-    $field_value_to = sanitize_text_field($_GET[$field_key.'_to']);
+    $field_value_to = sanitize_text_field(wp_unslash($_GET[$field_key.'_to']));
 }
 
 wdk_search_fields_toggle();

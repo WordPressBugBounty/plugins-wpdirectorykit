@@ -32,7 +32,7 @@ if(isset($predefinedfields_query) && !empty($predefinedfields_query[$field_key])
 }
 
 if(isset($_GET[$field_key])) {
-    $field_value = sanitize_text_field($_GET[$field_key]);
+    $field_value = sanitize_text_field(wp_unslash($_GET[$field_key]));
 } elseif($field_key == 'field_search') {
     if(function_exists('run_wdk_geo') && (get_option('wdk_geo_autodetect_by_ip_enable') && !get_option('wdk_geo_autodetect_by_google_js_enable'))) {
         $user_locations = wdk_geo_get_locations();

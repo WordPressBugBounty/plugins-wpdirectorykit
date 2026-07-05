@@ -11,8 +11,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-function wdk_block_product_field_enqueue_assets() {
-    if(is_user_logged_in()) {
+add_action('enqueue_block_editor_assets', function () {
+    if (is_user_logged_in()) {
         wp_enqueue_script(
             'my-custom-block',
             WPDIRECTORYKIT_URL.'/blocks/inc/block-product-field/block.js',
@@ -30,34 +30,103 @@ function wdk_block_product_field_enqueue_assets() {
         'wdk-latest-listing-block-frontend',
         WPDIRECTORYKIT_URL.'/blocks/inc/block-product-field/frontend.js',
         array(),
+        23
+    );
+    wp_localize_script(
+        'wdk-latest-listing-block-frontend',
+        'wdkBlockLastListings',
+        array(
+            'restUrl' => esc_url_raw(rest_url('wdk-blocks/v1/last-listings/')),
+            'nonce' => wp_create_nonce('wp_rest'),
+        )
+    );
+});
+
+add_action('enqueue_block_assets', function () {
+    wp_enqueue_style(
+        'wdk-listings-list',
+        WPDIRECTORYKIT_URL. 'elementor-elements/assets/css/widgets/wdk-listings-list.css',
+        array(),
         22
     );
+    wp_enqueue_script(
+        'wdk-latest-listing-block-frontend',
+        WPDIRECTORYKIT_URL.'/blocks/inc/block-product-field/frontend.js',
+        array('wp-api-fetch'),
+        23
+    );
+    wp_localize_script(
+        'wdk-latest-listing-block-frontend',
+        'wdkBlockLastListings',
+        array(
+            'restUrl' => esc_url_raw(rest_url('wdk-blocks/v1/last-listings/')),
+            'nonce' => wp_create_nonce('wp_rest'),
+        )
+    );
+});
+
+function wdk_block_product_field_permission_callback(WP_REST_Request $request) {
+    $rest_nonce = $request->get_header('X-WP-Nonce');
+    if (!empty($rest_nonce) && wp_verify_nonce($rest_nonce, 'wp_rest')) {
+        return true;
+    }
+
+    $wpnonce = $request->get_param('_wpnonce');
+    if (!empty($wpnonce) && wp_verify_nonce(sanitize_text_field(wp_unslash($wpnonce)), 'wp_rest')) {
+        return true;
+    }
+
+    return new WP_Error(
+        'rest_forbidden',
+        esc_html__('Invalid or missing security token.', 'wpdirectorykit'),
+        array('status' => 403)
+    );
 }
-add_action('enqueue_block_editor_assets', 'wdk_block_product_field_enqueue_assets');
-add_action('enqueue_block_assets', 'wdk_block_product_field_enqueue_assets');
 
 function wdk_block_product_field_register_meta() {
     register_rest_route('wdk-blocks/v1', '/last-listings', array(
         'methods' => 'GET',
         'callback' => 'wdk_block_product_field_get_meta',
-        'permission_callback' => '__return_true',
+        'permission_callback' => 'wdk_block_product_field_permission_callback',
+        'args' => array(
+            'postCount' => array(
+                'required' => false,
+                'default' => 5,
+                'type' => 'integer',
+                'sanitize_callback' => 'absint',
+                'validate_callback' => function ($param) {
+                    return is_numeric($param) && absint($param) >= 1 && absint($param) <= 100;
+                },
+            ),
+            '_wpnonce' => array(
+                'required' => false,
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            ),
+        ),
     ));
 }
 add_action('rest_api_init', 'wdk_block_product_field_register_meta');
 
 function wdk_block_product_field_get_meta(WP_REST_Request $request) {
 
-    $post_count = $request->get_param('postCount');
+    $post_count = absint($request->get_param('postCount'));
+    if ($post_count < 1) {
+        $post_count = 5;
+    }
+    if ($post_count > 100) {
+        $post_count = 100;
+    }
 
-    $atts = array_merge(array(
-        'id'=>NULL,
-        'custom_class'=>'',
-        'order'=>'',
-        'conf_query'=>'',
-        'limit'=> $post_count,
-        'only_is_featured'=>'',
-        'conf_custom_results'=>'',
-    ), []);
+    $atts = array(
+        'id' => null,
+        'custom_class' => '',
+        'order' => '',
+        'conf_query' => '',
+        'limit' => $post_count,
+        'only_is_featured' => '',
+        'conf_custom_results' => '',
+    );
     $data = array();
 
     /* settings from atts */
@@ -109,16 +178,10 @@ function wdk_block_product_field_get_meta(WP_REST_Request $request) {
         $_GET = $original_GET;
 
     $output = wdk_block_view('block-product-field/views/view-block.php', $data);
-    wp_send_json_success($output);
-}
 
-function my_vanilla_js_block_register_block() {
-    register_block_type('my-plugin/wdk-latest-listing-block', array(
-        'editor_script' => 'wdk-latest-listing-block',
-        'style'         => 'wdk-latest-listing-block-style',
-        'editor_style'  => 'wdk-latest-listing-block-editor',
+    return rest_ensure_response(array(
+        'success' => true,
+        'data' => $output,
     ));
 }
-add_action('init', 'my_vanilla_js_block_register_block');
-
 ?>

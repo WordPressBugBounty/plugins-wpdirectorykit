@@ -316,11 +316,11 @@ class WdkListingsResults extends WdkElementorBase {
         $this->add_control(
 			'is_complete_link',
 			[
-				'label' => __( 'Complete Card Link', 'elementinvader-addons-for-elementor' ),
-				'description' => __( 'Make Full Card like Link', 'elementinvader-addons-for-elementor' ),
+				'label' => __( 'Complete Card Link', 'wpdirectorykit' ),
+				'description' => __( 'Make Full Card like Link', 'wpdirectorykit' ),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => __( 'True', 'elementinvader-addons-for-elementor' ),
-				'label_off' => __( 'False', 'elementinvader-addons-for-elementor' ),
+				'label_on' => __( 'True', 'wpdirectorykit' ),
+				'label_off' => __( 'False', 'wpdirectorykit' ),
 				'return_value' => 'yes',
 				'default' => '',
 			]

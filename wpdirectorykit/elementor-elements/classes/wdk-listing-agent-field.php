@@ -187,9 +187,9 @@ class WdkListingAgentField extends WdkElementorBase {
         if(Plugin::$instance->editor->is_edit_mode()){
             $this->data['is_edit_mode']= true;
             if(!empty($this->data['settings']['field_id'])) {
-                $this->data['field_value'] .=  esc_html__('Example Field').' '.$this->data['settings']['field_id'];
+                $this->data['field_value'] .=  esc_html__('Example Field', 'wpdirectorykit').' '.$this->data['settings']['field_id'];
             } else {
-                $this->data['field_value'] = esc_html__('Please Set Field');
+                $this->data['field_value'] = esc_html__('Please Set Field', 'wpdirectorykit');
             }
 
         } else {

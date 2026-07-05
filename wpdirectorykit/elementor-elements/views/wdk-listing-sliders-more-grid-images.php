@@ -196,7 +196,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
             // After cahnge
             $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_listing_slider_ini').on('afterChange', function(event, slick, currentSlide){
-                console.log(currentSlide)
                 $('#wdk_el_<?php echo esc_html($id_element);?> .banner-thumb').removeClass('wdk-active-nav');
                 $('#wdk_el_<?php echo esc_html($id_element);?> .wdk-cls-banner-thumbs .banner-thumb .banner-thumb-link[data-key="'+currentSlide+'"]').closest('.banner-thumb').addClass('wdk-active-nav');
             });

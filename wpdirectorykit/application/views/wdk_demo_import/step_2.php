@@ -91,7 +91,6 @@ jQuery( document ).ready(function($) {
         .done(function(data) {
         })
         .fail(function(data) {
-            //console.log(data.responseText);
 
             if(typeof(data.responseText) != "undefined")
             {

@@ -6,8 +6,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const alignment = container.getAttribute('data-alignment') || 'none';
         const content = container.getAttribute('data-content') || '';
 
-        wp.apiFetch({ path: `/wdk-blocks/v1/last-listings/?postCount=${postCount}` }).then(posts => {
+        const nonce = (typeof wdkBlockLastListings !== 'undefined' && wdkBlockLastListings.nonce) ? wdkBlockLastListings.nonce : '';
+        wp.apiFetch({
+            path: `/wdk-blocks/v1/last-listings/?postCount=${encodeURIComponent(postCount)}&_wpnonce=${encodeURIComponent(nonce)}`
+        })
+        .then(posts => {
             container.innerHTML = posts.data;
+        })
+        .catch(error => {
+            console.error(error);
+            container.innerHTML = '<p>Failed to load listings.</p>';
         });
 
     });

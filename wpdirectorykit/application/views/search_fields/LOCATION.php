@@ -22,7 +22,7 @@ if(isset($predefinedfields_query) && !empty($predefinedfields_query[$field_key])
 }    
 
 if(isset($_GET['location_root'])) {
-    $predefinedfields_query['custom_location_root'] = sanitize_text_field($_GET['location_root']);
+    $predefinedfields_query['custom_location_root'] = sanitize_text_field(wp_unslash($_GET['location_root']));
 }
 
 if(isset($predefinedfields_query) && !empty($predefinedfields_query['custom_location_root'])) {

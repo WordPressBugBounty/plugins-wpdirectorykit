@@ -15,6 +15,7 @@ use Elementor\Icons_Manager;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
+use Elementor\Group_Control_Image_Size;
 
 if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
@@ -679,6 +680,15 @@ class WdkListingsCarousel extends WdkElementorBase {
                 [
                     'label' => esc_html__('Section Image', 'wpdirectorykit'),
                     'tab' => Controls_Manager::TAB_STYLE,
+                ]
+            );
+
+            $this->add_group_control(
+                Group_Control_Image_Size::get_type(),
+                [
+                    'name' => 'thumbnail_image', // Usage: `{name}_size` and `{name}_custom_dimension`, in this case `thumbnail_size` and `thumbnail_custom_dimension`.
+                    'default' => 'full',
+                    'separator' => 'none',
                 ]
             );
 

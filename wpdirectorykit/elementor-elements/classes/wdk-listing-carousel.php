@@ -28,12 +28,12 @@ class WdkCoolListingCarousel extends WdkElementorBase {
 
         \Elementor\Controls_Manager::add_tab(
             'tab_conf',
-            esc_html__('Settings', 'wdk-listing-sliders')
+            esc_html__('Settings', 'wpdirectorykit')
         );
 
         \Elementor\Controls_Manager::add_tab(
             'tab_slider_nav',
-            esc_html__('Slider Nav', 'wdk-listing-sliders')
+            esc_html__('Slider Nav', 'wpdirectorykit')
         );
 
         if ($this->is_edit_mode_load()) {
@@ -83,7 +83,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
      * @return string Widget title.
      */
     public function get_title() {
-        return esc_html__('Wdk Listing Carousel', 'wdk-listing-sliders');
+        return esc_html__('Wdk Listing Carousel', 'wpdirectorykit');
     }
 
     /**
@@ -157,7 +157,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->start_controls_section(
             'tab_conf_main_section',
             [
-                'label' => esc_html__('Main', 'wdk-listing-sliders'),
+                'label' => esc_html__('Main', 'wpdirectorykit'),
                 'tab' => 'tab_conf',
             ]
         );
@@ -165,7 +165,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'limit_images',
             [
-                'label' => __( 'Limit Images', 'wdk-listing-sliders' ),
+                'label' => __( 'Limit Images', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'min' => 1,
                 'max' => 100,
@@ -177,7 +177,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'offset_images',
             [
-                'label' => __( 'Offset Images', 'wdk-listing-sliders' ),
+                'label' => __( 'Offset Images', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'min' => 1,
                 'max' => 100,
@@ -190,12 +190,12 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_responsive_control(
             'direction',
             [
-                    'label' => __( 'Direction', 'wdk-listing-sliders' ),
+                    'label' => __( 'Direction', 'wpdirectorykit' ),
                     'type' => Controls_Manager::SELECT,
                     'options' => [
-                        '' => esc_html__('Default', 'wdk-listing-sliders'),
-                        'row' => esc_html__('Row', 'wdk-listing-sliders'),
-                        'row-reverse' => esc_html__('Row Reverse', 'wdk-listing-sliders'),
+                        '' => esc_html__('Default', 'wpdirectorykit'),
+                        'row' => esc_html__('Row', 'wpdirectorykit'),
+                        'row-reverse' => esc_html__('Row Reverse', 'wpdirectorykit'),
                     ],
                     'selectors_dictionary' => [
                         'row' =>  'display: flex; flex-direction: row;',
@@ -231,7 +231,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->start_controls_section(
                 'tab_slider_nav',
                 [
-                    'label' => esc_html__('Basic', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Basic', 'wpdirectorykit'),
                     'tab' => '1',
                 ]
             );
@@ -242,7 +242,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->start_controls_section(
             'layout_carousel_sec',
             [
-                'label' => esc_html__('Carousel Options', 'wdk-listing-sliders'),
+                'label' => esc_html__('Carousel Options', 'wpdirectorykit'),
                 'tab' => '1',
             ]
         );
@@ -251,7 +251,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_responsive_control(
             'styles_thmbn_columns',
             [
-                'label' => __( 'Count grid', 'wdk-listing-sliders' ),
+                'label' => __( 'Count grid', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'min' => 1,
                 'max' => 10,
@@ -263,10 +263,10 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'layout_carousel_is_infinite',
             [
-                'label' => __( 'Infinite', 'wdk-listing-sliders' ),
+                'label' => __( 'Infinite', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __( 'On', 'wdk-listing-sliders' ),
-                'label_off' => __( 'Off', 'wdk-listing-sliders' ),
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
                 'return_value' => 'true',
                 'default' => 'true',
             ]
@@ -275,11 +275,11 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'layout_carousel_variableWidth',
             [
-                'label' => __( 'Variable width slides', 'wdk-listing-sliders' ),
-                'description' => __( 'Ignore columns', 'wdk-listing-sliders' ),
+                'label' => __( 'Variable width slides', 'wpdirectorykit' ),
+                'description' => __( 'Ignore columns', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __( 'On', 'wdk-listing-sliders' ),
-                'label_off' => __( 'Off', 'wdk-listing-sliders' ),
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
                 'return_value' => 'true',
                 'default' => '',
             ]
@@ -288,10 +288,10 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'layout_carousel_is_center',
             [
-                'label' => __( 'Center Mode', 'wdk-listing-sliders' ),
+                'label' => __( 'Center Mode', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __( 'On', 'wdk-listing-sliders' ),
-                'label_off' => __( 'Off', 'wdk-listing-sliders' ),
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
                 'return_value' => 'true',
                 'default' => '',
             ]
@@ -300,7 +300,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'layout_carousel_speed',
             [
-                'label' => __( 'Animations Speed', 'wdk-listing-sliders' ),
+                'label' => __( 'Animations Speed', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'min' => 0,
                 'max' => 100000,
@@ -313,10 +313,10 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'layout_carousel_is_autoplay',
             [
-                'label' => __( 'Autoplay', 'wdk-listing-sliders' ),
+                'label' => __( 'Autoplay', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __( 'On', 'wdk-listing-sliders' ),
-                'label_off' => __( 'Off', 'wdk-listing-sliders' ),
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
                 'return_value' => 'true',
                 'default' => '',
             ]
@@ -325,7 +325,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'layout_carousel_autoplay_speed',
             [
-                'label' => __( 'Autoplay Speed', 'wdk-listing-sliders' ),
+                'label' => __( 'Autoplay Speed', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'min' => 0,
                 'max' => 100000,
@@ -337,13 +337,13 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'layout_carousel_animation_style',
             [
-                'label' => __( 'Animation Style', 'wdk-listing-sliders' ),
+                'label' => __( 'Animation Style', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => 'fade_in',
                 'options' => [
-                    'slide'  => __( 'Slide', 'wdk-listing-sliders' ),
-                    'fade' => __( 'Fade', 'wdk-listing-sliders' ),
-                    'fade_in' => __( 'Fade in', 'wdk-listing-sliders' ),
+                    'slide'  => __( 'Slide', 'wpdirectorykit' ),
+                    'fade' => __( 'Fade', 'wpdirectorykit' ),
+                    'fade_in' => __( 'Fade in', 'wpdirectorykit' ),
                 ],
             ]
         );
@@ -351,17 +351,17 @@ class WdkCoolListingCarousel extends WdkElementorBase {
         $this->add_control(
             'layout_carousel_cssease',
             [
-                'label' => __( 'cssEase ', 'wdk-listing-sliders' ),
+                'label' => __( 'cssEase ', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => 'linear',
                 'options' => [
-                    'linear'  => __( 'linear', 'wdk-listing-sliders' ),
-                    'ease' => __( 'ease', 'wdk-listing-sliders' ),
-                    'ease-in' => __( 'ease-in', 'wdk-listing-sliders' ),
-                    'ease-out' => __( 'ease-out', 'wdk-listing-sliders' ),
-                    'ease-in-out' => __( 'ease-in-out', 'wdk-listing-sliders' ),
-                    'step-start' => __( 'step-start', 'wdk-listing-sliders' ),
-                    'step-end' => __( 'step-end', 'wdk-listing-sliders' ),
+                    'linear'  => __( 'linear', 'wpdirectorykit' ),
+                    'ease' => __( 'ease', 'wpdirectorykit' ),
+                    'ease-in' => __( 'ease-in', 'wpdirectorykit' ),
+                    'ease-out' => __( 'ease-out', 'wpdirectorykit' ),
+                    'ease-in-out' => __( 'ease-in-out', 'wpdirectorykit' ),
+                    'step-start' => __( 'step-start', 'wpdirectorykit' ),
+                    'step-end' => __( 'step-end', 'wpdirectorykit' ),
                 ],
             ]
         );
@@ -374,7 +374,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $items = [
                 [
                     'key'=>'card',
-                    'label'=> esc_html__('Slider', 'wdk-listing-sliders'),
+                    'label'=> esc_html__('Slider', 'wpdirectorykit'),
                     'selector'=>'.wdk_listing_slider_box .wdk-listing-image-card',
                     'selector_hover'=>'.wdk_listing_slider_box .wdk-listing-image-card%1$s',
                     'options'=>['background','border','border_radius','padding','shadow','transition'],
@@ -402,7 +402,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->start_controls_section(
                 'styles_thmbn_type',
                 [
-                    'label' => esc_html__('Image Slide', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Image Slide', 'wpdirectorykit'),
                     'tab' => '1',
                 ]
             );
@@ -410,13 +410,13 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_control(
                 'layout_image_design',
                 [
-                    'label' => __( 'Size style thumbnail', 'wdk-listing-sliders' ),
+                    'label' => __( 'Size style thumbnail', 'wpdirectorykit' ),
                     'type' => \Elementor\Controls_Manager::SELECT,
                     'options' => [
-                        '' => __( 'Default', 'wdk-listing-sliders' ),
-                        'contain' => __( 'Contain', 'wdk-listing-sliders' ),
-                        'cover' => __( 'Cover', 'wdk-listing-sliders' ),
-                        'fill' => __( 'Fill', 'wdk-listing-sliders' ),
+                        '' => __( 'Default', 'wpdirectorykit' ),
+                        'contain' => __( 'Contain', 'wpdirectorykit' ),
+                        'cover' => __( 'Cover', 'wpdirectorykit' ),
+                        'fill' => __( 'Fill', 'wpdirectorykit' ),
                     ],
                     'selectors' => [
                         '{{WRAPPER}} .wdk_listing_slider_box .wdk-listing-image' => 'object-fit: {{VALUE}}',
@@ -427,7 +427,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'layout_image_mask_header',
                 [
-                    'label' => esc_html__('Mask', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Mask', 'wpdirectorykit'),
                     'type' => Controls_Manager::HEADING,
                     'separator' => 'before',
                 ]
@@ -447,7 +447,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control (
                 'styles_thmbn_nav_des_height',
                 [
-                    'label' => esc_html__('Height', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Height', 'wpdirectorykit'),
                     'type' => Controls_Manager::SLIDER,
                     'range' => [
                         'px' => [
@@ -476,7 +476,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->start_controls_section(
                 'styles_carousel_arrows_section',
                 [
-                    'label' => esc_html__('Carousel Arrows', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Carousel Arrows', 'wpdirectorykit'),
                     'tab' => '1',
                 ]
             );
@@ -484,10 +484,10 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_arrows_hide',
                 [
-                        'label' => esc_html__( 'Hide Element', 'wdk-listing-sliders' ),
+                        'label' => esc_html__( 'Hide Element', 'wpdirectorykit' ),
                         'type' => Controls_Manager::SWITCHER,
-                        'none' => esc_html__( 'Hide', 'wdk-listing-sliders' ),
-                        'block' => esc_html__( 'Show', 'wdk-listing-sliders' ),
+                        'none' => esc_html__( 'Hide', 'wpdirectorykit' ),
+                        'block' => esc_html__( 'Show', 'wpdirectorykit' ),
                         'return_value' => 'none',
                         'default' => '',
                         'selectors' => [
@@ -499,14 +499,14 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_arrows_position',
                 [
-                    'label' => __( 'Position', 'wdk-listing-sliders' ),
+                    'label' => __( 'Position', 'wpdirectorykit' ),
                     'type' => \Elementor\Controls_Manager::SELECT,
                     'default' => 'wdk-listing-carousel_arrows_middle',
                     'options' => [
-                        ''  => __( 'Default', 'wdk-listing-sliders' ),
-                        'wdk-listing-carousel_arrows_bottom'  => __( 'Bottom', 'wdk-listing-sliders' ),
-                        'wdk-listing-carousel_arrows_middle' => __( 'Center', 'wdk-listing-sliders' ),
-                        'wdk-listing-carousel_arrows_top' => __( 'Top', 'wdk-listing-sliders' ),
+                        ''  => __( 'Default', 'wpdirectorykit' ),
+                        'wdk-listing-carousel_arrows_bottom'  => __( 'Bottom', 'wpdirectorykit' ),
+                        'wdk-listing-carousel_arrows_middle' => __( 'Center', 'wpdirectorykit' ),
+                        'wdk-listing-carousel_arrows_top' => __( 'Top', 'wpdirectorykit' ),
                     ],
                 ]
             );
@@ -514,23 +514,23 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_arrows_align',
                 [
-                    'label' => __( 'Align', 'wdk-listing-sliders' ),
+                    'label' => __( 'Align', 'wpdirectorykit' ),
                     'type' => Controls_Manager::CHOOSE,
                     'options' => [
                         'left' => [
-                                'title' => esc_html__( 'Left', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Left', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-left',
                         ],
                         'center' => [
-                                'title' => esc_html__( 'Center', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Center', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-center',
                         ],
                         'right' => [
-                                'title' => esc_html__( 'Right', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Right', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-right',
                         ],
                         'justify' => [
-                                'title' => esc_html__( 'Justified', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Justified', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-justify',
                         ],
                     ],
@@ -559,7 +559,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_arrows_icon_left_h',
                 [
-                    'label' => esc_html__('Arrow left', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Arrow left', 'wpdirectorykit'),
                     'type' => Controls_Manager::HEADING,
                     'separator' => 'before',
                 ]
@@ -572,7 +572,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_arrows_icon_left',
                 [
-                    'label' => esc_html__('Icon', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Icon', 'wpdirectorykit'),
                     'type' => Controls_Manager::ICONS,
                     'label_block' => true,
                     'default' => [
@@ -585,7 +585,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_arrows_icon_right_h',
                 [
-                    'label' => esc_html__('Arrow right', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Arrow right', 'wpdirectorykit'),
                     'type' => Controls_Manager::HEADING,
                     'separator' => 'before',
                 ]
@@ -598,7 +598,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_arrows_icon_right',
                 [
-                    'label' => esc_html__('Icon', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Icon', 'wpdirectorykit'),
                     'type' => Controls_Manager::ICONS,
                     'label_block' => true,
                     'default' => [
@@ -619,7 +619,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->start_controls_section(
                 'styles_carousel_dots_section',
                 [
-                    'label' => esc_html__('Section Dots', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Section Dots', 'wpdirectorykit'),
                     'tab' => '1',
                 ]
             );
@@ -627,10 +627,10 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                     'styles_carousel_dots_hide',
                     [
-                            'label' => esc_html__( 'Hide Element', 'wdk-listing-sliders' ),
+                            'label' => esc_html__( 'Hide Element', 'wpdirectorykit' ),
                             'type' => Controls_Manager::SWITCHER,
-                            'none' => esc_html__( 'Hide', 'wdk-listing-sliders' ),
-                            'block' => esc_html__( 'Show', 'wdk-listing-sliders' ),
+                            'none' => esc_html__( 'Hide', 'wpdirectorykit' ),
+                            'block' => esc_html__( 'Show', 'wpdirectorykit' ),
                             'return_value' => 'none',
                             'default' => '',
                             'selectors' => [
@@ -642,13 +642,13 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_dots_position_style',
                 [
-                    'label' => __( 'Position Style', 'wdk-listing-sliders' ),
+                    'label' => __( 'Position Style', 'wpdirectorykit' ),
                     'type' => \Elementor\Controls_Manager::SELECT,
                     'default' => 'wdk-listing-carousel_dots_out',
                     'options' => [
-                        '' => __( 'Default', 'wdk-listing-sliders' ),
-                        'wdk-listing-carousel_dots_out' => __( 'Out', 'wdk-listing-sliders' ),
-                        'wdk-listing-carousel_dots_in' => __( 'In', 'wdk-listing-sliders' ),
+                        '' => __( 'Default', 'wpdirectorykit' ),
+                        'wdk-listing-carousel_dots_out' => __( 'Out', 'wpdirectorykit' ),
+                        'wdk-listing-carousel_dots_in' => __( 'In', 'wpdirectorykit' ),
                     ],
                 ]
             );
@@ -656,14 +656,14 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_dots_direction',
                 [
-                        'label' => __( 'Direction Dots', 'wdk-listing-sliders' ),
+                        'label' => __( 'Direction Dots', 'wpdirectorykit' ),
                         'type' => Controls_Manager::SELECT,
                         'options' => [
-                            '' => esc_html__('Default', 'wdk-listing-sliders'),
-                            'column' => esc_html__('Column', 'wdk-listing-sliders'),
-                            'column-reverse' => esc_html__('Column Reverse', 'wdk-listing-sliders'),
-                            'row' => esc_html__('Row', 'wdk-listing-sliders'),
-                            'row-reverse' => esc_html__('Row Reverse', 'wdk-listing-sliders'),
+                            '' => esc_html__('Default', 'wpdirectorykit'),
+                            'column' => esc_html__('Column', 'wpdirectorykit'),
+                            'column-reverse' => esc_html__('Column Reverse', 'wpdirectorykit'),
+                            'row' => esc_html__('Row', 'wpdirectorykit'),
+                            'row-reverse' => esc_html__('Row Reverse', 'wpdirectorykit'),
                         ],
                         'selectors_dictionary' => [
                             'column' => 'display: flex !important; flex-direction: column;',
@@ -682,23 +682,23 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_dots_align',
                 [
-                    'label' => __( 'Position', 'wdk-listing-sliders' ),
+                    'label' => __( 'Position', 'wpdirectorykit' ),
                     'type' => Controls_Manager::CHOOSE,
                     'options' => [
                         'left' => [
-                                'title' => esc_html__( 'Left', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Left', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-left',
                         ],
                         'center' => [
-                                'title' => esc_html__( 'Center', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Center', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-center',
                         ],
                         'right' => [
-                                'title' => esc_html__( 'Right', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Right', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-right',
                         ],
                         'justify' => [
-                                'title' => esc_html__( 'Justified', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Justified', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-justify',
                         ],
                     ],
@@ -727,19 +727,19 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_dots_in_align',
                 [
-                    'label' => __( 'Position', 'wdk-listing-sliders' ),
+                    'label' => __( 'Position', 'wpdirectorykit' ),
                     'type' => Controls_Manager::CHOOSE,
                     'options' => [
                         'left' => [
-                                'title' => esc_html__( 'Left', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Left', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-left',
                         ],
                         'center' => [
-                                'title' => esc_html__( 'Center', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Center', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-center',
                         ],
                         'right' => [
-                                'title' => esc_html__( 'Right', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Right', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-right',
                         ],
                     ],
@@ -768,19 +768,19 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_dots_in_align_y',
                 [
-                    'label' => __( 'Position Vertical', 'wdk-listing-sliders' ),
+                    'label' => __( 'Position Vertical', 'wpdirectorykit' ),
                     'type' => Controls_Manager::CHOOSE,
                     'options' => [
                         'top' => [
-                                'title' => esc_html__( 'Top', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Top', 'wpdirectorykit' ),
                                 'icon' => 'eicon-justify-start-v',
                         ],
                         'center' => [
-                                'title' => esc_html__( 'Center', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Center', 'wpdirectorykit' ),
                                 'icon' => 'eicon-text-align-center',
                         ],
                         'bottom' => [
-                                'title' => esc_html__( 'Bottom', 'wdk-listing-sliders' ),
+                                'title' => esc_html__( 'Bottom', 'wpdirectorykit' ),
                                 'icon' => ' eicon-justify-end-v',
                         ],
                     ],
@@ -808,7 +808,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_dots_icon',
                 [
-                    'label' => esc_html__('Icon', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Icon', 'wpdirectorykit'),
                     'type' => Controls_Manager::ICONS,
                     'label_block' => true,
                     'default' => [
@@ -829,7 +829,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_dots_hover_header',
                 [
-                    'label' => esc_html__('Hover Animation', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Hover Animation', 'wpdirectorykit'),
                     'type' => Controls_Manager::HEADING,
                     'separator' => 'before',
                 ]
@@ -844,7 +844,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             $this->add_responsive_control(
                 'styles_carousel_dots_box_header',
                 [
-                    'label' => esc_html__('Dots container', 'wdk-listing-sliders'),
+                    'label' => esc_html__('Dots container', 'wpdirectorykit'),
                     'type' => Controls_Manager::HEADING,
                     'separator' => 'before',
                 ]

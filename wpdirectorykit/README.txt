@@ -3,8 +3,8 @@ Contributors: listingthemes, wpdirectorykit
 Donate link: https://wpdirectorykit.com/donate/
 Tags: directory,business directory,directory plugin,real estate,listing,classified ads,member directory
 Requires at least: 5.2
-Tested up to: 6.9
-Stable tag: 1.5.3
+Tested up to: 7.0
+Stable tag: 1.5.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -196,6 +196,11 @@ First you map fields then import this CSV/XML file into WP Directory Kit Plugin
 15. Block Latest Listings
 
 == Changelog ==
+
+= 1.5.4 =
+* Fixed security 
+* Fixed conflict with WC REST API
+* Support Wp version 7
 
 = 1.5.2 =
 * Fixed security 

@@ -350,16 +350,16 @@ class WdkElementorBase extends Widget_Base {
                         $this->add_responsive_control(
                                 $type.'_outline'.$prefix,
                                 [
-                                        'label' => esc_html_x( 'Outline Type', 'Outline Control', 'elementor' ),
+                                        'label' => esc_html_x( 'Outline Type', 'Outline Control', 'wpdirectorykit' ),
                                         'type' => \Elementor\Controls_Manager::SELECT,
                                         'options' => [
-                                                '' => esc_html__( 'Default', 'elementor' ),
-                                                'none' => esc_html__( 'None', 'elementor' ),
-                                                'solid' => esc_html_x( 'Solid', 'Outline Control', 'elementor' ),
-                                                'double' => esc_html_x( 'Double', 'Outline Control', 'elementor' ),
-                                                'dotted' => esc_html_x( 'Dotted', 'Outline Control', 'elementor' ),
-                                                'dashed' => esc_html_x( 'Dashed', 'Outline Control', 'elementor' ),
-                                                'groove' => esc_html_x( 'Groove', 'Outline Control', 'elementor' ),
+                                                '' => esc_html__( 'Default', 'wpdirectorykit' ),
+                                                'none' => esc_html__( 'None', 'wpdirectorykit' ),
+                                                'solid' => esc_html_x( 'Solid', 'Outline Control', 'wpdirectorykit' ),
+                                                'double' => esc_html_x( 'Double', 'Outline Control', 'wpdirectorykit' ),
+                                                'dotted' => esc_html_x( 'Dotted', 'Outline Control', 'wpdirectorykit' ),
+                                                'dashed' => esc_html_x( 'Dashed', 'Outline Control', 'wpdirectorykit' ),
+                                                'groove' => esc_html_x( 'Groove', 'Outline Control', 'wpdirectorykit' ),
                                         ],
                                         'selectors' => [
                                                 $selector => 'outline-style: {{VALUE}};',
@@ -370,7 +370,7 @@ class WdkElementorBase extends Widget_Base {
                         $this->add_responsive_control(
                                 $type.'_outline_width'.$prefix,
                                 [
-                                        'label' => esc_html_x( 'Width', 'Outline Control', 'elementor' ),
+                                        'label' => esc_html_x( 'Width', 'Outline Control', 'wpdirectorykit' ),
                                         'type' => \Elementor\Controls_Manager::NUMBER,
                                         'default' => '',
                                         'selectors' => [
@@ -385,7 +385,7 @@ class WdkElementorBase extends Widget_Base {
                         $this->add_responsive_control(
                                 $type.'_outline_color'.$prefix,
                                 [
-                                        'label' => esc_html_x( 'Color', 'Outline Control', 'elementor' ),
+                                        'label' => esc_html_x( 'Color', 'Outline Control', 'wpdirectorykit' ),
                                         'type' => \Elementor\Controls_Manager::COLOR,
                                         'default' => '',
                                         'selectors' => [
@@ -400,7 +400,7 @@ class WdkElementorBase extends Widget_Base {
                         $this->add_responsive_control(
                                 $type.'_outline_offset'.$prefix,
                                 [
-                                        'label' => esc_html_x( 'Offset', 'Outline Control', 'elementor' ),
+                                        'label' => esc_html_x( 'Offset', 'Outline Control', 'wpdirectorykit' ),
                                         'type' => \Elementor\Controls_Manager::NUMBER,
                                         'default' => '',
                                         'selectors' => [
@@ -665,15 +665,15 @@ class WdkElementorBase extends Widget_Base {
                         $this->add_control(
                                 $type.'_image_fit_control'.$prefix,
                                 [
-                                        'label' => esc_html__( 'Fit', 'textdomain' ),
+                                        'label' => esc_html__( 'Fit', 'wpdirectorykit' ),
                                         'type' => \Elementor\Controls_Manager::SELECT,
                                         'options' => [
-                                                '' => esc_html__( 'Default', 'textdomain' ),
-                                                'fill' => esc_html__( 'Fill', 'textdomain' ),
-                                                'contain'  => esc_html__( 'Contain', 'textdomain' ),
-                                                'cover' => esc_html__( 'Cover', 'textdomain' ),
-                                                'none' => esc_html__( 'None', 'textdomain' ),
-                                                'scale-down' => esc_html__( 'Scale down', 'textdomain' ),
+                                                '' => esc_html__( 'Default', 'wpdirectorykit' ),
+                                                'fill' => esc_html__( 'Fill', 'wpdirectorykit' ),
+                                                'contain'  => esc_html__( 'Contain', 'wpdirectorykit' ),
+                                                'cover' => esc_html__( 'Cover', 'wpdirectorykit' ),
+                                                'none' => esc_html__( 'None', 'wpdirectorykit' ),
+                                                'scale-down' => esc_html__( 'Scale down', 'wpdirectorykit' ),
                                         ],
                                         'selectors' => [
                                                 $selector => 'object-fit: {{VALUE}};',
@@ -683,15 +683,15 @@ class WdkElementorBase extends Widget_Base {
                         $this->add_control(
                                 $type.'_image_fit_control_position'.$prefix,
                                 [
-                                        'label' => esc_html__( 'Fit Position', 'textdomain' ),
+                                        'label' => esc_html__( 'Fit Position', 'wpdirectorykit' ),
                                         'type' => \Elementor\Controls_Manager::SELECT,
                                         'options' => [
-                                                '' => esc_html__( 'Default', 'textdomain' ),
-                                                'top' => esc_html__( 'Top', 'textdomain' ),
-                                                'bottom'  => esc_html__( 'Bottom', 'textdomain' ),
-                                                'left' => esc_html__( 'Left', 'textdomain' ),
-                                                'right' => esc_html__( 'Right', 'textdomain' ),
-                                                'center' => esc_html__( 'Center', 'textdomain' ),
+                                                '' => esc_html__( 'Default', 'wpdirectorykit' ),
+                                                'top' => esc_html__( 'Top', 'wpdirectorykit' ),
+                                                'bottom'  => esc_html__( 'Bottom', 'wpdirectorykit' ),
+                                                'left' => esc_html__( 'Left', 'wpdirectorykit' ),
+                                                'right' => esc_html__( 'Right', 'wpdirectorykit' ),
+                                                'center' => esc_html__( 'Center', 'wpdirectorykit' ),
                                         ],
                                         'selectors' => [
                                                 $selector => 'object-position: {{VALUE}};',

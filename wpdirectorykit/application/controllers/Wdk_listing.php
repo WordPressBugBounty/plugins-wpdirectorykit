@@ -20,7 +20,7 @@ class Wdk_listing extends Winter_MVC_Controller {
         $this->load->model('locationslistings_m');
 
         $from_id = intval($_GET['from_id']);
-        $to_lang = sanitize_text_field($_GET['to_lang']);
+        $to_lang = sanitize_text_field(wp_unslash($_GET['to_lang']));
 
         // fetch data
         $listing_post = get_post( $from_id );

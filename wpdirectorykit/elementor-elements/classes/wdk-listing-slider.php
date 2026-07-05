@@ -215,10 +215,10 @@ class WdkListingSlider extends WdkElementorBase {
         $this->add_control(
             'popup_enable',
             [
-                'label' => __( 'Open Images / Video in popup', 'wdk-listing-sliders' ),
+                'label' => __( 'Open Images / Video in popup', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __( 'On', 'wdk-listing-sliders' ),
-                'label_off' => __( 'Off', 'wdk-listing-sliders' ),
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
                 'return_value' => 'yes',
                 'default' => '',
             ]
@@ -227,10 +227,10 @@ class WdkListingSlider extends WdkElementorBase {
         $this->add_control(
             'plans_enable',
             [
-                'label' => __( 'Plans Enable', 'wdk-listing-sliders' ),
+                'label' => __( 'Plans Enable', 'wpdirectorykit' ),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __( 'On', 'wdk-listing-sliders' ),
-                'label_off' => __( 'Off', 'wdk-listing-sliders' ),
+                'label_on' => __( 'On', 'wpdirectorykit' ),
+                'label_off' => __( 'Off', 'wpdirectorykit' ),
                 'return_value' => 'yes',
                 'default' => '',
             ]

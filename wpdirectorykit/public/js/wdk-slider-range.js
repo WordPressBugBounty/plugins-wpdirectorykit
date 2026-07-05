@@ -167,19 +167,21 @@
          */
         init: function (is_update) {
             var that = this;
-            
+    
             if(that.options.predifinedMax == '')
-                that.options.predifinedMax=that.options.max;
-
+                that.options.predifinedMax = that.options.max;
+        
             if(that.options.max.length > 6) {
                 this.step = 10000;
-            }else if(that.options.max.length > 4) {
+            } else if(that.options.max.length > 4) {
                 this.step = 100;
-            }else if(that.options.max.length > 3) {
+            } else if(that.options.max.length > 3) {
                 this.step = 10;
             }
-            
-            this.self.find('.wdk-slider-range-input').ionRangeSlider({
+        
+            var $slider = this.self.find('.wdk-slider-range-input');
+        
+            $slider.ionRangeSlider({
                 skin: "round",
                 type: "double",
                 grid: true,
@@ -194,17 +196,32 @@
                 decorate_both: true,
                 values_separator: '-',
                 onChange: function (data) {
-                    that.options.onChange;
+        
                     that.self.find('.value-min').val(data.from);
                     that.self.find('.value-max').val(data.to);
-                    if(data.max==data.to)
+        
+                    if(data.max == data.to)
                         that.self.find('.value-max').val('');
-                    
-                    if(data.min==data.from)
+        
+                    if(data.min == data.from)
                         that.self.find('.value-min').val('');
                 },
             });
+        
+            // save instance
+            this.slider = $slider.data("ionRangeSlider");
             
+        },
+
+        reset: function () {
+
+            if(!this.slider)
+                return;
+        
+            this.slider.reset();
+        
+            this.self.find('.value-min').val('');
+            this.self.find('.value-max').val('');
         },
 
         /**

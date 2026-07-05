@@ -39,8 +39,8 @@ if ( ! defined( 'ABSPATH' ) ) {
             " > 
         </div>
         <form action="" class="wdk-search-form map" style="wdk-hidden">
-            <input name="rectangle_ne" type="hidden" class="wdk-hidden" value="<?php echo isset($_GET['rectangle_ne']) ? esc_attr(sanitize_text_field($_GET['rectangle_ne'])) : '';?>"/>
-            <input name="rectangle_sw" type="hidden" class="wdk-hidden" value="<?php echo isset($_GET['rectangle_sw']) ? esc_attr(sanitize_text_field($_GET['rectangle_sw'])) : '';?>"/>
+            <input name="rectangle_ne" type="hidden" class="wdk-hidden" value="<?php echo isset($_GET['rectangle_ne']) ? esc_attr(sanitize_text_field(wp_unslash($_GET['rectangle_ne']))) : '';?>"/>
+            <input name="rectangle_sw" type="hidden" class="wdk-hidden" value="<?php echo isset($_GET['rectangle_sw']) ? esc_attr(sanitize_text_field(wp_unslash($_GET['rectangle_sw']))) : '';?>"/>
         </form>
     </div>
 </div>
@@ -113,7 +113,7 @@ if (!$is_edit_mode)
             // define rectangle geographical bounds
             <?php if(isset($_GET['rectangle_ne']) && isset($_GET['rectangle_sw'])) :?>
                 <?php if(wdk_is_gps($_GET['rectangle_ne']) && wdk_is_gps($_GET['rectangle_sw']))  :?>
-                    var bounds = [[<?php echo isset($_GET['rectangle_ne']) ? esc_attr(sanitize_text_field($_GET['rectangle_ne'])) : '';?>], [<?php echo isset($_GET['rectangle_sw']) ? esc_attr(sanitize_text_field($_GET['rectangle_sw'])) : '';?>]];
+                    var bounds = [[<?php echo isset($_GET['rectangle_ne']) ? esc_attr(sanitize_text_field(wp_unslash($_GET['rectangle_ne']))) : '';?>], [<?php echo isset($_GET['rectangle_sw']) ? esc_attr(sanitize_text_field(wp_unslash($_GET['rectangle_sw']))) : '';?>]];
                     drawMap.drawOuther(bounds);
                 <?php endif;?>
             <?php endif;?>

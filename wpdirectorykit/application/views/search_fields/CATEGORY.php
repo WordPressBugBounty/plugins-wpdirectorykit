@@ -23,7 +23,7 @@ if(isset($predefinedfields_query) && !empty($predefinedfields_query[$field_key])
 }
 
 if(isset($_GET['category_root'])) {
-    $predefinedfields_query['custom_category_root'] = sanitize_text_field($_GET['category_root']);
+    $predefinedfields_query['custom_category_root'] = sanitize_text_field(wp_unslash($_GET['category_root']));
 }
 
 if(isset($predefinedfields_query) && !empty($predefinedfields_query['custom_category_root'])) {

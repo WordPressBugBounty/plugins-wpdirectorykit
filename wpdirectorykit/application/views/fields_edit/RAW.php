@@ -53,6 +53,9 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
 
 <script>
 jQuery(document).ready(function($) {
-    wp.codeEditor.initialize($('#<?php echo esc_js($field_id);?>' ));
-}) 
+    var editorElem = $('#<?php echo esc_js($field_id);?>');
+    if (editorElem.length && typeof wp !== 'undefined' && wp.codeEditor && typeof wp.codeEditor.initialize === 'function') {
+        wp.codeEditor.initialize(editorElem[0], {});
+    }
+});
 </script>

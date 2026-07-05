@@ -279,6 +279,15 @@ if(get_option('wdk_slug_listing_preview_page')){
     add_filter( 'register_post_type_args', 'wdk_custom_listing_preview_page_slug', 10, 2 );
 }
 
+// Hook example, custom page title for 
+add_filter( 'document_title_parts', function( $title_parts_array ) {
+    global $wp_query;
+    if ( isset( $wp_query->post ) && $wp_query->post->post_type === 'wdk-listing' ) {
+        $title_parts_array['title'] = wdk_listing_seo_title();
+    }
+    return $title_parts_array;
+} );
+
 /* seo wdk feature, wp overwrite wp_head */
 add_action( 'wp_head', 'wdk_seo_metatags');
 function wdk_seo_metatags(){
@@ -291,10 +300,12 @@ function wdk_seo_metatags(){
             global $Winter_MVC_WDK;
             $Winter_MVC_WDK->model('field_m');
             $Winter_MVC_WDK->load_helper('listing');
-            
-            echo '<meta name="title" content="'.esc_attr(wp_get_document_title()).'">'.PHP_EOL;
+
+            $seo_title = wp_get_document_title();
+
+            echo '<meta name="title" content="'.esc_attr($seo_title).'">'.PHP_EOL;
             echo '<meta property="og:type" content="'.esc_attr(get_post_type()).'" />'.PHP_EOL;
-            echo '<meta property="og:title"  content="'.esc_attr(wp_get_document_title()).'" />'.PHP_EOL;
+            echo '<meta property="og:title"  content="'.esc_attr($seo_title).'" />'.PHP_EOL;
 
             if(get_option('wdk_seo_description')) {
                 echo '<meta name="description" content="'.esc_attr(wp_trim_words(wp_strip_all_tags(wpautop(wdk_field_value(get_option('wdk_seo_description'), $wdk_listing_id))), 20)).'">'.PHP_EOL;
@@ -422,7 +433,7 @@ function wdk_search_parameters() {
     if(!empty($_GET['field_search'])) {
         global $Winter_MVC_WDK;
         $Winter_MVC_WDK->model('location_m');
-        $location = $Winter_MVC_WDK->location_m->get_by(array('location_title'=>sanitize_text_field($_GET['field_search'])), TRUE);
+        $location = $Winter_MVC_WDK->location_m->get_by(array('location_title'=>sanitize_text_field(wp_unslash($_GET['field_search']))), TRUE);
         if($location) {
             $url = $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
           

@@ -81,7 +81,7 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
                 }
                 $field_value = false;
                 if(isset($_GET['field_'.$field_id])) {
-                    $field_value = sanitize_text_field($_GET['field_'.$field_id]);
+                    $field_value = sanitize_text_field(wp_unslash($_GET['field_'.$field_id]));
                 }
 
             ?>

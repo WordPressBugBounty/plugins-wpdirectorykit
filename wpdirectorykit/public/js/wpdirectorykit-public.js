@@ -210,6 +210,16 @@
                     }
                 }); 
 
+                $('.wdk-slider-range-field').each(function () {
+
+                    var instance = $(this).data('fieldSliderRange');
+                
+                    if(instance) {
+                        instance.reset();
+                    }
+                
+                });
+
                 // Remove all query params starting with 'search_' or 'field_' and hash '#results' from the URL on reset
                 if (window.history && window.history.replaceState) {
                     let url = window.location.href;

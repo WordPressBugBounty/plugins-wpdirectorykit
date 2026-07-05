@@ -94,6 +94,15 @@ class Wpdirectorykit_Admin
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/wpdirectorykit-admin.css', array(), $this->version, 'all');
         wp_enqueue_style($this->plugin_name . '-responsive', plugin_dir_url(__FILE__) . 'css/wpdirectorykit-admin-responsive.css', array(), $this->version, 'all');
         wp_register_style('jquery-ui', WPDIRECTORYKIT_URL . 'public/css/jquery-ui.css', array(), null);
+
+        // Register and enqueue Tribute.js style
+        wp_register_style(
+            'tribute-css',
+            'https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.css',
+            [],
+            '5.1.3'
+        );
+  
     }
 
     /**
@@ -115,6 +124,16 @@ class Wpdirectorykit_Admin
          * between the defined hooks and the functions defined in this
          * class.
          */
+
+         
+        // Register and enqueue Tribute.js script
+        wp_register_script(
+            'tribute-js',
+            'https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.min.js',
+            [],
+            '5.1.3',
+            true
+        );
 
         wp_register_script('wdk-treefield', WPDIRECTORYKIT_URL . 'public/js/wdk_treefield/treefield.js', array('jquery'), false, false);
         wp_register_script('wpmediaelement_file', WPDIRECTORYKIT_URL . 'admin/js/jquery.wpmediaelement_file.js', array('jquery'), false, false);
@@ -181,6 +200,7 @@ class Wpdirectorykit_Admin
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/wpdirectorykit-admin.js', array('jquery'), $this->version, false);
         wp_localize_script($this->plugin_name, 'script_parameters', $params);
         wp_localize_script($this->plugin_name, 'wdk_script_parameters', $params);
+
     }
 
     /**
@@ -210,8 +230,8 @@ class Wpdirectorykit_Admin
         $page = '';
         $function = '';
 
-        if (isset($_GET['page'])) $page = sanitize_text_field($_GET['page']);
-        if (isset($_GET['function'])) $function = sanitize_text_field($_GET['function']);
+        if (isset($_GET['page'])) $page = sanitize_text_field(wp_unslash($_GET['page']));
+        if (isset($_GET['function'])) $function = sanitize_text_field(wp_unslash($_GET['function']));
 
         if (substr($function, 0, 1) == '_') {
             exit(esc_html__('blocked for public', 'wpdirectorykit'));

@@ -23,7 +23,7 @@ if(!empty($query_type) && $query_type !='min_max')
     $field_key .='_'.$query_type;
 
 if(isset($_GET[$field_key])) {
-    $field_value = sanitize_text_field($_GET[$field_key]);
+    $field_value = sanitize_text_field(wp_unslash($_GET[$field_key]));
 }
 
 if($query_type =='min')

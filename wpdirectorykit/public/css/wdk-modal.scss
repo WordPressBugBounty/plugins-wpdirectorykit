@@ -153,6 +153,10 @@ body:after {
     transition: all .15s;
 }
 
+body.wdk-overlay-bgg {
+    overflow: hidden;
+}
+
 body.wdk-overlay-bgg:after {
     visibility: visible;
     opacity: 1;

@@ -703,6 +703,11 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
             if(!is_intval($smart_search)) {
                 $gen_q.="location_title LIKE '%$smart_search%' OR ";
                 $gen_q.="category_title LIKE '%$smart_search%' OR ";
+                
+                
+                $gen_q.="`category_table`.`titles_for_search` LIKE '%$smart_search%' OR ";
+                $gen_q.="`location_table`.`titles_for_search` LIKE '%$smart_search%' OR ";
+                
             }
             /* get address and gps */
             if(strlen($smart_search) > 5) {
@@ -5318,4 +5323,50 @@ if ( ! function_exists('is_wdk_related_validation'))
             ], '', sanitize_text_field($value))));
         }
     }
+
+    if(!function_exists('wdk_listing_seo_title')) {
+        function wdk_listing_seo_title () {
+            static $cached_seo_title = null;
+            if ($cached_seo_title !== null) {
+                return $cached_seo_title;
+            }
+
+            $seo_title ='';
+            global $wp_query;
+            $wdk_listing_id = $wp_query->post->ID;
+            if(wdk_get_option('wdk_seo_listing_title')) { 
+                global $Winter_MVC_WDK;
+                $Winter_MVC_WDK->model('field_m');
+                $Winter_MVC_WDK->load_helper('listing');
+                
+                $seo_template = wdk_get_option('wdk_seo_listing_title');
+
+                $matches = [];
+                preg_match_all('/{(?:field_)?([^}]+)}/', $seo_template, $matches);
+                $fields_in_template = isset($matches[1]) ? $matches[1] : [];
+
+                $fields_values = [];
+
+                foreach ($fields_in_template as $field_id) {
+                    $key_id = '{field_' . $field_id . '}';
+                    if($field_id == 'category') {
+                        $field_id = 'category_title';
+                    }
+                    if($field_id == 'location') {
+                        $field_id = 'location_title';
+                    }
+                    // Try to get value for field_id for this listing
+                    $fields_values[$key_id] = wdk_field_value($field_id, $wdk_listing_id);
+                }
+                // Replace the fields in template with real values
+                $seo_title = strtr($seo_template, $fields_values);
+            }
+
+            $cached_seo_title = $seo_title;
+            return $seo_title;
+        }
+    }
+
+
+
 ?>
