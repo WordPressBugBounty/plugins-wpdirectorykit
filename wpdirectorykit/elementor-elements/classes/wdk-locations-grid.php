@@ -132,7 +132,7 @@ class WdkLocationsGrid extends WdkElementorBase {
             $locations_ids = array();
             foreach($this->data['settings']['conf_custom_results'] as $location) {
                 if(isset($location['location_id']) && !empty($location['location_id'])) {
-                    $locations_ids [] = $location['location_id'];
+                    $locations_ids [] = (int)$location['location_id'];
                 }
             }
             
@@ -151,14 +151,12 @@ class WdkLocationsGrid extends WdkElementorBase {
         } else {
             $order_by = NULL;
             if(!empty($this->data['settings']['conf_order_by']))
-                $order_by = $this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'];
-
+                $order_by = wdk_esc_sql($this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'], true);
                 $where = array();
                 if (!empty($this->data['settings']['only_root_enable']) && $this->data['settings']['only_root_enable'] == 'yes') {
                     $where['('.$this->WMVC->{$controller.'_m'}->_table_name.'.level = 0)'] = NULL;
                 }
                 $this->data['results'] = $this->WMVC->{$controller.'_m'}->get_pagination((!empty($this->data['settings']['conf_limit'])) ? $this->data['settings']['conf_limit'] : NULL, NULL, $where, $order_by);
-         
         }
 
         $this->data['is_edit_mode']= false;          

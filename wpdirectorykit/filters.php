@@ -433,7 +433,7 @@ function wdk_search_parameters() {
     if(!empty($_GET['field_search'])) {
         global $Winter_MVC_WDK;
         $Winter_MVC_WDK->model('location_m');
-        $location = $Winter_MVC_WDK->location_m->get_by(array('location_title'=>sanitize_text_field(wp_unslash($_GET['field_search']))), TRUE);
+        $location = $Winter_MVC_WDK->location_m->get_by(array('location_title'=>wdk_esc_sql(sanitize_text_field($_GET['field_search']))), TRUE);
         if($location) {
             $url = $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
           
@@ -448,7 +448,7 @@ function wdk_search_parameters() {
             $new_url =  (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http").'://'.$clear_link.'?'.http_build_query($string_par);
             wp_redirect($new_url);
             exit;        
-        }
+        } 
 
     }
    
@@ -834,4 +834,12 @@ add_action('wp_ajax_wdk_close_popup', function() {
     update_user_meta(get_current_user_id(), '_wdk_admin_popup_closed', time());
 
     wp_die();
+});
+
+
+add_filter('body_class', function($classes) {
+    if (get_option('wdk_disable_outline_on_focus')) {
+        $classes[] = 'wdk_disable_outline_on_focus';
+    }
+    return $classes;
 });

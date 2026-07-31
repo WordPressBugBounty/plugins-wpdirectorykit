@@ -68,6 +68,14 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
             ):?>
                 ajax_results_enabled
         <?php endif;?>
+        <?php if
+            (
+                isset($settings['section_more_before_buttons']) && $settings['section_more_before_buttons'] == 'yes' 
+            ):?>
+                section_more_before_buttons 
+        <?php endif;?>
+
+        wdk-form-additional
     ">
         <form data-current-link="<?php echo esc_url($current_url);?>" data-scrollto="<?php echo esc_attr(wmvc_show_data('search_scroll', $settings));?>" class="wdk-search-form wdk-skip-empty
          <?php if(wmvc_show_data('auto_search_enable', $settings) == 'yes'):?> auto_search <?php endif;?>

@@ -16,7 +16,7 @@
  * Plugin Name:       WP Directory Kit
  * Plugin URI:        https://wpdirectorykit.com/plugins/wpdirectorykit.html
  * Description:       Build your Directory portal, demos for Real Estate Agencies and Car Dealership included
- * Version:           1.5.4
+ * Version:           1.5.6
  * Requires PHP:      7.0
  * Author:            wpdirectorykit.com
  * Author URI:        https://wpdirectorykit.com
@@ -25,8 +25,8 @@
  * Text Domain:       wpdirectorykit
  * Domain Path:       /languages
  * 
- * Elementor tested up to: 3.33.1
- * Elementor Pro tested up to: 3.23.2
+ * Elementor tested up to: 4.2.1
+ * Elementor Pro tested up to: 4.3.1
  * 
  * Copyright (C) SWIT Sandi Winter IT.
  * 
@@ -42,7 +42,7 @@ if (! defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('WPDIRECTORYKIT_VERSION', '1.5.4');
+define('WPDIRECTORYKIT_VERSION', '1.5.6');
 define('WPDIRECTORYKIT_NAME', 'wdk');
 define('WPDIRECTORYKIT_PATH', plugin_dir_path(__FILE__));
 define('WPDIRECTORYKIT_URL', plugin_dir_url(__FILE__));

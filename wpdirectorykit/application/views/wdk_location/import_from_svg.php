@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="wrap wdk-wrap">
     <h1 class="wp-heading-inline"><?php echo __('Location Management','wpdirectorykit'); ?></h1>
-    <br /><br />
+    <br />
         <div class="wdk-body">
             <div class="postbox" style="display: block;">
                 <div class="postbox-header"><h3><?php echo __('Add/Edit Location','wpdirectorykit'); ?></h3>

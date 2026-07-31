@@ -14,7 +14,7 @@ if (! defined('ABSPATH')) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap wdk-wrap">
     <h1 class="wp-heading-inline"><?php echo __('View/Edit Messages', 'wpdirectorykit'); ?></h1>
-    <br /><br />
+    <br />
     <div class="wdk-body">
         <form method="post" action="<?php echo esc_url(wmvc_current_edit_url()); ?>" enctype="multipart/form-data" novalidate="novalidate">
             <?php wp_nonce_field('wdk-messages-edit_' . wmvc_show_data('idmessage', $db_data, 0), '_wpnonce'); ?>

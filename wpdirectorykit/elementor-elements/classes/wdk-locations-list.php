@@ -131,7 +131,7 @@ class WdkLocationsList extends WdkElementorBase {
             $locations_ids = array();
             foreach($this->data['settings']['conf_custom_results'] as $location) {
                 if(isset($location['location_id']) && !empty($location['location_id'])) {
-                    $locations_ids [] = $location['location_id'];
+                    $locations_ids [] = (int)$location['location_id'];
                 }
             }
             
@@ -150,7 +150,7 @@ class WdkLocationsList extends WdkElementorBase {
         } else {
             $order_by = NULL;
             if(!empty($this->data['settings']['conf_order_by']))
-                $order_by = $this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'];
+                $order_by = wdk_esc_sql($this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'], true);
 
             $where = array();
             if (!empty($this->data['settings']['only_root_enable']) && $this->data['settings']['only_root_enable'] == 'yes') {

@@ -753,6 +753,13 @@ body .wdk_alert a {
         position: relative;
     }
 
+    &.section_more_before_buttons {
+        .wdk-col-btns {
+            order: 100;
+        }
+        
+    }
+
     .wdk-search-tabs {
         position: absolute;
         bottom: 100%;
@@ -1936,5 +1943,14 @@ body .wdk_dropdown_tree .list_container {
 .wdk-booking-element {
     word-break: normal;
 }
+
+body.wdk_disable_outline_on_focus {
+
+    a:focus-visible, select:focus-visible, button:focus-visible, .wl-menu-toggle:focus-visible, a:focus, .wl-menu-toggle:focus, select:focus, input:focus, textarea:focus, button:focus,
+    a:focus-visible, select:focus-visible, button:focus-visible, .wl-menu-toggle:focus-visible, a:focus, .wl-menu-toggle:focus, select:focus, button:focus,
+    * {
+        outline: none !important;
+    }
+} 
 
 @import 'animation.scss';

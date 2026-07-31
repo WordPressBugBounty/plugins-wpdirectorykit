@@ -45,6 +45,15 @@ function shortcode_wdk_listing_field_value_suffix($atts, $content){
     $data['field_value'] = '';
     $data['field_suffix'] = '';
     $data['field_suffix'] = '';
+    
+    /* protect check */
+    if(in_array($data['settings']['field_id'], ['post_password', 'status'])  ) {
+        return false;
+    }
+    if(wdk_field_option($data['settings']['field_id'], 'is_visible_frontend') != 1) {
+        return false;
+    }
+    
     if(!empty($data['settings']['field_id'])){
         if(strpos($data['settings']['field_id'],'__') !== FALSE){
             $data['settings']['field_id'] = substr($data['settings']['field_id'], strpos($data['settings']['field_id'],'__')+2);

@@ -249,6 +249,18 @@ class WdkSearch extends WdkElementorBase {
                 ],
 			]
 		);
+
+		$this->add_control(
+			'section_more_before_buttons',
+			[
+				'label' => __( 'Show Additional Fields Before Search Buttons', 'wpdirectorykit' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => __( 'Yes', 'wpdirectorykit' ),
+				'label_off' => __( 'None', 'wpdirectorykit' ),
+				'return_value' => 'yes',
+				'default' => '',
+			]
+		);
                 
 		$this->add_control(
 			'section_config_more_limit',

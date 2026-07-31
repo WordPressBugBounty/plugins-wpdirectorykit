@@ -34,6 +34,15 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
 		$listing = $this->load->listing_m->get($listing_post_id, TRUE);
 
+
+		/* protect check */
+		if (
+			!wdk_field_value('is_activated', $listing, false) || !wdk_field_value('is_approved', $listing,false)
+		) {
+			$data['popup_content'] = __( 'Listing is not public', 'wpdirectorykit' );
+			$this->output($data);
+		}
+
 		$popup_layout = 'result_item_card';
 		if(!empty($_POST['custom_layout_id'])) {
 			$popup_layout = (int) sanitize_text_field($_POST['custom_layout_id']);
@@ -751,7 +760,6 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		$db_results_total = $this->$model_name->total($where, NULL, $like);
 
 		$db_results = $this->$model_name->get_pagination($limit,$offset, $where, NULL, $like);
-		$data['output'] =  $db_results;
        
 		if (!$db_results) {
             $data['errors'] = '';

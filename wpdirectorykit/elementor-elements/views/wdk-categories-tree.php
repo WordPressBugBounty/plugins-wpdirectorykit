@@ -77,18 +77,18 @@ $more_helper_class = '';
                                         <?php if(wmvc_show_data('show_icon', $settings) == 'yes'):?>
                                             <?php if(wmvc_show_data('layout_image_type', $settings) == 'icon'):?>
                                                 <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_category='.wmvc_show_data('idcategory', $value)));?>#results">
-                                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo wmvc_show_data('category_title', $value);?>" class="wdk-icon">
+                                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>" class="wdk-icon">
                                                 </a>
                                             <?php elseif(wmvc_show_data('layout_image_type', $settings) == 'image'):?>
                                                 <a class="wdk-d-block" href="<?php echo esc_url(wdk_url_suffix($results_page,'search_category='.wmvc_show_data('idcategory', $value)));?>#results">
-                                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'image_id','image_path'));?>" alt="<?php echo wmvc_show_data('category_title', $value);?>" class="wdk-image">
+                                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'image_id','image_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>" class="wdk-image">
                                                 </a>
                                             <?php elseif(wmvc_show_data('layout_image_type', $settings) == 'font_icon'):?>
                                                 <span class="wdk-font-icon" style="background-color: <?php echo esc_attr(wmvc_show_data('category_color', $value));?>;"><i class="<?php echo esc_attr(wmvc_show_data('font_icon_code', $value));?>"></i></span>
                                             <?php endif;?>
                                         <?php endif;?>
                                         <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_category='.wmvc_show_data('idcategory', $value)));?>#results" class="title-in">
-                                            <?php echo wmvc_show_data('category_title', $value);?>
+                                            <?php echo esc_html(wmvc_show_data('category_title', $value));?>
                                         </a>
                                     </h3>
                                     <ul class="wdk-categories">
@@ -114,7 +114,7 @@ $more_helper_class = '';
                                 <li class="wdk-item <?php echo ($categories_sub_count > wmvc_show_data('conf_limit_sub', $settings)) ? 'more-sub' : '';?>" <?php echo ($categories_sub_count > wmvc_show_data('conf_limit_sub', $settings)) ? 'style="display: none;"' : '';?>>
                                     <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_category='.wmvc_show_data('idcategory', $value)));?>#results"  class="wdk-link">
                                         <?php \Elementor\Icons_Manager::render_icon( $settings['item_icon_i'], [ 'aria-hidden' => 'true' ] );?>
-                                        <span class="wdk-title"><?php echo wmvc_show_data('category_title', $value);?></span>
+                                        <span class="wdk-title"><?php echo esc_html(wmvc_show_data('category_title', $value));?></span>
                                         <span class="wdk-count"><?php echo wmvc_show_data('listings_counter', $value, 0);?></span>
                                     </a>
                                 </li>

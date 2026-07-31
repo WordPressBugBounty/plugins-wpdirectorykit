@@ -36,7 +36,7 @@ $results_page = get_permalink($results_page);
                     <div class="wdk-col">
                         <div class="category-card">
                             <div class="body">
-                                <h3 class="title"><?php echo wmvc_show_data('category_title', $value);?></h3>
+                                <h3 class="title"><?php echo esc_html(wmvc_show_data('category_title', $value));?></h3>
                                 <div class="sub">
                                     <?php
                                         echo esc_html(wdk_sprintf(_nx(
@@ -51,9 +51,9 @@ $results_page = get_permalink($results_page);
                             </div>
                             <div class="thumbnail">
                                 <?php if(wmvc_show_data('primary_layout_image_type', $settings) == 'icon'):?>
-                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo wmvc_show_data('category_title', $value);?>" class="wdk-icon">
+                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>" class="wdk-icon">
                                 <?php elseif(wmvc_show_data('primary_layout_image_type', $settings) == 'image'):?>
-                                    <img class="jsplaceholder" onerror="this.src = '<?php echo esc_url(wdk_placeholder_image_src());?>';" src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'image_id','image_path'));?>" alt="<?php echo wmvc_show_data('category_title', $value);?>" class="wdk-image">
+                                    <img class="jsplaceholder" onerror="this.src = '<?php echo esc_url(wdk_placeholder_image_src());?>';" src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'image_id','image_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>" class="wdk-image">
                                 <?php elseif(wmvc_show_data('primary_layout_image_type', $settings) == 'font_icon'):?>
                                     <span class="wdk-font-icon" style="background-color: <?php echo esc_attr(wmvc_show_data('category_color', $value));?>;"><i class="<?php echo esc_attr(wmvc_show_data('font_icon_code', $value));?>"></i></span>
                                 <?php endif;?>
@@ -72,7 +72,7 @@ $results_page = get_permalink($results_page);
                     <div class="wdk-col">
                         <div class="category-card">
                             <div class="body">
-                                <h3 class="title"><?php echo wmvc_show_data('category_title', $value);?></h3>
+                                <h3 class="title"><?php echo esc_html(wmvc_show_data('category_title', $value));?></h3>
                                 <div class="sub">
                                     <?php
                                         echo esc_html(wdk_sprintf(_nx(
@@ -87,9 +87,9 @@ $results_page = get_permalink($results_page);
                             </div>
                             <div class="thumbnail">
                                 <?php if(wmvc_show_data('secondary_layout_image_type', $settings) == 'icon'):?>
-                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo wmvc_show_data('category_title', $value);?>" class="wdk-icon">
+                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>" class="wdk-icon">
                                 <?php elseif(wmvc_show_data('secondary_layout_image_type', $settings) == 'image'):?>
-                                    <img class="jsplaceholder" onerror="this.src = '<?php echo esc_url(wdk_placeholder_image_src());?>';" src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'image_id','image_path'));?>" alt="<?php echo wmvc_show_data('category_title', $value);?>" class="wdk-image">
+                                    <img class="jsplaceholder" onerror="this.src = '<?php echo esc_url(wdk_placeholder_image_src());?>';" src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'image_id','image_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>" class="wdk-image">
                                 <?php elseif(wmvc_show_data('secondary_layout_image_type', $settings) == 'font_icon'):?>
                                     <span class="wdk-font-icon" style="background-color: <?php echo esc_attr(wmvc_show_data('category_color', $value));?>;"><i class="<?php echo esc_attr(wmvc_show_data('font_icon_code', $value));?>"></i></span>
                                 <?php endif;?>

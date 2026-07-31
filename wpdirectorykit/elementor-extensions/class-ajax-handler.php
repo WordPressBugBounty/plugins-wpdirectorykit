@@ -563,7 +563,7 @@ class AjaxHandler {
                             $ret = wdk_mail(wdk_show_data('user_email', $data_message['user'], '' , TRUE, TRUE), __('Reservation approved, waiting for payment', 'wpdirectorykit'), $data_message, 'reservation_approved_visitor');
                           
                             $ret = wdk_mail(wdk_show_data('user_email', $data_message['user_owner'], '' , TRUE, TRUE), __('New Reservation approved, please confirm as paid when you receive payment', 'wpdirectorykit'), $data_message, 'reservation_approved_owner');
-                    
+                            $ret =false;
                             if( $ret) {
                                 add_filter( 'eli/ajax-handler/filter_output', function($filter_output) {
                                     $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-success" role="alert">'.esc_html__('Reservation sent, please check your email with payment details', 'wpdirectorykit').'</div>';
@@ -573,7 +573,11 @@ class AjaxHandler {
                             else
                             {
                                 add_filter( 'eli/ajax-handler/filter_output', function($filter_output) {
-                                    $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.esc_html__('Server can\'t send emails, please use SMTP mail configuration.', 'wpdirectorykit').'</div>';
+                                    $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.  sprintf(
+                                    esc_html__('Server can\'t send emails, please use SMTP mail configuration. Check %1$sGuide%2$s', 'wpdirectorykit'),
+                                    '<a href="https://wpdirectorykit.com/e-mail-sending-issues-smtp-mail-configuration/" target="_blank" style="text-decoration: underline">',
+                                    '</a>'
+                                ).'</div>';
                                     $filter_output['no_clear_from'] = true;
                                     return $filter_output;
                                 } );
@@ -661,7 +665,7 @@ class AjaxHandler {
                         
                         /* waiting approve to client */
                         $ret =  wdk_mail(wdk_show_data('user_email', $user_client, '' , TRUE, TRUE), __('Your reservation waiting approvement by owner', 'wpdirectorykit'), $data_message, 'reservation_waiting_for_approve_visitor');
-
+                        $ret =false;
                         if( $ret) {
                             add_filter( 'eli/ajax-handler/filter_output', function($filter_output){
                                 $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-success" role="alert">'.esc_html__('Thanks on reservation, after owner approvement you will receive details for payment', 'wpdirectorykit').'</div>';
@@ -671,7 +675,11 @@ class AjaxHandler {
                         else
                         {
                             add_filter( 'eli/ajax-handler/filter_output', function($filter_output) {
-                                $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.esc_html__('Server can\'t send emails, please use SMTP mail configuration.', 'wpdirectorykit').'</div>';
+                                $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.  sprintf(
+                                    esc_html__('Server can\'t send emails, please use SMTP mail configuration. Check %1$sGuide%2$s', 'wpdirectorykit'),
+                                    '<a href="https://wpdirectorykit.com/e-mail-sending-issues-smtp-mail-configuration/" target="_blank" style="text-decoration: underline">',
+                                    '</a>'
+                                ).'</div>';
                                 $filter_output['no_clear_from'] = true;
                                 return $filter_output;
                             } );
@@ -778,6 +786,7 @@ class AjaxHandler {
                     }
 
                     $ret = wdk_mail($owner_email, $message_title, $data_message, 'new_message', '', NULL, $email);
+                    $ret =false;
                     if( $ret) {
                         add_filter( 'eli/ajax-handler/filter_output', function($filter_output){
                             $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-success" role="alert">'.esc_html__('Thanks for the message.', 'wpdirectorykit').'</div>';
@@ -793,7 +802,15 @@ class AjaxHandler {
                     else
                     {
                         add_filter( 'eli/ajax-handler/filter_output', function($filter_output) {
-                            $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.esc_html__('Server can\'t send emails, please use SMTP mail configuration.', 'wpdirectorykit').'</div>';
+                            $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.
+                                sprintf(
+                                    esc_html__('Server can\'t send emails, please use SMTP mail configuration. Check %1$sGuide%2$s', 'wpdirectorykit'),
+                                    '<a href="https://wpdirectorykit.com/e-mail-sending-issues-smtp-mail-configuration/" target="_blank" style="text-decoration: underline">',
+                                    '</a>'
+                                )
+                            .'</div>';
+                       
+                       
                             $filter_output['success'] = false;
                             $filter_output['no_clear_from'] = true;
                             return $filter_output;

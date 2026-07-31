@@ -747,6 +747,10 @@ body .wdk_alert a {
   position: relative;
 }
 
+.wdk-search.section_more_before_buttons .wdk-col-btns {
+  order: 100;
+}
+
 .wdk-search .wdk-search-tabs {
   position: absolute;
   bottom: 100%;
@@ -1972,16 +1976,14 @@ body .wdk_dropdown_tree .list_container .list_scroll ul li {
   word-break: normal;
 }
 
+body.wdk_disable_outline_on_focus a:focus-visible, body.wdk_disable_outline_on_focus select:focus-visible, body.wdk_disable_outline_on_focus button:focus-visible, body.wdk_disable_outline_on_focus .wl-menu-toggle:focus-visible, body.wdk_disable_outline_on_focus a:focus, body.wdk_disable_outline_on_focus .wl-menu-toggle:focus, body.wdk_disable_outline_on_focus select:focus, body.wdk_disable_outline_on_focus input:focus, body.wdk_disable_outline_on_focus textarea:focus, body.wdk_disable_outline_on_focus button:focus,
+body.wdk_disable_outline_on_focus a:focus-visible, body.wdk_disable_outline_on_focus select:focus-visible, body.wdk_disable_outline_on_focus button:focus-visible, body.wdk_disable_outline_on_focus .wl-menu-toggle:focus-visible, body.wdk_disable_outline_on_focus a:focus, body.wdk_disable_outline_on_focus .wl-menu-toggle:focus, body.wdk_disable_outline_on_focus select:focus, body.wdk_disable_outline_on_focus button:focus,
+body.wdk_disable_outline_on_focus * {
+  outline: none !important;
+}
+
 /* animations */
 .wdk-listing-card .wdk-title .title,
 .wdk-listing-card .wdk-footer .wdk-btn a {
   transition: all .15s;
-}
-
-
-.listing_popup .jconfirm-content-pane .jconfirm-content > div, .listing_popup .jconfirm-content-pane .jconfirm-content, .listing_popup .jconfirm-content-pane {
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column;
- 
 }

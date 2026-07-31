@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap wdk-wrap">
     <h1 class="wp-heading-inline"><?php echo __('Remove Plugin Data', 'wpdirectorykit'); ?></h1>
-    <br /><br />
+    <br />
     <div class="wdk-body">
         <div class="postbox" style="display: block;">
             <div class="postbox-header">

@@ -116,7 +116,7 @@ if (! defined('ABSPATH')) {
                         <?php if (wmvc_show_data('text_limit_worlds', $settings)): ?>
                             <?php echo (wp_strip_all_tags(html_entity_decode(wp_trim_words($field_value, $settings['text_limit_worlds'], '...')))); ?>
                         <?php else: ?>
-                            <?php echo wp_kses_post(wdk_filter_decimal($field_value)); ?>
+                            <?php echo wp_kses_post(wp_unslash(wdk_filter_decimal($field_value))); ?>
                         <?php endif; ?>
                     </span>
                     <span class='suffix'><?php echo esc_html($field_suffix); ?></span>
@@ -134,7 +134,7 @@ if (! defined('ABSPATH')) {
                         <?php if (wmvc_show_data('text_limit_worlds', $settings)): ?>
                             <?php echo (wp_strip_all_tags(html_entity_decode(wp_trim_words($field_value, $settings['text_limit_worlds'], '...')))); ?>
                         <?php else: ?>
-                            <?php echo wp_kses_post(wdk_filter_decimal($field_value)); ?>
+                            <?php echo wp_kses_post(wp_unslash(wdk_filter_decimal($field_value))); ?>
                         <?php endif; ?>
                     </span>
                 <?php endif; ?>

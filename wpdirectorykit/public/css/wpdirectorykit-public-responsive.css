@@ -55,16 +55,6 @@
   .wdk-element .wdk-search.layout_inline .wdk-field.LOCATION, .wdk-element .wdk-search.layout_inline .wdk-field.CATEGORY {
     width: 100%;
   }
-  /*
-    .wdk-search #wdk-form-additional .wdk-row .wdk-col.CHECKBOX .wdk-field-label {
-        padding-left: 0;
-        padding: 3px 0;
-        margin-bottom: 10px;
-    }*/
-  /*
-    .wdk-search.layout_inline #wdk-form-additional .wdk-field.CHECKBOX .wdk-field-label {
-        margin-top: 10px !important;
-    }*/
   body .wdk-element .wdk-map .wdk-listing-card .wdk-subtitle-part span {
     overflow: hidden;
     text-overflow: ellipsis;

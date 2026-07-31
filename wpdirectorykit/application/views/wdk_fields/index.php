@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="wrap wdk-wrap">
     <h1 class="wp-heading-inline"><?php echo __('Directory Fields Management','wpdirectorykit'); ?> <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields&function=field_edit"); ?>" class="button button-primary" id="add_field_button"><?php echo __('Add Field','wpdirectorykit'); ?></a></h1>
-    <br /><br />
+    <br />
         <div class="wdk-body ">
             <div class="row fields_list">
             <?php if(count($fields) == 0): ?>
@@ -156,7 +156,8 @@ wp_enqueue_script( 'jquery-ui-sortable', false, array('jquery') );
                     'page': 'wdk_fields',
                     'function': 'ajax_save_order',
                     'action': 'wdk_admin_action',
-                    'data_fields_list' : data_fields_list
+                    'data_fields_list' : data_fields_list,
+                    'wdk_fields_nonce' : '<?php echo esc_js(wp_create_nonce('wdk_fields_save_order')); ?>'
                 };
 
                 $.post( "<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>", data)

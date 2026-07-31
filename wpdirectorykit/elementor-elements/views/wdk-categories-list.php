@@ -37,7 +37,7 @@ $results_page = get_permalink($results_page);
                         class="wdk-link <?php if(wmvc_show_data('enable_search_sensitive', $settings)):?> wdk-search_sensitive_link <?php endif;?> ">
                         <?php if(wmvc_show_data('show_icon', $settings) == 'true'):?>
                             <?php if(wmvc_show_data('icon_id', $value, false)):?>
-                                <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id','icon_path'));?>" alt="<?php echo wmvc_show_data('category_title', $value);?>" class="wdk-icon">
+                                <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id','icon_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>" class="wdk-icon">
                             <?php endif;?>
                         <?php else:?>
                             <?php \Elementor\Icons_Manager::render_icon( $settings['item_icon_i'], [ 'aria-hidden' => 'true' ] );?>

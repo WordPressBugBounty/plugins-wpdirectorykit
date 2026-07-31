@@ -226,6 +226,12 @@ div.wdk-field-edit div.wdk-field-container {
         height: auto;
     }
 
+    .wdk_dropdown_tree>.btn-group {
+        height: 40px;
+        border-radius: 2px;
+    }
+
+
     .wdk_dropdown_tree button {
         padding: 0 8px;
         height: auto;
@@ -238,7 +244,7 @@ div.wdk-field-edit div.wdk-field-container {
 
     .wdk_dropdown_tree button.btn.btn-default.dropdown-toggle,
     .wdk_dropdown_tree button {
-        border-radius: 4px;
+        border-radius: 2px;
     }
 
     .wdk_dropdown_tree button:first-child {
@@ -251,9 +257,14 @@ div.wdk-field-edit div.wdk-field-container {
     }
 
     .wdk_dropdown_tree .list_scroll {
-        border-left: 1px solid #8c8f94;
         left: 0;
     }
+
+    .wdk_dropdown_tree .list_container {
+        width: 100%;
+        border: 1px solid #8c8f94;
+        box-sizing: border-box;
+      }
 
     .wdk_dropdown_tree button.btn.btn-default.dropdown-toggle:last-child {
         border-top-left-radius: 0;
@@ -284,13 +295,13 @@ div.wdk-field-edit div.wdk-field-container {
         & i {
             position: absolute;
             left: 0;
-            margin-left: 5px;
+            margin-left: 11px;
             top: 50%;
             margin-top: -9px;
         }
 
         & i.fa-spin {
-            margin-left: 7px;
+            margin-left: 11px;
             margin-top: -7px;
         }
 
@@ -323,7 +334,7 @@ div.wdk-field-edit div.wdk-field-container {
             animation: wdk-spin 2s infinite linear;
             font-family: dashicons;
             font-size: 18px;
-            margin-left: 6px;
+            margin-left: 11px;
             margin-top: -9px;
         }
 
@@ -573,6 +584,18 @@ div.wdk-field-edit.inline {
 /* columns */
 
 .wdk-wrap {
+   .button-secondary,.button-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+
+        .dashicons {
+            line-height: 1 !important;
+        }
+      }
+
     .actions {
         margin-top: 0;
     }
@@ -804,7 +827,7 @@ div.wdk-field-edit.inline {
         width: 100%;
         margin: 0;
         box-shadow: none;
-        border-radius: 4px;
+        border-radius: 2px;
         border: 1px solid #8c8f94;
         background-color: #fff;
         color: #2c3338;
@@ -1004,18 +1027,18 @@ div.wdk-field-edit.inline {
 
     .wdk_dropdown_tree button.btn.btn-default.dropdown-toggle,
     .wdk_dropdown_tree button {
-        border-radius: 4px;
+        border-radius: 0;
     }
 
     .wdk_dropdown_tree button:first-child {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
 
     .wdk_dropdown_tree .list_container .input-group {
-        border: 1px solid #8c8f94;
+        border-top: 1px solid #8c8f94;
     }
 
     .wdk_dropdown_tree .list_scroll {
@@ -1052,7 +1075,7 @@ div.wdk-field-edit.inline {
         & i {
             position: absolute;
             left: 0;
-            margin-left: 5px;
+            margin-left: 11px;
             top: 50%;
             margin-top: -9px;
         }
@@ -1139,14 +1162,23 @@ div.wdk-field-edit.inline {
 
 
 body .select2-container--default {
-
+    .select2-selection--multiple {
+        border-radius: 2px;
+      }
     &.select2-container--focus .select2-selection--multiple,
     & {
         border: 0;
         min-width: 150px;
+        width: 25em !important;
+        border-radius: 2px;
+    }
+
+    input {
+        min-height: 36px;
     }
 
     .select2-selection--multiple {
+        cursor: pointer;
         .select2-search__field {
             border: 0 !important;
         }
@@ -1165,6 +1197,27 @@ body .select2-container--default {
             padding: 0;
             display: block;
             padding: 2px 45px 2px 5px;
+
+
+        // Add dropdown arrow icon to the right side (mimicking select dropdown)
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                right: 0px;
+                top: 0;
+                width: 26px;
+                height: 100%;
+                pointer-events: none;
+                background: #fff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E") no-repeat right 5px top 55%;
+                  background-size: auto;
+                background-size: 16px 16px;
+                cursor: pointer;
+                border-left: 1px solid #8c8f94;
+                z-index: 10;
+            }
+            position: relative;
+
         }
     }
 }
@@ -1176,6 +1229,23 @@ body .wdk-field-edit.DROPDOWNMULTIPLE .select2-container--default .select2-selec
         display: flex;
         align-items: center;
         flex-wrap: wrap;
+
+        // Add dropdown arrow icon to the right side (mimicking select dropdown)
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+            transform: translateY(-50%);
+            background: url('data:image/svg+xml;utf8,<svg fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><polygon points="5,7 10,12 15,7"/></svg>') no-repeat center center;
+            background-size: 16px 16px;
+        }
+        position: relative;
+
 
         li.select2-selection__choice {
             padding: 1px 6px;
@@ -1366,7 +1436,7 @@ body .select2-container--default.select2-container--focus .select2-selection--mu
     margin-top: 6px;
     border: 1px solid #c3c4c7;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-    border-radius: 4px;
+    border-radius: 0;
     border: 1px dashed #8c8f94;
     background-color: #fff;
 
@@ -1381,7 +1451,7 @@ body .select2-container--default.select2-container--focus .select2-selection--mu
         min-width: initial;
         margin: 0px 15px 15px 0px;
         cursor: pointer;
-        border-radius: 4px;
+        border-radius: 0;
         border: 1px solid #c3c4c7;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
         background: #fff;
@@ -1611,6 +1681,113 @@ body .select2-container--default.select2-container--focus .select2-selection--mu
     }
 }
 
-.tribute-container {
-    margin-top: 20px;
-  }
+.wdk-listing-toolbar {
+    --borded-radius: 3px;
+    --border-color: #ccd0d4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 25px;
+    background: #f8fafc;
+    border-radius: var(--borded-radius);
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.06);
+    padding: 15px 21px;
+    border-radius: var(--borded-radius);
+    .wdk-toolbar-left,
+    .wdk-toolbar-right {
+        flex: 0 0 auto;
+        a.button {
+            padding: 0 9px;
+            border-radius: var(--borded-radius);
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+            box-shadow: 0 1px 4px rgba(44,62,80,0.08);
+            &:hover, &:focus {
+                background: #e8eef7;
+                color: #2271b1;
+                box-shadow: 0 3px 12px rgba(44,62,80,0.12);
+            }
+        }
+    }
+
+    .wdk-toolbar-search {
+        position: relative;
+        width: 200px;
+        max-width: 100%;
+        min-width: 150px;
+        display: flex;
+        align-items: center;
+
+        input {
+            width: 100%;
+            padding: 9px 14px;
+            border-radius: var(--borded-radius);
+            border: 1px solid var(--border-color);
+            background: #fff;
+            font-size: 15px;
+            line-height: 1.3;
+            transition: border 0.15s, box-shadow 0.15s;
+            box-shadow: 0 1px 4px rgba(44,62,80,0.03);
+            &:focus {
+                border-color: #2271b1;
+                outline: none;
+                box-shadow: 0 2px 8px rgba(34,113,177,0.09);
+            }
+        }
+
+        .wdk-search-results {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 8px);
+            background: #fff;
+            border: 1px solid #ccd0d4;
+            border-radius: 6px;
+            box-shadow: 0 4px 18px rgba(44,62,80,0.11);
+            max-height: 340px;
+            overflow-y: auto;
+            z-index: 1001;
+
+            .wdk-search-item {
+                display: block;
+                padding: 12px 18px;
+                text-decoration: none;
+                color: #222f3e;
+                border-bottom: 1px solid #f2f4f8;
+                transition: background 0.13s, color 0.13s;
+                &:last-child {
+                    border-bottom: none;
+                }
+                &:hover, &:focus {
+                    background: #f0f6fb;
+                    color: #186dac;
+                }
+            }
+
+            .wdk-search-loading,
+            .wdk-search-empty {
+                padding: 11px 16px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: #888fa1;
+                font-size: 15px;
+                background: #f8fafc;
+            }
+
+            .wdk-search-empty {
+                justify-content: flex-start;
+                font-style: italic;
+                color: #b0b4bb;
+            }
+        }
+    }
+    .spinner.is-active {
+        float: none;
+        margin: 0;
+        vertical-align: middle;
+        position: relative;
+        top: 2px;
+        left: 6px;
+    }
+}

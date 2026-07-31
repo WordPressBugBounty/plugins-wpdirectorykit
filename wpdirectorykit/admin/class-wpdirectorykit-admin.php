@@ -217,6 +217,12 @@ class Wpdirectorykit_Admin
         if (isset($_POST['page'])) $page = sanitize_text_field($_POST['page']);
         if (isset($_POST['function'])) $function = sanitize_text_field($_POST['function']);
 
+        /* protect access only to ajax controller */
+		if($page != 'wdk_frontendajax' && $page != 'wdk_backendajax' && $page != 'wdk_fields') {
+			exit(esc_html__('Access denied','wdk-bookings'));
+		} 
+
+
         $Winter_MVC_WDK->load_controller($page, $function, array());
     }
 

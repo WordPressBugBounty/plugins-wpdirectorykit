@@ -167,6 +167,14 @@ class Settings_m extends Winter_MVC_Model {
                 'field_type' => 'CHECKBOX', 
                 'rules' => '', 
             ),
+            array(
+                'field' => 'wdk_disable_outline_on_focus', 
+                'field_label' => __('Disable outline on focus', 'wpdirectorykit'), 
+                'hint' => __('Removes the outline style from form elements when they are focused.', 'wpdirectorykit'),
+                'field_type' => 'CHECKBOX', 
+                'rules' => '', 
+            ),
+       
         );
 
         $this->fields_list_tabs['templates'] []  = array(

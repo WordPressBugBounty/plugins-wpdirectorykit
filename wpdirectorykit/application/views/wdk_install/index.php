@@ -81,7 +81,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <?php echo __('Begin to install / activate','wpdirectorykit'); ?>
                     </a>
                 <?php else:?>
-                    <input type="submit" name="submit" id="submit" class="button button-primary event-ajax-indicator" value="<?php echo __('Import demo data', 'wpdirectorykit'); ?>"> <span class="wdk-ajax-indicator wdk-infinity-load color-primary dashicons dashicons-update-alt hidden" style="margin-top: 4px;margin-left: 4px;"></span>
+                    <input type="submit" name="submit" id="submit" class="button button-primary event-ajax-indicator" value="<?php echo __('Import demo data', 'wpdirectorykit'); ?>"> <span class="wdk-ajax-indicator wdk-infinity-load color-primary dashicons dashicons-update-alt hidden" style="margin-left: 4px;"></span>
                 <?php endif;?>
             
                 <?php endif;?>

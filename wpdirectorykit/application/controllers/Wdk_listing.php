@@ -192,24 +192,15 @@ class Wdk_listing extends Winter_MVC_Controller {
             $Winter_MVC_wdk_membership->model('subscription_m');
 
             $this->db->select('*');
-            $this->db->join($Winter_MVC_wdk_membership->subscription_m->_table_name.' ON '.$Winter_MVC_wdk_membership->subscription_m->_table_name.'.idsubscription = '.$Winter_MVC_wdk_membership->subscription_user_m->_table_name.'.subscription_id');
             $this->db->join($this->db->prefix.'wdk_categories ON '.$this->db->prefix.'wdk_categories.idcategory = '.$Winter_MVC_wdk_membership->subscription_m->_table_name.'.category_id', TRUE, 'LEFT');
             $this->db->join($this->db->prefix.'wdk_locations ON '.$this->db->prefix.'wdk_locations.idlocation = '.$Winter_MVC_wdk_membership->subscription_m->_table_name.'.location_id', TRUE, 'LEFT');
-            $this->db->where(array(
-                                '(date_expire   > \''.current_time( 'mysql' ).'\')'=>NULL,
-                                '(user_id = \''.wmvc_show_data('user_id_editor', $this->data['db_data'], false).'\')'=>NULL,
-                                '(status = \'ACTIVE\')'=>NULL,
-                                )
-                            );
-
-            $subscriptions = $Winter_MVC_wdk_membership->subscription_user_m->get();
+            $subscriptions = $Winter_MVC_wdk_membership->subscription_m->get();
             if (count($subscriptions) > 0) {
                 foreach($subscriptions as $subscription) {
-                    $this->data['subscriptions'][wdk_show_data('subscription_id',$subscription,'', TRUE, TRUE)] = wdk_show_data('subscription_id', $subscription,'', TRUE, TRUE)
+                    $this->data['subscriptions'][wdk_show_data('idsubscription', $subscription,'', TRUE, TRUE)] = wdk_show_data('idsubscription', $subscription,'', TRUE, TRUE)
                                                                                                 .', '.wdk_show_data('subscription_name', $subscription,'', TRUE, TRUE)
                                                                                                 .', '.wdk_show_data('location_title',$subscription, esc_html__('Any', 'wpdirectorykit'), TRUE, TRUE).' '. esc_html__('Location', 'wpdirectorykit')
-                                                                                                .', '.wdk_show_data('category_title',$subscription, esc_html__('Any', 'wpdirectorykit'), TRUE, TRUE).' '. esc_html__('Category', 'wpdirectorykit')
-                                                                                                .'('.wdk_get_date(wdk_show_data('date_expire', $subscription,'', TRUE, TRUE)).')';
+                                                                                                .', '.wdk_show_data('category_title',$subscription, esc_html__('Any', 'wpdirectorykit'), TRUE, TRUE).' '. esc_html__('Category', 'wpdirectorykit');
                 }
             }
         }

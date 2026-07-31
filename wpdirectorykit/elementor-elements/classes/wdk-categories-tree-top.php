@@ -133,7 +133,7 @@ class WdkCategoriesTreeTop extends WdkElementorBase {
             $categories_ids = array();
             foreach($this->data['settings']['primary_conf_custom_results'] as $category) {
                 if(isset($category['category_id']) && !empty($category['category_id'])) {
-                    $categories_ids [] = $category['category_id'];
+                    $categories_ids [] = (int)$category['category_id'];
                 }
             }
             /* where in */
@@ -170,7 +170,7 @@ class WdkCategoriesTreeTop extends WdkElementorBase {
                 $categories_ids = array();
                 foreach($this->data['settings']['secondary_conf_custom_results'] as $category) {
                     if(isset($category['category_id']) && !empty($category['category_id'])) {
-                        $categories_ids [] = $category['category_id'];
+                        $categories_ids [] = (int)$category['category_id'];
                     }
                 }
                 /* where in */

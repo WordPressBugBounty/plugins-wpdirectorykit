@@ -4,11 +4,18 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly;
 class Wdk_fields extends Winter_MVC_Controller {
 
 	public function __construct(){
+            
+        if ( ! current_user_can('administrator') ) {
+            wp_die( __('You do not have sufficient permissions to access this page.') );
+        }
+        
 		parent::__construct();
 	}
     
 	public function index()
 	{
+
+
         $this->load->model('field_m');
 
         $this->data['fields'] = $this->field_m->get();
@@ -256,11 +263,16 @@ class Wdk_fields extends Winter_MVC_Controller {
     {
         $this->load->model('field_m');
 
-        $data_fields_list = $this->input->post_get('data_fields_list');
-        
+        $data_fields_list = sanitize_text_field($this->input->post_get('data_fields_list'));
 
-        $splitted = explode(';', $data_fields_list);
+        // Verify the nonce before proceeding
+        $nonce = $this->input->post_get('wdk_fields_nonce');
+        if (empty($nonce) || !wp_verify_nonce($nonce, 'wdk_fields_save_order')) {
+            wp_send_json_error(array('message' => __('Invalid security token (nonce).', 'wpdirectorykit')), 403);
+            exit();
+        }
 
+        $splitted = explode(';', preg_replace('/[^0-9;]/', '', $data_fields_list));
         $values = array();
         $order_index = 1;
         

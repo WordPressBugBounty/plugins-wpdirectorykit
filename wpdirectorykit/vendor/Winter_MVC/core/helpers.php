@@ -1152,7 +1152,7 @@ function wmvc_xss_clean($data)
     $data = preg_replace('#</*\w+:\w[^>]*+>#i', '', $data);
     $data = preg_replace("/(\b1=1\b|\) OR\b)/", "", $data);
     $data = preg_replace("/alert\(/", "", $data);
-    
+
     do
     {
         // Remove really unwanted tags
@@ -1408,9 +1408,6 @@ function wmvc_download_file($url, $save_file_loc, $data = array())
         //exit(curl_error($ch));
     }
 
-    // Closes a cURL session and frees all resources 
-    curl_close($ch); 
-    
     // Close file 
     fclose($fp); 
 
@@ -1463,7 +1460,6 @@ function wmvc_api_call($method, $url, $data, $headers = false){
     // EXECUTE:
     $result = curl_exec($curl);
     if(!$result){return FALSE;}
-    curl_close($curl);
     return $result;
 }
 

@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
     <br />
     <img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/change_currency.jpg" />
-    <br /><br />
+    <br />
     <a href="https://wpdirectorykit.com/documentation/" class="button button-primary xl" target="_blank"><?php echo __('Please check also other documentation guides', 'wpdirectorykit'); ?></a>
-    <br /><br />
+    <br />
     <a href="https://www.youtube.com/channel/UCTO1oMn1NOO8sJVUeaDytIA" class="button button-primary xl" target="_blank"><?php echo __('Or video tutorials on YouTube', 'wpdirectorykit'); ?></a>
     <br />
 </div>

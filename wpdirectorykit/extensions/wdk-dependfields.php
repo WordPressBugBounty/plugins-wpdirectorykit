@@ -99,7 +99,7 @@ class WdkDependfields
                             <?php echo __('Visible fields','wpdirectorykit'); ?>
                         </h3>
                         <a href="#" class="wdk-mr-5 button button-secondary wdk_copy_on_subcategories" data-category="<?php echo esc_attr(wmvc_show_data('idcategory', $data));?>" data-wpnonce="<?php echo wp_create_nonce('wdk_depend_copy_on_subcategories');?>">
-                            <span class="dashicons dashicons-admin-page" style="margin-top: 4px;"></span>  <?php echo __('Copy on subcategories','wpdirectorykit'); ?>                    
+                            <span class="dashicons dashicons-admin-page"></span>  <?php echo __('Copy on subcategories','wpdirectorykit'); ?>                    
                         </a>
                     </div>
                     <div class="inside">

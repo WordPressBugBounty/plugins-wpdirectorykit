@@ -28,16 +28,16 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php endif;?>
 
             <div class="wdk-tabs-navs">
-                <label for="wdk_tab_general"<?php if(!wmvc_show_data('wdk_tabs',$_POST, false) || wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_general'):?> class="active" <?php endif;?>><?php echo esc_html__('General','wpdirectorykit');?></label>
-                <label for="wdk_tab_apis" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_apis'):?> class="active" <?php endif;?>><?php echo esc_html__('APIs','wpdirectorykit');?></label>
-                <label for="wdk_tab_templates" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_templates'):?> class="active" <?php endif;?>><?php echo esc_html__('Layout','wpdirectorykit');?></label>
-                <label for="wdk_tab_fields" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_fields'):?> class="active" <?php endif;?>><?php echo esc_html__('Fields','wpdirectorykit' );?></label>
-                <label for="wdk_tab_tools" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_tools'):?> class="active" <?php endif;?>><?php echo esc_html__('Tools','wpdirectorykit' );?></label>
-                <label for="wdk_tab_autosuggestion" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_autosuggestion'):?> class="active" <?php endif;?>><?php echo esc_html__('Autosuggestion','wpdirectorykit' );?></label>
+                <label for="wdk_tab_general"<?php if(!wmvc_show_data('wdk_tabs',$_REQUEST, false) || wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_general'):?> class="active" <?php endif;?>><?php echo esc_html__('General','wpdirectorykit');?></label>
+                <label for="wdk_tab_apis" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_apis'):?> class="active" <?php endif;?>><?php echo esc_html__('APIs','wpdirectorykit');?></label>
+                <label for="wdk_tab_templates" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_templates'):?> class="active" <?php endif;?>><?php echo esc_html__('Layout','wpdirectorykit');?></label>
+                <label for="wdk_tab_fields" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_fields'):?> class="active" <?php endif;?>><?php echo esc_html__('Fields','wpdirectorykit' );?></label>
+                <label for="wdk_tab_tools" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_tools'):?> class="active" <?php endif;?>><?php echo esc_html__('Tools','wpdirectorykit' );?></label>
+                <label for="wdk_tab_autosuggestion" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_autosuggestion'):?> class="active" <?php endif;?>><?php echo esc_html__('Autosuggestion','wpdirectorykit' );?></label>
                 <?php if(get_option('wdk_experimental_features')):?>
-                    <label for="wdk_tab_experimental" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_experimental'):?> class="active" <?php endif;?>><?php echo esc_html__('Experimental','wpdirectorykit' );?></label>
+                    <label for="wdk_tab_experimental" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_experimental'):?> class="active" <?php endif;?>><?php echo esc_html__('Experimental','wpdirectorykit' );?></label>
                 <?php endif;?>
-                <label for="wdk_tab_mails" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_mails'):?> class="active" <?php endif;?>><?php echo esc_html__('Emails','wpdirectorykit' );?></label>
+                <label for="wdk_tab_mails" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_mails'):?> class="active" <?php endif;?>><?php echo esc_html__('Emails','wpdirectorykit' );?></label>
                 
                 <?php do_action('wpdirectorykit/admin/settings/page/tabs', $db_data);?>
             </div>
@@ -49,39 +49,39 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <?php echo wdk_generate_fields($fields_list_tabs['general'], $db_data); ?>  
                         </div>
 
-                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_apis" value="wdk_tab_apis" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_apis'):?> checked="checked" <?php endif;?>>
+                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_apis" value="wdk_tab_apis" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_apis'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
                             <?php echo wdk_generate_fields($fields_list_tabs['apis'], $db_data); ?>  
                         </div>
 
-                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_templates" value="wdk_tab_templates" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_templates'):?> checked="checked" <?php endif;?>>
+                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_templates" value="wdk_tab_templates" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_templates'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
                             <?php echo wdk_generate_fields($fields_list_tabs['templates'], $db_data); ?>  
                         </div>
 
-                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_fields" value="wdk_tab_fields" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_fields'):?> checked="checked" <?php endif;?>>
+                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_fields" value="wdk_tab_fields" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_fields'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
                             <?php echo wdk_generate_fields($fields_list_tabs['fields'], $db_data); ?>  
                         </div>
                         
                         <?php if(get_option('wdk_experimental_features')):?>
-                            <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_experimental" value="wdk_tab_experimental" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_experimental'):?> checked="checked" <?php endif;?>>
+                            <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_experimental" value="wdk_tab_experimental" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_experimental'):?> checked="checked" <?php endif;?>>
                             <div class="wdk-tab">
                                 <?php echo wdk_generate_fields($fields_list_tabs['experimental'], $db_data); ?>  
                             </div>
                         <?php endif;?>
 
-                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_tools" value="wdk_tab_tools" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_tools'):?> checked="checked" <?php endif;?>>
+                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_tools" value="wdk_tab_tools" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_tools'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
                             <?php $this->view('wdk_settings/tabs/tab_tools', $data); ?>
                         </div>
 
-                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_autosuggestion" value="wdk_tab_autosuggestion" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_autosuggestion'):?> checked="checked" <?php endif;?>>
+                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_autosuggestion" value="wdk_tab_autosuggestion" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_autosuggestion'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
                             <?php echo wdk_generate_fields($fields_list_tabs['autosuggestion'], $db_data); ?>  
                         </div>
 
-                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_mails" value="wdk_tab_mails" <?php if(wmvc_show_data('wdk_tabs',$_POST) == 'wdk_tab_mails'):?> checked="checked" <?php endif;?>>
+                        <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_mails" value="wdk_tab_mails" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_mails'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
                             <?php $this->view('wdk_settings/tabs/tab_emails', $data); ?>
                         </div>

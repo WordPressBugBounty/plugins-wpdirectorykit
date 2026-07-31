@@ -131,7 +131,7 @@ class WdkCategoriesGrid extends WdkElementorBase {
             $categories_ids = array();
             foreach($this->data['settings']['conf_custom_results'] as $category) {
                 if(isset($category['category_id']) && !empty($category['category_id'])) {
-                    $categories_ids [] = $category['category_id'];
+                    $categories_ids [] = (int)$category['category_id'];
                 }
             }
             
@@ -150,7 +150,7 @@ class WdkCategoriesGrid extends WdkElementorBase {
         } else {
             $order_by = NULL;
             if(!empty($this->data['settings']['conf_order_by']))
-                $order_by = $this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'];
+                $order_by = wdk_esc_sql($this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'], true);
 
             $where = array();
             if (!empty($this->data['settings']['only_root_enable']) && $this->data['settings']['only_root_enable'] == 'yes') {

@@ -164,6 +164,9 @@ class Wpdirectorykit {
         // Load Blocks
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/blocks-init.php';
 
+        // Load Blocks
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'rest_api.php';
+
 		$this->loader = new Wpdirectorykit_Loader();
 		//global $Winter_MVC;
 		

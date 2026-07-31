@@ -37,20 +37,20 @@ $results_page = get_permalink($results_page);
                 <div class="wdk-col">
                     <div class="wdk-locations-card-cover">
                         <?php if(wmvc_show_data('layout_image_type', $settings) == 'icon'):?>
-                            <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo wmvc_show_data('location_title', $value);?>" class="wdk-icon">
+                            <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('location_title', $value));?>" class="wdk-icon">
                         <?php else:?>
-                            <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'image_id', 'image_path'));?>" alt="<?php echo wmvc_show_data('location_title', $value);?>" class="wdk-image">
+                            <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'image_id', 'image_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('location_title', $value));?>" class="wdk-image">
                         <?php endif;?>
                         <div class="wdk-locations-card-body">
                             <div class="wdk-action-left">
                                 <?php if(wmvc_show_data('content_icon_type', $settings) == 'image' && wdk_image_src($value, 'full', NULL,'icon_id')):?>
-                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo wmvc_show_data('category_title', $value);?>">
+                                    <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>">
                                 <?php elseif(wmvc_show_data('content_icon_type', $settings) == 'font'):?>
                                     <i class="<?php echo wmvc_show_data('font_icon_code', $value,'');?>"></i>
                                 <?php endif;?>
                             </div>
                             <div class="wdk-left-content">
-                                <h3 class="wdk-title"><?php echo wmvc_show_data('location_title', $value);?></h3>
+                                <h3 class="wdk-title"><?php echo esc_html(wmvc_show_data('location_title', $value));?></h3>
                                 <span class="wdk-listings-count">
                                     <?php
                                         echo esc_html(wdk_sprintf(_nx(

@@ -1671,7 +1671,7 @@ function wdk_messages_prepare_search_query_GET($columns = array(), $model_name =
         if(isset($_GET_clone['order_by']))
         {
             $_GET_clone['order_by'] = str_replace('post_id', $WMVC->db->prefix.'wdk_messages.post_id', $_GET_clone['order_by']);
-            $WMVC->db->order_by(wdk_esc_sql(sanitize_text_field($_GET_clone['order_by'])));
+            $WMVC->db->order_by(wdk_esc_sql(sanitize_text_field($_GET_clone['order_by']), true));
         }
 
     }
@@ -3284,7 +3284,7 @@ if ( ! function_exists('wdk_treefield_select_ajax'))
                     $ids = array();
                     foreach($selected as $selected_item) {
                         if(!empty($selected_item)) {
-                            $ids [] = $selected_item;
+                            $ids [] = (int) $selected_item;
                         }
                     }
                     
@@ -5298,8 +5298,8 @@ if ( ! function_exists('is_wdk_related_validation'))
 	}
 
     if(!function_exists('wdk_esc_sql')) {
-        function wdk_esc_sql ($value = '') {
-            return esc_sql(trim(preg_replace([
+        function wdk_esc_sql($value = '', $strict = false) {
+            $patterns = [
                 '/\bselect\b/i',
                 '/\binsert\b/i',
                 '/\bupdate\b/i',
@@ -5315,12 +5315,26 @@ if ( ! function_exists('is_wdk_related_validation'))
                 '/--/',
                 '/#/i',
                 '/\/\*/',
-    
+
                 // EXTRA BLOCK YOU REQUESTED
                 '/\\\\/',     // remove backslash \
                 '/\|/',       // remove |
                 '/%/',        // remove %
-            ], '', sanitize_text_field($value))));
+            ];
+
+            // If strict mode is enabled, block additional patterns
+            if ($strict === true) {
+                $strict_patterns = [
+                    '/\bif\b\s*\(/i',
+                    '/\bord\b/i',
+                    '/\bsubstr\s*\(/i',
+                    '/\bschema\s*\(\)/i',
+                    '/@@version/i',
+                ];
+                $patterns = array_merge($patterns, $strict_patterns);
+            }
+
+            return esc_sql(trim(preg_replace($patterns, '', sanitize_text_field($value))));
         }
     }
 
@@ -5368,5 +5382,17 @@ if ( ! function_exists('is_wdk_related_validation'))
     }
 
 
+    if ( ! function_exists('wdk_filter_viber_phone'))
+        {
+            // Validation phone for viber
+            /**
+            * @param string $value phone in string
+            * @return strings +xxx
+            */
+            function wdk_filter_viber_phone($value = '') {
+                $value = str_replace(array(' ','-','(',')'),'',$value);
+                return (strpos($value, '+') !== 0) ? '+' . $value : $value;
+            }	
+        }
 
 ?>

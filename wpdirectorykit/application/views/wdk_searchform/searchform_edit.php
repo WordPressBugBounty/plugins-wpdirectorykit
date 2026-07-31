@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wrap wdk-wrap">
 
     <h1 class="wp-heading-inline"><?php echo __('Search Form Designer','wpdirectorykit'); ?></h1>
-    <br /><br />
+    <br />
 
     <div class="wdk-body">
         <form method="post" action="<?php echo esc_url(wmvc_current_edit_url()); ?>" novalidate="novalidate">

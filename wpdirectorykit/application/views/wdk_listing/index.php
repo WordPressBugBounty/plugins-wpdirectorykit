@@ -15,7 +15,7 @@ if (! defined('ABSPATH')) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap wdk-wrap">
     <h1 class="wp-heading-inline"><?php echo __('Add/Edit Listing', 'wpdirectorykit'); ?></h1>
-    <br /><br />
+    <br />
 
     <?php if (!function_exists('run_wdk_membership')): ?>
         <div class="notice notice-success">
@@ -27,6 +27,9 @@ if (! defined('ABSPATH')) {
             </p>
         </div>
     <?php endif; ?>
+
+    <?php $this->view('wdk_listing/inc/quick-nav-listings',$data); ?>
+
     <div class="wdk-body">
         <form method="post" class="form_listing form_listing_ai" action="<?php echo esc_url(wmvc_current_edit_url()); ?>" enctype="multipart/form-data" novalidate="novalidate">
             <?php wp_nonce_field('wdk-listing-edit_' . wmvc_show_data('ID', $db_data, 0), '_wpnonce'); ?>
@@ -71,7 +74,7 @@ if (! defined('ABSPATH')) {
                         <?php if ($calendar_id): ?>
                             <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk-bookings-calendar&function=edit&id=" . esc_attr($calendar_id)); ?>"
                                 class="wdk-mr-5 button button-secondary alignright">
-                                <span class="dashicons dashicons-calendar" style="margin-top: 4px;"></span> <?php echo __('Edit Calendar', 'wpdirectorykit') ?>
+                                <span class="dashicons dashicons-calendar"></span> <?php echo __('Edit Calendar', 'wpdirectorykit') ?>
                             </a>
                         <?php endif; ?>
 
@@ -92,9 +95,9 @@ if (! defined('ABSPATH')) {
                             <?php else: ?>
                             class="wdk-mr-5 button button-secondary alignright"
                             <?php endif; ?>>
-                            <span class="dashicons dashicons-admin-page" style="margin-top: 4px;"></span> <?php echo __('Duplicate Listing', 'wpdirectorykit') ?>
+                            <span class="dashicons dashicons-admin-page"></span> <?php echo __('Duplicate Listing', 'wpdirectorykit') ?>
                         </a>
-                        <a href="<?php echo get_permalink(wmvc_show_data('ID', $db_data)); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" class="button button-secondary alignright" target="_blank" style="margin-right:15px;"><span class="dashicons dashicons-visibility" style="margin-top: 4px;"></span> <?php echo __('View listing', 'wpdirectorykit'); ?></a>
+                        <a href="<?php echo get_permalink(wmvc_show_data('ID', $db_data)); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" class="button button-secondary alignright" target="_blank" style="margin-right:15px;"><span class="dashicons dashicons-visibility" ></span> <?php echo __('View listing', 'wpdirectorykit'); ?></a>
                     <?php endif; ?>
                 </div>
                 <div class="inside">
@@ -110,6 +113,7 @@ if (! defined('ABSPATH')) {
                     }
                     $form->messages('class="alert alert-danger"', $success_message);
                     ?>
+                
                     <div class="wdk-side-content">
                         <div class="wdk-col main">
                             <table class="form-table" role="presentation">
@@ -509,7 +513,7 @@ if (! defined('ABSPATH')) {
                                             <th scope="row"><label for="subscription_id"><?php echo __('Membership Subscription', 'wpdirectorykit'); ?></label></th>
                                             <td>
                                                 <?php
-                                                echo wmvc_select_option('subscription_id', $subscriptions, wmvc_show_data('subscription_id', $db_data, ''), "id='subscription_id'", __('Not Selected', 'wpdirectorykit'));
+                                                echo wmvc_select_option('subscription_id', $subscriptions, wmvc_show_data('subscription_id', $db_data, ''), "id='subscription_id' class='regular-text'", __('Not Selected', 'wpdirectorykit'));
                                                 ?>
                                             </td>
                                         </tr>
@@ -761,21 +765,63 @@ wp_enqueue_script('jquery-ui-sortable', false, array('jquery'));
             $('#input_address').on('change keyup', function(e) {
                 clearTimeout(wdk_timerMap);
                 wdk_timerMap = setTimeout(function() {
-                    $.get('https://nominatim.openstreetmap.org/search?format=json&q=' + $('#input_address').val(), function(data) {
-                        if (data.length && typeof data[0]) {
-                            var {
-                                lat,
-                                lon
-                            } = data[0];
-                            wdk_edit_map_marker.setLatLng([lat, lon]).update();
-                            wdk_edit_map.panTo(new L.LatLng(lat, lon));
-                            $('#input_lat').val(lat);
-                            $('#input_lng').val(lon);
-                        } else {
-                            wdk_log_notify('<?php echo esc_js(__('Address not found', 'wpdirectorykit')); ?>', 'error');
-                            return;
-                        }
-                    });
+                    var googleApiKey = '<?php echo esc_js(get_option('wdk_geo_google_api_key', '')); ?>';
+                    var address = $('#input_address').val();
+
+                    // If we have a Google API key, try Google Geocoding FIRST
+                    if (googleApiKey) {
+                        $.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent(address) + '&key=' + googleApiKey, function(googleData) {
+                            if (googleData.status === "OK" && googleData.results.length > 0) {
+                                var location = googleData.results[0].geometry.location;
+                                wdk_edit_map_marker.setLatLng([location.lat, location.lng]).update();
+                                wdk_edit_map.panTo(new L.LatLng(location.lat, location.lng));
+                                $('#input_lat').val(location.lat);
+                                $('#input_lng').val(location.lng);
+                            } else {
+                                // If not found by Google, try Nominatim
+                                $.get('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address), function(data) {
+                                    if (data.length && typeof data[0]) {
+                                        var {
+                                            lat,
+                                            lon
+                                        } = data[0];
+                                        wdk_edit_map_marker.setLatLng([lat, lon]).update();
+                                        wdk_edit_map.panTo(new L.LatLng(lat, lon));
+                                        $('#input_lat').val(lat);
+                                        $('#input_lng').val(lon);
+                                    } else {
+                                        wdk_log_notify('<?php echo esc_js(__('Address not found', 'wpdirectorykit')); ?>', 'error');
+                                    }
+                                });
+                            }
+                        }).fail(function() {
+                            wdk_log_notify('<?php echo esc_js(__('Google Geocoding API request failed.', 'wpdirectorykit')); ?>', 'error');
+                        });
+                    } else {
+                        // If no API key, use Nominatim as fallback/only method
+                        $.get('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address), function(data) {
+                            if (data.length && typeof data[0]) {
+                                var {
+                                    lat,
+                                    lon
+                                } = data[0];
+                                wdk_edit_map_marker.setLatLng([lat, lon]).update();
+                                wdk_edit_map.panTo(new L.LatLng(lat, lon));
+                                $('#input_lat').val(lat);
+                                $('#input_lng').val(lon);
+                            } else {
+                                wdk_log_notify('<?php echo esc_js(__('Address not found', 'wpdirectorykit')); ?>', 'error');
+                                if ($('#input_address').parent().find('[data-alert="google"]').length === 0) {
+                                    $('#input_address').parent().append(`<div class="alert alert-info" data-alert="google"><?php echo wdk_sprintf(
+                                        esc_html__('Address not found, try enter google maps api key for more accurate results %1$s[here]%2$s','wpdirectorykit'), 
+                                        '<a target="_blank" href="'.esc_url(admin_url("admin.php?page=wdk_settings&wdk_tabs=wdk_tab_apis#wdk_geo_google_api_key")).'">','</a>'
+                                    );?></div>`);
+                                }
+                                return;
+                            }
+                        });
+                    }
+      
                 }, 1000);
             });
 
