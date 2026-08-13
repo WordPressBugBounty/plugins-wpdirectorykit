@@ -31,7 +31,7 @@ if(empty($lng) || empty($lat)) {
                 <input class="input_text" type="hidden" name="address" value="<?php echo esc_attr(wdk_field_value('address', $wdk_listing_id));?>" />
                 <input class="input_text" type="hidden" name="gps" value="<?php echo esc_attr($lat.','.$lng);?>" />
                 <div class="wdk-field-group">
-                    <input class="input_text" type="text" placeholder="<?php echo esc_html__(wmvc_show_data('text_suggestion_route_placeholder', $settings), 'wpdirectorykit');?>" name="route_from" />
+                    <input class="input_text" type="text" placeholder="<?php echo esc_attr__(wmvc_show_data('text_suggestion_route_placeholder', $settings), 'wpdirectorykit');?>" name="route_from" />
                 </div>
                 <div class="wdk-field-group">
                     <button type="submit" class="wdk-btn"><?php echo esc_html__(wmvc_show_data('text_suggestion_route', $settings), 'wpdirectorykit');?></button>
@@ -247,7 +247,7 @@ if (!$is_edit_mode)
         <?php elseif($font_icon && empty($font_class)):?> 
             var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wdk_field_value('category_id', $wdk_listing_id));?>""><div class="front wdk_face"><?php echo wdk_viewe($font_icon);?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php else:?> 
-            var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wdk_field_value('category_id', $wdk_listing_id));?>""><div class="front wdk_face"><i class="<?php echo esc_html($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
+            var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wdk_field_value('category_id', $wdk_listing_id));?>""><div class="front wdk_face"><i class="<?php echo esc_attr($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php endif;?>
 
         <?php if($settings['conf_custom_popup_enable'] == 'yes'):?>

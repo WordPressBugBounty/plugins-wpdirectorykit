@@ -101,8 +101,8 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
                 </label>
                 <?php foreach ($values as $key => $value):?>
                 <?php if(empty($value)) continue;?>
-                <input type="radio" name="field_<?php echo esc_attr($field_id);?>" id="<?php echo esc_html($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>" value="<?php echo esc_attr($value);?>" <?php if($field_value == $value):?>checked="checked"<?php endif;?>>
-                <label for="<?php echo esc_html($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>"><?php echo esc_html__($value, 'wpdirectorykit');?> 
+                <input type="radio" name="field_<?php echo esc_attr($field_id);?>" id="<?php echo esc_attr($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>" value="<?php echo esc_attr($value);?>" <?php if($field_value == $value):?>checked="checked"<?php endif;?>>
+                <label for="<?php echo esc_attr($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>"><?php echo esc_html__($value, 'wpdirectorykit');?> 
                     <?php if(wmvc_show_data('tabs_count', $settings) == 'yes'):?>
                         <span class="tab_count"><?php echo esc_html__(wmvc_show_data($value, $this->data['counts'][$field_id], 0), 'wpdirectorykit');?></span>
                     <?php endif;?>
@@ -170,13 +170,13 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
             </div>
         </form>
     </div>
-    <script>
+    <script>      
     jQuery(document).ready(function($) {
-        $('#wdk_el_<?php echo esc_html($id_element);?> #wdk-search-additional').on('click', function (e) {
+        jQuery('#wdk_el_<?php echo esc_html($id_element);?> #wdk-search-additional').on('click', function (e) {
             e.preventDefault();
-            if ($('#wdk_el_<?php echo esc_html($id_element);?> #wdk-form-additional').length) {
-                var addition = $('#wdk_el_<?php echo esc_html($id_element);?> #wdk-form-additional');
-                var form = $(this).closest('.wdk-search-form ');
+            if (jQuery('#wdk_el_<?php echo esc_html($id_element);?> #wdk-form-additional').length) {
+                var addition = jQuery('#wdk_el_<?php echo esc_html($id_element);?> #wdk-form-additional');
+                var form = jQuery(this).closest('.wdk-search-form ');
                 form.toggleClass('open-form');
                 if (form.hasClass('open-form')) {
                     form.find("[name='wdk_search_additional_opened']").prop('checked', 'checked');
@@ -188,7 +188,7 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
             }
         })
 
-        $("form.wdk-result-page-notdefined").on('submit', function() {
+        jQuery("form.wdk-result-page-notdefined").on('submit', function() {
             wdk_log_notify('<?php echo esc_js(__('Results page not found, please configure results page', 'wpdirectorykit')); ?>', 'error');
             return false;
         });
@@ -246,16 +246,16 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
         }
 
         // On change value, change field style
-        $('#wdk_el_<?php echo esc_html($id_element);?>').find('input, select').each(function(i)
+        jQuery('#wdk_el_<?php echo esc_html($id_element);?>').find('input, select').each(function(i)
         {
-            $(this).on('change', function(){search_highlight($(this))});
-            search_highlight($(this));
+            jQuery(this).on('change', function(){search_highlight(jQuery(this))});
+            search_highlight(jQuery(this));
         })
         <?php if($is_edit_mode):?>
             wdk_select_init();
 
             if(typeof $.fn.fieldSliderRange == 'function' && typeof $.fn.ionRangeSlider == 'function') {
-                $('.wdk-slider-range-field').fieldSliderRange();
+                jQuery('.wdk-slider-range-field').fieldSliderRange();
             }
         <?php endif;?>
     });

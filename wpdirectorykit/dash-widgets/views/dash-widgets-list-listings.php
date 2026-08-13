@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <img src="<?php echo esc_url(wdk_image_src($listing, 'full'));?>" alt="<?php echo esc_attr(wdk_show_data('post_title', $listing, '', TRUE, TRUE));?>">
                             </a>
                         </td>
-                        <td class="title column-title page-title"  data-label="<?php echo esc_html__('Title','wpdirectorykit');?>" class="max-width">
+                        <td class="title column-title page-title"  data-label="<?php echo esc_attr__('Title','wpdirectorykit');?>" class="max-width">
                             <strong>
                                 <a class="row-title" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . wmvc_show_data('ID', $listing, '-')); ?>"><?php echo wmvc_show_data('post_title', $listing, '-'); ?></a>
                                 <?php if(!wmvc_show_data('is_activated', $listing, 0)): ?>
@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <?php endif; ?>
                             </strong>
                         </td>
-                        <td data-label="<?php echo esc_html__('Actions','wpdirectorykit');?>" class="actions_col check-column">
+                        <td data-label="<?php echo esc_attr__('Actions','wpdirectorykit');?>" class="actions_col check-column">
                             <div class="nav">
                                 <a href="<?php echo esc_url($url); ?>" class="" target="_blank"><span class="dashicons dashicons-search"></span></a>
 

@@ -871,7 +871,7 @@ function wmvc_upload_media($field_name, $image_id)
     <!-- Your image container, which can be manipulated with js -->
     <div class="custom-img-container">
         <?php if ( $you_have_img ) : ?>
-            <img src="<?php echo esc_html($your_img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
+            <img src="<?php echo esc_attr($your_img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
         <?php endif; ?>
     </div>
     
@@ -890,7 +890,7 @@ function wmvc_upload_media($field_name, $image_id)
     <?php //endif; ?>
     
     <!-- A hidden input to set and post the chosen image id -->
-    <input class="logo_image_id" type="hidden" id="<?php echo esc_html(esc_html($field_name)); ?>" name="<?php echo esc_html($field_name); ?>" value="<?php echo esc_html($image_id); ?>" />
+    <input class="logo_image_id" type="hidden" id="<?php echo esc_attr(esc_html($field_name)); ?>" name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($image_id); ?>" />
     </div>
     
     <?php
@@ -958,7 +958,7 @@ function wmvc_upload_file($field_name, $file_id)
     <?php //endif; ?>
     
     <!-- A hidden input to set and post the chosen file id -->
-    <input class="file_id" type="hidden" id="<?php echo esc_html($field_name); ?>" name="<?php echo esc_html($field_name); ?>" value="<?php echo esc_html($file_id); ?>" />
+    <input class="file_id" type="hidden" id="<?php echo esc_attr($field_name); ?>" name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($file_id); ?>" />
     </div>
     
     <?php
@@ -1021,13 +1021,13 @@ function wmvc_upload_multiple($field_name, $image_ids='')
             $filetype = wp_check_filetype(str_replace(WP_CONTENT_URL, WP_CONTENT_DIR, $img_src));
             if(strpos($filetype['type'], 'video') !== FALSE):?>
                 <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
-                    <video src="<?php echo esc_html($img_src); ?>" controls alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"></video>
+                    <video src="<?php echo esc_attr($img_src); ?>" controls alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"></video>
                     <a href="#" class="remove"></a>
                     <span href="#" class="move"><span class="dashicons dashicons-editor-expand"></span></span>
                 </div>
             <?php else:?>
                 <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
-                    <img src="<?php echo esc_html($img_src); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
+                    <img src="<?php echo esc_attr($img_src); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
                     <a href="#" class="remove"></a>
                 </div>
             <?php endif;?>
@@ -1052,7 +1052,7 @@ function wmvc_upload_multiple($field_name, $image_ids='')
     <?php //endif; ?>
     
     <!-- A hidden input to set and post the chosen image id -->
-    <input class="logo_image_id" type="hidden" id="<?php echo esc_html(esc_html($field_name)); ?>" name="<?php echo esc_html($field_name); ?>" value="<?php echo esc_html($image_ids); ?>" />
+    <input class="logo_image_id" type="hidden" id="<?php echo esc_attr(esc_html($field_name)); ?>" name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($image_ids); ?>" />
     </div>
     <?php
     $custom_js ='';

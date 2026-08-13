@@ -47,7 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             </tr>
                         </tbody>
                     </table>
-                    <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_html__('Import Locations','wpdirectorykit'); ?>">
+                    <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_attr__('Import Locations','wpdirectorykit'); ?>">
                 </form>
             </div>
         </div>

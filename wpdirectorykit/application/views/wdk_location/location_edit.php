@@ -108,7 +108,7 @@ if (! defined('ABSPATH')) {
                             </tr>
                         </tbody>
                     </table>
-                    <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_html__('Save Changes', 'wpdirectorykit'); ?>">
+                    <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_attr__('Save Changes', 'wpdirectorykit'); ?>">
                 </form>
             </div>
         </div>

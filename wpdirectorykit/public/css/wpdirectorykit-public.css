@@ -1248,6 +1248,24 @@ body .wdk_alert a {
   cursor: pointer;
 }
 
+.wdk-field button.wdk-ai-search {
+  color: #fff;
+  font-family: "Montserrat";
+  font-weight: 400;
+  background-color: #F97316;
+  height: 46px;
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  padding: 0 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.wdk-field button.wdk-ai-search:hover {
+  background-color: #EA580C;
+}
+
 .wdk-field button.wdk-search-additional-btn {
   background-color: #0052a2;
 }
@@ -1980,6 +1998,132 @@ body.wdk_disable_outline_on_focus a:focus-visible, body.wdk_disable_outline_on_f
 body.wdk_disable_outline_on_focus a:focus-visible, body.wdk_disable_outline_on_focus select:focus-visible, body.wdk_disable_outline_on_focus button:focus-visible, body.wdk_disable_outline_on_focus .wl-menu-toggle:focus-visible, body.wdk_disable_outline_on_focus a:focus, body.wdk_disable_outline_on_focus .wl-menu-toggle:focus, body.wdk_disable_outline_on_focus select:focus, body.wdk_disable_outline_on_focus button:focus,
 body.wdk_disable_outline_on_focus * {
   outline: none !important;
+}
+
+/* Popup */
+.jconfirm.wdk-ai-search-popup .jconfirm-box {
+  width: 600px;
+  max-width: 95%;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.jconfirm.wdk-ai-search-popup .form-alerts:not(:empty) {
+  margin-bottom: 15px;
+  display: block;
+  width: 100%;
+}
+
+.jconfirm.wdk-ai-search-popup .jconfirm-content-pane,
+.jconfirm.wdk-ai-search-popup .jconfirm-box .jconfirm-buttons .wdk-ai-search,
+.jconfirm.wdk-ai-search-popup .btn {
+  margin: 0 !important;
+}
+
+.jconfirm.wdk-ai-search-popup .jconfirm-buttons,
+.jconfirm.wdk-ai-search-popup div.jconfirm-title-c {
+  padding: 0 !important;
+}
+
+.jconfirm.wdk-ai-search-popup .jconfirm-box .jconfirm-buttons,
+.jconfirm.wdk-ai-search-popup .jconfirm-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.jconfirm.wdk-ai-search-popup textarea.form-control {
+  display: block;
+  width: 100%;
+  min-height: 150px;
+  box-sizing: border-box;
+  padding: 18px 20px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #334155;
+  background: #f8fafc;
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
+  outline: none;
+  resize: vertical;
+  transition: all .2s ease;
+}
+
+.jconfirm.wdk-ai-search-popup textarea.form-control::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+.jconfirm.wdk-ai-search-popup textarea.form-control:focus {
+  background: #fff;
+  border-color: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}
+
+.jconfirm.wdk-ai-search-popup textarea.form-control.fpai-error {
+  background: #fff4f4;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.16);
+}
+
+.jconfirm.wdk-ai-search-popup form {
+  margin: 0;
+}
+
+.jconfirm.wdk-ai-search-popup .form-group {
+  margin: 0;
+}
+
+.jconfirm.wdk-ai-search-popup .jconfirm-box .jconfirm-buttons .wdk-ai-search {
+  width: 100%;
+  height: 46px;
+  margin-top: 18px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: background-color .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+
+.jconfirm.wdk-ai-search-popup .jconfirm-box .jconfirm-buttons .wdk-ai-search:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  transform: translateY(0);
+}
+
+.jconfirm.wdk-ai-search-popup .jconfirm-box .jconfirm-buttons .wdk-ai-close {
+  width: 100%;
+  height: 46px;
+  padding: 0 30px;
+  color: #475569;
+  background: #f1f5f9;
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.jconfirm.wdk-ai-search-popup .jconfirm-box .jconfirm-buttons .wdk-ai-close:hover {
+  color: #334155;
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+body.wdk-popup-open {
+  overflow: hidden;
 }
 
 /* animations */

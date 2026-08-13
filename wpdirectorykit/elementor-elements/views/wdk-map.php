@@ -307,7 +307,7 @@ if (!$is_edit_mode)
         <?php elseif($font_icon && empty($font_class)):?> 
             var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wmvc_show_data('category_id', $listing));?>"><div class="front wdk_face"><?php echo wdk_viewe($font_icon);?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php else:?> 
-            var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wmvc_show_data('category_id', $listing));?>"><div class="front wdk_face"><i class="<?php echo esc_html($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
+            var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wmvc_show_data('category_id', $listing));?>"><div class="front wdk_face"><i class="<?php echo esc_attr($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php endif;?>
         
         wdk_markers.push(wdk_generate_marker_ajax_popup('<?php echo esc_url(admin_url('admin-ajax.php'));?>','<?php echo esc_html(wmvc_show_data('post_id', $listing));?>','<?php echo esc_html($listing_lat);?>','<?php echo esc_html($listing_lng);?>',innerMarker, wdk_jpopup_customOptions, auto_marker_size

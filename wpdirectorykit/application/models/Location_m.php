@@ -15,10 +15,46 @@ class Location_m extends Winter_MVC_Model {
     protected $_primary_filter = 'intval';
     public $form_admin = array();
     public $fields_list = NULL;
+    public $allowedOrderBy = array(
+        'idlocation',
+        'parent_id',
+        'page_id',
+        'lang_code',
+        'date',
+        'parent_path',
+        'order_index',
+        'level',
+        'icon_id',
+        'image_id',
+        'font_icon_code',
+        'code',
+        'hubspot_id',
+        'location_title',
+        'marker_image_id',
+        'level_0_id',
+        'icon_path',
+        'image_path',
+        'marker_image_path',
+        'location_color',
+        'titles_for_search'
+    );
     
 	public function __construct(){
         parent::__construct();
+        
+        // Add allowedOrderBy with table + prefix format
+        $table_prefix = $this->db->prefix . $this->_table_name . '.';
+        $updatedAllowedOrderBy = array();
+        foreach ($this->allowedOrderBy as $col) {
+            $updatedAllowedOrderBy[] = $col;
+            $updatedAllowedOrderBy[] = $table_prefix . $col;
+        }
+        $this->allowedOrderBy = array_unique($updatedAllowedOrderBy);
 	}
+
+    public function getAllowedOrderBy() {
+        return $this->allowedOrderBy;
+    }
 
     /* [START] For dynamic data table */
     

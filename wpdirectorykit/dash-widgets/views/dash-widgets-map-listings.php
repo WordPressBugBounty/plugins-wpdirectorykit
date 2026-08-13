@@ -95,7 +95,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <?php elseif($font_icon && empty($font_class)):?> 
             var innerMarker = '<div class="wdk_marker-container"><div class="front wdk_face"><?php echo wdk_viewe($font_icon);?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php else:?> 
-            var innerMarker = '<div class="wdk_marker-container"><div class="front wdk_face"><i class="<?php echo esc_html($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
+            var innerMarker = '<div class="wdk_marker-container"><div class="front wdk_face"><i class="<?php echo esc_attr($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php endif;?>
         wdk_markers.push(wdk_dash_widget_generate_marker_ajax_popup('<?php echo esc_url(admin_url('admin-ajax.php'));?>','<?php echo esc_html(wmvc_show_data('post_id', $listing));?>','<?php echo esc_html(wmvc_show_data('lat', $listing));?>','<?php echo esc_html(wmvc_show_data('lng', $listing));?>',innerMarker, wdk_jpopup_customOptions));
     <?php endforeach; ?> 

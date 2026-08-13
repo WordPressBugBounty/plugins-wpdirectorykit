@@ -23,7 +23,7 @@ function wdk_extra_user_profile_fields( $user,$wdk_user_fields_list ) {
                 <tr>
                     <th><label for="user_field_<?php echo esc_html($field_id);?>"><?php echo esc_html__($field_name, 'wpdirectorykit'); ?></label></th>
                     <td>
-                        <input type="text" name="<?php echo esc_html($field_id);?>" id="user_field_<?php echo esc_html($field_id);?>" value="<?php echo esc_attr( get_the_author_meta( $field_id, $user->ID ) ); ?>" class="regular-text" /><br />
+                        <input type="text" name="<?php echo esc_attr($field_id);?>" id="user_field_<?php echo esc_html($field_id);?>" value="<?php echo esc_attr( get_the_author_meta( $field_id, $user->ID ) ); ?>" class="regular-text" /><br />
                         <span class="description"><?php _e("Please enter your",'wpdirectorykit'); ?> <?php echo esc_html__($field_name, 'wpdirectorykit'); ?>.</span>
                     </td>
                 </tr>

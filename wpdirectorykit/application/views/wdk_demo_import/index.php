@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <span class="theme-version"><?php echo __('Version:', 'wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'Version' )); ?></span>
                             </div>
                             <p class="theme-author">
-                                <?php echo __('By:', 'wpdirectorykit'); ?> <a href="<?php echo esc_html($current_theme->get( 'AuthorURI' )); ?>"><?php echo esc_html($current_theme->get( 'Author' )); ?></a>
+                                <?php echo __('By:', 'wpdirectorykit'); ?> <a href="<?php echo esc_attr($current_theme->get( 'AuthorURI' )); ?>"><?php echo esc_html($current_theme->get( 'Author' )); ?></a>
                             </p>
 
                             <p class="theme-description"><?php echo esc_html($current_theme->get( 'Description' )); ?></p>
@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         </p>
     </div>
     <br/>
-    <div class="alert alert-info" role="alert"><a href="<?php echo esc_html($current_theme->get( 'ThemeURI' )); ?>" target="_blank"><?php echo __('Theme Data will be downloaded from API:','wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'AuthorURI' )); ?> <?php echo __('On any trouble contact us via website contact page.','wpdirectorykit'); ?></a></div>
+    <div class="alert alert-info" role="alert"><a href="<?php echo esc_attr($current_theme->get( 'ThemeURI' )); ?>" target="_blank"><?php echo __('Theme Data will be downloaded from API:','wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'AuthorURI' )); ?> <?php echo __('On any trouble contact us via website contact page.','wpdirectorykit'); ?></a></div>
 </div>
 
 <style>

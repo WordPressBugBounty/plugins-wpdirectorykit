@@ -34,7 +34,7 @@ $results_page = get_permalink($results_page);
             <div class="wdk-locations-carousel_ini <?php echo esc_html($settings['t_styles_img_des_type']);?> ">
                 <?php foreach ($results as $key => $item):?>
                     <div class="wdk-slider-item">
-                        <img src="<?php echo esc_url(wdk_image_src($item, 'full', NULL,'image_id', 'image_path'));?>" class="wdk-slider-item_thumbnail" alt="<?php echo esc_html(wmvc_show_data('location_title', $item));?>">
+                        <img src="<?php echo esc_url(wdk_image_src($item, 'full', NULL,'image_id', 'image_path'));?>" class="wdk-slider-item_thumbnail" alt="<?php echo esc_attr(wmvc_show_data('location_title', $item));?>">
                         <div class="wdk-locations-carousel_mask"></div>
                         <?php if(!empty(wmvc_show_data('location_title', $item))):?>
                         <div class="wdk-slider-item_box_line"> <div class="wdk-slider-item_box_title"> <?php echo esc_html(wmvc_show_data('location_title', $item));?> </div></div>

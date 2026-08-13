@@ -1626,6 +1626,14 @@ class WdkSearch extends WdkElementorBase {
                 'options'=>['typo','color','border','border_radius','shadow','transition','background_group'],
             ],
             [
+                'key'=>'field_button_ai_search',
+                'label'=> esc_html__('Ai Search Button', 'wpdirectorykit'),
+                'selector_hide'=>'{{WRAPPER}} .wdk-field-group.wdk-field-group-ai-search',
+                'selector'=>'{{WRAPPER}} .wdk-field .wdk-ai-search',
+                'selector_hover'=>'{{WRAPPER}} .wdk-field .wdk-ai-search%1$s',
+                'options'=>['typo','color','border','border_radius','shadow','transition','background_group'],
+            ],
+            [
                 'key'=>'field_button_more',
                 'label'=> esc_html__('Button More', 'wpdirectorykit'),
                 'selector_hide'=>'{{WRAPPER}} .wdk-field .wdk-field-group-additional',
@@ -2125,6 +2133,9 @@ class WdkSearch extends WdkElementorBase {
         wp_enqueue_style('ion.range-slider');
         wp_enqueue_style('wdk-slider-range');
         wp_enqueue_script('wdk-slider-range');
+
+        wp_enqueue_style('jquery-confirm');
+        wp_enqueue_script('jquery-confirm');
 
         wp_enqueue_style( 'wdk-treefield-checkboxes');
         wp_enqueue_script( 'wdk-treefield-checkboxes');

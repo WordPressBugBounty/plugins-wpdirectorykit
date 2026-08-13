@@ -31,6 +31,8 @@ if (! defined('ABSPATH')) {
     <?php $this->view('wdk_listing/inc/quick-nav-listings',$data); ?>
 
     <div class="wdk-body">
+
+        <?php do_action('wdk/listing/edit/aboveform', wmvc_show_data('ID', $db_data)); ?>
         <form method="post" class="form_listing form_listing_ai" action="<?php echo esc_url(wmvc_current_edit_url()); ?>" enctype="multipart/form-data" novalidate="novalidate">
             <?php wp_nonce_field('wdk-listing-edit_' . wmvc_show_data('ID', $db_data, 0), '_wpnonce'); ?>
 
@@ -121,7 +123,7 @@ if (! defined('ABSPATH')) {
                                     <tr class="<?php if (method_exists($form, 'hasError') && $form->hasError('post_title')): ?> field-error <?php endif; ?>">
                                         <th scope="row"><label for="post_title"><?php echo __('Title', 'wpdirectorykit'); ?>*</label></th>
                                         <td>
-                                            <input name="post_title" type="text" id="post_title" value="<?php echo esc_attr(wmvc_show_data('post_title', $db_data, '')); ?>" placeholder="<?php echo esc_html__('Title', 'wpdirectorykit'); ?>" class="regular-text">
+                                            <input name="post_title" type="text" id="post_title" value="<?php echo esc_attr(wmvc_show_data('post_title', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Title', 'wpdirectorykit'); ?>" class="regular-text">
                                             <?php if (method_exists($form, 'hasError') && $form->getError('post_title')): ?>
                                                 <p class="wdk-hint wdk-error">
                                                     <?php echo wp_kses_post($form->getError('post_title')); ?>
@@ -133,7 +135,7 @@ if (! defined('ABSPATH')) {
                                         <tr>
                                             <th scope="row"><label for="input_address"><?php echo __('Address', 'wpdirectorykit'); ?></label></th>
                                             <td>
-                                                <input name="address" type="text" id="input_address" value="<?php echo esc_attr(wmvc_show_data('address', $db_data, '')); ?>" placeholder="<?php echo esc_html__('Address', 'wpdirectorykit'); ?>" class="regular-text">
+                                                <input name="address" type="text" id="input_address" value="<?php echo esc_attr(wmvc_show_data('address', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Address', 'wpdirectorykit'); ?>" class="regular-text">
                                                 <p class="description" id="input_address-description"><?php echo __('After you enter address system will try to autodetect and pin location on map, then you can drag and drop pin on map to fine tune location', 'wpdirectorykit'); ?></p>
                                             </td>
                                         </tr>
@@ -146,9 +148,9 @@ if (! defined('ABSPATH')) {
                                                 <th scope="row"><label for="listing_parent_post_id"><?php echo __('Parent ID', 'wpdirectorykit'); ?>*</label></th>
                                                 <td>
                                                     <?php if (!empty(wmvc_show_data('listing_parent_post_id', $db_data))): ?>
-                                                        <input readonly name="listing_parent_post_id" type="text" id="listing_parent_post_id" value="<?php echo esc_attr(wmvc_show_data('listing_parent_post_id', $db_data, '')); ?>" placeholder="<?php echo esc_html__('listing_parent_post_id', 'wpdirectorykit'); ?>" class="regular-text">
+                                                        <input readonly name="listing_parent_post_id" type="text" id="listing_parent_post_id" value="<?php echo esc_attr(wmvc_show_data('listing_parent_post_id', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('listing_parent_post_id', 'wpdirectorykit'); ?>" class="regular-text">
                                                     <?php elseif (isset($_GET['parent_post_id']) && !empty($_GET['parent_post_id'])): ?>
-                                                        <input readonly name="listing_parent_post_id" type="text" id="listing_parent_post_id" value="<?php echo esc_attr(intval($_GET['parent_post_id'])); ?>" placeholder="<?php echo esc_html__('listing_parent_post_id', 'wpdirectorykit'); ?>" class="regular-text">
+                                                        <input readonly name="listing_parent_post_id" type="text" id="listing_parent_post_id" value="<?php echo esc_attr(intval($_GET['parent_post_id'])); ?>" placeholder="<?php echo esc_attr__('listing_parent_post_id', 'wpdirectorykit'); ?>" class="regular-text">
                                                     <?php endif; ?>
                                                 </td>
                                             </tr>
@@ -534,7 +536,7 @@ if (! defined('ABSPATH')) {
                                         <tr>
                                             <th scope="row"><label for="rank"><?php echo __('Rank', 'wpdirectorykit'); ?></label></th>
                                             <td>
-                                                <input <?php if (!wmvc_user_in_role('administrator') && !current_user_can('wdk_listings_manage')): ?> readonly="readonly" <?php endif; ?> name="rank" type="number" id="rank" value="<?php echo esc_attr(wmvc_show_data('rank', $db_data, '')); ?>" placeholder="<?php echo esc_html__('Rank', 'wpdirectorykit'); ?>" class="regular-text">
+                                                <input <?php if (!wmvc_user_in_role('administrator') && !current_user_can('wdk_listings_manage')): ?> readonly="readonly" <?php endif; ?> name="rank" type="number" id="rank" value="<?php echo esc_attr(wmvc_show_data('rank', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Rank', 'wpdirectorykit'); ?>" class="regular-text">
                                                 <p class="description" id="input_rank-description"><b><?php echo __('Rank', 'wpdirectorykit'); ?></b> <?php echo esc_html__('is number, higher number means a better position/rank in results.', 'wpdirectorykit'); ?></p>
                                             </td>
                                         </tr>
@@ -569,7 +571,7 @@ if (! defined('ABSPATH')) {
                                     <tr>
                                         <th scope="row"><label for="slug"><?php echo __('Slug', 'wpdirectorykit'); ?></label></th>
                                         <td>
-                                            <input <?php if (!wmvc_user_in_role('administrator') && !current_user_can('wdk_listings_manage')): ?> readonly="readonly" <?php endif; ?> name="slug" type="text" id="slug" value="<?php echo esc_attr(wmvc_show_data('post_name', $db_data, '')); ?>" placeholder="<?php echo esc_html__('Slug', 'wpdirectorykit'); ?>" class="regular-text">
+                                            <input <?php if (!wmvc_user_in_role('administrator') && !current_user_can('wdk_listings_manage')): ?> readonly="readonly" <?php endif; ?> name="slug" type="text" id="slug" value="<?php echo esc_attr(wmvc_show_data('post_name', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Slug', 'wpdirectorykit'); ?>" class="regular-text">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -587,8 +589,8 @@ if (! defined('ABSPATH')) {
                                 <div class="wdk-field-edit inline">
                                     <label for="listing_gps"><?php echo esc_html__('GPS', 'wpdirectorykit'); ?>:</label>
                                     <div class="wdk-field-container">
-                                        <input name="lat" readonly="readonly" type="text" id="input_lat" value="<?php echo esc_attr(wmvc_show_data('lat', $db_data, '')); ?>" class="regular-text" placeholder="<?php echo esc_html__('lat', 'wpdirectorykit'); ?>">
-                                        <input name="lng" readonly="readonly" type="text" id="input_lng" value="<?php echo esc_attr(wmvc_show_data('lng', $db_data, '')); ?>" class="regular-text" placeholder="<?php echo esc_html__('lng', 'wpdirectorykit'); ?>">
+                                        <input name="lat" readonly="readonly" type="text" id="input_lat" value="<?php echo esc_attr(wmvc_show_data('lat', $db_data, '')); ?>" class="regular-text" placeholder="<?php echo esc_attr__('lat', 'wpdirectorykit'); ?>">
+                                        <input name="lng" readonly="readonly" type="text" id="input_lng" value="<?php echo esc_attr(wmvc_show_data('lng', $db_data, '')); ?>" class="regular-text" placeholder="<?php echo esc_attr__('lng', 'wpdirectorykit'); ?>">
                                     </div>
                                 </div>
                             <?php endif; ?>

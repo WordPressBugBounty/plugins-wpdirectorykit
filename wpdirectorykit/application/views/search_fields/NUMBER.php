@@ -82,10 +82,10 @@ wdk_search_fields_toggle();
             <?php if($query_type == 'min_max'):?>
                 <div class="wdk-row min_max_row">
                     <div class="wdk-col wdk-col-6">
-                        <input class="wdk-control" name="<?php echo esc_attr($field_key.'_min'); ?>" type="number" id="<?php echo esc_attr($field_attr_id.'_min'); ?>" value="<?php echo (isset($_GET[$field_key.'_min'])) ? esc_attr(wmvc_xss_clean($_GET[$field_key.'_min'])) : ''; ?>" placeholder="<?php echo esc_html__('Min','wpdirectorykit').' '.esc_attr(trim($placeholder)).' '.esc_attr($prefix.$suffix);?>">
+                        <input class="wdk-control" name="<?php echo esc_attr($field_key.'_min'); ?>" type="number" id="<?php echo esc_attr($field_attr_id.'_min'); ?>" value="<?php echo (isset($_GET[$field_key.'_min'])) ? esc_attr(wmvc_xss_clean($_GET[$field_key.'_min'])) : ''; ?>" placeholder="<?php echo esc_attr__('Min','wpdirectorykit').' '.esc_attr(trim($placeholder)).' '.esc_attr($prefix.$suffix);?>">
                     </div>
                     <div class="wdk-col wdk-col-6">
-                        <input class="wdk-control" name="<?php echo esc_attr($field_key.'_max'); ?>" type="number" id="<?php echo esc_attr($field_attr_id.'_max'); ?>" value="<?php echo (isset($_GET[$field_key.'_max'])) ? esc_attr(wmvc_xss_clean($_GET[$field_key.'_max'])) : ''; ?>" placeholder="<?php echo esc_html__('Max','wpdirectorykit').' '.esc_attr(trim($placeholder)).' '.esc_attr($prefix.$suffix);?>">
+                        <input class="wdk-control" name="<?php echo esc_attr($field_key.'_max'); ?>" type="number" id="<?php echo esc_attr($field_attr_id.'_max'); ?>" value="<?php echo (isset($_GET[$field_key.'_max'])) ? esc_attr(wmvc_xss_clean($_GET[$field_key.'_max'])) : ''; ?>" placeholder="<?php echo esc_attr__('Max','wpdirectorykit').' '.esc_attr(trim($placeholder)).' '.esc_attr($prefix.$suffix);?>">
                     </div>
                 </div>
             <?php else:?>

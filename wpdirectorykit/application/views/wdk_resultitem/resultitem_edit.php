@@ -212,7 +212,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 </div>
                                 <div class="wdk-builder-elements-box">
                                     <h3 class="sec-title"><?php echo esc_html($field->field_label); ?></h3>
-                                    <div id="wdk-drag" class="wdk-builder-elements wdk-drop section_fields" data-name="<?php echo esc_html($field->field_label); ?>">
+                                    <div id="wdk-drag" class="wdk-builder-elements wdk-drop section_fields" data-name="<?php echo esc_attr($field->field_label); ?>">
                             <?php continue; endif;?>
 
                             <div id="fid_<?php echo esc_attr($field->idfield); ?>" class="widget ui-draggable" rel="<?php echo esc_attr($field->idfield); ?>">
@@ -311,7 +311,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </div>
                 <br style="clear:both;" />
             </div>
-            <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_html__('Save Changes','wpdirectorykit'); ?>">
+            <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_attr__('Save Changes','wpdirectorykit'); ?>">
             </div>
             </div>
         </form>

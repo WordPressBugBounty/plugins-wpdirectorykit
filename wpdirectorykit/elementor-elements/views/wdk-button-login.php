@@ -56,7 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             if($total_new_message):
             ?>
                 <a href="<?php echo esc_url(wdk_dash_url('dash_page=messages&function=chat'));?>" 
-                    title="<?php echo esc_html__('New messages', 'wpdirectorykit');?>" class="count_messages">
+                    title="<?php echo esc_attr__('New messages', 'wpdirectorykit');?>" class="count_messages">
                     <?php echo esc_html($total_new_message);?>
                 </a>
             <?php endif;?>

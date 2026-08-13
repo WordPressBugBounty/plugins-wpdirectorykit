@@ -56,7 +56,6 @@
             form = $(this).closest('form');
 
             if( $(this).hasClass('wdk_btn_load_indicator')) {
-                console.log('disabled')
                 return false;
             }
 
@@ -71,7 +70,7 @@
             $(this).addClass('wdk_btn_load_indicator disabled');
         });
 
-        const wdk_start_search = (form) => {
+        const wdk_start_search = (form, formData = null) => {
             var url,scrollTo, data = {};
             url = form.attr('action').replace(/#results/, '');
             if (url.indexOf('?') == -1) {
@@ -80,38 +79,55 @@
                 url += '&';
             }
             var str_parameters = "";
-            $.each($("form.wdk-search-form:visible").serializeArray(), function (i, k) {
-                if (k.value != '' && k.name.indexOf('skip') == -1) {
-                    if (str_parameters != "") {
-                        str_parameters += "&";
-                    }
-                    str_parameters += k.name + "=" + encodeURIComponent(k.value); 
-                }
-            });
 
-            $.each($("form.wdk-search-form.map").serializeArray(), function (i, k) {
-                if (k.value != '' && k.name.indexOf('skip') == -1) {
-                    if (str_parameters != "") {
-                        str_parameters += "&";
-                    }
-                    str_parameters += k.name + "=" + encodeURIComponent(k.value); 
-                }
-            });
+            if (formData) {
 
-            $.each($(".wdk-search-popup .toggle-btn:visible"), function (i, k) {
-                let el = $($(this).attr('data-wdk-target'));
-                if(el && el.length) {
-                    $.each(el.find('.wdk-search-form').serializeArray(), function (i, k) {
-                        if (k.value != '' && k.name.indexOf('skip') == -1) {
-                            if (str_parameters != "") {
-                                str_parameters += "&";
-                            }
-                            str_parameters += k.name + "=" + encodeURIComponent(k.value); 
+                $.each(formData, function (name, value) {
+                    if (
+                        value != '' &&
+                        name.indexOf('skip') == -1
+                    ) {
+                        if (str_parameters != "") {
+                            str_parameters += "&";
                         }
-                    });
-                }
-            });
+        
+                        str_parameters += name + "=" + encodeURIComponent(value);
+                    }
+                });
+        
+            } else {
+                $.each($("form.wdk-search-form:visible").serializeArray(), function (i, k) {
+                    if (k.value != '' && k.name.indexOf('skip') == -1) {
+                        if (str_parameters != "") {
+                            str_parameters += "&";
+                        }
+                        str_parameters += k.name + "=" + encodeURIComponent(k.value); 
+                    }
+                });
 
+                $.each($("form.wdk-search-form.map").serializeArray(), function (i, k) {
+                    if (k.value != '' && k.name.indexOf('skip') == -1) {
+                        if (str_parameters != "") {
+                            str_parameters += "&";
+                        }
+                        str_parameters += k.name + "=" + encodeURIComponent(k.value); 
+                    }
+                });
+
+                $.each($(".wdk-search-popup .toggle-btn:visible"), function (i, k) {
+                    let el = $($(this).attr('data-wdk-target'));
+                    if(el && el.length) {
+                        $.each(el.find('.wdk-search-form').serializeArray(), function (i, k) {
+                            if (k.value != '' && k.name.indexOf('skip') == -1) {
+                                if (str_parameters != "") {
+                                    str_parameters += "&";
+                                }
+                                str_parameters += k.name + "=" + encodeURIComponent(k.value); 
+                            }
+                        });
+                    }
+                });
+            }
             /* view_type */
             if($('.wmvc-view-type .nav-link.active').length) {
                 str_parameters += "&wmvc_view_type="+$('.wmvc-view-type .nav-link.active').attr('data-id'); 
@@ -537,6 +553,181 @@
 
         })
         resetSearchFields();
+
+        if(typeof fpai_ajax_obj != 'undefined') {
+            const { __ } = wp.i18n;
+            jQuery('.wdk-ai-search').on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var self = jQuery(this);
+                jQuery.confirm({
+                    backgroundDismiss: true,
+                    closeIcon: true,
+                    boxWidth: '400px',
+                    useBootstrap: false,
+                    title: __('Search with AI', 'wpdirectorykit'),
+                    onOpenBefore: function () {
+                        this.$el.addClass('wdk-ai-search-popup');
+                        jQuery('body').addClass('wdk-popup-open');
+                    },
+                    onClose: function () {
+                        jQuery('body').removeClass('wdk-popup-open');
+                    },
+                    content: '' +
+                            `<form action="" class="">
+                                <div class="form-alerts">
+                                </div>
+                                <div class="form-group">
+                                    <textarea 
+                                        rows="6"
+                                        name="query"
+                                        class="form-control"
+                                        placeholder="${__("I'm searching for red apartment with balcony and pool near London...", 'wpdirectorykit')}"
+                                    ></textarea>
+                                </div>
+                            </form>`,
+                    buttons: {
+                        formSubmit: {
+                            text: `✨ ${__('Search with AI', 'wpdirectorykit')}`,
+                            btnClass: 'wdk-ai-search',
+                            action: function(e) {
+                                const popup = this;
+                                const jc = this.$content;
+                                const query = jc.find('textarea[name="query"]').val(); 
+                                const $responseDiv = jc.find('.form-alerts');
+                                let $btn =  jc.closest('.jconfirm').find('.wdk-ai-search');
+
+                                // Check if the query textarea in the first form is empty, if so add error class and do not proceed
+                                var $aiQueryTextarea = jc.find('textarea[name="query"]');
+                                $aiQueryTextarea.off('focus.fpaiError').on('focus.fpaiError', function() {
+                                    $aiQueryTextarea.removeClass('fpai-error');
+                                });
+
+                                if (!query || query.trim() === "") {
+                                    $aiQueryTextarea.addClass('fpai-error');
+                                    return false; // prevent the popup from closing and block further processing
+                                } else {
+                                    $aiQueryTextarea.removeClass('fpai-error');
+                                }
+
+                                $btn.prop('disabled', true).html(`🤖 ${__('AI is working...', 'wpdirectorykit')} <div class="fpai-loading-spinner"></div>`);
+                                $responseDiv.show().html(`${__('Processing... Please wait...', 'wpdirectorykit')} <div class="fpai-loading-spinner"></div>`).removeClass('fpai-success fpai-error');
+        
+                                // Build "form_1" fields structure dynamically from wdk_script_parameters.fields_data
+                                const formFieldsObj = {};
+                                if (Array.isArray(wdk_script_parameters.fields_data)) {
+                                    wdk_script_parameters.fields_data.forEach(field => {
+                                        // Construct the field key (e.g. "field_2") based on your data structure
+                                        const fieldKey = 'field_' + field.idfield;
+                                        // Only include fields if field.field_type is one of the allowed types.
+                                        const allowedTypes = ['INPUTBOX', 'NUMBER', 'DROPDOWN', 'DROPDOWNMULTIPLE', 'CHECKBOX'];
+                                        if (!allowedTypes.includes(field.field_type)) {
+                                            return; // skip this field
+                                        }
+
+                                        let type = "text";
+                                        if(field.field_type == 'NUMBER')
+                                            type = "number";
+                                
+                                        formFieldsObj[fieldKey] = {
+                                            // Optionally: default value or empty, since the user may fill via AI
+                                            value: field.value !== undefined ? field.value : "",
+                                            type: field.type || "text",            // fallback type "text" if not set
+                                            label: field.field_label || '',// fallback to title if label isn't present
+                                            placeholder: field.placeholder || '',   // fallback to empty if not set
+                                            options: field.values_list || '',   // fallback to empty if not set
+                                        };
+                                    });
+                                }
+                                // Prepend system/required fields if needed, demo here:
+                                const form1 = {
+                                    address:        { value: "", type: "text", label: "Address", placeholder: "Address" },
+                                    ...formFieldsObj
+                                };
+                                console.log(form1);
+                                // Additional forms if needed (leave as static if not dynamic)
+                                const formsData = JSON.stringify({
+                                    "form_1": form1,
+                                });
+        
+                                // Send data via fetch API using FormData for better handling
+                                const formData = new FormData();
+                                formData.append('action', 'fpai_generate_form_data');
+                                formData.append('nonce', fpai_ajax_obj.nonce);
+                                formData.append('ai_input', query);
+                                formData.append('forms_data', formsData);
+        
+                                fetch(fpai_ajax_obj.ajax_url, {
+                                    method: 'POST',
+                                    body: formData
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success && data.data) {
+                                        $responseDiv.html(data.data.message || 'Form populated successfully').addClass('fpai-success');
+                                        // Populate form fields
+                                        const formData = data.data.form_data;
+        
+                                        const searchData = {};
+        
+                                        jQuery.each(formData, function (name, field) {
+                                            if (
+                                                field && 
+                                                typeof field === 'object' && 
+                                                'value' in field && 
+                                                field.value !== '' && 
+                                                field.value !== null && 
+                                                typeof field.value !== 'undefined'
+                                            ) {
+                                                searchData[name] = field.value;
+                                            } 
+                                        });
+                                        var url = wdk_start_search(self.closest('form'), searchData);
+
+                                        $(this).closest('form').addClass('loading')
+
+                                        if($(this).closest('.ajax_results_enabled').length) {
+                                            if (typeof wdk_ajax_loading_listings == 'function') {
+                                                wdk_ajax_loading_listings(url);
+                                            }
+                                        } else if (decodeURI(window.location.href) == decodeURI(url)) {
+                                            window.location.reload(url);
+                                        } else {
+                                            window.location.href = url;
+                                        }
+
+                                        
+                                    } else {
+                                        $responseDiv.html(data.data ? data.data.message : 'Error: Invalid response format').addClass('fpai-error');
+                                    }
+                                })
+                                .catch(error => {
+                                    $responseDiv.html(__('Error occurred while processing request', 'wpdirectorykit')).addClass('fpai-error');
+                                })
+                                .finally(() => {
+                                    $btn.prop('disabled', false).html(`<span class="fpai-btn-icon">✨</span> ${__('Populate form with AI', 'wpdirectorykit')}`);
+                                    setTimeout(() => {
+                                        popup.close();
+                                    }, 2000);
+                                });
+        
+                                return false;
+                            }
+                        },
+                        /*
+                        cancel: {
+                            text: __('Close', 'wpdirectorykit'),
+                            btnClass: 'wdk-ai-close',
+                            action: function() {
+                                //close
+                            }
+                        },*/
+                
+                    },
+                });
+                return false;
+            })
+        }
     });
 
 })(jQuery);
@@ -590,8 +781,6 @@ var resetSearchFields = () => {
                     // Wrap input field in a relative container
                     var $wrapper = $searchField.closest('.wdk-field-group').find('.wdk_dropdown_tree button:first-child')
                         .css({ position: "relative" });
-                        console.log($wrapper);
-                        console.log(resetButton);
                     if (!resetButton) {
                         resetButton = jQuery("<span>&times;</span>")
                         .css({
@@ -900,3 +1089,4 @@ var shareUrl = (url = window.location.href) => {
         console.error("Sharing failed:", error);
     });
 };
+

@@ -90,7 +90,7 @@ if (! defined('ABSPATH')) {
                             <h3>
                                 <a target="_blank" href="<?php echo esc_url(wmvc_show_data('link', $addon)); ?>" class="open-plugin-details-modal">
                                     <?php echo esc_html(wmvc_show_data('title', $addon)); ?>
-                                    <img style="object-fit: contain;object-position: top;" src="<?php echo esc_url(wmvc_show_data('thumbnail', $addon)); ?>" class="plugin-icon" alt="<?php echo esc_html(wmvc_show_data('title', $addon)); ?>">
+                                    <img style="object-fit: contain;object-position: top;" src="<?php echo esc_url(wmvc_show_data('thumbnail', $addon)); ?>" class="plugin-icon" alt="<?php echo esc_attr(wmvc_show_data('title', $addon)); ?>">
                                 </a>
                             </h3>
                         </div>
@@ -113,11 +113,11 @@ if (! defined('ABSPATH')) {
                                         <a class="button activate-now" href="<?php echo esc_url($activate_url); ?>"><?php echo esc_html__('Activate', 'wpdirectorykit'); ?></a>
                                     <?php else: ?>
                                         <?php if (file_exists(get_stylesheet_directory() . '/addons/' . substr(basename(wmvc_show_data('is_exists_slug', $addon)), 0, -4) . '.zip')): ?>
-                                            <a target="_blank" class="install-now button btn-danger" data-slug="classic-editor" href="<?php echo esc_url(wdk_get_tgmpa_link()); ?>" title="<?php echo esc_html(wmvc_show_data('title', $addon)); ?>"><?php echo esc_html__('Activate', 'wpdirectorykit'); ?></a>
+                                            <a target="_blank" class="install-now button btn-danger" data-slug="classic-editor" href="<?php echo esc_url(wdk_get_tgmpa_link()); ?>" title="<?php echo esc_attr(wmvc_show_data('title', $addon)); ?>"><?php echo esc_html__('Activate', 'wpdirectorykit'); ?></a>
                                         <?php elseif (stripos(wmvc_show_data('link_info', $addon), 'sweet-energy-efficiency') === FALSE): ?>
-                                            <a target="_blank" class="install-now button btn-danger" data-slug="classic-editor" href="<?php echo esc_url(wmvc_show_data('link', $addon)); ?>" title="<?php echo esc_html(wmvc_show_data('title', $addon)); ?>"><?php echo esc_html__('Buy Now', 'wpdirectorykit'); ?></a>
+                                            <a target="_blank" class="install-now button btn-danger" data-slug="classic-editor" href="<?php echo esc_url(wmvc_show_data('link', $addon)); ?>" title="<?php echo esc_attr(wmvc_show_data('title', $addon)); ?>"><?php echo esc_html__('Buy Now', 'wpdirectorykit'); ?></a>
                                         <?php else: ?>
-                                            <a target="_blank" class="install-now button btn-info" data-slug="classic-editor" href="<?php echo esc_url(wmvc_show_data('link', $addon)); ?>" title="<?php echo esc_html(wmvc_show_data('title', $addon)); ?>"><?php echo esc_html__('Download Free', 'wpdirectorykit'); ?></a>
+                                            <a target="_blank" class="install-now button btn-info" data-slug="classic-editor" href="<?php echo esc_url(wmvc_show_data('link', $addon)); ?>" title="<?php echo esc_attr(wmvc_show_data('title', $addon)); ?>"><?php echo esc_html__('Download Free', 'wpdirectorykit'); ?></a>
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 </li>

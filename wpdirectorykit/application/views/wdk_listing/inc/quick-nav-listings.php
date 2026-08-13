@@ -50,7 +50,7 @@ if(isset($_GET['id'])) {
             type="text"
             id="wdk-listing-search"
             idexecuted="<?php echo isset($_GET['id']) ? esc_attr((int)$_GET['id']) : ''; ?>"
-            placeholder="<?php echo esc_html__('Search listings...', 'wpdirectorykit'); ?>"
+            placeholder="<?php echo esc_attr__('Search listings...', 'wpdirectorykit'); ?>"
             autocomplete="off">
         <div class="wdk-search-results" hidden></div>
     </div>

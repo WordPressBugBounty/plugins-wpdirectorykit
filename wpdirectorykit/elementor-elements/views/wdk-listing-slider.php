@@ -101,7 +101,7 @@ if (! defined('ABSPATH')) {
                                       preg_match('/^www\./i', $image)
                                   )
                               ): ?>
-                                  <div class="wdk-col" data-type="<?php echo esc_html($type); ?>">
+                                  <div class="wdk-col" data-type="<?php echo esc_attr($type); ?>">
                                       <div class="wdk-listing-image-card">
                                           <?php if (strpos($image, 'vimeo.com') !== FALSE): ?>
                                               <div class="wdk-listing-image wdk-listing-video-embed<?php if ($settings['enable_fixed_height'] != 'yes'): ?> auto_height<?php endif; ?>">
@@ -138,14 +138,14 @@ if (! defined('ABSPATH')) {
                                       </div>
                                   </div>
                               <?php elseif (!wmvc_show_data('wdk_listing_video_disabled', $settings, false) && wdk_file_extension_type(wmvc_show_data('src', $image)) == 'video'): ?>
-                                  <div class="wdk-col" data-type="<?php echo esc_html($type); ?>">
+                                  <div class="wdk-col" data-type="<?php echo esc_attr($type); ?>">
                                       <div class="wdk-listing-image-card">
                                           <video controls loop <?php if (wmvc_show_data('auto_start_video', $settings, false) == 'yes'): ?> autoplay <?php endif; ?> src="<?php echo esc_url(wmvc_show_data('src', $image)); ?>" alt="<?php echo esc_attr(wmvc_show_data('alt', $image)); ?>" class="wdk-listing-image <?php if ($settings['enable_fixed_height'] != 'yes'): ?> auto_height <?php endif; ?>"></video>
                                      
                                       </div>
                                   </div>
                               <?php elseif (wdk_file_extension_type(wmvc_show_data('src', $image)) == 'image'): ?>
-                                  <div class="wdk-col" data-type="<?php echo esc_html($type); ?>">
+                                  <div class="wdk-col" data-type="<?php echo esc_attr($type); ?>">
                                       <div class="wdk-listing-image-card">
                                           <img
                                               src="<?php echo esc_url(wmvc_show_data('src', $image)); ?>"
@@ -188,11 +188,11 @@ if (! defined('ABSPATH')) {
                                   ): ?>
 
                                   <?php elseif (!wmvc_show_data('wdk_listing_video_disabled', $settings, false) && wdk_file_extension_type(wmvc_show_data('src', $image)) == 'video'): ?>
-                                      <div class="banner-thumb" data-type="<?php echo esc_html($type); ?>">
+                                      <div class="banner-thumb" data-type="<?php echo esc_attr($type); ?>">
                                           <video src="<?php echo esc_url(wmvc_show_data('src', $image)); ?>" alt="<?php echo esc_attr(wmvc_show_data('alt', $image)); ?>" class="wdk-listing-image <?php if ($settings['enable_fixed_height'] != 'yes'): ?> auto_height <?php endif; ?>"></video>
                                       </div>
                                   <?php elseif (wdk_file_extension_type(wmvc_show_data('src', $image)) == 'image'): ?>
-                                      <div class="banner-thumb" data-type="<?php echo esc_html($type); ?>">
+                                      <div class="banner-thumb" data-type="<?php echo esc_attr($type); ?>">
                                           <img src="<?php echo esc_url(wmvc_show_data('src', $image)); ?>" class="wdk-listing-image <?php if ($settings['enable_fixed_height'] != 'yes'): ?> auto_height <?php endif; ?>" alt="<?php echo esc_attr(wmvc_show_data('alt', $image)); ?>">
                                       </div>
                                   <?php endif; ?>

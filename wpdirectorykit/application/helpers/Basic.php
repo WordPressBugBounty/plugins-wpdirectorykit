@@ -1834,7 +1834,7 @@ if(!function_exists('wdk_search_fields_toggle')){
 
             ?>
             <div class="wdk-col wdk-col-btns">
-                <div class="wdk-field wdk-field-btn">
+                <div class="wdk-field wdk-field-btn"> 
                     <div class="wdk-field-group wdk-field-group-additional">
                         <button id="wdk-search-additional" type="button" class="wdk-search-additional-btn"><?php echo esc_html($wdk_text_more_button); ?><i class="wdk-toggle-icon"></i></button>
                         <input type='checkbox' style="display: none !important" value='1' <?php if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_search_additional_opened']) == 1):?> checked <?php endif;?> name='wdk_search_additional_opened' />   
@@ -1842,6 +1842,11 @@ if(!function_exists('wdk_search_fields_toggle')){
                     <div class="wdk-field-group wdk-field-group-reset">
                         <button title="<?php echo esc_attr__('Reset','wpdirectorykit');?>" id="wdk-reset-primary" type="reset" class="wdk-search-start wdk-search-reset wdk-click-load-animation"><?php echo esc_html($wdk_text_reset_button);?></button>
                     </div>
+                    <?php  if (function_exists('fpai_register_settings')):?>
+                    <div class="wdk-field-group wdk-field-group-ai-search">
+                        <button title="<?php echo esc_attr__('Ai Search','wpdirectorykit');?>" type="button" class="wdk-ai-search"><?php echo esc_html__('Ai Search','wpdirectorykit');?></button>
+                    </div>
+                    <?php endif;?>
                     <div class="wdk-field-group wdk-field-group-search">
                         <button title="<?php echo esc_attr__('Search','wpdirectorykit');?>" id="wdk-start-primary" type="submit" class="wdk-search-start wdk-click-load-animation">&nbsp;&nbsp;<?php echo esc_html($wdk_text_search_button);?>&nbsp;<i class="fa fa-spinner fa-spin fa-ajax-indicator" style="display: none;"></i>&nbsp;</button>
 
@@ -1854,6 +1859,7 @@ if(!function_exists('wdk_search_fields_toggle')){
                         </div>
                         <?php endif;?>
                     </div>
+                   
                 </div>
             </div>
             <div id='wdk-form-additional' class="wdk-col" style="<?php echo esc_attr($form_closed) ;?>">
@@ -2715,7 +2721,7 @@ function wdk_upload_file($field_name, $file_id)
     <?php //endif; ?>
     
     <!-- A hidden input to set and post the chosen file id -->
-    <input class="logo_file_id" type="hidden" id="<?php echo esc_html($field_name); ?>" name="<?php echo esc_html($field_name); ?>" value="<?php echo esc_html($file_id); ?>" />
+    <input class="logo_file_id" type="hidden" id="<?php echo esc_attr($field_name); ?>" name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($file_id); ?>" />
     </div>
     
     <?php
@@ -2822,7 +2828,7 @@ function wdk_upload_multi_files($field_name, $image_ids='', $texts = array())
         <div class="custom-img-container winter_mvc-media">
             <?php if($you_have_img)foreach($your_img_src as $image_id => $img_src) : ?>
                 <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
-                    <img src="<?php echo esc_html($img_src); ?>" style="object-fit: contain;" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
+                    <img src="<?php echo esc_attr($img_src); ?>" style="object-fit: contain;" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
                     <a href="#" class="remove"></a>
                 </div>
             <?php endforeach; ?>
@@ -2844,7 +2850,7 @@ function wdk_upload_multi_files($field_name, $image_ids='', $texts = array())
         <?php //endif; ?>
         
         <!-- A hidden input to set and post the chosen image id -->
-        <input class="logo_image_id" type="hidden" id="<?php echo esc_html(esc_html($field_name)); ?>" name="<?php echo esc_html($field_name); ?>" value="<?php echo esc_html($image_ids); ?>" />
+        <input class="logo_image_id" type="hidden" id="<?php echo esc_attr(esc_html($field_name)); ?>" name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($image_ids); ?>" />
         </div>
         <?php
         $custom_js ='';
@@ -5335,6 +5341,33 @@ if ( ! function_exists('is_wdk_related_validation'))
             }
 
             return esc_sql(trim(preg_replace($patterns, '', sanitize_text_field($value))));
+        }
+    }
+
+    if(!function_exists('wdk_esc_sql_order_by')) {
+        function wdk_esc_sql_order_by($value = '', array $allowed_fields = [])
+        {
+            if (empty($value) || empty($allowed_fields)) {
+                return '';
+            }
+            $result = [];
+            foreach (explode(',', $value) as $part) {
+                $part = trim(sanitize_text_field($part));
+    
+                $direction = 'ASC';
+                if (preg_match('/\s+(ASC|DESC)$/i', $part, $match)) {
+                    $direction = strtoupper($match[1]);
+                    $part = trim(substr($part, 0, -strlen($match[0])));
+                }
+    
+                $part = sanitize_key($part);
+    
+                if (in_array($part, $allowed_fields, true)) {
+                    $result[] = $part . ' ' . $direction;
+                }
+            }
+    
+            return implode(', ', $result);
         }
     }
 

@@ -31,13 +31,13 @@ if (! defined('ABSPATH')) {
                             <tr>
                                 <th scope="row"><label for="input_post_id"><?php echo __('Listing id', 'wpdirectorykit'); ?></label></th>
                                 <td>
-                                    <input name="post_id" type="text" id="input_post_id" value="<?php echo esc_attr(wmvc_show_data('post_id', $db_data, '')); ?>" placeholder="<?php echo esc_html__('Post Id', 'wpdirectorykit'); ?>" class="regular-text">
+                                    <input name="post_id" type="text" id="input_post_id" value="<?php echo esc_attr(wmvc_show_data('post_id', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Post Id', 'wpdirectorykit'); ?>" class="regular-text">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row"><label for="input_date"><?php echo __('Date', 'wpdirectorykit'); ?></label></th>
                                 <td>
-                                    <input name="date" type="text" id="input_date" value="<?php echo esc_attr(wmvc_show_data('date', $db_data, '')); ?>" placeholder="<?php echo esc_html__('Address', 'wpdirectorykit'); ?>" class="regular-text">
+                                    <input name="date" type="text" id="input_date" value="<?php echo esc_attr(wmvc_show_data('date', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Address', 'wpdirectorykit'); ?>" class="regular-text">
                                 </td>
                             </tr>
                             <tr>
@@ -82,7 +82,7 @@ if (! defined('ABSPATH')) {
                     </table>
                 </div>
             </div>
-            <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_html__('Save Changes', 'wpdirectorykit'); ?>">
+            <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_attr__('Save Changes', 'wpdirectorykit'); ?>">
         </form>
     </div>
 </div>

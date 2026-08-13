@@ -187,7 +187,7 @@ if (! defined('ABSPATH')) {
                         <span class="custom_parameter" data-key="<?php echo esc_attr($field_id); ?>">
                             <?php echo wmvc_select_option('c_field_' . $field_id . '_field', $fields_list, wmvc_show_data('c_field_' . $field_id . '_field', $_GET, ''), 'class="cus_p_field"', __('Field', 'wpdirectorykit')); ?>
                             <?php echo wmvc_select_option('c_field_' . $field_id . '_like', array('==' => '=', '>' => '>', '<' => '<'), wmvc_show_data('c_field_' . $field_id . '_like', $_GET, ''), 'class="cus_p_like"'); ?>
-                            <input type="text" name="c_field_<?php echo esc_attr($field_id); ?>_value" value="<?php echo esc_html(wmvc_show_data('c_field_' . $field_id . '_value', $_GET, '')); ?>" class="cus_p_value" placeholder="<?php echo __('Value', 'wpdirectorykit'); ?>" />
+                            <input type="text" name="c_field_<?php echo esc_attr($field_id); ?>_value" value="<?php echo esc_attr(wmvc_show_data('c_field_' . $field_id . '_value', $_GET, '')); ?>" class="cus_p_value" placeholder="<?php echo __('Value', 'wpdirectorykit'); ?>" />
                         </span>
                 <?php
                         $custom_field_init = true;
@@ -198,7 +198,7 @@ if (! defined('ABSPATH')) {
                     <span class="custom_parameter">
                         <?php echo wmvc_select_option('c_field_1_field', $fields_list, wmvc_show_data('c_field_1_field', $db_data, ''), 'class="cus_p_field"', __('Field', 'wpdirectorykit')); ?>
                         <?php echo wmvc_select_option('c_field_1_like', array('==' => '=', '>' => '>', '<' => '<'), wmvc_show_data('c_field_1_like', $db_data, ''), 'class="cus_p_like"'); ?>
-                        <input type="text" name="c_field_1_value" value="<?php echo esc_html(wmvc_show_data('c_field_1_value', $db_data, '')); ?>" class="cus_p_value" placeholder="<?php echo __('Value', 'wpdirectorykit'); ?>" />
+                        <input type="text" name="c_field_1_value" value="<?php echo esc_attr(wmvc_show_data('c_field_1_value', $db_data, '')); ?>" class="cus_p_value" placeholder="<?php echo __('Value', 'wpdirectorykit'); ?>" />
                     </span>
                 <?php endif; ?>
 
@@ -236,7 +236,7 @@ if (! defined('ABSPATH')) {
                     <?php if (function_exists('PLL')): ?>
                         <?php $pll_langs = pll_the_languages(array('raw' => 1));
                         foreach ($pll_langs as $pll_lang): ?>
-                            <th class="manage-column column-language_<?php echo esc_attr($pll_lang['slug']); ?>"><img src="<?php echo esc_html($pll_lang['flag']); ?>" /></th>
+                            <th class="manage-column column-language_<?php echo esc_attr($pll_lang['slug']); ?>"><img src="<?php echo esc_attr($pll_lang['flag']); ?>" /></th>
                         <?php endforeach; ?>
                     <?php endif; ?>
                     <th class="static"><?php echo __('Views', 'wpdirectorykit'); ?></th>
@@ -322,7 +322,7 @@ if (! defined('ABSPATH')) {
                                 <?php //var_dump($pll_lang); 
                                 ?>
                                 <?php if ($pll_lang['slug'] == pll_get_post_language($listing->ID, 'slug')): ?>
-                                    <td><img src="<?php echo esc_html($pll_lang['flag']); ?>" /></td>
+                                    <td><img src="<?php echo esc_attr($pll_lang['flag']); ?>" /></td>
                                 <?php elseif (empty(pll_get_post($listing->ID, $pll_lang['slug']))): ?>
                                     <td><a class="pll_icon_edit translation_<?php echo esc_attr($listing->ID); ?>" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&function=copy&from_id=" . $listing->ID . "&to_lang=" . $pll_lang['slug']); ?>"></a></td>
                                 <?php else: ?>
@@ -387,7 +387,7 @@ if (! defined('ABSPATH')) {
                     <th><?php echo __('Post Date', 'wpdirectorykit'); ?></th>
                     <?php if (function_exists('PLL')): ?>
                         <?php foreach ($pll_langs as $pll_lang): ?>
-                            <th><img src="<?php echo esc_html($pll_lang['flag']); ?>" /></th>
+                            <th><img src="<?php echo esc_attr($pll_lang['flag']); ?>" /></th>
                         <?php endforeach; ?>
                     <?php endif; ?>
                     <th class=""></th>

@@ -54,7 +54,7 @@ $results_page = get_permalink($results_page);
                                 <?php if(wmvc_show_data('content_icon_type', $settings) == 'image' && wdk_image_src($value, 'full', NULL,'icon_id')):?>
                                     <img src="<?php echo esc_url(wdk_image_src($value, 'full',NULL,'icon_id', 'icon_path'));?>" alt="<?php echo esc_attr(wmvc_show_data('category_title', $value));?>">
                                 <?php elseif(wmvc_show_data('content_icon_type', $settings) == 'font'):?>
-                                    <i class="<?php echo wmvc_show_data('font_icon_code', $value,'');?>"></i>
+                                    <i class="<?php echo esc_attr(wmvc_show_data('font_icon_code', $value,''));?>"></i>
                                 <?php endif;?>
                             </div>
                             <div class="wdk-left-content">

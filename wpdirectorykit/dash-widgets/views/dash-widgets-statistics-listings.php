@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
         <?php if(isset($stats)) foreach ($stats as $stat):?>
             <?php if(wmvc_show_data('link', $stat, false)):?>
-                <a href="<?php echo esc_attr(wmvc_show_data('link', $stat,''));?>" title="<?php echo esc_html(wmvc_show_data('title', $stat,''));?>" class="stat-card <?php echo esc_attr(wmvc_show_data('class', $stat,''));?>">
+                <a href="<?php echo esc_attr(wmvc_show_data('link', $stat,''));?>" title="<?php echo esc_attr(wmvc_show_data('title', $stat,''));?>" class="stat-card <?php echo esc_attr(wmvc_show_data('class', $stat,''));?>">
             <?php else:?>
                 <div class="stat-card <?php echo esc_attr(wmvc_show_data('class', $stat,''));?>">
             <?php endif;?>

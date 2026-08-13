@@ -262,10 +262,10 @@ class Wpdirectorykit_Public {
 				'root'=> esc_url_raw(rest_url()),
 				'nonce'=> wp_create_nonce('wp_rest'),
 				'wdk_secure_nonce'=> wp_create_nonce('wdk_secure_ajax'),
-			]
+			],
+			'fields_data' =>  wdk_cached_field_get()
         );
-		
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wpdirectorykit-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wpdirectorykit-public.js', array( 'jquery' ,'wp-i18n'), $this->version, false );
         wp_localize_script( $this->plugin_name, 'script_parameters', $params);
         wp_localize_script( $this->plugin_name, 'wdk_script_parameters', $params);
 		

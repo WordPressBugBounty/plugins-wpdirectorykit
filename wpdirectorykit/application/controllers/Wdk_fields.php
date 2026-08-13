@@ -215,12 +215,12 @@ class Wdk_fields extends Winter_MVC_Controller {
                 {
                     if(empty($key_section)) continue;
 
-                    $values[] = array('order_index' => $order_index, 'idfield' => $key_section);
+                    $values[] = array('order_index' => $order_index, 'idfield' => (int) $key_section);
                     $order_index++;
                     if(is_array($section))
                         foreach($section as $key_field => $field)
                         {
-                            $values[] = array('order_index' => $order_index, 'idfield' => $key_field);
+                            $values[] = array('order_index' => $order_index, 'idfield' => (int) $key_field);
                             $order_index++;
                         }
                 }

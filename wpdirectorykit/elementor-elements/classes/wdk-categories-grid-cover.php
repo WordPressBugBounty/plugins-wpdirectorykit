@@ -165,7 +165,7 @@ class WdkCategoriesGridCover extends WdkElementorBase {
             } else {
                 $where = array();
                 if (!empty($this->data['settings']['conf_order_by'])) {
-                    $order_by = wdk_esc_sql($this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'], true);
+                    $order_by = wdk_esc_sql_order_by($this->data['settings']['conf_order_by'].' '.$this->data['settings']['conf_order'], $this->WMVC->{$controller.'_m'}->getAllowedOrderBy());
                 }
 
                 if (!empty($this->data['settings']['only_root_enable']) && $this->data['settings']['only_root_enable'] == 'yes') {

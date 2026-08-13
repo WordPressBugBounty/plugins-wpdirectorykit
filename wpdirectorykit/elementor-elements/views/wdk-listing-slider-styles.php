@@ -56,7 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  
                             <?php if (strpos($image, 'vimeo.com') !== FALSE):?>
                                 <div 
-                                    data-type="<?php echo esc_html($type);?>" 
+                                    data-type="<?php echo esc_attr($type);?>" 
                                     class="wdk-listing-image wdk-listing-video-embed<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 >
                                     <?php echo wp_oembed_get($image, array("width" => "800", "height" => "450"));?>
@@ -64,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <?php elseif (strpos($image, 'watch?v=') !== FALSE):?>
                                 <?php $embed_code = substr($image, strpos($image, 'watch?v=') + 8); ?>
                                 <div 
-                                    data-type="<?php echo esc_html($type);?>" 
+                                    data-type="<?php echo esc_attr($type);?>" 
                                     class="wdk-listing-image wdk-listing-video-embed<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 >
                                     <?php echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
@@ -72,7 +72,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <?php elseif (strpos($image, 'youtube.com/shorts/') !== FALSE):?>
                                 <?php $embed_code = substr($image, strpos($image, 'shorts') + 7); ?>
                                 <div 
-                                    data-type="<?php echo esc_html($type);?>" 
+                                    data-type="<?php echo esc_attr($type);?>" 
                                     class="wdk-listing-image wdk-listing-video-embed<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 >
                                     <?php echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
@@ -80,7 +80,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <?php elseif (strpos($image, 'youtu.be/') !== FALSE):?>
                                 <?php $embed_code = substr($image, strpos($image, 'youtu.be/') + 9); ?>
                                 <div 
-                                    data-type="<?php echo esc_html($type);?>" 
+                                    data-type="<?php echo esc_attr($type);?>" 
                                     class="wdk-listing-image wdk-listing-video-embed<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 >
                                     <?php echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
@@ -89,22 +89,22 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <video 
                                     src="<?php echo esc_url($image);?>" 
                                     controls
-                                    data-type="<?php echo esc_html($type);?>"
+                                    data-type="<?php echo esc_attr($type);?>"
                                     class="wdk-listing-image<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 ></video>
 
                             <?php else:?>
                                 <iframe
-                                 data-type="<?php echo esc_html($type);?>" 
+                                 data-type="<?php echo esc_attr($type);?>" 
                                  src="<?php echo esc_url($image);?>" width="100%"  frameborder="0" allowfullscreen 
                                  class="wdk-listing-image <?php if($settings['enable_fixed_height']!='yes'):?> auto_height <?php endif;?>"
                                  ></iframe>
                             <?php endif;?>
                     <?php elseif(!wmvc_show_data('wdk_listing_video_disabled',$settings, false) && wdk_file_extension_type(wmvc_show_data('src',$image)) == 'video'):?>
-                                <video data-type="<?php echo esc_html($type);?>" controls src="<?php echo esc_url(wmvc_show_data('src',$image));?>"  alt="<?php echo esc_attr(wmvc_show_data('alt',$image));?>" class="wdk-listing-image <?php if($settings['enable_fixed_height']!='yes'):?> auto_height <?php endif;?>"></video>
+                                <video data-type="<?php echo esc_attr($type);?>" controls src="<?php echo esc_url(wmvc_show_data('src',$image));?>"  alt="<?php echo esc_attr(wmvc_show_data('alt',$image));?>" class="wdk-listing-image <?php if($settings['enable_fixed_height']!='yes'):?> auto_height <?php endif;?>"></video>
                     <?php elseif(wdk_file_extension_type(wmvc_show_data('src',$image)) == 'image'):?>
                                 <img 
-                                    data-type="<?php echo esc_html($type);?>"
+                                    data-type="<?php echo esc_attr($type);?>"
                                     src="<?php echo esc_url(wmvc_show_data('src',$image));?>"
                                     class="wdk-listing-image<?php if($settings['enable_fixed_height'] != 'yes'):?> auto_height<?php endif;?>"
                                     alt="<?php echo esc_attr(wmvc_show_data('alt',$image));?>"
@@ -153,11 +153,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                              
                             <?php elseif(!wmvc_show_data('wdk_listing_video_disabled',$settings, false) && wdk_file_extension_type(wmvc_show_data('src',$image)) == 'video'):?>
                                 <div class="banner-thumb">
-                                    <video data-type="<?php echo esc_html($type);?>" src="<?php echo esc_url(wmvc_show_data('src',$image));?>"  alt="<?php echo esc_attr(wmvc_show_data('alt',$image));?>" class="wdk-listing-image <?php if($settings['enable_fixed_height']!='yes'):?> auto_height <?php endif;?>"></video>
+                                    <video data-type="<?php echo esc_attr($type);?>" src="<?php echo esc_url(wmvc_show_data('src',$image));?>"  alt="<?php echo esc_attr(wmvc_show_data('alt',$image));?>" class="wdk-listing-image <?php if($settings['enable_fixed_height']!='yes'):?> auto_height <?php endif;?>"></video>
                                 </div>
                             <?php elseif(wdk_file_extension_type(wmvc_show_data('src',$image)) == 'image'):?>
                                 <div class="banner-thumb">
-                                    <img data-type="<?php echo esc_html($type);?>" src="<?php echo esc_url(wmvc_show_data('src',$image));?>" class="wdk-listing-image <?php if($settings['enable_fixed_height']!='yes'):?> auto_height <?php endif;?>" alt="<?php echo esc_attr(wmvc_show_data('alt',$image));?>">
+                                    <img data-type="<?php echo esc_attr($type);?>" src="<?php echo esc_url(wmvc_show_data('src',$image));?>" class="wdk-listing-image <?php if($settings['enable_fixed_height']!='yes'):?> auto_height <?php endif;?>" alt="<?php echo esc_attr(wmvc_show_data('alt',$image));?>">
                                 </div>
                             <?php endif;?>
                         <?php endforeach;?> 

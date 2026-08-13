@@ -122,7 +122,7 @@ if(isset($field->is_required) && $field->is_required == 1)
                                             }
                                             $startDay++;
                                         ?>
-                                        <td data-order="<?php echo esc_attr($wdk_order++);?>" class="<?php echo esc_html($class_td);?>"><a title="<?php echo esc_html($date_day);?>"><?php echo esc_html($d);?></a></td>
+                                        <td data-order="<?php echo esc_attr($wdk_order++);?>" class="<?php echo esc_attr($class_td);?>"><a title="<?php echo esc_attr($date_day);?>"><?php echo esc_html($d);?></a></td>
 
                                         <?php if($startDay > 6 && $d < $num_days):?>
                                             <?php $startDay = 0; ?>

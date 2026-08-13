@@ -72,6 +72,13 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
 		$listing = $this->load->listing_m->get($listing_post_id, TRUE);
 
+		/* protect check */
+		if (
+			!wdk_field_value('is_activated', $listing, false) || !wdk_field_value('is_approved', $listing,false)
+		) {
+			$data['popup_content'] = __( 'Listing is not public', 'wpdirectorykit' );
+			$this->output($data);
+		}
 
 		if(!empty($listing)) {
 			$data['popup_content'] = wdk_listing_card($listing, [], false, '<div class="infobox map-box">%1$s<div>', 'result_item_card_dash_edit');
@@ -676,7 +683,6 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
 		$db_results_total = $this->$model_name->total($where);
 		$db_results = $this->$model_name->get_pagination($limit,$offset, $where);
-		$data['output'] =  $db_results;
        
 		if (!$db_results) {
             $data['errors'] = '';
@@ -740,7 +746,11 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		}
 
 		$this->load->model($model_name);
-		$search_column = 'display_name,user_email,user_login,ID';
+		$search_column = 'display_name,user_login,ID';
+		if(current_user_can('administrator')) {
+			$search_column = 'display_name,user_email,user_login,ID';
+		}
+		
 		$where = array();
 		if(!empty($_POST['q']['term']) && !empty($search_column)) {
 			$sql_search = '';

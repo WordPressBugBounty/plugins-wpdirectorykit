@@ -80,9 +80,7 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                         wdk_generate_missing_image_sizes($attachment_id, $size_name);
                     };
 
-                    add_action('wdk/helpers/wdk_listing_images/get_attached/before', $image_size_generation_callback, 10, 2);
                     $images = wdk_listing_images ($listing, wmvc_show_data('thumbnail_image_size', $settings, 'full'));
-                    remove_action('wdk/helpers/wdk_listing_images/get_attached/before', $image_size_generation_callback);
 
                 } else {
                     $images = wdk_listing_images_fast_access ($listing, 'full');
