@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
-        <?php echo esc_html__('Your Listing approved', 'wpdirectorykit') . ': <a href="' . get_permalink($post_id) . '">' .wmvc_show_data('post_title', $post, '', TRUE, TRUE) . '</a>'; ?>
+        <?php echo esc_html__('Your Listing approved', 'wpdirectorykit') . ': <a href="' . esc_url(get_permalink($post_id)) . '">' .esc_html(wmvc_show_data('post_title', $post, '', TRUE, TRUE)) . '</a>'; ?>
     </div>
 
     <!-- Footer -->

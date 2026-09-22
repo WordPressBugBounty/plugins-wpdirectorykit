@@ -121,7 +121,7 @@ class WdkListingCardButton extends \Wdk\Elementor\Widgets\WdkButton {
             }
         }
 
-        echo $this->view('wdk-button', $this->data);
+        $this->view('wdk-button', $this->data, true);
         
     }
 

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?> 
 <div class="wdk-dashwidget-element" id="wdk_dashwidget_<?php echo esc_attr($id_element);?>">
     <div class="wdk-map">
-        <div id="wdk_map_results_<?php echo esc_html($id_element);?>" style="height:<?php echo esc_attr($settings['conf_custom_map_height']);?>px" class="wdk_map_results <?php echo wmvc_show_data('styles_thmbn_des_type',$settings, '');?> " ></div>
+        <div id="wdk_map_results_<?php echo esc_html($id_element);?>" style="height:<?php echo esc_attr($settings['conf_custom_map_height']);?>px" class="wdk_map_results <?php echo esc_attr(wmvc_show_data('styles_thmbn_des_type',$settings, ''));?> " ></div>
     </div>
     <?php
         $zoom_index = 10;
@@ -93,7 +93,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <?php if($pin_icon):?>
             var image = '<?php echo esc_html($pin_icon);?>'; var innerMarker = '<div class="wdk_marker-container wdk_marker-container-image"><img src='+image+'></img></div>';
         <?php elseif($font_icon && empty($font_class)):?> 
-            var innerMarker = '<div class="wdk_marker-container"><div class="front wdk_face"><?php echo wdk_viewe($font_icon);?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
+            var innerMarker = '<div class="wdk_marker-container"><div class="front wdk_face"><?php echo wdk_viewe($font_icon);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php else:?> 
             var innerMarker = '<div class="wdk_marker-container"><div class="front wdk_face"><i class="<?php echo esc_attr($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php endif;?>

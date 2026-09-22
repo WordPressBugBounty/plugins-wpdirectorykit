@@ -30,6 +30,7 @@ class AjaxHandler {
         add_action( 'eli/ajax-handler/after', array( $this, 'after' ) );
         add_filter( 'eli/ajax-handler/filter_from_data', array( $this, 'filter_from_data' ) );
     }
+ 
 
     public function filter_output ($filter_output = array()) {
         $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-primary" role="alert">The form was sent successfully.</div>';
@@ -177,8 +178,12 @@ class AjaxHandler {
                         if(in_array($key, array('listing_link','date_from','date_to','listing_id','wdk_widget', 'function','page','eli_nonce','eli_token','_wp_http_referer'))) continue;
 
                         if(filter_var($value, FILTER_VALIDATE_URL ) || strpos( $value, 'http' ) !== FALSE) {
+                            // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                             $note .= '<b> '.__(str_replace('_',' ', ucfirst($key)), 'wpdirectorykit').':</b> <a href="'.esc_url($value).'">'.$value.'</a><br>';
                         } else {
+                            // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                             $note .= '<b> '.__(str_replace('_',' ', ucfirst($key)), 'wpdirectorykit').':</b> '.$value.'<br>';
                         }
                     }
@@ -218,7 +223,7 @@ class AjaxHandler {
                 
                             $userdata = get_userdata($user_id);
                 
-                            $subject = __('New user on our website!', 'wdk-membership');
+                            $subject = __('New user on our website!', 'wpdirectorykit');
                             $data_message = array();
                             $data_message['login'] = $userlogin;
                             $data_message['password'] = $password;
@@ -235,6 +240,7 @@ class AjaxHandler {
                             
                         } elseif($user = get_user_by( 'email', $email_address)) {
                             $user_id = $user->ID;
+                            /* translators: 1: User email address. */
                             $errors .= '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.wdk_sprintf(__( 'For Booking required login, user with email %1$s already exists, please first try login', 'wpdirectorykit' ), $email_address).' <a href="'.wdk_login_url().'"  target="_blank" style="text-decoration: underline;">'.esc_html__('here', 'wpdirectorykit').'</a></div>';
                         } else {
                             $errors .= '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.esc_html__('For Booking please login', 'wpdirectorykit').' <a href="'.wdk_login_url().'"  target="_blank" style="text-decoration: underline;">'.esc_html__('here', 'wpdirectorykit').'</div>';
@@ -296,8 +302,8 @@ class AjaxHandler {
                         '7'=>__('Sunday', 'wpdirectorykit'),
                     );
                 
-                    $day_num_from = date('N', strtotime($date_from));
-                    $day_num_to = date('N', strtotime($date_to));
+                    $day_num_from = gmdate('N', strtotime($date_from));
+                    $day_num_to = gmdate('N', strtotime($date_to));
 
                     if(wmvc_show_data('changeover_day', $price_reservation, false, TRUE, TRUE) && (
                         wmvc_show_data('changeover_day', $price_reservation, false, TRUE, TRUE) != $day_num_from
@@ -314,7 +320,9 @@ class AjaxHandler {
                         $min_hours = intval(wmvc_show_data('min_hours', $price_reservation, false, TRUE, TRUE));
                         if((int)($min_hours/24) >= 1) {
                             $days = (int)($min_hours/24);
-                            $period .= esc_html(sprintf(_nx(
+                            $period .= esc_html(sprintf(
+                                /* translators: 1: Number of days. */
+                                _nx(
                                                             '%1$s day',
                                                             '%1$s days',
                                                             $days,
@@ -326,7 +334,9 @@ class AjaxHandler {
                         }
                         
                         if(!empty($min_hours)) {
-                            $period .= ' '.esc_html(sprintf(_nx(
+                            $period .= ' '.esc_html(sprintf(
+                                /* translators: 1: Number of hours. */
+                                _nx(
                                             '%1$s hour',
                                             '%1$s hours',
                                             (int)($min_hours),
@@ -343,7 +353,9 @@ class AjaxHandler {
                         $max_hours = intval(wmvc_show_data('max_hours', $price_reservation, false, TRUE, TRUE));
                         if((int)($max_hours/24) >= 1) {
                             $days = (int)($max_hours/24);
-                            $period .= esc_html(sprintf(_nx(
+                            $period .= esc_html(sprintf(
+                                /* translators: 1: Number of days. */
+                                _nx(
                                                             '%1$s day',
                                                             '%1$s days',
                                                             $days,
@@ -355,7 +367,9 @@ class AjaxHandler {
                         }
                         
                         if(!empty($max_hours)) {
-                            $period .= ' '.esc_html(sprintf(_nx(
+                            $period .= ' '.esc_html(sprintf(
+                                /* translators: 1: Number of hours. */
+                                _nx(
                                             '%1$s hour',
                                             '%1$s hours',
                                             (int)($max_hours),
@@ -385,8 +399,8 @@ class AjaxHandler {
                 } else {
                     
                     if(wmvc_show_data('is_hour_enabled', $calendar, false) && !empty($data['date_from']) && !empty($data['date_to'])) {
-                        $data['date_from'] = date('Y-m-d 00:00:00', strtotime($data['date_from']));
-                        $data['date_to'] = date('Y-m-d 00:00:00', strtotime($data['date_to']));
+                        $data['date_from'] = gmdate('Y-m-d 00:00:00', strtotime($data['date_from']));
+                        $data['date_to'] = gmdate('Y-m-d 00:00:00', strtotime($data['date_to']));
                     }
                     $insert_id = $Winter_MVC_wdk_bookings->reservation_m->insert($data, NULL);
 
@@ -491,7 +505,7 @@ class AjaxHandler {
                                 $data_message['hours_for_payment'] = intval(wdk_get_option(('wdk_bookings_time_for_payment')));
                                 
                                 /* set date_expire for reservation */
-                                $update_data = array('date_expire'=>esc_sql(date("Y-m-d H:i:s", strtotime("+".intval(wdk_get_option(('wdk_bookings_time_for_payment')))." hours"))));
+                                $update_data = array('date_expire'=>esc_sql(gmdate("Y-m-d H:i:s", strtotime("+".intval(wdk_get_option(('wdk_bookings_time_for_payment')))." hours"))));
                                 $Winter_MVC_wdk_bookings->reservation_m->insert($update_data, $insert_id);
                             }
 
@@ -574,6 +588,7 @@ class AjaxHandler {
                             {
                                 add_filter( 'eli/ajax-handler/filter_output', function($filter_output) {
                                     $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.  sprintf(
+                                    /* translators: 1: Tag with link open, 2: close link tag. */
                                     esc_html__('Server can\'t send emails, please use SMTP mail configuration. Check %1$sGuide%2$s', 'wpdirectorykit'),
                                     '<a href="https://wpdirectorykit.com/e-mail-sending-issues-smtp-mail-configuration/" target="_blank" style="text-decoration: underline">',
                                     '</a>'
@@ -676,6 +691,7 @@ class AjaxHandler {
                         {
                             add_filter( 'eli/ajax-handler/filter_output', function($filter_output) {
                                 $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.  sprintf(
+                                    /* translators: 1: Tag with link open, 2: close link tag. */
                                     esc_html__('Server can\'t send emails, please use SMTP mail configuration. Check %1$sGuide%2$s', 'wpdirectorykit'),
                                     '<a href="https://wpdirectorykit.com/e-mail-sending-issues-smtp-mail-configuration/" target="_blank" style="text-decoration: underline">',
                                     '</a>'
@@ -716,8 +732,12 @@ class AjaxHandler {
                         if(empty($value)) continue;
           
                         if(filter_var($value, FILTER_VALIDATE_URL ) || strpos( $value, 'http' ) !== FALSE) {
+                            // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                             $data_mess []= '<p><strong>'.__(str_replace('_',' ', ucfirst($key)), 'wpdirectorykit').':</strong> <a href="'.esc_url($value).'">'.$value.'</a></p>';
                         } else {
+                            // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                             $data_mess []= '<p><strong>'.__(str_replace('_',' ', ucfirst($key)), 'wpdirectorykit').':</strong> '.$value.'</p>';
                         }
                     }
@@ -804,6 +824,7 @@ class AjaxHandler {
                         add_filter( 'eli/ajax-handler/filter_output', function($filter_output) {
                             $filter_output['message'] = '<div class="elementinvader_addons_for_elementor_alert elementinvader_addons_for_elementor_alert-danger" role="alert">'.
                                 sprintf(
+                                    /* translators: 1: Tag with link open, 2: close link tag. */
                                     esc_html__('Server can\'t send emails, please use SMTP mail configuration. Check %1$sGuide%2$s', 'wpdirectorykit'),
                                     '<a href="https://wpdirectorykit.com/e-mail-sending-issues-smtp-mail-configuration/" target="_blank" style="text-decoration: underline">',
                                     '</a>'

@@ -30,6 +30,7 @@ class WdkButtonLogin extends WdkElementorBase {
     public function __construct($data = array(), $args = null) {
 
         \Elementor\Controls_Manager::add_tab(
+ 
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
         );
@@ -146,7 +147,7 @@ class WdkButtonLogin extends WdkElementorBase {
         } else {
         }
 
-        echo $this->view('wdk-button-login', $this->data); 
+        $this->view('wdk-button-login', $this->data, true); 
     }
 
 
@@ -366,6 +367,7 @@ class WdkButtonLogin extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Only for addon <a href="%1$s" target="_blank"> Live Messages Chat </a>', 'wpdirectorykit' ), '//wpdirectorykit.com/plugins/wp-directory-messages-chat.html'),
                 'content_classes' => 'wdk_elementor_hint',
             ]

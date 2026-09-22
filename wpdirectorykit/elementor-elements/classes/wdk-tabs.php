@@ -30,6 +30,7 @@ class WdkTabs extends WdkElementorBase {
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
         );
+ 
 
         \Elementor\Controls_Manager::add_tab(
             'tab_layout',
@@ -126,7 +127,7 @@ class WdkTabs extends WdkElementorBase {
             $this->data['is_edit_mode'] = true;
         }
 
-        echo $this->view('wdk-tabs', $this->data); 
+        $this->view('wdk-tabs', $this->data, true); 
     }
 
 
@@ -144,6 +145,7 @@ class WdkTabs extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( '<a href="%1$s" target="_blank">Have a question how to configure? Check our Guide</a>', 'wpdirectorykit' ), '//wpdirectorykit.com/wp/wpdirectorykit-elementor-element-wdk-tabs'),
                 'content_classes' => 'wdk_elementor_hint',
             ]
@@ -269,10 +271,10 @@ class WdkTabs extends WdkElementorBase {
                 $this->add_responsive_control(
                     $item['key'].'_hide',
                     [
-                        'label' => esc_html__( 'Hide Element', 'wdk-svg-map' ),
+                        'label' => esc_html__( 'Hide Element', 'wpdirectorykit' ),
                         'type' => Controls_Manager::SWITCHER,
-                        'none' => esc_html__( 'Hide', 'wdk-svg-map' ),
-                        'block' => esc_html__( 'Show', 'wdk-svg-map' ),
+                        'none' => esc_html__( 'Hide', 'wpdirectorykit' ),
+                        'block' => esc_html__( 'Show', 'wpdirectorykit' ),
                         'return_value' =>  'none',
                         'default' => ($item['key'] == 'field_button_reset' ) ? 'none':'',
                         'selectors' => [

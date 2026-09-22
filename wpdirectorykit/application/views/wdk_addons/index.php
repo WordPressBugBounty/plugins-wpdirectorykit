@@ -14,7 +14,7 @@ if (! defined('ABSPATH')) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Subscription', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Subscription', 'wpdirectorykit'); ?></h1>
     <div class="wdk-pricing">
         <div class="wdk-sec-header">
             <h2 class="wdk-sec-title">
@@ -78,7 +78,7 @@ if (! defined('ABSPATH')) {
         </div>
     </div>
 
-    <h1 class="wp-heading-inline"><?php echo __('Addons', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Addons', 'wpdirectorykit'); ?></h1>
     <br style="clear:both" />
     <br style="clear:both" />
     <div class="wp-list-table widefat plugin-install">

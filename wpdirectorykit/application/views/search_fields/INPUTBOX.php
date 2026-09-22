@@ -18,6 +18,8 @@ $placeholder = wmvc_show_data('field_label', $field_data);
 if(!empty(wmvc_show_data('placeholder', $field_data,'')))
     $placeholder = wmvc_show_data('placeholder', $field_data);
 
+// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 $placeholder = esc_html__($placeholder,'wpdirectorykit');
 
 $field_value = '';
@@ -53,7 +55,10 @@ wdk_search_fields_toggle();
 
 <div class="wdk-field wdk-col wdk_search_<?php echo esc_attr($field_key);?> <?php if($query_type == 'min_max'):?>min_max_wdk-field<?php endif;?>  <?php echo esc_attr(wmvc_show_data('field_type', $field_data)); ?> <?php echo esc_attr(wmvc_show_data('class', $field_data)); ?> 
     wdk_field_id_<?php echo esc_attr(wmvc_show_data('idfield',$field_data));?>">
-    <label class="wdk-field-label"><?php echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?></label>
+    <label class="wdk-field-label"><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?></label>
     <div class="wdk-field-group">
         <?php if($query_type == 'min_max'):?>
             <div class="wdk-row min_max_row">
@@ -66,7 +71,9 @@ wdk_search_fields_toggle();
             </div>
         <?php else:?>
             <?php if(wmvc_show_data('is_select_2_ajax_field_db_suggestion',$field_data)):?> 
-                <?php echo wdk_select_db_field_ajax($field_key, NULL, $placeholder, wmvc_show_data('idfield',$field_data));?>
+                <?php
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                    echo wdk_select_db_field_ajax($field_key, NULL, $placeholder, wmvc_show_data('idfield',$field_data));?>
             <?php else:?>
                 <input class="wdk-control" name="<?php echo esc_attr($field_key); ?>" type="text" id="<?php echo esc_attr($field_attr_id); ?>" value="<?php echo esc_attr($field_value); ?>" placeholder="<?php echo esc_attr(trim($placeholder));?>">
             <?php endif;?>

@@ -30,6 +30,7 @@ class WdkCategoriesGrid extends WdkElementorBase {
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
         );
+ 
 
         \Elementor\Controls_Manager::add_tab(
             'tab_layout',
@@ -163,7 +164,7 @@ class WdkCategoriesGrid extends WdkElementorBase {
         if(Plugin::$instance->editor->is_edit_mode())
             $this->data['is_edit_mode']= true;
       
-        echo $this->view('wdk-categories-grid', $this->data); 
+        $this->view('wdk-categories-grid', $this->data, true); 
     }
 
 
@@ -212,6 +213,7 @@ class WdkCategoriesGrid extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Manage Categories <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_category')),
                 'content_classes' => 'wdk_elementor_hint',
             ]

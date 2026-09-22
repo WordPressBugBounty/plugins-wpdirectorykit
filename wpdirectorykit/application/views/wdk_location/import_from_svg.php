@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Location Management','wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Location Management','wpdirectorykit'); ?></h1>
     <br />
         <div class="wdk-body">
             <div class="postbox" style="display: block;">
-                <div class="postbox-header"><h3><?php echo __('Add/Edit Location','wpdirectorykit'); ?></h3>
+                <div class="postbox-header"><h3><?php echo esc_html__('Add/Edit Location','wpdirectorykit'); ?></h3>
             </div>
             <div class="inside">
 
@@ -30,17 +30,19 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <table class="form-table" role="presentation">
                         <tbody>
                             <tr>
-                                <th scope="row"><label for="related_svg_map"><?php echo __('Related SVG Map','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="related_svg_map"><?php echo esc_html__('Related SVG Map','wpdirectorykit'); ?></label></th>
                                 <td>
                                     <?php  
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                                         echo wmvc_select_option('related_svg_map', $maps_list, '', NULL, __('Not Selected','wpdirectorykit'), '0'); 
                                     ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><label for="related_svg_map_location"><?php echo __('Related SVG Map Location','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="related_svg_map_location"><?php echo esc_html__('Related SVG Map Location','wpdirectorykit'); ?></label></th>
                                 <td>
                                     <?php  
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                                         echo wmvc_select_option('related_svg_map_location', $parents, wmvc_show_data('idlocation', $location, ''), NULL, __('Root','wpdirectorykit'), '0'); 
                                     ?>
                                 </td>

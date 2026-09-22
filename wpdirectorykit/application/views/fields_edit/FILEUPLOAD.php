@@ -44,8 +44,9 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <div class="inside p0 m0">
-            <p class="alert alert-info"><?php echo __('Drag and drop files to change order', 'wpdirectorykit'); ?></p>
+            <p class="alert alert-info"><?php echo esc_html__('Drag and drop files to change order', 'wpdirectorykit'); ?></p>
             <?php  
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                 echo wdk_upload_multi_files( esc_attr($field_id), wmvc_show_data( esc_attr($field_id), $db_data, '')); 
             ?>               
         </div>

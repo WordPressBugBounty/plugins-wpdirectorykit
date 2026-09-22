@@ -185,7 +185,7 @@ class WdkListingsCarousel extends WdkElementorBase {
         if(Plugin::$instance->editor->is_edit_mode())
             $this->data['is_edit_mode'] = true;
 
-        echo $this->view('wdk-listings-carousel', $this->data); 
+        $this->view('wdk-listings-carousel', $this->data, true); 
       
     }
 
@@ -218,6 +218,7 @@ class WdkListingsCarousel extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Edit Result Card Designer <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_resultitem')),
                 'content_classes' => 'wdk_elementor_hint',
                 'separator' => 'after',
@@ -229,6 +230,7 @@ class WdkListingsCarousel extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Manage Listings <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk')),
                 'content_classes' => 'wdk_elementor_hint',
                 'separator' => 'after',

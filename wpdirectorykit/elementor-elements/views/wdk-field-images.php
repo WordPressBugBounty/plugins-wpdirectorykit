@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 $url = get_permalink($wdk_listing_id);
             }
         ?>
-        <a href="<?php echo $url;?>" class="complete_link"></a>
+        <a href="<?php echo esc_url($url);?>" class="complete_link"></a>
     <?php endif;?>
 
     <div class="wdk-field-images <?php if(wmvc_show_data('enable_js_gallery', $settings, false, TRUE, TRUE)):?> wdk_js_gallery <?php endif;?>">

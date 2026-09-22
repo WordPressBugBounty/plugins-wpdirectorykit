@@ -168,7 +168,7 @@ class WdkMap extends WdkElementorBase {
         if(Plugin::$instance->editor->is_edit_mode())
             $this->data['is_edit_mode']= true;
       
-        echo $this->view('wdk-map', $this->data); 
+        $this->view('wdk-map', $this->data, true); 
 
     }
 
@@ -201,7 +201,12 @@ class WdkMap extends WdkElementorBase {
                     'type' => \Elementor\Controls_Manager::TEXT,
                     'default' => '',
                     'placeholder' => __( 'put your template id', 'wpdirectorykit' ),
-                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ) . ' ' . wdk_sprintf(
+                        /* translators: 1: Tag with link open, 2: close link tag. */
+                        __('%1$s here %2$s', 'wpdirectorykit'),
+                        '<a target="_blank" href="' . esc_urL(admin_url('edit.php?post_type=elementor_library#add_new')) . '">',
+                        '</a>'
+                    ),
                     'conditions' => [
                         'terms' => [
                             [
@@ -498,7 +503,9 @@ class WdkMap extends WdkElementorBase {
                 'jawg_map_key',
                 [
                     'label' => __( 'Jawg Map API Key', 'wpdirectorykit' ),
+                    /* translators: 1: URL. */
                     'description' => wdk_sprintf(__( 'Please follow link and get API key <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://www.jawg.io/en/pricing')
+                                    /* translators: 1: URL. */
                                     .' '.wdk_sprintf(__( 'or check demo maps <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://www.jawg.io/en/maps'),
                     'type' => \Elementor\Controls_Manager::TEXT,
                     'default' => '',
@@ -514,9 +521,29 @@ class WdkMap extends WdkElementorBase {
             );
 
             $this->add_control(
+                'carto_map_key',
+                [
+                    'label' => __( 'Carto Map API Key', 'wpdirectorykit' ),
+                    /* translators: 1: URL. */
+                    'description' => wdk_sprintf(__( 'Please follow link and get API key <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://carto.com/basemaps/apikey/'),
+                    'type' => \Elementor\Controls_Manager::TEXT,
+                    'default' => '',
+                    'condition' => [
+                        'conf_custom_map_style' => [
+                            'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png',
+                            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                            'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+                            'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png',
+                        ],
+                    ],
+                ]
+            );
+
+            $this->add_control(
                 'thunderforest_map_key',
                 [
                     'label' => __( 'Thunderforest Map API Key', 'wpdirectorykit' ),
+                    /* translators: 1: URL. */
                     'description' => wdk_sprintf(__( 'Please follow link and get API key <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://www.thunderforest.com/pricing/'),
                     'type' => \Elementor\Controls_Manager::TEXT,
                     'default' => '',
@@ -538,6 +565,7 @@ class WdkMap extends WdkElementorBase {
                 'google_map_key',
                 [
                     'label' => __( 'Google Map API Key', 'wpdirectorykit' ),
+                    /* translators: 1: URL. */
                     'description' => wdk_sprintf(__( 'Please follow link and get API key <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://developers.google.com/maps/documentation/javascript/get-api-key'),
                     'type' => \Elementor\Controls_Manager::TEXT,
                     'default' => '',

@@ -50,8 +50,12 @@ if(isset($field->is_required) && $field->is_required == 1)
             <?php endif; ?>
         <?php endfor; ?>
         <span class="suffix"><?php
+                       // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
+            // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->suffix, 'wpdirectorykit');
         ?></span>
         <?php if(!empty($field->hint)):?>

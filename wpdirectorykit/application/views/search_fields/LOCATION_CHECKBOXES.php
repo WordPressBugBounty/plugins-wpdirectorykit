@@ -66,6 +66,21 @@ wdk_search_fields_toggle();
             wp_enqueue_style( 'wdk-treefield-checkboxes');
             wp_enqueue_script( 'wdk-treefield-checkboxes');
         ?>
-        <?php echo wdk_treefield_option_checkboxes ('search_location', 'location_m', $field_value, 'location_title', '', __('All Locations', 'wpdirectorykit'), $filter_ids, FALSE, '', $hide_fields);?>
+        <?php
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+            echo wdk_treefield_option_checkboxes(
+                    'search_location',
+                    'location_m',
+                    $field_value,
+                    'location_title',
+                    '',
+                    __('All Locations', 'wpdirectorykit'),
+                    $filter_ids,
+                    FALSE,
+                    '',
+                    $hide_fields
+                );
+        ?>
+   
     </div>
 </div>

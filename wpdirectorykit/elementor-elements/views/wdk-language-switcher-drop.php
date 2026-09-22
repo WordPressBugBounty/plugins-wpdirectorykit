@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
     <div class="wdk-language-switcher-drop">
         <button class="wdk-language-switcher-btn-toggle" type="button">
-            <span><?php echo wdk_current_language(); ?></span>
+            <span><?php echo esc_html(wdk_current_language()); ?></span>
             <?php \Elementor\Icons_Manager::render_icon( $settings['select_icon'], [ 'aria-hidden' => 'true' ] ); ?>
         </button>
         <div class="wdk-language-switcher-menu">

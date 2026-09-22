@@ -21,7 +21,7 @@ function wdk_generate_fields($fields, $db_data, $form = NULL)
         }
         else
         {
-            echo __('Missing VIEW file:', 'wpdirectorykit').' '.esc_html($field_type).'.php';
+            echo esc_html__('Missing VIEW file:', 'wpdirectorykit').' '.esc_html($field_type).'.php';
         }
     }
 }
@@ -191,6 +191,7 @@ if ( ! function_exists('wdk_generate_search_form'))
         }
 
         if($print){
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
             echo $output;
             return FALSE;
         }
@@ -360,6 +361,7 @@ if ( ! function_exists('wdk_generate_search_form_fields_elementor'))
         }
 
         if($print){
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
             echo $output;
             return FALSE;
         }
@@ -1192,7 +1194,6 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
 
             if(is_numeric($lang_term_id))
             {
-                //echo $lang_term_id.'<br />';
                 $WMVC->db->join($WMVC->db->prefix.'term_relationships ON '.$WMVC->db->prefix.'posts.ID = '.$WMVC->db->prefix.'term_relationships.object_id', NULL, NULL);
                 $WMVC->db->where("({$WMVC->db->prefix}term_relationships.term_taxonomy_id = $lang_term_id)");
             }
@@ -1631,7 +1632,7 @@ function wdk_messages_prepare_search_query_GET($columns = array(), $model_name =
 
                         if(wdk_payments_is_date($val) && $detect_date > 1000)
                         {
-                            $gen_search = date('Y-m-d H:i:s', $detect_date);
+                            $gen_search = gmdate('Y-m-d H:i:s', $detect_date);
                             $gen_q.=$col_name." > '".$gen_search."' AND ";
                         }
                         else
@@ -1680,7 +1681,7 @@ function wdk_messages_prepare_search_query_GET($columns = array(), $model_name =
 function wdk_date() {
 	$date_format = get_option('date_format');
 	$time_format = get_option('time_format');
-	$date = date("{$date_format} {$time_format}", current_time('timestamp'));
+	$date = gmdate("{$date_format} {$time_format}", current_time('timestamp'));
 	return $date;
 }
 
@@ -1852,7 +1853,7 @@ if(!function_exists('wdk_search_fields_toggle')){
 
                         <?php if(function_exists('run_wdk_save_search') && get_option('wdk_save_search_show_on_searchform')):?>
                         <div class="section-widget-control right">
-                            <a class="wdk-c-btn wdk-c-edit wdk-save-search-button" href="#" data-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" title="<?php echo esc_attr_e('Save Search', 'selio'); ?>" target="_blank">
+                            <a class="wdk-c-btn wdk-c-edit wdk-save-search-button" href="#" data-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" title="<?php echo esc_attr__('Save Search', 'wpdirectorykit'); ?>" target="_blank">
                                 <i class="fas fa-save" aria-hidden="true"></i>
                                 <i class="fa fa-spinner fa-spin fa-ajax-indicator"></i>
                             </a>
@@ -1904,7 +1905,7 @@ if ( ! function_exists('wdk_treefield_option'))
         if(empty($selected))
             $selected='';
 
-		$form = '<input name="'.$name.'" value="'.$selected.'" class="wdk-hidden" type="text" id="wdktreeelem'.$counter.'" readonly/>';
+		$form = '<input name="'.esc_attr($name).'" value="'.esc_attr($selected).'" class="wdk-hidden" type="text" id="wdktreeelem'.esc_attr($counter).'" readonly/>';
         
         $skip_id = '';
         //load javascript library
@@ -1913,38 +1914,37 @@ if ( ! function_exists('wdk_treefield_option'))
             wp_enqueue_script('wdk-treefield');
             wp_enqueue_style('wdk-treefield');
         }
-        ?>
-        <script>
-            jQuery(document).ready(function($) {
-                $('#wdktreeelem<?php echo esc_js($counter);?>:not(.init)').wdkTreefield({
-                    ajax_url: '<?php echo admin_url('admin-ajax.php'); ?>',
+        wp_add_inline_script(
+            'wdk-treefield',
+            "jQuery(document).ready(function($) {
+                $('#wdktreeelem" . esc_js($counter) . ":not(.init)').wdkTreefield({
+                    ajax_url: '" . esc_js(admin_url('admin-ajax.php')) . "',
                     ajax_param: { 
-                                "page": 'wdk_frontendajax',
-                                "function": 'treefieldid',
-                                "action": 'wdk_public_action',
-                                "wdk_secure": '<?php echo wp_create_nonce( 'wdk_secure_treefieldid' );?>',
-                                "table": '<?php echo esc_js($table); ?>',
-                                "filter_ids": '<?php echo esc_js($filter_ids); ?>',
-                                "start_id": '<?php if(!empty($filter_ids)) esc_js($selected); else echo ""; ?>',
-                                "empty_value": '<?php echo esc_js($empty_value); ?>',
-                                "user_check": '<?php echo esc_js($user_check); ?>',
-                                "sql_where": '<?php echo esc_js($sql_where); ?>',
-                                "hide_fields": '<?php echo esc_js($hide_fields); ?>'
-                                },
-                    attribute_id: '<?php echo esc_js($attribute_id); ?>',
-                    language_id: '<?php echo esc_js($language_id); ?>',
-                    attribute_value: '<?php echo esc_js($column); ?>',
-                    skip_id: '<?php echo esc_js($skip_id); ?>',
+                        page: 'wdk_frontendajax',
+                        function: 'treefieldid',
+                        action: 'wdk_public_action',
+                        wdk_secure: '" . esc_js(wp_create_nonce('wdk_secure_treefieldid')) . "',
+                        table: '" . esc_js($table) . "',
+                        filter_ids: '" . esc_js($filter_ids) . "',
+                        start_id: '" . (!empty($filter_ids) ? esc_js($selected) : "") . "',
+                        empty_value: '" . esc_js($empty_value) . "',
+                        user_check: '" . esc_js($user_check) . "',
+                        sql_where: '" . esc_js($sql_where) . "',
+                        hide_fields: '" . esc_js($hide_fields) . "'
+                    },
+                    attribute_id: '" . esc_js($attribute_id) . "',
+                    language_id: '" . esc_js($language_id) . "',
+                    attribute_value: '" . esc_js($column) . "',
+                    skip_id: '',
                     empty_value: ' - ',
-                    text_search: '<?php esc_html_e('Search term', 'wpdirectorykit');?>',
-                    text_no_results: '<?php esc_html_e('No results found', 'wpdirectorykit');?>',
+                    text_search: '" . esc_html__('Search term', 'wpdirectorykit') . "',
+                    text_no_results: '" . esc_html__('No results found', 'wpdirectorykit') . "',
                     callback_selected: function(key) {
-                        $('#wdktreeelem<?php echo esc_js($counter);?>').trigger("change");
+                        $('#wdktreeelem" . esc_js($counter) . "').trigger('change');
                     }
                 }).addClass('init');
-            });
-        </script>
-        <?php
+            });"
+        ); 
         $counter++;
 		return $form;
 	}
@@ -2014,7 +2014,7 @@ if ( ! function_exists('wdk_treefield_option_checkboxes'))
             $values = $empty_value;
         }
         
-		$form = '<input name="'.$name.'" value="'.esc_html($selected).'" data-placehoder="'.esc_html($values).'" class="wdk-hidden" type="text" id="wdktreeelem_checkbox'.$counter.'" readonly/>';
+		$form = '<input name="'.esc_attr($name).'" value="'.esc_html($selected).'" data-placehoder="'.esc_html($values).'" class="wdk-hidden" type="text" id="wdktreeelem_checkbox'.esc_attr($counter).'" readonly/>';
         
         $skip_id = '';
         //load javascript library
@@ -2027,12 +2027,12 @@ if ( ! function_exists('wdk_treefield_option_checkboxes'))
         <script>
             jQuery(document).ready(function($) {
                 $('#wdktreeelem_checkbox<?php echo esc_js($counter);?>:not(.init)').wdkTreefieldCheckboxes({
-                    ajax_url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                    ajax_url: '<?php echo esc_url(admin_url('admin-ajax.php')); ?>',
                     ajax_param: { 
                                 "page": 'wdk_frontendajax',
                                 "function": 'treefieldid_checkboxes',
                                 "action": 'wdk_public_action',
-                                "wdk_secure": '<?php echo wp_create_nonce( 'wdk_secure_treefieldid_checkboxes' );?>',
+                                "wdk_secure": '<?php echo esc_js(wp_create_nonce( 'wdk_secure_treefieldid_checkboxes' ));?>',
                                 "table": '<?php echo esc_js($table); ?>',
                                 "filter_ids": '<?php echo esc_js($filter_ids); ?>',
                                 "empty_value": '<?php echo esc_js($empty_value); ?>',
@@ -2203,7 +2203,7 @@ if ( ! function_exists('wdk_normalize_date_db'))
 
         /* check is date on strtotime */
         if((bool)strtotime($date)){
-            return date($return_format, strtotime($date));
+            return gmdate($return_format, strtotime($date));
         }
 
         return false;
@@ -2259,7 +2259,7 @@ function wdk_insert_attachment_from_cloud_url($url, $parent_post_id = null) {
     }
 
     // Try to get filename from URL or headers
-    $filename = basename(parse_url($url, PHP_URL_PATH));
+    $filename = basename(wp_parse_url($url, PHP_URL_PATH));
 
     // If filename empty (Google Drive case)
     if (!$filename || strpos($filename, '.') === false) {
@@ -2345,7 +2345,7 @@ function wdk_insert_attachment_from_url($url, $parent_post_id = null) {
         if(!$data) return false;
         if(empty($data['mime'])) return false;
     
-        $filename = time().rand(0000,9999).'.'.wdk_mime2ext($data['mime']);
+        $filename = time().wp_rand(0000,9999).'.'.wdk_mime2ext($data['mime']);
     }
 	$upload = wp_upload_bits( $filename, null, $response['body'] );
 
@@ -2711,11 +2711,11 @@ function wdk_upload_file($field_name, $file_id)
     <p class="hide-if-no-js">
         <a class="upload-custom-img <?php if ( $you_have_file  ) { echo 'hidden'; } ?>" 
         href="<?php echo esc_url($upload_link) ?>">
-            <?php echo esc_html__('Select file','wmvc_win') ?>
+            <?php echo esc_html__('Select file','wpdirectorykit') ?>
         </a>
         <a class="delete-custom-img <?php if ( ! $you_have_file  ) { echo 'hidden'; } ?>" 
         href="#">
-            <?php echo esc_html__('Remove all files','wmvc_win') ?>
+            <?php echo esc_html__('Remove all files','wpdirectorykit') ?>
         </a>
     </p>
     <?php //endif; ?>
@@ -2731,6 +2731,7 @@ function wdk_upload_file($field_name, $file_id)
                             $('#".esc_js($field_name)."meta-box-id.postbox-upload').wpMediaElementFile();
                     });";
     
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
     echo "<script>".$custom_js."</script>";
 
     ?>
@@ -2783,8 +2784,8 @@ function wdk_upload_multi_files($field_name, $image_ids='', $texts = array())
 {
     static $media_element_counter = 0;
 
-    if(!isset($texts['file_select']))$texts['file_select'] = esc_html__('Select file','wmvc_win');
-    if(!isset($texts['file_remove']))$texts['file_remove'] = esc_html__('Remove all files','wmvc_win');
+    if(!isset($texts['file_select']))$texts['file_select'] = esc_html__('Select file','wpdirectorykit');
+    if(!isset($texts['file_remove']))$texts['file_remove'] = esc_html__('Remove all files','wpdirectorykit');
 
     $media_element_counter++;
     
@@ -2828,7 +2829,7 @@ function wdk_upload_multi_files($field_name, $image_ids='', $texts = array())
         <div class="custom-img-container winter_mvc-media">
             <?php if($you_have_img)foreach($your_img_src as $image_id => $img_src) : ?>
                 <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
-                    <img src="<?php echo esc_attr($img_src); ?>" style="object-fit: contain;" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
+                    <img src="<?php echo esc_attr($img_src); ?>" style="object-fit: contain;" alt="<?php echo esc_attr__('thumb', 'wpdirectorykit');?>" style="max-width:100%;" class="thumbnail"/>
                     <a href="#" class="remove"></a>
                 </div>
             <?php endforeach; ?>
@@ -2892,6 +2893,7 @@ function wdk_upload_multi_files($field_name, $image_ids='', $texts = array())
                             });
                         ";
         
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
         echo "<script>".$custom_js."</script>";
     
         ?>
@@ -2989,7 +2991,14 @@ if ( ! function_exists('wdk_recaptcha_field_v3'))
         {
             if($load_script && $counter===0)
             {
-                echo "<script src='https://www.google.com/recaptcha/api.js?render=".esc_attr(trim($wdk_recaptcha_site_key))."'></script>";
+                wp_enqueue_script(
+                    'google-recaptcha-v3',
+                    'https://www.google.com/recaptcha/api.js?render=' . esc_attr(trim($wdk_recaptcha_site_key)),
+                    array(),
+                    null,
+                    true
+                );
+           
             }
             $counter++;
             ?>
@@ -3029,7 +3038,14 @@ if ( ! function_exists('wdk_recaptcha_field'))
         {
             if($load_script && $counter===0)
             {
-                echo "<script src='https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&amp;render=explicit'></script>";
+                wp_enqueue_script(
+                    'google-recaptcha-v2',
+                    'https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit',
+                    array(),
+                    null,
+                    true
+                );
+           
             }
             $counter++;
             
@@ -3043,13 +3059,13 @@ if ( ! function_exists('wdk_recaptcha_field'))
 
             $recaptcha_array[$counter] = array('size'=>$size_tag);
                     
-            echo '<div id="recaptcha_called_'.$counter.'" class="g-recaptcha" style="'.$style.'"  '.$compact_tag.' data-sitekey="'.esc_attr(get_option('wdk_recaptcha_site_key')).'"></div>';
+            echo '<div id="recaptcha_called_'.esc_attr($counter).'" class="g-recaptcha" style="'.esc_attr($style).'"  '.esc_attr($compact_tag).' data-sitekey="'.esc_attr(get_option('wdk_recaptcha_site_key')).'"></div>';
     ?>
 
     <script>
     <?php if($counter===1)echo 'var ';?>CaptchaCallback = function(){
     <?php for($j=1;$j<=$counter;$j++): ?>
-        grecaptcha.render(document.getElementById('recaptcha_called_<?php echo $j;?>'), {'size' : '<?php echo esc_attr($recaptcha_array[$j]['size']); ?>',  'sitekey' : '<?php echo esc_attr(get_option('wdk_recaptcha_site_key')); ?>'});
+        grecaptcha.render(document.getElementById('recaptcha_called_<?php echo esc_attr($j);?>'), {'size' : '<?php echo esc_attr($recaptcha_array[$j]['size']); ?>',  'sitekey' : '<?php echo esc_attr(get_option('wdk_recaptcha_site_key')); ?>'});
     <?php endfor; ?>
     };
     </script>
@@ -3274,7 +3290,7 @@ if ( ! function_exists('wdk_treefield_select_ajax'))
         if(is_array($filter_ids)) $filter_ids = implode(',', $filter_ids);
         
 	    static $counter = 0;
-		$form = '<select data-ajax="'.admin_url('admin-ajax.php').'" name="'.$name.'" data-table="'.$table.'" '.$attr.' data-placeholder="'.$empty_value.'" class="form-control select_ajax" id="wdk_select2_'.$counter.'" multiple="">';
+		$form = '<select data-ajax="'.admin_url('admin-ajax.php').'" name="'.esc_attr($name).'" data-table="'.esc_attr($table).'" '.esc_attr($attr).' data-placeholder="'.esc_attr($empty_value).'" class="form-control select_ajax" id="wdk_select2_'.esc_attr($counter).'" multiple="">';
         
 
         if(false)
@@ -3303,12 +3319,16 @@ if ( ! function_exists('wdk_treefield_select_ajax'))
                         $results = $WMVC->$table->get();
                         foreach ($results as $item) {
                             if($item)
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                                 $form .= '<option selected="selected" value="'.esc_attr(wmvc_show_data($column_key, $item, false, TRUE, TRUE)).'">'.esc_html__(wmvc_show_data($column_print, $item, false, TRUE, TRUE),'wpdirectorykit').'</option>';
                         }
                     }
                 } elseif(is_intval($selected)) {
                     $db_item = $WMVC->$table->get($selected, TRUE);
                     if($db_item)
+                        // Dynamic field values are registered in the translation catalog separately.
+                        // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                         $form .= '<option selected="selected" value="'.esc_attr(wmvc_show_data($column_key, $db_item, false, TRUE, TRUE)).'">'.esc_html__(wmvc_show_data($column_print, $db_item, false, TRUE, TRUE),'wpdirectorykit').'</option>';
                 } 
             } else {
@@ -4360,9 +4380,9 @@ if(!function_exists('wdk_page_by_title')) {
                 $post_type
             );
         }
-    
-        $page = $wpdb->get_var( $sql );
-    
+        $page = $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+   
+     
         if ( $page ) {
             return get_post( $page, $output );
         }
@@ -4428,7 +4448,7 @@ if ( ! function_exists('wdk_db_table'))
                 foreach($var as $k => $v) {
                     if(count($columns) > 0 && !in_array($k, $columns))continue;
     
-                    $output .= '<td><strong>' . $k . '</strong></td>';
+                    $output .= '<td><strong>' . esc_html($k) . '</strong></td>';
                 }
                 $output .= '</tr>';
             }
@@ -4437,11 +4457,12 @@ if ( ! function_exists('wdk_db_table'))
             foreach($var as $k => $v) {
                 if(count($columns) > 0 && !in_array($k, $columns))continue;
 
-                $output .= '<td>' . $v . '</td>';
+                $output .= '<td>' . esc_html($v) . '</td>';
             }
             $output .= '</tr>';
         }
         $output .= '</table>';
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
         echo $output;
     }
 }
@@ -4449,7 +4470,7 @@ if ( ! function_exists('wdk_db_table'))
 if ( ! function_exists('wdk_move_gps'))
 {
     function wdk_move_gps($value) {
-        return $value+0.001 * rand(1, 9);
+        return $value+0.001 * wp_rand(1, 9);
     }
 }
 
@@ -4459,8 +4480,8 @@ if ( ! function_exists('wdk_get_near_location'))
         // Convert radius from meters to degrees
         $radiusInDegrees = $radius / 111000;
 
-        $u = mt_rand() / mt_getrandmax();
-        $v = mt_rand() / mt_getrandmax();
+        $u = wp_rand() / mt_getrandmax();
+        $v = wp_rand() / mt_getrandmax();
         $w = $radiusInDegrees * sqrt($u);
         $t = 2 * M_PI * $v;
         $x = $w * cos($t);
@@ -4588,7 +4609,7 @@ if (! function_exists('wdk_generate_slug'))
 		$str = str_replace(array('â','é','è','û','ê', 'à','Â','ç','ï','î','ä','î'), 
 						   array('a','e','e','u','e', 'a','c','c','i','î','a','î'), $str);
         
-        $str = strip_tags(strtolower($str));
+        $str = wp_strip_all_tags(strtolower($str));
 
 		
 		foreach ($trans as $key => $val)
@@ -5050,7 +5071,7 @@ if ( ! function_exists('wdk_select_db_field_ajax'))
         $WMVC = &wdk_get_instance();
         
 	    static $counter = 0;
-		$form = '<select data-ajax="'.admin_url('admin-ajax.php').'" name="'.$name.'" data-id="'.$filter_id.'" data-placeholder="'.$empty_value.'" class="form-control wdk_select2_field_suggestion" id="wdk_select2_field_'.$filter_id.'_'.$counter.'" multiple="">';
+		$form = '<select data-ajax="'.esc_url(admin_url('admin-ajax.php')).'" name="'.$name.'" data-id="'.$filter_id.'" data-placeholder="'.$empty_value.'" class="form-control wdk_select2_field_suggestion" id="wdk_select2_field_'.$filter_id.'_'.$counter.'" multiple="">';
             if($selected) {
                 if(is_array($selected)) {
                     /* where in */
@@ -5091,21 +5112,21 @@ if ( ! function_exists('wdk_next_month_payment_day'))
     function wdk_next_month_payment_day($currentDate, $time = false, $wanted_day = NULL) {
         $nextDate = null;
         $timestamp = strtotime($currentDate);
-        $daysInNextMonth = date('t', strtotime('+1 month', strtotime(date('Y-m', $timestamp))));
-        $currentDay = (int)date('d', $timestamp);
+        $daysInNextMonth = gmdate('t', strtotime('+1 month', strtotime(gmdate('Y-m', $timestamp))));
+        $currentDay = (int)gmdate('d', $timestamp);
 
         $timeFormat = $time ? "H:i:s" : "00:00:00";
 
             
         // Determine the wanted day
         if ($wanted_day !== NULL) {
-            $wanted_day = (int)date('d', strtotime($wanted_day));
+            $wanted_day = (int)gmdate('d', strtotime($wanted_day));
         } else {
-            $wanted_day = (int)date('d', $timestamp);
+            $wanted_day = (int)gmdate('d', $timestamp);
         }
 
         $nextMonth = strtotime('first day of next month', $timestamp);
-        $daysInNextMonth = date('t', $nextMonth);
+        $daysInNextMonth = gmdate('t', $nextMonth);
 
         // Adjust for the wanted day
         if ($wanted_day > $daysInNextMonth || 
@@ -5113,15 +5134,15 @@ if ( ! function_exists('wdk_next_month_payment_day'))
                 get_option('wdk_membership_next_month_calculation_with_last_day')
 
                 && (
-                    $currentDay >= 30 ||  $currentDay == date('t', $timestamp)
+                    $currentDay >= 30 ||  $currentDay == gmdate('t', $timestamp)
                 )
             )
             ) {
             // If the wanted day exceeds the max days of the next month, use the last day of the month
-            $nextDate = date("Y-m-{$daysInNextMonth} {$timeFormat}", $nextMonth);
+            $nextDate = gmdate("Y-m-{$daysInNextMonth} {$timeFormat}", $nextMonth);
         } else {
             // Otherwise, set the exact wanted day
-            $nextDate = date("Y-m-{$wanted_day} {$timeFormat}", $nextMonth);
+            $nextDate = gmdate("Y-m-{$wanted_day} {$timeFormat}", $nextMonth);
         }
 
         return ($nextDate) ? $nextDate : false;
@@ -5140,17 +5161,17 @@ if ( ! function_exists('wdk_next_year_payment_day'))
     function wdk_next_year_payment_day($currentDate, $time = false) {
         $nextDate = null;
         $timestamp = strtotime($currentDate);
-        $nextYearTimestamp = strtotime('+1 year', strtotime(date('Y-m', $timestamp)));
-        $daysInNextMonth = date('t', $nextYearTimestamp);
-        $currentDay = date('j', $timestamp);
+        $nextYearTimestamp = strtotime('+1 year', strtotime(gmdate('Y-m', $timestamp)));
+        $daysInNextMonth = gmdate('t', $nextYearTimestamp);
+        $currentDay = gmdate('j', $timestamp);
         $timeFormat = "00:00:00";
         if($time) {
             $timeFormat = "H:i:s";
         }
         if ($currentDay > $daysInNextMonth) {
-            $nextDate = date('Y-m-d '.$timeFormat, strtotime('last day of this month', $nextYearTimestamp));
+            $nextDate = gmdate('Y-m-d '.$timeFormat, strtotime('last day of this month', $nextYearTimestamp));
         } else {
-            $nextDate = date('Y-m-d '.$timeFormat, strtotime('+1 year', $timestamp));
+            $nextDate = gmdate('Y-m-d '.$timeFormat, strtotime('+1 year', $timestamp));
         }
     
         return ($nextDate) ? $nextDate : false;

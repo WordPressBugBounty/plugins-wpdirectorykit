@@ -63,13 +63,13 @@ class Wdk_listing extends Winter_MVC_Controller {
                 $listing_data[$field_name] = $listing_db_data->$field_name;
         }
 
-        $listing_data['date_modified'] = date('Y-m-d H:i:s');
+        $listing_data['date_modified'] = gmdate('Y-m-d H:i:s');
 
         // copy listing data
         $this->listing_m->insert($listing_data, NULL);
 
         if($this->db->last_error() != '')
-            exit('DB Error: '.$this->db->last_error());
+            exit('DB Error: '.esc_html($this->db->last_error()));
 
         $this->data['listing_fields'] = $this->field_m->get();
 
@@ -452,7 +452,7 @@ class Wdk_listing extends Winter_MVC_Controller {
 
                         $image_url = wp_get_attachment_image_url($image_id, 'large');
                         if($image_url) {
-                            $parsed = parse_url($image_url);
+                            $parsed = wp_parse_url($image_url);
                             $next_path = substr($parsed['path'], strpos($parsed['path'], 'uploads/')+8);
             
                             if(!empty($listing_data['listing_images_path_medium']))
@@ -462,6 +462,9 @@ class Wdk_listing extends Winter_MVC_Controller {
                         }
                     }
                 }
+
+                /* add featured images */
+                set_post_thumbnail($id, reset($image_ids));
             } 
 
             if((wmvc_user_in_role('administrator') || current_user_can('wdk_listings_manage')) && $this->input->post('slug')) {
@@ -493,7 +496,7 @@ class Wdk_listing extends Winter_MVC_Controller {
                 if ($packages) {
                     if(!isset($listing_data['rank']) || empty($listing_data['rank']))
                         $listing_data['rank'] = wdk_show_data('featured_rank',$package, 0, TRUE, TRUE);
-                    $listing_data['date_package_expire'] = date('Y-m-d H:i:s', strtotime('+'.wdk_show_data('days_limit',$package, 0, TRUE, TRUE).'days'));
+                    $listing_data['date_package_expire'] = gmdate('Y-m-d H:i:s', strtotime('+'.wdk_show_data('days_limit',$package, 0, TRUE, TRUE).'days'));
                 }
             }
 
@@ -501,7 +504,7 @@ class Wdk_listing extends Winter_MVC_Controller {
             if(isset($this->data['db_data']['date']))
                 $listing_data['date'] = $this->data['db_data']['date'];
 
-            $listing_data['date_modified'] = date('Y-m-d H:i:s');
+            $listing_data['date_modified'] = gmdate('Y-m-d H:i:s');
 
             if(empty($listing_db_data))
             {
@@ -513,7 +516,7 @@ class Wdk_listing extends Winter_MVC_Controller {
             }
 
             if($this->db->last_error() != '')
-                exit('DB Error: '.$this->db->last_error());
+                exit('DB Error: '.esc_html($this->db->last_error()));
 
             //var_dump($id_ret);
 
@@ -592,13 +595,13 @@ class Wdk_listing extends Winter_MVC_Controller {
             }
 
             if($this->db->last_error() != '')
-                exit('DB Error: '.$this->db->last_error());
+                exit('DB Error: '.esc_html($this->db->last_error()));
 
             $this->load->model('editlog_m');
             $this->editlog_m->insert(array(
                                             'user_id' => get_current_user_id(),
                                             'post_id' => $id,
-                                            'date' => date('Y-m-d H:i:s'),
+                                            'date' => gmdate('Y-m-d H:i:s'),
                                             'ip' => $_SERVER['REMOTE_ADDR']
                                         ));
 

@@ -6,7 +6,7 @@ class Wdk_fields extends Winter_MVC_Controller {
 	public function __construct(){
             
         if ( ! current_user_can('administrator') ) {
-            wp_die( __('You do not have sufficient permissions to access this page.') );
+            wp_die( esc_html__('You do not have sufficient permissions to access this page.','wpdirectorykit') );
         }
         
 		parent::__construct();

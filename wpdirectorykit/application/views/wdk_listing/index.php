@@ -14,32 +14,31 @@ if (! defined('ABSPATH')) {
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Add/Edit Listing', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Add/Edit Listing', 'wpdirectorykit'); ?></h1>
     <br />
 
     <?php if (!function_exists('run_wdk_membership')): ?>
         <div class="notice notice-success">
             <p>
-                <?php echo __('Do you need to add listing on frontend or allow visitors to add own listings?', 'wpdirectorykit'); ?>
+                <?php echo esc_html__('Do you need to add listing on frontend or allow visitors to add own listings?', 'wpdirectorykit'); ?>
                 <a href="https://wpdirectorykit.com/plugins/wp-directory-membership.html" target="_blank">
-                    <?php echo __('Purchase our premium Membership feature and support our work!', 'wpdirectorykit'); ?>
+                    <?php echo esc_html__('Purchase our premium Membership feature and support our work!', 'wpdirectorykit'); ?>
                 </a>
             </p>
         </div>
     <?php endif; ?>
 
-    <?php $this->view('wdk_listing/inc/quick-nav-listings',$data); ?>
-
-    <div class="wdk-body">
-
+    <div class="wdk-body wdk-body-listing">
         <?php do_action('wdk/listing/edit/aboveform', wmvc_show_data('ID', $db_data)); ?>
+ 
+        <?php $this->view('wdk_listing/inc/quick-nav-listings',$data); ?>
         <form method="post" class="form_listing form_listing_ai" action="<?php echo esc_url(wmvc_current_edit_url()); ?>" enctype="multipart/form-data" novalidate="novalidate">
             <?php wp_nonce_field('wdk-listing-edit_' . wmvc_show_data('ID', $db_data, 0), '_wpnonce'); ?>
 
             <div class="postbox" style="display: block;">
                 <div class="postbox-header">
                     <h3 class="wide wdk-gap-15 wdk-d-flex wdk-align-items-start wdk-align-items-center">
-                        <?php echo __('Main Data', 'wpdirectorykit'); ?> <?php if (function_exists('PLL')): ?>[<?php echo pll_get_post_language(wmvc_show_data('ID', $db_data, 0), 'slug'); ?>]<?php endif; ?>
+                        <?php echo esc_html__('Main Data', 'wpdirectorykit'); ?> <?php if (function_exists('PLL')): ?>[<?php echo esc_attr(pll_get_post_language(wmvc_show_data('ID', $db_data, 0), 'slug')); ?>]<?php endif; ?>
 
                         <a href="#"
                             <?php if (!file_exists(ABSPATH . 'wp-content/plugins/wdk-geo/wdk-geo.php')): ?>
@@ -58,14 +57,14 @@ if (! defined('ABSPATH')) {
                             <?php else: ?>
                             class="wdk-mr-5 button button-primary alignright wdk-geo-listing-google-places-search-btn"
                             <?php endif; ?>>
-                            <?php echo __('Google Maps Search', 'wpdirectorykit') ?>
+                            <?php echo esc_html__('Google Maps Search', 'wpdirectorykit') ?>
                         </a>
 
                         <?php if (get_option('wdk_sub_listings_enable')): ?>
                             <?php if (!empty(wmvc_show_data('listing_parent_post_id', $db_data))): ?>
-                                <?php echo __('Child Listing of', 'wpdirectorykit'); ?> <a target="_blank" href="<?php echo esc_url(admin_url('admin.php?page=wdk_listing&id=' . wmvc_show_data('listing_parent_post_id', $db_data))); ?>"><?php echo esc_html(wdk_field_value('post_title', wmvc_show_data('listing_parent_post_id', $db_data))); ?></a>
+                                <?php echo esc_html__('Child Listing of', 'wpdirectorykit'); ?> <a target="_blank" href="<?php echo esc_url(admin_url('admin.php?page=wdk_listing&id=' . wmvc_show_data('listing_parent_post_id', $db_data))); ?>"><?php echo esc_html(wdk_field_value('post_title', wmvc_show_data('listing_parent_post_id', $db_data))); ?></a>
                             <?php elseif (isset($_GET['parent_post_id']) && !empty($_GET['parent_post_id'])): ?>
-                                <?php echo __('Child Listing of', 'wpdirectorykit'); ?> <a target="_blank" href="<?php echo esc_url(admin_url('admin.php?page=wdk_listing&id=' . intval($_GET['parent_post_id']))); ?>"><?php echo esc_html(wdk_field_value('post_title', intval($_GET['parent_post_id']))); ?></a>
+                                <?php echo esc_html__('Child Listing of', 'wpdirectorykit'); ?> <a target="_blank" href="<?php echo esc_url(admin_url('admin.php?page=wdk_listing&id=' . intval($_GET['parent_post_id']))); ?>"><?php echo esc_html(wdk_field_value('post_title', intval($_GET['parent_post_id']))); ?></a>
                             <?php endif; ?>
                         <?php endif; ?>
                     </h3>
@@ -76,7 +75,7 @@ if (! defined('ABSPATH')) {
                         <?php if ($calendar_id): ?>
                             <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk-bookings-calendar&function=edit&id=" . esc_attr($calendar_id)); ?>"
                                 class="wdk-mr-5 button button-secondary alignright">
-                                <span class="dashicons dashicons-calendar"></span> <?php echo __('Edit Calendar', 'wpdirectorykit') ?>
+                                <span class="dashicons dashicons-calendar"></span> <?php echo esc_html__('Edit Calendar', 'wpdirectorykit') ?>
                             </a>
                         <?php endif; ?>
 
@@ -97,9 +96,9 @@ if (! defined('ABSPATH')) {
                             <?php else: ?>
                             class="wdk-mr-5 button button-secondary alignright"
                             <?php endif; ?>>
-                            <span class="dashicons dashicons-admin-page"></span> <?php echo __('Duplicate Listing', 'wpdirectorykit') ?>
+                            <span class="dashicons dashicons-admin-page"></span> <?php echo esc_html__('Duplicate Listing', 'wpdirectorykit') ?>
                         </a>
-                        <a href="<?php echo get_permalink(wmvc_show_data('ID', $db_data)); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" class="button button-secondary alignright" target="_blank" style="margin-right:15px;"><span class="dashicons dashicons-visibility" ></span> <?php echo __('View listing', 'wpdirectorykit'); ?></a>
+                        <a href="<?php echo esc_url(get_permalink(wmvc_show_data('ID', $db_data))); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" class="button button-secondary alignright" target="_blank" style="margin-right:15px;"><span class="dashicons dashicons-visibility" ></span> <?php echo esc_html__('View listing', 'wpdirectorykit'); ?></a>
                     <?php endif; ?>
                 </div>
                 <div class="inside">
@@ -111,7 +110,7 @@ if (! defined('ABSPATH')) {
 
                     if (function_exists('run_wdk_bookings')) {
                         /* if booking addon exists, show custom message with link to edit calendar */
-                        $success_message .= esc_html__('Successfully saved', 'wpdirectorykit') . '. <a target="_blank" href="' . admin_url('admin.php?page=wdk-bookings-calendar&function=edit&id=' . $calendar_id . '&post_id=' . wmvc_show_data('ID', $db_data)) . '">' . esc_html__('To define calendar availability dates please click here', 'wpdirectorykit') . '</a>';
+                        $success_message .= esc_html__('Successfully saved', 'wpdirectorykit') . '. <a target="_blank" href="' . esc_url(admin_url('admin.php?page=wdk-bookings-calendar&function=edit&id=' . $calendar_id . '&post_id=' . wmvc_show_data('ID', $db_data))) . '">' . esc_html__('To define calendar availability dates please click here', 'wpdirectorykit') . '</a>';
                     }
                     $form->messages('class="alert alert-danger"', $success_message);
                     ?>
@@ -121,7 +120,7 @@ if (! defined('ABSPATH')) {
                             <table class="form-table" role="presentation">
                                 <tbody>
                                     <tr class="<?php if (method_exists($form, 'hasError') && $form->hasError('post_title')): ?> field-error <?php endif; ?>">
-                                        <th scope="row"><label for="post_title"><?php echo __('Title', 'wpdirectorykit'); ?>*</label></th>
+                                        <th scope="row"><label for="post_title"><?php echo esc_html__('Title', 'wpdirectorykit'); ?>*</label></th>
                                         <td>
                                             <input name="post_title" type="text" id="post_title" value="<?php echo esc_attr(wmvc_show_data('post_title', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Title', 'wpdirectorykit'); ?>" class="regular-text">
                                             <?php if (method_exists($form, 'hasError') && $form->getError('post_title')): ?>
@@ -133,10 +132,10 @@ if (! defined('ABSPATH')) {
                                     </tr>
                                     <?php if (get_option('wdk_is_address_enabled', FALSE)): ?>
                                         <tr>
-                                            <th scope="row"><label for="input_address"><?php echo __('Address', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="input_address"><?php echo esc_html__('Address', 'wpdirectorykit'); ?></label></th>
                                             <td>
                                                 <input name="address" type="text" id="input_address" value="<?php echo esc_attr(wmvc_show_data('address', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Address', 'wpdirectorykit'); ?>" class="regular-text">
-                                                <p class="description" id="input_address-description"><?php echo __('After you enter address system will try to autodetect and pin location on map, then you can drag and drop pin on map to fine tune location', 'wpdirectorykit'); ?></p>
+                                                <p class="description" id="input_address-description"><?php echo esc_html__('After you enter address system will try to autodetect and pin location on map, then you can drag and drop pin on map to fine tune location', 'wpdirectorykit'); ?></p>
                                             </td>
                                         </tr>
                                     <?php endif; ?>
@@ -145,7 +144,7 @@ if (! defined('ABSPATH')) {
 
                                         <?php if (!empty(wmvc_show_data('listing_parent_post_id', $db_data)) || (isset($_GET['parent_post_id']) && !empty($_GET['parent_post_id']))): ?>
                                             <tr class="<?php echo (defined('WP_DEBUG') && WP_DEBUG) ? '' : 'hidden'; ?>">
-                                                <th scope="row"><label for="listing_parent_post_id"><?php echo __('Parent ID', 'wpdirectorykit'); ?>*</label></th>
+                                                <th scope="row"><label for="listing_parent_post_id"><?php echo esc_html__('Parent ID', 'wpdirectorykit'); ?>*</label></th>
                                                 <td>
                                                     <?php if (!empty(wmvc_show_data('listing_parent_post_id', $db_data))): ?>
                                                         <input readonly name="listing_parent_post_id" type="text" id="listing_parent_post_id" value="<?php echo esc_attr(wmvc_show_data('listing_parent_post_id', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('listing_parent_post_id', 'wpdirectorykit'); ?>" class="regular-text">
@@ -157,7 +156,7 @@ if (! defined('ABSPATH')) {
                                         <?php else: ?>
                                             <?php if (!empty(wmvc_show_data('ID', $db_data)) && empty(wmvc_show_data('parent_post_id', $db_data))): ?>
                                                 <tr>
-                                                    <th scope="row"><label for="listing_related_ids"><?php echo __('Related', 'wpdirectorykit'); ?></label></th>
+                                                    <th scope="row"><label for="listing_related_ids"><?php echo esc_html__('Related', 'wpdirectorykit'); ?></label></th>
                                                     <td>
                                                         <div class="wdk-listing-childs-wrap">
 
@@ -187,20 +186,22 @@ if (! defined('ABSPATH')) {
 
                                                             <div class="wdk-field-edit">
                                                                 <div class="wdk-field-container" style="padding: 0;">
-                                                                    <?php echo wdk_treefield_option('new_listing_id', 'listing_m', NULL, 'post_title', '', __('Not Selected', 'wpdirectorykit'), '', FALSE, 'only_nochilds'); ?>
-                                                                    <a class="button button-primary add_new_listing" style="margin-left: 5px" href="#"><?php echo __('Add', 'wpdirectorykit'); ?></a>
+                                                                    <?php 
+                                                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                                    echo wdk_treefield_option('new_listing_id', 'listing_m', NULL, 'post_title', '', __('Not Selected', 'wpdirectorykit'), '', FALSE, 'only_nochilds'); ?>
+                                                                    <a class="button button-primary add_new_listing" style="margin-left: 5px" href="#"><?php echo esc_html__('Add', 'wpdirectorykit'); ?></a>
                                                                 </div>
                                                             </div>
-                                                            <a target="_blank" class="button button-secondary" href="<?php echo esc_url(admin_url('admin.php?page=wdk_listing&parent_post_id=' . wmvc_show_data('ID', $db_data))); ?>"><?php echo __('Add New Related Listing', 'wpdirectorykit'); ?></a>
+                                                            <a target="_blank" class="button button-secondary" href="<?php echo esc_url(admin_url('admin.php?page=wdk_listing&parent_post_id=' . wmvc_show_data('ID', $db_data))); ?>"><?php echo esc_html__('Add New Related Listing', 'wpdirectorykit'); ?></a>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             <?php else: ?>
                                                 <tr>
-                                                    <th scope="row"><label for="listing_related_ids"><?php echo __('Related', 'wpdirectorykit'); ?></label></th>
+                                                    <th scope="row"><label for="listing_related_ids"><?php echo esc_html__('Related', 'wpdirectorykit'); ?></label></th>
                                                     <td>
                                                         <div class="wdk-listing-childs-wrap">
-                                                            <p class="alert alert-info"><?php echo __('Feature will be available after listing is saved', 'wpdirectorykit'); ?></p>
+                                                            <p class="alert alert-info"><?php echo esc_html__('Feature will be available after listing is saved', 'wpdirectorykit'); ?></p>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -213,7 +214,7 @@ if (! defined('ABSPATH')) {
                                     <?php if (get_option('wdk_is_category_enabled', FALSE)): ?>
                                         <?php if (wdk_get_option('wdk_multi_categories_edit_field_type') == 'wdk_treefield_dropdown'): ?>
                                             <tr>
-                                                <th scope="row"><label for="category_id"><?php echo __('Category', 'wpdirectorykit'); ?><?php if (wdk_get_option('wdk_listing_category_required')): ?>*<?php endif; ?></label></th>
+                                                <th scope="row"><label for="category_id"><?php echo esc_html__('Category', 'wpdirectorykit'); ?><?php if (wdk_get_option('wdk_listing_category_required')): ?>*<?php endif; ?></label></th>
                                                 <td class="wdk_multi_treefield_dropdown_container">
                                                     <?php
                                                     global $Winter_MVC_WDK;
@@ -277,7 +278,9 @@ if (! defined('ABSPATH')) {
 
                                                         <div data-level="<?php echo esc_attr($level); ?>" data-field="<?php echo esc_attr($field_key); ?>" class="wdk_multi_treefield_dropdown wdk_treefield_dropdown">
                                                             <div class="wdk-field-group">
-                                                                <?php echo wmvc_select_option('category_' . $level, $values_list, $category, 'class="wdk-control"'); ?>
+                                                                <?php 
+                                                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                                echo wmvc_select_option('category_' . $level, $values_list, $category, 'class="wdk-control"'); ?>
                                                             </div>
                                                         </div>
 
@@ -305,7 +308,9 @@ if (! defined('ABSPATH')) {
                                                         ?>
                                                             <div data-level="<?php echo esc_attr($level); ?>" data-field="<?php echo esc_attr($field_key); ?>" class="wdk_multi_treefield_dropdown wdk_treefield_dropdown">
                                                                 <div class="wdk-field-group">
-                                                                    <?php echo wmvc_select_option('category_' . $level, $values_list, NULL, 'class="wdk-control"'); ?>
+                                                                    <?php 
+                                                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                                    echo wmvc_select_option('category_' . $level, $values_list, NULL, 'class="wdk-control"'); ?>
                                                                 </div>
                                                             </div>
 
@@ -318,11 +323,13 @@ if (! defined('ABSPATH')) {
                                             </tr>
                                         <?php else: ?>
                                             <tr>
-                                                <th scope="row"><label for="category_id"><?php echo __('Category', 'wpdirectorykit'); ?><?php if (wdk_get_option('wdk_listing_category_required')): ?>*<?php endif; ?></label></th>
+                                                <th scope="row"><label for="category_id"><?php echo esc_html__('Category', 'wpdirectorykit'); ?><?php if (wdk_get_option('wdk_listing_category_required')): ?>*<?php endif; ?></label></th>
                                                 <td>
                                                     <div class="wdk-field-edit edittable">
                                                         <div class="wdk-field-container">
-                                                            <?php echo wdk_treefield_option('category_id', 'category_m',  wmvc_show_data('category_id', $db_data, ''), 'category_title', '', __('Not Selected', 'wpdirectorykit')); ?>
+                                                            <?php 
+                                                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                            echo wdk_treefield_option('category_id', 'category_m',  wmvc_show_data('category_id', $db_data, ''), 'category_title', '', __('Not Selected', 'wpdirectorykit')); ?>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -332,9 +339,11 @@ if (! defined('ABSPATH')) {
 
                                     <?php if (get_option('wdk_is_category_enabled', FALSE) && get_option('wdk_multi_categories_other_enable', FALSE)): ?>
                                         <tr>
-                                            <th scope="row"><label for="listing_categories"><?php echo __('More Categories', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="listing_categories"><?php echo esc_html__('More Categories', 'wpdirectorykit'); ?></label></th>
                                             <td class="">
-                                                <?php echo wdk_treefield_select_ajax('listing_sub_categories[]', 'category_m', wmvc_show_data('listing_sub_categories', $db_data, '', TRUE, TRUE), 'category_title', 'idcategory', '', __('All Categories', 'wpdirectorykit'), '', 'data-limit="10"'); ?>
+                                                <?php 
+                                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                echo wdk_treefield_select_ajax('listing_sub_categories[]', 'category_m', wmvc_show_data('listing_sub_categories', $db_data, '', TRUE, TRUE), 'category_title', 'idcategory', '', __('All Categories', 'wpdirectorykit'), '', 'data-limit="10"'); ?>
                                             </td>
                                         </tr>
                                     <?php endif; ?>
@@ -342,7 +351,7 @@ if (! defined('ABSPATH')) {
                                     <?php if (get_option('wdk_is_location_enabled', FALSE)): ?>
                                         <?php if (wdk_get_option('wdk_multi_categories_edit_field_type') == 'wdk_treefield_dropdown'): ?>
                                             <tr>
-                                                <th scope="row"><label for="location_id"><?php echo __('Location', 'wpdirectorykit'); ?><?php if (wdk_get_option('wdk_listing_category_required')): ?>*<?php endif; ?></label></th>
+                                                <th scope="row"><label for="location_id"><?php echo esc_html__('Location', 'wpdirectorykit'); ?><?php if (wdk_get_option('wdk_listing_category_required')): ?>*<?php endif; ?></label></th>
                                                 <td class="wdk_multi_treefield_dropdown_container">
                                                     <?php
                                                     global $Winter_MVC_WDK;
@@ -405,7 +414,9 @@ if (! defined('ABSPATH')) {
 
                                                         <div data-level="<?php echo esc_attr($level); ?>" data-field="<?php echo esc_attr($field_key); ?>" class="wdk_multi_treefield_dropdown wdk_treefield_dropdown">
                                                             <div class="wdk-field-group">
-                                                                <?php echo wmvc_select_option('location_' . $level, $values_list, $location, 'class="wdk-control"'); ?>
+                                                                <?php 
+                                                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                                echo wmvc_select_option('location_' . $level, $values_list, $location, 'class="wdk-control"'); ?>
                                                             </div>
                                                         </div>
 
@@ -440,7 +451,9 @@ if (! defined('ABSPATH')) {
                                                         ?>
                                                             <div data-level="<?php echo esc_attr($level); ?>" data-field="<?php echo esc_attr($field_key); ?>" class="wdk_multi_treefield_dropdown wdk_treefield_dropdown">
                                                                 <div class="wdk-field-group">
-                                                                    <?php echo wmvc_select_option('location_' . $level, $values_list, NULL, 'class="wdk-control"'); ?>
+                                                                    <?php 
+                                                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                                    echo wmvc_select_option('location_' . $level, $values_list, NULL, 'class="wdk-control"'); ?>
                                                                 </div>
                                                             </div>
 
@@ -453,11 +466,13 @@ if (! defined('ABSPATH')) {
                                             </tr>
                                         <?php else: ?>
                                             <tr>
-                                                <th scope="row"><label for="location_id"><?php echo __('Location', 'wpdirectorykit'); ?><?php if (wdk_get_option('wdk_listing_category_required')): ?>*<?php endif; ?></label></th>
+                                                <th scope="row"><label for="location_id"><?php echo esc_html__('Location', 'wpdirectorykit'); ?><?php if (wdk_get_option('wdk_listing_category_required')): ?>*<?php endif; ?></label></th>
                                                 <td>
                                                     <div class="wdk-field-edit edittable">
                                                         <div class="wdk-field-container">
-                                                            <?php echo wdk_treefield_option('location_id', 'location_m',  wmvc_show_data('location_id', $db_data, ''), 'location_title', '', __('Not Selected', 'wpdirectorykit')); ?>
+                                                            <?php 
+                                                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                            echo wdk_treefield_option('location_id', 'location_m',  wmvc_show_data('location_id', $db_data, ''), 'location_title', '', __('Not Selected', 'wpdirectorykit')); ?>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -467,19 +482,25 @@ if (! defined('ABSPATH')) {
 
                                     <?php if (get_option('wdk_is_location_enabled', FALSE) && get_option('wdk_multi_locations_other_enable', FALSE)): ?>
                                         <tr>
-                                            <th scope="row"><label for="listing_agents"><?php echo __('More Locations', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="listing_agents"><?php echo esc_html__('More Locations', 'wpdirectorykit'); ?></label></th>
                                             <td class="">
-                                                <?php echo wdk_treefield_select_ajax('listing_sub_locations[]', 'location_m', wmvc_show_data('listing_sub_locations', $db_data, '', TRUE, TRUE), 'location_title', 'idlocation', '', __('All Locations', 'wpdirectorykit'), '', 'data-limit="10"'); ?>
+                                                <?php 
+                                                
+                                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                echo wdk_treefield_select_ajax('listing_sub_locations[]', 'location_m', wmvc_show_data('listing_sub_locations', $db_data, '', TRUE, TRUE), 'location_title', 'idlocation', '', __('All Locations', 'wpdirectorykit'), '', 'data-limit="10"'); ?>
                                             </td>
                                         </tr>
                                     <?php endif; ?>
                                     <?php if (wdk_get_option('wdk_is_user_editor_enabled', FALSE)): ?>
                                         <tr>
-                                            <th scope="row"><label for="user_id_editor"><?php echo __('Agent Editor', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="user_id_editor"><?php echo esc_html__('Agent Editor', 'wpdirectorykit'); ?></label></th>
                                             <td>
                                                 <div class="wdk-field-edit edittable">
                                                     <div class="wdk-field-container">
-                                                        <?php echo wdk_treefield_option('user_id_editor', 'user_m', wmvc_show_data('user_id_editor', $db_data, ''), 'display_name', '', __('Not Selected', 'wpdirectorykit')); ?>
+                                                        <?php 
+                                                        
+                                                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                        echo wdk_treefield_option('user_id_editor', 'user_m', wmvc_show_data('user_id_editor', $db_data, ''), 'display_name', '', __('Not Selected', 'wpdirectorykit')); ?>
                                                     </div>
                                                 </div>
                                             </td>
@@ -488,21 +509,28 @@ if (! defined('ABSPATH')) {
                                     <?php if (wdk_get_option('wdk_is_alt_agent_enabled', FALSE)): ?>
                                         <?php if (function_exists('run_wdk_membership')): ?>
                                             <tr>
-                                                <th scope="row"><label for="listing_agents"><?php echo __('Alternative Agents', 'wpdirectorykit'); ?></label></th>
+                                                <th scope="row"><label for="listing_agents"><?php echo esc_html__('Alternative Agents', 'wpdirectorykit'); ?></label></th>
                                                 <td class="">
-                                                    <?php echo wdk_user_select_ajax('listing_agents[]', array_keys(wmvc_show_data('listing_agents', $db_data, '', TRUE, TRUE)), __('Add Agents', 'wpdirectorykit')); ?>
+                                                    <?php 
+                                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                    echo wdk_user_select_ajax('listing_agents[]', array_keys(wmvc_show_data('listing_agents', $db_data, '', TRUE, TRUE)), __('Add Agents', 'wpdirectorykit')); ?>
                                                 </td>
                                                 <?php if (false): ?>
                                                     <td class="agents_group">
-                                                        <?php echo wdk_select_multi_option('listing_agents[]',  wmvc_show_data('listing_agents', $db_data, '', TRUE, TRUE), array_keys(wmvc_show_data('listing_agents', $db_data, '', TRUE, TRUE)), "id='listing_agents'"); ?>
+                                                        <?php 
+                                                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                        echo wdk_select_multi_option('listing_agents[]',  wmvc_show_data('listing_agents', $db_data, '', TRUE, TRUE), array_keys(wmvc_show_data('listing_agents', $db_data, '', TRUE, TRUE)), "id='listing_agents'"); ?>
                                                         <div class="agent_add form-inline">
                                                             <div class="wdk-field-edit">
                                                                 <div class="wdk-field-container">
-                                                                    <?php echo wdk_treefield_option('agent_id', 'user_m', '', 'display_name', '', __('Not Selected', 'wpdirectorykit')); ?>
+                                                                    <?php 
+                                                                    
+                                                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                                                    echo wdk_treefield_option('agent_id', 'user_m', '', 'display_name', '', __('Not Selected', 'wpdirectorykit')); ?>
                                                                 </div>
                                                             </div>
-                                                            <button type="button" class="button button-primary add_button"><?php echo __('Add agent', 'wpdirectorykit'); ?></button>
-                                                            <button type="button" title="<?php echo __('Remove latest on list', 'wpdirectorykit'); ?>" class="button button-secondary rem_button"><?php echo __('X', 'wpdirectorykit'); ?></button>
+                                                            <button type="button" class="button button-primary add_button"><?php echo esc_html__('Add agent', 'wpdirectorykit'); ?></button>
+                                                            <button type="button" title="<?php echo esc_html__('Remove latest on list', 'wpdirectorykit'); ?>" class="button button-secondary rem_button"><?php echo esc_html__('X', 'wpdirectorykit'); ?></button>
                                                         </div>
                                                     </td>
                                                 <?php endif; ?>
@@ -512,9 +540,10 @@ if (! defined('ABSPATH')) {
 
                                     <?php if (wdk_get_option('wdk_membership_is_enable_subscriptions') && function_exists('run_wdk_membership')): ?>
                                         <tr>
-                                            <th scope="row"><label for="subscription_id"><?php echo __('Membership Subscription', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="subscription_id"><?php echo esc_html__('Membership Subscription', 'wpdirectorykit'); ?></label></th>
                                             <td>
                                                 <?php
+                                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                                                 echo wmvc_select_option('subscription_id', $subscriptions, wmvc_show_data('subscription_id', $db_data, ''), "id='subscription_id' class='regular-text'", __('Not Selected', 'wpdirectorykit'));
                                                 ?>
                                             </td>
@@ -523,9 +552,10 @@ if (! defined('ABSPATH')) {
 
                                     <?php if (function_exists('run_wdk_payments') && isset($packages)): ?>
                                         <tr>
-                                            <th scope="row"><label for="packages"><?php echo __('Package', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="packages"><?php echo esc_html__('Package', 'wpdirectorykit'); ?></label></th>
                                             <td>
                                                 <?php
+                                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                                                 echo wmvc_select_option('package_id', $packages, wmvc_show_data('package_id', $db_data, ''), "id='packages'", __('Not Selected', 'wpdirectorykit'));
                                                 ?>
                                             </td>
@@ -534,42 +564,42 @@ if (! defined('ABSPATH')) {
 
                                     <?php if (wdk_get_option('wdk_is_rank_enabled', FALSE)): ?>
                                         <tr>
-                                            <th scope="row"><label for="rank"><?php echo __('Rank', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="rank"><?php echo esc_html__('Rank', 'wpdirectorykit'); ?></label></th>
                                             <td>
                                                 <input <?php if (!wmvc_user_in_role('administrator') && !current_user_can('wdk_listings_manage')): ?> readonly="readonly" <?php endif; ?> name="rank" type="number" id="rank" value="<?php echo esc_attr(wmvc_show_data('rank', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Rank', 'wpdirectorykit'); ?>" class="regular-text">
-                                                <p class="description" id="input_rank-description"><b><?php echo __('Rank', 'wpdirectorykit'); ?></b> <?php echo esc_html__('is number, higher number means a better position/rank in results.', 'wpdirectorykit'); ?></p>
+                                                <p class="description" id="input_rank-description"><b><?php echo esc_html__('Rank', 'wpdirectorykit'); ?></b> <?php echo esc_html__('is number, higher number means a better position/rank in results.', 'wpdirectorykit'); ?></p>
                                             </td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if (wdk_get_option('wdk_is_featured_enabled', FALSE)): ?>
                                         <tr>
-                                            <th scope="row"><label for="is_featured"><?php echo __('Is Featured', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="is_featured"><?php echo esc_html__('Is Featured', 'wpdirectorykit'); ?></label></th>
                                             <td>
-                                                <input name="is_featured" type="checkbox" id="is_featured" value="1" <?php echo !empty(wmvc_show_data('is_featured', $db_data, '')) ? 'checked' : ''; ?>><label for="is_featured"><?php echo __('Make it featured', 'wpdirectorykit'); ?></label>
-                                                <p class="description" id="is_featured-description"><?php echo __('Featured/Highlighted listing in results', 'wpdirectorykit'); ?></p>
+                                                <input name="is_featured" type="checkbox" id="is_featured" value="1" <?php echo !empty(wmvc_show_data('is_featured', $db_data, '')) ? 'checked' : ''; ?>><label for="is_featured"><?php echo esc_html__('Make it featured', 'wpdirectorykit'); ?></label>
+                                                <p class="description" id="is_featured-description"><?php echo esc_html__('Featured/Highlighted listing in results', 'wpdirectorykit'); ?></p>
                                             </td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <tr>
-                                        <th scope="row"><label for="is_activated"><?php echo __('Is Activated', 'wpdirectorykit'); ?></label></th>
+                                        <th scope="row"><label for="is_activated"><?php echo esc_html__('Is Activated', 'wpdirectorykit'); ?></label></th>
                                         <td>
-                                            <input name="is_activated" type="checkbox" id="is_activated" value="1" <?php echo !empty(wmvc_show_data('is_activated', $db_data, '')) ? 'checked' : ''; ?>><label for="is_activated"><?php echo __('Make it available for public', 'wpdirectorykit'); ?></label>
-                                            <p class="description" id="is_activated-description"><?php echo __('When enabled, the listing becomes visible on the frontend. The listing owner can activate or deactivate the listing at any time.', 'wpdirectorykit'); ?></p>
+                                            <input name="is_activated" type="checkbox" id="is_activated" value="1" <?php echo !empty(wmvc_show_data('is_activated', $db_data, '')) ? 'checked' : ''; ?>><label for="is_activated"><?php echo esc_html__('Make it available for public', 'wpdirectorykit'); ?></label>
+                                            <p class="description" id="is_activated-description"><?php echo esc_html__('When enabled, the listing becomes visible on the frontend. The listing owner can activate or deactivate the listing at any time.', 'wpdirectorykit'); ?></p>
                                         </td>
                                     </tr>
                                     <?php if (function_exists('run_wdk_membership')): ?>
                                         <tr>
-                                            <th scope="row"><label for="is_approved"><?php echo __('Is Approved', 'wpdirectorykit'); ?></label></th>
+                                            <th scope="row"><label for="is_approved"><?php echo esc_html__('Is Approved', 'wpdirectorykit'); ?></label></th>
                                             <td>
-                                                <input name="is_approved" type="checkbox" id="is_approved" value="1" <?php echo !empty(wmvc_show_data('is_approved', $db_data, '')) ? 'checked' : ''; ?>><label for="is_approved"><?php echo __('Make it approved for public', 'wpdirectorykit'); ?></label>
-                                                <p class="description" id="is_approved-description"><?php echo __('When approved, the listing is eligible to be shown on the frontend, but it must also be activated. Approval can be granted by an admin, and for certain membership packages, listings may be auto-approved if configured.', 'wpdirectorykit'); ?> (<?php echo __('only admin can approve', 'wpdirectorykit'); ?>)</p>
+                                                <input name="is_approved" type="checkbox" id="is_approved" value="1" <?php echo !empty(wmvc_show_data('is_approved', $db_data, '')) ? 'checked' : ''; ?>><label for="is_approved"><?php echo esc_html__('Make it approved for public', 'wpdirectorykit'); ?></label>
+                                                <p class="description" id="is_approved-description"><?php echo esc_html__('When approved, the listing is eligible to be shown on the frontend, but it must also be activated. Approval can be granted by an admin, and for certain membership packages, listings may be auto-approved if configured.', 'wpdirectorykit'); ?> (<?php echo esc_html__('only admin can approve', 'wpdirectorykit'); ?>)</p>
                                             </td>
                                         </tr>
                                     <?php endif; ?>
                                     <tr>
-                                        <th scope="row"><label for="slug"><?php echo __('Slug', 'wpdirectorykit'); ?></label></th>
+                                        <th scope="row"><label for="slug"><?php echo esc_html__('Slug', 'wpdirectorykit'); ?></label></th>
                                         <td>
                                             <input <?php if (!wmvc_user_in_role('administrator') && !current_user_can('wdk_listings_manage')): ?> readonly="readonly" <?php endif; ?> name="slug" type="text" id="slug" value="<?php echo esc_attr(wmvc_show_data('post_name', $db_data, '')); ?>" placeholder="<?php echo esc_attr__('Slug', 'wpdirectorykit'); ?>" class="regular-text">
                                         </td>
@@ -627,7 +657,7 @@ if (! defined('ABSPATH')) {
                         <table class="form-table <?php if (method_exists($form, 'hasError') && $form->hasError('post_content')): ?> field-error <?php endif; ?>" role="presentation">
                             <tbody>
                                 <tr>
-                                    <th scope="row"><label for="post_content"><?php echo __('Content', 'wpdirectorykit'); ?>*</label></th>
+                                    <th scope="row"><label for="post_content"><?php echo esc_html__('Content', 'wpdirectorykit'); ?>*</label></th>
                                     <td><?php wp_editor(
                                             wmvc_show_data('post_content', $db_data, ''),
                                             'post_content',
@@ -652,22 +682,23 @@ if (! defined('ABSPATH')) {
                     <?php if (count($fields) == 0): ?>
                         <div class="wdk-col-12">
                             <div class="alert alert-success mb0">
-                                <p><?php echo __('Fields doesn\'t exists', 'wpdirectorykit'); ?> <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields"); ?>" class="button button-primary" id="add_field_button"><?php echo __('Manage Fields', 'wpdirectorykit'); ?></a></p>
+                                <p><?php echo esc_html__('Fields doesn\'t exists', 'wpdirectorykit'); ?> <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields"); ?>" class="button button-primary" id="add_field_button"><?php echo esc_html__('Manage Fields', 'wpdirectorykit'); ?></a></p>
                             </div>
                         </div>
                     <?php endif; ?>
 
-                    <?php echo wdk_generate_fields($fields, $db_data, $form); ?>
+                    <?php wdk_generate_fields($fields, $db_data, $form); ?>
                 </div>
             </div>
             <?php if (!wdk_get_option('wdk_listing_plangs_documents_disable')): ?>
                 <div class="postbox" style="display: block;">
                     <div class="postbox-header">
-                        <h3><?php echo __('Listing plans and documents', 'wpdirectorykit'); ?></h3>
+                        <h3><?php echo esc_html__('Listing plans and documents', 'wpdirectorykit'); ?></h3>
                     </div>
                     <div class="inside">
-                        <p class="alert alert-info"><?php echo __('Drag and drop files to change order', 'wpdirectorykit'); ?></p>
+                        <p class="alert alert-info"><?php echo esc_html__('Drag and drop files to change order', 'wpdirectorykit'); ?></p>
                         <?php
+                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                         echo wdk_upload_multi_files('listing_plans_documents', wmvc_show_data('listing_plans_documents', $db_data, ''));
                         ?>
                     </div>
@@ -676,11 +707,12 @@ if (! defined('ABSPATH')) {
             <?php if (!wdk_get_option('wdk_listing_images_disable')): ?>
                 <div class="postbox" style="display: block;">
                     <div class="postbox-header">
-                        <h3><?php echo __('Listing Images/Videos', 'wpdirectorykit'); ?></h3>
+                        <h3><?php echo esc_html__('Listing Images/Videos', 'wpdirectorykit'); ?></h3>
                     </div>
                     <div class="inside">
-                        <p class="alert alert-info"><?php echo __('Drag and drop image to change order', 'wpdirectorykit'); ?></p>
+                        <p class="alert alert-info"><?php echo esc_html__('Drag and drop image to change order', 'wpdirectorykit'); ?></p>
                         <?php
+                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                         echo wmvc_upload_multiple('listing_images', wmvc_show_data('listing_images', $db_data, ''));
                         ?>
                     </div>
@@ -719,7 +751,7 @@ wp_enqueue_script('jquery-ui-sortable', false, array('jquery'));
         <?php if (get_option('wdk_is_address_enabled', FALSE)): ?>
             var wdk_edit_map_marker, wdk_timerMap, wdk_edit_map;
             wdk_edit_map = L.map('map', {
-                center: [<?php echo (wmvc_show_data('lat', $db_data) ?: get_option('wdk_default_lat', 51.505)); ?>, <?php echo (wmvc_show_data('lng', $db_data) ?: get_option('wdk_default_lng', -0.09)); ?>],
+                center: [<?php echo esc_html(wmvc_show_data('lat', $db_data) ?: get_option('wdk_default_lat', 51.505)); ?>, <?php echo esc_html(wmvc_show_data('lng', $db_data) ?: get_option('wdk_default_lng', -0.09)); ?>],
                 zoom: 4,
             });
 
@@ -728,7 +760,7 @@ wp_enqueue_script('jquery-ui-sortable', false, array('jquery'));
             }).addTo(wdk_edit_map);
 
             wdk_edit_map_marker = L.marker(
-                [<?php echo (wmvc_show_data('lat', $db_data) ?: get_option('wdk_default_lat', 51.505)); ?>, <?php echo (wmvc_show_data('lng', $db_data) ?: get_option('wdk_default_lng', -0.09)); ?>], {
+                [<?php echo esc_html(wmvc_show_data('lat', $db_data) ?: get_option('wdk_default_lat', 51.505)); ?>, <?php echo esc_html(wmvc_show_data('lng', $db_data) ?: get_option('wdk_default_lng', -0.09)); ?>], {
                     draggable: true
                 }
             ).addTo(wdk_edit_map);
@@ -814,9 +846,18 @@ wp_enqueue_script('jquery-ui-sortable', false, array('jquery'));
                             } else {
                                 wdk_log_notify('<?php echo esc_js(__('Address not found', 'wpdirectorykit')); ?>', 'error');
                                 if ($('#input_address').parent().find('[data-alert="google"]').length === 0) {
-                                    $('#input_address').parent().append(`<div class="alert alert-info" data-alert="google"><?php echo wdk_sprintf(
-                                        esc_html__('Address not found, try enter google maps api key for more accurate results %1$s[here]%2$s','wpdirectorykit'), 
-                                        '<a target="_blank" href="'.esc_url(admin_url("admin.php?page=wdk_settings&wdk_tabs=wdk_tab_apis#wdk_geo_google_api_key")).'">','</a>'
+                                    $('#input_address').parent().append(`<div class="alert alert-info" data-alert="google"><?php echo wp_kses(
+                                        wdk_sprintf(
+                                            /* translators: 1: Tag with link open, 2: close link tag. */
+                                            esc_html__('Address not found, try enter google maps api key for more accurate results %1$s[here]%2$s','wpdirectorykit'),
+                                            '<a target="_blank" href="'.esc_url(admin_url("admin.php?page=wdk_settings&wdk_tabs=wdk_tab_apis#wdk_geo_google_api_key")).'">','</a>'
+                                        ),
+                                        array(
+                                            'a' => array(
+                                                'href'   => true,
+                                                'target' => true,
+                                            ),
+                                        )
                                     );?></div>`);
                                 }
                                 return;

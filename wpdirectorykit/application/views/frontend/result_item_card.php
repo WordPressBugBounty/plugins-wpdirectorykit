@@ -55,8 +55,8 @@ $slides_count_limit = 5;
 global $wdk_listing_result_id;
 $wdk_listing_result_id = wmvc_show_data('post_id', $listing);
 
-$parsed_url = parse_url($url);
-$site_host  = parse_url(home_url(), PHP_URL_HOST);
+$parsed_url = wp_parse_url($url);
+$site_host  = wp_parse_url(home_url(), PHP_URL_HOST);
 $url_host   = isset($parsed_url['host']) ? $parsed_url['host'] : '';
 
 $is_external = $url_host && $url_host !== $site_host;
@@ -206,10 +206,12 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                     echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));
 
                     if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER') {
-                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                        $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                         echo esc_html(wdk_number_format_i18n($value));
                     } else {
-                        echo esc_html__(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))), 'wpdirectorykit');
+                        // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                        echo esc_html__(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))), 'wpdirectorykit');
                     }
                     
                     echo esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));
@@ -259,10 +261,10 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                     echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));
 
                     if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER') {
-                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                        $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                         echo esc_html(wdk_number_format_i18n($value));
                     } else {
-                        echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));
+                        echo esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));
                     }
                     
                     echo esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));
@@ -336,10 +338,10 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                                 echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));
 
                                 if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER') {
-                                    $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                    $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                                     echo esc_html(wdk_number_format_i18n($value));
                                 } else {
-                                    echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));
+                                    echo esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));
                                 }
                                 
                                 echo esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));
@@ -392,10 +394,10 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                             echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));
 
                             if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER') {
-                                $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                                 echo esc_html(wdk_number_format_i18n($value));
                             } else {
-                                echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));
+                                echo esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));
                             }
                             
                             echo esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));
@@ -420,7 +422,7 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                                 ?>
 
                                 <?php if($field['is_link'] == 'yes'):?>
-                                    <a href="<?php echo get_permalink($child_idlisting); ?>" title="<?php echo esc_attr__('View','wpdirectorykit');?>" target="blank">
+                                    <a href="<?php echo esc_url(get_permalink($child_idlisting)); ?>" title="<?php echo esc_attr__('View','wpdirectorykit');?>" target="blank">
                                 <?php else:?>
                                     <span>
                                 <?php endif;?>
@@ -497,25 +499,42 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                         <?php if(!wdk_filter_decimal(wmvc_show_data('value', $field))) continue;?>
                         <span class="wdk-field-item wdk-field-<?php echo esc_attr(wmvc_show_data('field_id', $field, ''));?>">
                             <?php if(wmvc_show_data('icon_id', $field, false)):?>
-                                <img src="<?php echo esc_url(wdk_image_src($field, 'full',NULL,'icon_id'));?>" alt="<?php echo esc_attr(esc_html__(wmvc_show_data('field_label', $field, ''),'wpdirectorykit'));?>" class="wdk-icon">
+                                <img src="<?php echo esc_url(wdk_image_src($field, 'full',NULL,'icon_id'));?>" alt="<?php 
+                                    // Dynamic field values are registered in the translation catalog separately.
+                                    // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                    echo esc_attr(esc_html__(wmvc_show_data('field_label', $field, ''),'wpdirectorykit'));?>" class="wdk-icon">
                             <?php elseif(wmvc_show_data('is_label_disable', $resul_item_config, false) == 1):?>
-                                <?php echo '<span class="wdk-rc-field-label">'.esc_html__(wmvc_show_data('field_label', $field, ''),'wpdirectorykit').':</span>';?> 
+                                <?php 
+                                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                    echo '<span class="wdk-rc-field-label">'.esc_html__(wmvc_show_data('field_label', $field, ''),'wpdirectorykit').':</span>';?> 
                             <?php endif;?>
 
                             <?php if(wmvc_show_data('is_label_disable', $resul_item_config, false) != 1):?>
-                                <?php echo '<span class="wdk-rc-field-label">'.esc_html__(wmvc_show_data('field_label', $field, ''),'wpdirectorykit').':</span>';?> 
+                                <?php 
+                                    // Dynamic field values are registered in the translation catalog separately.
+                                    // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                    echo '<span class="wdk-rc-field-label">'.esc_html__(wmvc_show_data('field_label', $field, ''),'wpdirectorykit').':</span>';?> 
                             <?php endif;?>
 
                             <?php 
+                            // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                                 echo '<span class="wdk-rc-field-prefix">'.esc_html__(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)),'wpdirectorykit').'</span>';
 
                                 if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER') {
-                                    $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                    $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                                     echo '<span class="wdk-rc-field-value">'.esc_html__(wdk_number_format_i18n($value),'wpdirectorykit').'</span>';
                                 } else {
-                                    echo '<span class="wdk-rc-field-value">'.esc_html__(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))),'wpdirectorykit').'</span>';
+                                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                    echo '<span class="wdk-rc-field-value">'.esc_html__(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))),'wpdirectorykit').'</span>';
                                 }
                                 
+                                                                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                                 echo '<span class="wdk-rc-field-suffix">'.esc_html__(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)),'wpdirectorykit').'</span>';
                             ?>
                         </span>
@@ -566,17 +585,17 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                             <?php echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));?>
                             <?php if(function_exists('run_wdk_currency_conversion') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER'):?>
                                 <?php  
-                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                        $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                                         echo esc_html(wdk_filter_decimal(wdk_number_format_i18n($value)));
                                 ?>
                             <?php else:?>
                                 <?php if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER'):?>
                                     <?php  
-                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                        $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                                         echo esc_html(wdk_filter_decimal(wdk_number_format_i18n($value)));
                                     ?>
                                 <?php else:?>
-                                    <?php echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field)))), wmvc_show_data('field_id', $field))));?>
+                                    <?php echo esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', (do_shortcode(wdk_filter_decimal(wmvc_show_data('value', $field)))), wmvc_show_data('field_id', $field))));?>
                                 <?php endif;?>
                             <?php endif;?>
                             <?php echo esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));?>
@@ -587,7 +606,7 @@ class="wdk-listing-card <?php if( wdk_get_option('wdk_experimental_features') &&
                 </div>
             </div>
             <div class="wdk-right">
-                <a href="<?php echo esc_url($url);?>"  <?php echo $is_external ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> title="<?php esc_attr__('Open Listing', 'wpdirectorykit');?>" class="wdk-btn"><?php echo wmvc_show_data('content_button_text', $settings, '');?><?php wdk_viewe($content_button_icon); ?></a>
+                <a href="<?php echo esc_url($url);?>"  <?php echo $is_external ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> title="<?php esc_attr__('Open Listing', 'wpdirectorykit');?>" class="wdk-btn"><?php echo esc_html(wmvc_show_data('content_button_text', $settings, ''));?><?php wdk_viewe($content_button_icon); ?></a>
             </div>
         </div>
         <?php if($layout_type == 'grid' && wmvc_show_data('is_show_agent_details', $resul_item_config, '')):?>

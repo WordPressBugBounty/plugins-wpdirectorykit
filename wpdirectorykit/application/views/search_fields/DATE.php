@@ -15,6 +15,8 @@ $field_key = 'field_'.wmvc_show_data('idfield',$field_data);
 $field_attr_id = 'wdk_field_'.wmvc_show_data('idfield', $field_data);
 $placeholder = wmvc_show_data('field_label', $field_data);
 $field_value = '';
+// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 $placeholder = esc_html__($placeholder,'wpdirectorykit');
 
 $query_type = wmvc_show_data('query_type', $field_data, '');
@@ -41,7 +43,10 @@ wdk_search_fields_toggle();
 
 <div class="wdk-field wdk-col <?php if($query_type == 'min_max'):?>min_max_wdk-field<?php endif;?>  <?php echo esc_attr(wmvc_show_data('field_type', $field_data)); ?> <?php echo esc_attr(wmvc_show_data('class', $field_data)); ?> 
     wdk_field_id_<?php echo esc_attr(wmvc_show_data('idfield',$field_data));?>">
-    <label class="wdk-field-label"><?php echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?></label>
+    <label class="wdk-field-label"><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?></label>
     <div class="wdk-field-group">
         <?php if($query_type == 'min_max'):?>
             <div class="wdk-row min_max_row">

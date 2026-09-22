@@ -36,13 +36,13 @@ if (!defined('ABSPATH')) {
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
         <h2 style="margin-top:0">
-          <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo wdk_show_data('display_name', $user); ?>,
+          <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo esc_html(wdk_show_data('display_name', $user)); ?>,
         </h2>
         <p>
-          <?php echo esc_html__('Thank you very much on payment for membership subscription', 'wpdirectorykit'); ?> <?php echo wdk_show_data('subscription_name', $subscription); ?>,
+          <?php echo esc_html__('Thank you very much on payment for membership subscription', 'wpdirectorykit'); ?> <?php echo esc_html(wdk_show_data('subscription_name', $subscription)); ?>,
         </p>
         <p>
-          <?php echo esc_html__('Subscription is purchased until', 'wpdirectorykit'); ?>: <?php echo wdk_get_date(wdk_show_data('date_expire', $subscription_user)); ?>,
+          <?php echo esc_html__('Subscription is purchased until', 'wpdirectorykit'); ?>: <?php echo esc_html(wdk_get_date(wdk_show_data('date_expire', $subscription_user))); ?>,
         </p>
         <?php if(function_exists('wdk_dash_url')):?>
         <p>

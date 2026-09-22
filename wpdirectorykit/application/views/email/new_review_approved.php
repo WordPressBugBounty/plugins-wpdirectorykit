@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
-        <?php echo esc_html__('Review Approved', 'wpdirectorykit') . ': <a href="' . esc_url($link_review) . '">' . __('Link', 'wpdirectorykit') . '</a>'; ?>
+        <?php echo esc_html__('Review Approved', 'wpdirectorykit') . ': <a href="' . esc_url($link_review) . '">' . esc_html__('Link', 'wpdirectorykit') . '</a>'; ?>
     </div>
 
     <!-- Footer -->

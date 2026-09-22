@@ -36,7 +36,7 @@ if (!defined('ABSPATH')) {
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
            
             <h2 style="margin-top:0">
-                <?php echo esc_html__('Dear', 'wpdirectorykit'); ?> <?php echo wdk_show_data('display_name', $user); ?>,
+                <?php echo esc_html__('Dear', 'wpdirectorykit'); ?> <?php echo esc_html(wdk_show_data('display_name', $user)); ?>,
             </h2>
         
             <?php if(wmvc_show_data('post_id', $listing, false)):?>
@@ -63,9 +63,15 @@ if (!defined('ABSPATH')) {
                         <?php if ($key == 'subject' || $key == 'message') continue; ?>
                         <p>
                             <?php if(filter_var($value, FILTER_VALIDATE_URL ) || strpos( $value, 'http' ) !== FALSE):?>
-                                <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <a href="<?php echo esc_url($value);?>"><?php echo wp_kses_post($value); ?></a><br />
+                                <strong><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <a href="<?php echo esc_url($value);?>"><?php echo wp_kses_post($value); ?></a><br />
                             <?php else : ?>
-                                <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
+                                <strong><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
                             <?php endif; ?>
                         </p>
                     <?php endif; ?>

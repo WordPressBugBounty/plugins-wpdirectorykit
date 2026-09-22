@@ -8,7 +8,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
 ?>
 
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
@@ -28,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             ?>
             data-el_page_id="<?php echo esc_attr($post_id);?>"
 
-            class="wdk_map_results <?php echo wmvc_show_data('styles_thmbn_des_type',$settings, '');?> 
+            class="wdk_map_results <?php echo esc_attr(wmvc_show_data('styles_thmbn_des_type',$settings, ''));?> 
             <?php if
                 (
                     wdk_get_option('wdk_experimental_features') && wdk_get_option('wdk_experimental_ajax_results') &&
@@ -57,6 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php
 $WMVC = &wdk_get_instance();
 $WMVC->model('category_m');
+
 if (!$is_edit_mode)
     ob_start();
 ?>
@@ -218,6 +218,23 @@ if (!$is_edit_mode)
 				).addTo(wdk_map);  
 
             <?php elseif(in_array($settings['conf_custom_map_style'], array(
+                            'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png',
+                            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                            'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+                            'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png',
+                        ))):?>
+
+                <?php
+                // If no Carto key is provided, show default tile styling (fallback to OSM)
+                if (!$is_edit_mode && empty($settings['carto_map_key'])): ?>
+                    var positron = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(wdk_map);
+                <?php else: ?>
+                    var positron = L.tileLayer('<?php echo esc_js($settings['conf_custom_map_style']);?>?key=<?php echo esc_js($settings['carto_map_key']);?>').addTo(wdk_map);
+                <?php endif; ?>
+        
+            <?php elseif(in_array($settings['conf_custom_map_style'], array(
                             'https://{s}.tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png',
                             'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png',
                             'https://{s}.tile.thunderforest.com/transport-dark/{z}/{x}/{y}.png',
@@ -301,11 +318,11 @@ if (!$is_edit_mode)
                 $field_value .= apply_filters( 'wpdirectorykit/listing/field/suffix',wdk_field_option ($field_id, 'suffix'), $field_id);
             ?>
             auto_marker_size = true;
-            var innerMarker = '<div class="wdk_marker-container wdk_marker_label category_id_<?php echo esc_js(wmvc_show_data('category_id', $listing));?>"><?php echo esc_js(strip_tags($field_value));?></div>';
+            var innerMarker = '<div class="wdk_marker-container wdk_marker_label category_id_<?php echo esc_js(wmvc_show_data('category_id', $listing));?>"><?php echo esc_js(wp_strip_all_tags($field_value));?></div>';
         <?php elseif($pin_icon):?>
             var image = '<?php echo esc_html($pin_icon);?>'; var innerMarker = '<div class="wdk_marker-container wdk_marker-container-image"><img src='+image+'></img></div>';
         <?php elseif($font_icon && empty($font_class)):?> 
-            var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wmvc_show_data('category_id', $listing));?>"><div class="front wdk_face"><?php echo wdk_viewe($font_icon);?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
+            var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wmvc_show_data('category_id', $listing));?>"><div class="front wdk_face"><?php echo wdk_viewe($font_icon);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php else:?> 
             var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wmvc_show_data('category_id', $listing));?>"><div class="front wdk_face"><i class="<?php echo esc_attr($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php endif;?>

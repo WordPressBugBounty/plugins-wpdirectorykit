@@ -89,7 +89,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     slidesToShow: 1,
                 
                     <?php if(!empty(wmvc_show_data('layout_carousel_is_autoplay', $settings))):?>
-                    autoplay: <?php echo wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false');?>,
+                    autoplay: <?php echo esc_html(wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false'));?>,
                     <?php endif;?>
                     autoplaySpeed: '<?php echo esc_html($settings['layout_carousel_speed'], '100');?>',
                 
@@ -119,7 +119,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
                     
                     <?php if(wmvc_show_data('layout_carousel_nav_is_infinite', $settings) == 'true'):?>
-                        infinite: <?php echo wmvc_show_data('layout_carousel_nav_is_infinite', $settings, 'true');?>,
+                        infinite: <?php echo esc_html(wmvc_show_data('layout_carousel_nav_is_infinite', $settings, 'true'));?>,
                     <?php endif;?>
 
                     <?php if(!empty(wmvc_show_data('layout_carousel_nav_speed', $settings))):?>
@@ -142,18 +142,18 @@ if ( ! defined( 'ABSPATH' ) ) {
                         variableWidth: true,
                     <?php endif;?>
 
-                    slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns', $settings, '4')))) ? wmvc_show_data('styles_thmbn_nav_columns', $settings, '4') : 4;?>,
+                    slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns', $settings, '4')))) ? esc_js(wmvc_show_data('styles_thmbn_nav_columns', $settings, '4')) : 4;?>,
                     responsive: [
                         {
                             breakpoint: 991,
                             settings: {
-                                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns_tablet', $settings, '3')))) ? wmvc_show_data('styles_thmbn_nav_columns_tablet', $settings, '3') : 3;?>,
+                                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns_tablet', $settings, '3')))) ? esc_js(wmvc_show_data('styles_thmbn_nav_columns_tablet', $settings, '3')) : 3;?>,
                             }
                         },
                         {
                             breakpoint: 768,
                             settings: {
-                                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns_mobile', $settings, '2')))) ? wmvc_show_data('styles_thmbn_nav_columns_mobile', $settings, '2') : 2;?>,
+                                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns_mobile', $settings, '2')))) ? esc_js(wmvc_show_data('styles_thmbn_nav_columns_mobile', $settings, '2')) : 2;?>,
                             }
                         },
                     ]

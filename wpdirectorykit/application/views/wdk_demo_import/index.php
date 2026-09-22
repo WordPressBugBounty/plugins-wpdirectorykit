@@ -13,28 +13,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('WDK Demo Import', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('WDK Demo Import', 'wpdirectorykit'); ?></h1>
     <br />
     <div class="wdk-body">
         <div class="postbox" style="display: block;">
             <div class="postbox-header">
-                <h3><?php echo __('Demo data for theme:', 'wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'Name' )); ?></h3>
+                <h3><?php echo esc_html__('Demo data for theme:', 'wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'Name' )); ?></h3>
             </div>
             <div class="inside">
 
                 <div class="wdk_theme-about">
                     <div class="wdk_theme-about-screenshots">
-                        <div class="screenshot"><img src="<?php echo esc_url($current_theme->get_screenshot()); ?>" alt="<?php echo __('Theme screenshot', 'wpdirectorykit'); ?>"></div>
+                        <div class="screenshot"><img src="<?php echo esc_url($current_theme->get_screenshot()); ?>" alt="<?php echo esc_html__('Theme screenshot', 'wpdirectorykit'); ?>"></div>
                     </div>
 
                     <div class="wdk_theme-about-info">
                         <div class="top-content">
                             <div class="theme-title">
                                 <h2 class="theme-name"><?php echo esc_html($current_theme->get( 'Name' )); ?></h2>
-                                <span class="theme-version"><?php echo __('Version:', 'wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'Version' )); ?></span>
+                                <span class="theme-version"><?php echo esc_html__('Version:', 'wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'Version' )); ?></span>
                             </div>
                             <p class="theme-author">
-                                <?php echo __('By:', 'wpdirectorykit'); ?> <a href="<?php echo esc_attr($current_theme->get( 'AuthorURI' )); ?>"><?php echo esc_html($current_theme->get( 'Author' )); ?></a>
+                                <?php echo esc_html__('By:', 'wpdirectorykit'); ?> <a href="<?php echo esc_attr($current_theme->get( 'AuthorURI' )); ?>"><?php echo esc_html($current_theme->get( 'Author' )); ?></a>
                             </p>
 
                             <p class="theme-description"><?php echo esc_html($current_theme->get( 'Description' )); ?></p>
@@ -46,11 +46,11 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
         </div>
         <p class="wdk_button-container">
-            <a href="<?php echo admin_url('tools.php?page=wdk_demo_import&function=step_1');?>" class="wdk_button button button-hero button-primary"><?php echo __('Import Demo Data - Step 1','wpdirectorykit'); ?></a>
+            <a href="<?php echo esc_url(admin_url('tools.php?page=wdk_demo_import&function=step_1'));?>" class="wdk_button button button-hero button-primary"><?php echo esc_html__('Import Demo Data - Step 1','wpdirectorykit'); ?></a>
         </p>
     </div>
     <br/>
-    <div class="alert alert-info" role="alert"><a href="<?php echo esc_attr($current_theme->get( 'ThemeURI' )); ?>" target="_blank"><?php echo __('Theme Data will be downloaded from API:','wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'AuthorURI' )); ?> <?php echo __('On any trouble contact us via website contact page.','wpdirectorykit'); ?></a></div>
+    <div class="alert alert-info" role="alert"><a href="<?php echo esc_attr($current_theme->get( 'ThemeURI' )); ?>" target="_blank"><?php echo esc_html__('Theme Data will be downloaded from API:','wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'AuthorURI' )); ?> <?php echo esc_html__('On any trouble contact us via website contact page.','wpdirectorykit'); ?></a></div>
 </div>
 
 <style>

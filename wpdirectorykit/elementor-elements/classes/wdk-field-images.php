@@ -157,7 +157,7 @@ class WdkFieldImages extends WdkElementorBase {
             /* return false if no content */
         }
       
-        echo $this->view('wdk-field-images', $this->data); 
+        $this->view('wdk-field-images', $this->data, true); 
     }
 
 

@@ -149,7 +149,7 @@ class WdkCoolListingCarousel extends WdkElementorBase {
             /* return false if no content */
         }
 
-        echo $this->view('wdk-listing-carousel', $this->data); 
+        $this->view('wdk-listing-carousel', $this->data, true); 
     }
 
 

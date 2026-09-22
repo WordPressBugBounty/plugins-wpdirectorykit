@@ -41,20 +41,20 @@ if (!defined('ABSPATH')) {
                 <table style="border: 1px solid;border-collapse: collapse;width:100%;">
                     <thead>
                         <tr>
-                            <th style="padding:10px 10px; border: 1px solid;border-collapse: collapse;"><?php echo __('Title', 'wpdirectorykit'); ?></th>
-                            <th style="padding:10px 10px; border: 1px solid;border-collapse: collapse;text-align: center;"><?php echo __('Image', 'wpdirectorykit'); ?></th>
-                            <th style="padding:10px 10px; border: 1px solid;border-collapse: collapse;"><?php echo __('Date updated', 'wpdirectorykit'); ?></th>
+                            <th style="padding:10px 10px; border: 1px solid;border-collapse: collapse;"><?php echo esc_html__('Title', 'wpdirectorykit'); ?></th>
+                            <th style="padding:10px 10px; border: 1px solid;border-collapse: collapse;text-align: center;"><?php echo esc_html__('Image', 'wpdirectorykit'); ?></th>
+                            <th style="padding:10px 10px; border: 1px solid;border-collapse: collapse;"><?php echo esc_html__('Date updated', 'wpdirectorykit'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (count($results) == 0) : ?>
                             <tr class="no-items">
-                                <td style="padding:10px 10px; border: 1px solid;border-collapse: collapse;" colspan="3"><?php echo __('No Listings found.', 'wpdirectorykit'); ?></td>
+                                <td style="padding:10px 10px; border: 1px solid;border-collapse: collapse;" colspan="3"><?php echo esc_html__('No Listings found.', 'wpdirectorykit'); ?></td>
                             </tr><?php endif; ?>
                         <?php foreach ($results as $listing) : ?>
                             <tr>
                                 <td style="padding:10px 10px; border: 1px solid;border-collapse: collapse;">
-                                    <a href="<?php echo esc_url(get_permalink($listing)); ?>"><?php echo wmvc_show_data('post_title', $listing, '-'); ?></a>
+                                    <a href="<?php echo esc_url(get_permalink($listing)); ?>"><?php echo esc_html(wmvc_show_data('post_title', $listing, '-')); ?></a>
                                 </td>
                                 <td style="padding:10px 10px; border: 1px solid;border-collapse: collapse;text-align: center;">
                                     <a target="_blank" href="<?php echo esc_url(get_permalink($listing)); ?>">
@@ -62,7 +62,7 @@ if (!defined('ABSPATH')) {
                                     </a>
                                 </td>
                                 <td style="padding:10px 10px; border: 1px solid;border-collapse: collapse;text-align: center;">
-                                    <?php echo wdk_get_date($listing->post_date, false); ?>
+                                    <?php echo esc_html(wdk_get_date($listing->post_date, false)); ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php if(is_user_logged_in() && !function_exists('run_wdk_membership') && !wmvc_user_in_role('administrator')):?>
         <a target="_blank" href="https://wpdirectorykit.com/plugins/wp-directory-membership.html" id="<?php echo esc_attr(wmvc_show_data('link_id', $settings));?>" class="wdk-element-button">
     <?php elseif(!empty($this->data['settings']['custom_link']['url'])):?>
-        <a <?php echo $this->get_render_attribute_string( 'custom_link'); ?> class="wdk-element-button">
+        <a <?php echo $this->get_render_attribute_string( 'custom_link');// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText ?> class="wdk-element-button">
     <?php else:?>
         <a href="<?php echo esc_attr(wmvc_show_data('link_url', $settings));?>" id="<?php echo esc_attr(wmvc_show_data('link_id', $settings));?>" class="wdk-element-button">
     <?php endif;?>

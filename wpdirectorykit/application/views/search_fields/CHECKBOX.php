@@ -16,6 +16,8 @@ $field_key = 'field_'.wmvc_show_data('idfield',$field_data);
 $field_attr_id = 'wdk_field_'.wmvc_show_data('idfield', $field_data);
 $placeholder = wmvc_show_data('field_label', $field_data);
 $field_value = false;
+// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 $placeholder = esc_html__($placeholder,'wpdirectorykit');
 
 if(isset($predefinedfields_query) && !empty($predefinedfields_query[$field_key])) {
@@ -35,7 +37,10 @@ wdk_search_fields_toggle();
     <div class="wdk-field-group">
         <label for="<?php echo esc_attr($prefix_unique.$field_attr_id); ?>" class="wdk-field-label">
             <input class="wdk-control" name="<?php echo esc_attr($field_key); ?>" <?php if($field_value):?> checked="checked" <?php endif;?> type="checkbox" id="<?php echo esc_attr($prefix_unique.$field_attr_id); ?>" value="1">
-            <?php echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?>
+            <?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?>
         </label>
     </div>
 </div>

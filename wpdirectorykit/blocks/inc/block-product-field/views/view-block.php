@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                         <a href="<?php echo esc_url($url);?>">
                                             <?php foreach ($title_part as $key => $field):?>
                                                 <span>
-                                                    <?php echo wmvc_show_data('prefix', $field).wdk_filter_decimal(wmvc_show_data('value', $field)).wmvc_show_data('suffix', $field);?>
+                                                    <?php echo esc_html(wmvc_show_data('prefix', $field).wdk_filter_decimal(wmvc_show_data('value', $field)).wmvc_show_data('suffix', $field));?>
                                                 </span> 
                                             <?php endforeach;?>
                                         </a>
@@ -47,12 +47,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                                             <?php echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));?>
                                             <?php if(function_exists('run_wdk_currency_conversion') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER'):?>
                                                 <?php  
-                                                    $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                                    $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                                                     echo esc_html(wdk_number_format_i18n($value));
                                                 ?>
                                             <?php else:?>
                                                 <?php  
-                                                    $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                                    $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                                                     echo esc_html($value);
                                                 ?>
                                             <?php endif;?>

@@ -174,6 +174,9 @@ class WdkFieldValue extends WdkElementorBase
                         $this->data['field_value'] = '<span class="field_checkbox_unsuccess">' . $this->generate_icon($this->data['settings']['field_checkbox_icon_unsuccess']) . '</span>';
                     }
                 } else if (wdk_field_option($this->data['settings']['field_id'], 'field_type') == "INPUTBOX") {
+
+                    // Dynamic field values are registered in the translation catalog separately.
+                    // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     $this->data['field_value'] = __(wdk_field_value($this->data['settings']['field_id'], $wdk_listing_id, wdk_field_option($this->data['settings']['field_id'], 'empty_value')), 'wpdirectorykit');
 
                     if (strpos($this->data['field_value'], 'vimeo.com') !== FALSE) {
@@ -229,6 +232,8 @@ class WdkFieldValue extends WdkElementorBase
                                     $this->data['field_value'] .= ', ' . join(', ', $other_categories);
                             }
 
+                            // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                         $this->data['field_value'] = __($this->data['field_value'], 'wpdirectorykit');
                     }
                 } elseif ($this->data['settings']['field_id'] == 'location_id') {
@@ -244,17 +249,25 @@ class WdkFieldValue extends WdkElementorBase
                                     $this->data['field_value'] .= ', ' . join(', ', $other_locations);
                             }
 
+                        // Dynamic field values are registered in the translation catalog separately.
+                        // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                         $this->data['field_value'] = __($this->data['field_value'], 'wpdirectorykit');
                     }
                 } elseif (wdk_field_option($this->data['settings']['field_id'], 'field_type') == "DATE") {
+                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     $this->data['field_value'] = __(wdk_get_date(wdk_field_value($this->data['settings']['field_id'], $wdk_listing_id)), 'wpdirectorykit');
                 } elseif (strpos($this->data['settings']['field_id'], 'date') !== FALSE) {
+                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     $this->data['field_value'] = __(wdk_get_date(wdk_field_value($this->data['settings']['field_id'], $wdk_listing_id)), 'wpdirectorykit');
                 } elseif (
                     wdk_field_option($this->data['settings']['field_id'], 'field_type') == "TEXTAREA" ||
                     $this->data['settings']['field_id'] == 'post_content'
                 ) {
                     global $wp_embed;
+                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     $this->data['field_value'] = wpautop(__(wdk_field_value($this->data['settings']['field_id'], $wdk_listing_id), 'wpdirectorykit'));
                     $this->data['field_value'] = html_entity_decode($wp_embed->autoembed($this->data['field_value']));
                 } elseif (
@@ -269,6 +282,8 @@ class WdkFieldValue extends WdkElementorBase
                     wp_enqueue_script('blueimp-gallery');
                     wp_enqueue_script('wdk-blueimp-gallery');
                 } else {
+                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     $this->data['field_value'] = __(wdk_field_value($this->data['settings']['field_id'], $wdk_listing_id, wdk_field_option($this->data['settings']['field_id'], 'empty_value')), 'wpdirectorykit');
                 }
             } else {
@@ -319,11 +334,11 @@ class WdkFieldValue extends WdkElementorBase
             /* price format implement */
             if (function_exists('run_wdk_currency_conversion') && wdk_currencies_is_price_field($this->data['settings']['field_id'])) {
                 /* if currency_conversion and field is price */
-                $value = strip_tags(apply_filters('wpdirectorykit/listing/field/value', wdk_filter_decimal($this->data['field_value']), $this->data['settings']['field_id'], FALSE));
+                $value = wp_strip_all_tags(apply_filters('wpdirectorykit/listing/field/value', wdk_filter_decimal($this->data['field_value']), $this->data['settings']['field_id'], FALSE));
                 $this->data['field_value'] = esc_html(wdk_number_format_i18n($value));
             } elseif (wdk_field_option($this->data['settings']['field_id'], 'is_price_format') && wdk_field_option($this->data['settings']['field_id'], 'field_type') == 'NUMBER' && !empty($this->data['field_value'])) {
                 /* if field enabled is_price_format and field type is number*/
-                $value = strip_tags(apply_filters('wpdirectorykit/listing/field/value', wdk_filter_decimal($this->data['field_value']), $this->data['settings']['field_id'], FALSE));
+                $value = wp_strip_all_tags(apply_filters('wpdirectorykit/listing/field/value', wdk_filter_decimal($this->data['field_value']), $this->data['settings']['field_id'], FALSE));
                 $this->data['field_value'] = esc_html(wdk_number_format_i18n($value));
             } else {
                 /* without number format */
@@ -331,7 +346,7 @@ class WdkFieldValue extends WdkElementorBase
             }
         }
 
-        echo $this->view('wdk-field-value', $this->data);
+        $this->view('wdk-field-value', $this->data, true);
     }
 
     private function _generate_label()

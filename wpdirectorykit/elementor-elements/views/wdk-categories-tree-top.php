@@ -39,6 +39,7 @@ $results_page = get_permalink($results_page);
                                 <h3 class="title"><?php echo esc_html(wmvc_show_data('category_title', $value));?></h3>
                                 <div class="sub">
                                     <?php
+                                        /* translators: 1: Number of listings. */
                                         echo esc_html(wdk_sprintf(_nx(
                                                 '%1$s Listing',
                                                 '%1$s Listings',
@@ -75,6 +76,7 @@ $results_page = get_permalink($results_page);
                                 <h3 class="title"><?php echo esc_html(wmvc_show_data('category_title', $value));?></h3>
                                 <div class="sub">
                                     <?php
+                                        /* translators: 1: Number of listings. */
                                         echo esc_html(wdk_sprintf(_nx(
                                                 '%1$s Listing',
                                                 '%1$s Listings',

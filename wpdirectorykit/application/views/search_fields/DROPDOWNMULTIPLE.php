@@ -19,6 +19,8 @@ $placeholder = wmvc_show_data('field_label', $field_data);
 if(!empty(wmvc_show_data('placeholder', $field_data,'')))
     $placeholder = wmvc_show_data('placeholder', $field_data);
 
+// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 $placeholder = esc_html__($placeholder,'wpdirectorykit');
 
 $field_value = '';
@@ -53,9 +55,30 @@ wdk_search_fields_toggle();
 
 <div class="wdk-field wdk-col wdk_search_<?php echo esc_attr($field_key);?> <?php if($query_type == 'min_max'):?>min_max_wdk-field<?php endif;?>  <?php echo esc_attr(wmvc_show_data('field_type', $field_data)); ?> <?php echo esc_attr(wmvc_show_data('class', $field_data)); ?> 
     wdk_field_id_<?php echo esc_attr(wmvc_show_data('idfield',$field_data));?>">
-    <label class="wdk-field-label"><?php echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?></label>
+    <label class="wdk-field-label"><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?></label>
     <div class="wdk-field-group">
-            <?php echo wdk_select_option_multiple($field_key.'[]', $values, $field_value, "class='select_multi' data-placeholder='".esc_attr($empty_value)."'"); ?>
+            <?php 
+                echo wp_kses(
+                    wdk_select_option_multiple($field_key.'[]', $values, $field_value, "class='select_multi' data-placeholder='".esc_attr($empty_value)."'"),
+                    [
+                        'select' => [
+                            'class' => true,
+                            'data-placeholder' => true,
+                            'multiple' => true,
+                            'name' => true,
+                            'id' => true,
+                        ],
+                        'option' => [
+                            'value'    => true,
+                            'selected' => true,
+                        ],
+                    ]
+                );
+            ?>
+       
     </div>
 </div>
 

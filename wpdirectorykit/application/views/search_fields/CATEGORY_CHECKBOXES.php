@@ -15,6 +15,8 @@ $field_key = 'search_category';
 $field_attr_id = 'wdk_search_'.wmvc_show_data('idfield', $field_data);
 $placeholder = wmvc_show_data('field_label', $field_data);
 $field_value = '';
+// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 $placeholder = esc_html__($placeholder,'wpdirectorykit');
 
 $filter_ids = array();
@@ -66,6 +68,8 @@ wdk_search_fields_toggle();
         <?php if(isset($custom_field_value)):?>
             <input type="hidden" name="search_category[]" value="<?php echo esc_attr($custom_field_value);?>">
         <?php endif;?>
-        <?php echo wdk_treefield_option_checkboxes  ('search_category', 'category_m', $field_value, 'category_title', '', __('All Categories', 'wpdirectorykit'), $filter_ids, FALSE, '', $hide_fields);?>
+        <?php 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+        echo wdk_treefield_option_checkboxes  ('search_category', 'category_m', $field_value, 'category_title', '', __('All Categories', 'wpdirectorykit'), $filter_ids, FALSE, '', $hide_fields);?>
     </div>
 </div>

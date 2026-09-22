@@ -14,7 +14,9 @@
  * @copyright Copyright (c) 2011, Thomas Griffin
  * @license   GPL-2.0+
  */
-
+if (! defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
 /*
 	Copyright 2011 Thomas Griffin (thomasgriffinmedia.com)
 
@@ -338,38 +340,44 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 				/* translators: %s: plugin name. */
 				'updating'                        => __( 'Updating Plugin: %s', 'wpdirectorykit' ),
 				'oops'                            => __( 'Something went wrong with the plugin API.', 'wpdirectorykit' ),
-				'notice_can_install_required'     => _n_noop(
-					/* translators: 1: plugin name(s). */
+				'notice_can_install_required'     => 
+				/* translators: 1: plugin name 2: plugin names */
+				_n_noop(
 					'This plugin requires the following plugin: %1$s.',
 					'This plugin requires the following plugins: %1$s.',
 					'wpdirectorykit'
 				),
-				'notice_can_install_recommended'  => _n_noop(
-					/* translators: 1: plugin name(s). */
+				'notice_can_install_recommended'  => 
+				/* translators: 1: plugin name 2: plugin names */
+				_n_noop(
 					'This plugin recommends the following plugin: %1$s.',
 					'This plugin recommends the following plugins: %1$s.',
 					'wpdirectorykit'
 				),
-				'notice_ask_to_update'            => _n_noop(
-					/* translators: 1: plugin name(s). */
+				'notice_ask_to_update'            => 
+				/* translators: 1: plugin name 2: plugin names */
+				_n_noop(
 					'The following plugin needs to be updated to its latest version to ensure maximum compatibility with this plugin: %1$s.',
 					'The following plugins need to be updated to their latest version to ensure maximum compatibility with this plugin: %1$s.',
 					'wpdirectorykit'
 				),
-				'notice_ask_to_update_maybe'      => _n_noop(
-					/* translators: 1: plugin name(s). */
+				'notice_ask_to_update_maybe'      => 
+				/* translators: 1: plugin name 2: plugin names */
+				_n_noop(
 					'There is an update available for: %1$s.',
 					'There are updates available for the following plugins: %1$s.',
 					'wpdirectorykit'
 				),
-				'notice_can_activate_required'    => _n_noop(
-					/* translators: 1: plugin name(s). */
+				'notice_can_activate_required'    => 
+				/* translators: 1: plugin name 2: plugin names */
+				_n_noop(
 					'The following required plugin is currently inactive: %1$s.',
 					'The following required plugins are currently inactive: %1$s.',
 					'wpdirectorykit'
 				),
-				'notice_can_activate_recommended' => _n_noop(
-					/* translators: 1: plugin name(s). */
+				'notice_can_activate_recommended' => 
+				/* translators: 1: plugin name 2: plugin names */
+				_n_noop(
 					'The following recommended plugin is currently inactive: %1$s.',
 					'The following recommended plugins are currently inactive: %1$s.',
 					'wpdirectorykit'
@@ -2584,7 +2592,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 				}
 
 				$output[] = sprintf(
-					'<p><span style="min-width: 32px; text-align: right; float: right;%1$s">%2$s</span>' . __( 'Installed version:', 'wpdirectorykit' ) . '</p>',
+					'<p><span style="min-width: 32px; text-align: right; float: right;%1$s">%2$s</span>' . esc_html__( 'Installed version:', 'wpdirectorykit' ) . '</p>',
 					$color,
 					$installed
 				);
@@ -2592,7 +2600,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 
 			if ( ! empty( $item['minimum_version'] ) ) {
 				$output[] = sprintf(
-					'<p><span style="min-width: 32px; text-align: right; float: right;">%1$s</span>' . __( 'Minimum required version:', 'wpdirectorykit' ) . '</p>',
+					'<p><span style="min-width: 32px; text-align: right; float: right;">%1$s</span>' . esc_html__( 'Minimum required version:', 'wpdirectorykit' ) . '</p>',
 					$item['minimum_version']
 				);
 			}
@@ -2604,7 +2612,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 				}
 
 				$output[] = sprintf(
-					'<p><span style="min-width: 32px; text-align: right; float: right;%1$s">%2$s</span>' . __( 'Available version:', 'wpdirectorykit' ) . '</p>',
+					'<p><span style="min-width: 32px; text-align: right; float: right;%1$s">%2$s</span>' . esc_html__( 'Available version:', 'wpdirectorykit' ) . '</p>',
 					$color,
 					$item['available_version']
 				);
@@ -3047,7 +3055,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 					printf( // WPCS: xss ok.
 						'<div id="message" class="updated"><p>%1$s %2$s.</p></div>',
 						esc_html( _n( 'The following plugin was activated successfully:', 'The following plugins were activated successfully:', $count, 'wpdirectorykit' ) ),
-						$imploded
+						wp_kses($imploded)
 					);
 
 					// Update recently activated plugins option.

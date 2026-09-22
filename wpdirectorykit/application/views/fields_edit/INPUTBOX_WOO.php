@@ -45,7 +45,7 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
         <input class="regular-text" name="<?php echo esc_attr($field_id); ?>" type="text" id="<?php echo esc_attr($field_id); ?>" value="<?php echo esc_attr(wmvc_show_data($field_id, $db_data, '')); ?>">
         <span class="suffix">
         <?php if(!empty(wmvc_show_data($field_id, $db_data, ''))):?>
-            <a class="button button-primary" target="_blank" href="<?php echo admin_url('post.php?action=edit&post='.wmvc_show_data($field_id, $db_data, ''));?>" style="margin-top: -5px;">
+            <a class="button button-primary" target="_blank" href="<?php echo esc_url(admin_url('post.php?action=edit&post='.wmvc_show_data($field_id, $db_data, '')));?>" style="margin-top: -5px;">
                 <?php echo esc_html__('Edit Product','wpdirectorykit');?>
             </a>
         <?php endif;?></span>

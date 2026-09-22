@@ -51,8 +51,12 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
         value="<?php echo esc_attr(!empty(wmvc_show_data($field_id, $db_data, $field->default)) ? wmvc_show_data($field_id, $db_data, $field->default) : $field->empty_default); ?>"
         >
         <span class="suffix"><?php
+                     // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
+            // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->suffix, 'wpdirectorykit');
         ?></span>
         <?php if(!empty($field->hint)):?>
@@ -101,30 +105,58 @@ foreach ($fields_data as $field) {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var input = document.getElementById('<?php echo esc_js($field_id); ?>');
-    if (input) {
-        var tribute = new Tribute({
-            trigger: '{',
-            values: [
-                <?php 
-                $first = true;
-                foreach($fields_list as $value => $key) { 
-                    if(!$first) echo ",";
-                    ?>{ key: <?php echo json_encode($key); ?>, value: <?php echo json_encode($value); ?> }<?php
-                    $first = false;
-                } 
-                ?>
-            ],
-       
-            // Insert with curly braces
-            selectTemplate: function (item) {
-                return '{' + item.original.value + '}';
-            },
-            menuItemTemplate: function (item) {
-                return item.string; // show key
-            }
-        });
-        tribute.attach(input);
+
+    if (!input) {
+        return;
     }
+
+    var tribute = new Tribute({
+        trigger: '{',
+
+        values: [
+            <?php
+            $first = true;
+
+            foreach ($fields_list as $value => $key) {
+                if (!$first) {
+                    echo ',';
+                }
+                ?>
+                {
+                    key: <?php echo json_encode($key); ?>,
+                    value: <?php echo json_encode($value); ?>
+                }
+                <?php
+
+                $first = false;
+            }
+            ?>
+        ],
+
+        // Insert with curly braces
+        selectTemplate: function(item) {
+            return '{' + item.original.value + '}';
+        },
+
+        // Show field name in dropdown
+        menuItemTemplate: function(item) {
+            return item.string;
+        }
+    });
+
+    tribute.attach(input);
+
+    function openTributeMenu() {
+        if (!tribute.isActive) {
+            tribute.showMenuForCollection(input, 0);
+        }
+    }
+
+    // Open on first focus
+    input.addEventListener('focus', openTributeMenu);
+
+    // Open again when user clicks inside already focused input
+    input.addEventListener('click', openTributeMenu);
 });
 </script>
 

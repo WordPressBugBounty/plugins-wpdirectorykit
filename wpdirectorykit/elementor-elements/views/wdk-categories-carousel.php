@@ -49,7 +49,7 @@ $results_page = get_permalink($results_page);
                         <img src="<?php echo esc_url(wdk_image_src($item, 'full', NULL,'image_id', 'image_path'));?>" class="wdk-slider-item_thumbnail" alt="<?php echo esc_attr(wmvc_show_data('category_title', $item));?>">
                         <div class="wdk-categories-carousel_mask"></div>
                         <?php if(!empty(wmvc_show_data('category_title', $item))):?>
-                        <div class="wdk-slider-item_box_line"> <div class="wdk-slider-item_box_title"> <?php echo esc_html(strip_tags(wmvc_show_data('category_title', $item)));?> </div></div>
+                        <div class="wdk-slider-item_box_line"> <div class="wdk-slider-item_box_title"> <?php echo esc_html(wp_strip_all_tags(wmvc_show_data('category_title', $item)));?> </div></div>
                         <?php endif;?>
                         <div class="wdk-slider-item_box_line"> <div class="wdk-slider-item_box_content"> <?php echo esc_html(wmvc_show_data('listings_counter', $item));?> <?php echo esc_html__('Listings','wpdirectorykit');?> </div></div>
                         <div class="wdk-slider-item_box_line"> <a class="wdk-slider-item_box_link" href="<?php echo esc_url(wdk_url_suffix($results_page,'search_category='.wmvc_show_data('idcategory', $item)));?>#results"> <?php echo esc_html($settings['t_content_basic_link_text']);?> </a></div>
@@ -89,14 +89,14 @@ $results_page = get_permalink($results_page);
                     variableWidth: true,
                 <?php endif;?>
                 speed: '<?php echo esc_html($settings['layout_carousel_speed'], '100');?>',
-                slidesToShow: <?php echo wmvc_show_data('layout_carousel_columns', $settings, 1);?>,
-                slidesToScroll: <?php echo wmvc_show_data('layout_carousel_columns', $settings,1);?>,
+                slidesToShow: <?php echo esc_js(wmvc_show_data('layout_carousel_columns', $settings, 1));?>,
+                slidesToScroll: <?php echo esc_js(wmvc_show_data('layout_carousel_columns', $settings,1));?>,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_infinite', $settings))):?>
-                infinite: <?php echo wmvc_show_data('layout_carousel_is_infinite', $settings, 'true');?>,
+                infinite: <?php echo esc_js(wmvc_show_data('layout_carousel_is_infinite', $settings, 'true'));?>,
                 <?php endif;?>
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_autoplay', $settings))):?>
-                autoplay: <?php echo wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false');?>,
-                autoplaySpeed: <?php echo wmvc_show_data('layout_carousel_autoplaySpeed', $settings, '1500');?>,
+                autoplay: <?php echo esc_js(wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false'));?>,
+                autoplaySpeed: <?php echo esc_js(wmvc_show_data('layout_carousel_autoplaySpeed', $settings, '1500'));?>,
                 <?php endif;?>
                 <?php if(wmvc_show_data('layout_carousel_columns', $settings, 1) == 1 &&  in_array($settings['layout_carousel_animation_style'], ['fade','fade_in_in'])):?>
                 fade: true,

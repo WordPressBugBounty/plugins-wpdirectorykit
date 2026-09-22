@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Categories','wpdirectorykit'); ?> <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_category&function=edit"); ?>" class="button button-primary" id="add_category_button"><?php echo __('Add Category','wpdirectorykit'); ?></a></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Categories','wpdirectorykit'); ?> <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_category&function=edit"); ?>" class="button button-primary" id="add_category_button"><?php echo esc_html__('Add Category','wpdirectorykit'); ?></a></h1>
     <br />
     <?php
         $success_message = NULL;
@@ -27,16 +27,16 @@ if ( ! defined( 'ABSPATH' ) ) {
         <table class="wp-list-table widefat fixed striped table-view-list pages">
             <thead>
                 <tr>
-                    <td id="cb" class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-1"><?php echo __('Select All', 'wpdirectorykit'); ?></label><input id="cb-select-all-1" type="checkbox"></td>
-                    <th><?php echo __('Title','wpdirectorykit'); ?></th>
-                    <th><?php echo __('Order','wpdirectorykit'); ?></th>
-                    <th><?php echo __('Level','wpdirectorykit'); ?></th>
-                    <th><?php echo __('Date','wpdirectorykit'); ?></th>
-                    <th class="actions_column"><?php echo __('Actions','wpdirectorykit'); ?></th>
+                    <td id="cb" class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-1"><?php echo esc_html__('Select All', 'wpdirectorykit'); ?></label><input id="cb-select-all-1" type="checkbox"></td>
+                    <th><?php echo esc_html__('Title','wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Order','wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Level','wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Date','wpdirectorykit'); ?></th>
+                    <th class="actions_column"><?php echo esc_html__('Actions','wpdirectorykit'); ?></th>
                 </tr>
             </thead>
             <?php if(count($categories) == 0): ?>
-                <tr class="no-items"><td class="colspanchange" colspan="6"><?php echo __('No Categories found.','wpdirectorykit'); ?></td></tr>
+                <tr class="no-items"><td class="colspanchange" colspan="6"><?php echo esc_html__('No Categories found.','wpdirectorykit'); ?></td></tr>
             <?php endif; ?>
             <?php foreach ( $categories as $category ):?>
                 <tr>
@@ -44,11 +44,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <input id="cb-select-<?php echo esc_attr(wmvc_show_data('idcategory', $category, '-')); ?>" type="checkbox" name="post[]" value="<?php echo esc_attr(wmvc_show_data('idcategory', $category, '-')); ?>">
                         <div class="locked-indicator">
                             <span class="locked-indicator-icon" aria-hidden="true"></span>
-                            <span class="screen-reader-text"><?php echo __('Is Locked', 'wpdirectorykit'); ?></span>
+                            <span class="screen-reader-text"><?php echo esc_html__('Is Locked', 'wpdirectorykit'); ?></span>
                         </div>
                     </th>
                     <td>
-                        <?php echo str_pad('', wmvc_show_data('level', $category, 0)*12, '&nbsp;').'|-'; ?><a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_category&function=edit&id=".wmvc_show_data('idcategory', $category, '-')); ?>"><?php echo esc_html(strip_tags(wmvc_show_data('category_title', $category, '-'))).' #'.esc_html(wmvc_show_data('idcategory', $category, '-')); ?></a>
+                        <?php echo esc_html(str_pad('', wmvc_show_data('level', $category, 0)*12, '&nbsp;')).'|-'; ?><a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_category&function=edit&id=".wmvc_show_data('idcategory', $category, '-')); ?>"><?php echo esc_html(wp_strip_all_tags(wmvc_show_data('category_title', $category, '-'))).' #'.esc_html(wmvc_show_data('idcategory', $category, '-')); ?></a>
                     </td>
                     <td>
                         <?php echo esc_html(wmvc_show_data('order_index', $category, '-')); ?>
@@ -61,28 +61,28 @@ if ( ! defined( 'ABSPATH' ) ) {
                     </td>
                     <td class="actions_column">
                         <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_category&function=edit&id=".wmvc_show_data('idcategory', $category, '-')); ?>" title="<?php echo esc_attr__('Edit','wpdirectorykit');?>"><span class="dashicons dashicons-edit"></span></a>
-                        <a class="question_sure" title="<?php echo esc_attr__('Remove','wpdirectorykit');?>" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_category&function=delete&id=".wmvc_show_data('idcategory', $category, '-')); ?>&_wpnonce=<?php echo wp_create_nonce( 'wdk-category-delete_'.wmvc_show_data('idcategory', $category, '-'));?>"><span class="dashicons dashicons-no"></span></a>
+                        <a class="question_sure" title="<?php echo esc_attr__('Remove','wpdirectorykit');?>" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_category&function=delete&id=".wmvc_show_data('idcategory', $category, '-')); ?>&_wpnonce=<?php echo esc_attr(wp_create_nonce( 'wdk-category-delete_'.wmvc_show_data('idcategory', $category, '-')));?>"><span class="dashicons dashicons-no"></span></a>
                     </td>
                 </tr>
             <?php endforeach; ?>
             <tfoot>
                 <tr>
-                    <td class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-2"><?php echo __('Select All', 'wpdirectorykit'); ?></label><input id="cb-select-all-2" type="checkbox"></td>
-                    <th><?php echo __('Title','wpdirectorykit'); ?></th>
-                    <th><?php echo __('Order','wpdirectorykit'); ?></th>
-                    <th><?php echo __('Level','wpdirectorykit'); ?></th>
-                    <th><?php echo __('Date','wpdirectorykit'); ?></th>
-                    <th class="actions_column"><?php echo __('Actions','wpdirectorykit'); ?></th>
+                    <td class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-2"><?php echo esc_html__('Select All', 'wpdirectorykit'); ?></label><input id="cb-select-all-2" type="checkbox"></td>
+                    <th><?php echo esc_html__('Title','wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Order','wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Level','wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Date','wpdirectorykit'); ?></th>
+                    <th class="actions_column"><?php echo esc_html__('Actions','wpdirectorykit'); ?></th>
                 </tr>
             </tfoot>
         </table>
         <div class="tablenav bottom">
             <div class="alignleft actions bulkactions">
                 <?php wp_nonce_field( 'wdk-category-bulk', '_wpnonce'); ?>
-                <label for="bulk-action-selector-bottom" class="screen-reader-text"><?php echo __('Select bulk action', 'wpdirectorykit'); ?></label>
+                <label for="bulk-action-selector-bottom" class="screen-reader-text"><?php echo esc_html__('Select bulk action', 'wpdirectorykit'); ?></label>
                 <select name="action" id="bulk-action-selector-bottom">
-                    <option value="-1"><?php echo __('Bulk actions', 'wpdirectorykit'); ?></option>
-                    <option value="delete" class="hide-if-no-js"><?php echo __('Delete', 'wpdirectorykit'); ?></option>
+                    <option value="-1"><?php echo esc_html__('Bulk actions', 'wpdirectorykit'); ?></option>
+                    <option value="delete" class="hide-if-no-js"><?php echo esc_html__('Delete', 'wpdirectorykit'); ?></option>
                 </select>
                 <input type="hidden" name="page" value="wdk_category" />
                 <input type="submit" id="table_action" class="button action" name="table_action" value="<?php echo esc_attr__('Apply', 'wpdirectorykit'); ?>">
@@ -91,7 +91,22 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
     </form>
     <br />
-    <div class="alert alert-info" style="margin-bottom:20px" role="alert"><?php echo sprintf(__('%1$s How to manage Categories documentation%2$s', 'wpdirectorykit'),'<a href="//wpdirectorykit.com/documentation/#!/categories" target="_blank">','</a>'); ?></div>
+    <div class="alert alert-info" style="margin-bottom:20px" role="alert"><?php
+        echo wp_kses(
+            sprintf(
+                /* translators: 1: Tag with link open, 2: close link tag. */
+                __('%1$s How to manage Categories documentation%2$s', 'wpdirectorykit'),
+                '<a href="' . esc_url('https://wpdirectorykit.com/documentation/#!/categories') . '" target="_blank">',
+                '</a>'
+            ),
+            array(
+                'a' => array(
+                    'href'   => true,
+                    'target' => true,
+                ),
+            )
+        );
+    ?></div>
     <iframe width="560" height="315" src="//www.youtube.com/embed/051E9Lzn0Vs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 </div>

@@ -219,7 +219,7 @@ if ( ! function_exists('btn_read'))
     */
     function btn_read($uri, $title=NULL)
     {
-        if(empty($title))$title=__('Read', 'wmvc_win');
+        if(empty($title))$title=__('Read', 'wpdirectorykit');
         
         return anchor($uri, '<i class="glyphicon glyphicon-search"></i> '.$title, array('class'=>'btn btn-primary btn-xs'));
     }
@@ -236,7 +236,7 @@ if ( ! function_exists('btn_open'))
         if($target === NULL)
             $target = '_blank';
 
-        return anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs', 'target'=>$target, 'title'=>__('Open details', 'wmvc_win')));
+        return anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs', 'target'=>$target, 'title'=>__('Open details', 'wpdirectorykit')));
     }
 }
 
@@ -251,7 +251,7 @@ if ( ! function_exists('btn_open_ajax'))
         if($target === NULL)
             $target = '_blank';
 
-        return anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs popup-with-form-ajax', 'target'=>$target, 'title'=>__('Open details', 'wmvc_win')));
+        return anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs popup-with-form-ajax', 'target'=>$target, 'title'=>__('Open details', 'wpdirectorykit')));
     }
 }
 
@@ -284,7 +284,7 @@ if ( ! function_exists('btn_delete'))
 
         if($confirm_question)
         {
-            return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => $target,  'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-danger btn-xs delete_button'));
+            return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => $target,  'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wpdirectorykit').'\')', 'class'=>'btn btn-danger btn-xs delete_button'));
         }
         else
         {
@@ -308,7 +308,7 @@ if ( ! function_exists('btn_save'))
             $target = '';
         }
 
-        return anchor($uri, '<i class="glyphicon glyphicon-heart'.$empty.'"></i> ', array( 'target' => $target, 'class'=>'btn btn-danger btn-xs save_button', 'title'=>__('Save as Favourite for further analysis', 'wmvc_win')));
+        return anchor($uri, '<i class="glyphicon glyphicon-heart'.$empty.'"></i> ', array( 'target' => $target, 'class'=>'btn btn-danger btn-xs save_button', 'title'=>__('Save as Favourite for further analysis', 'wpdirectorykit')));
     }
 }
 
@@ -328,7 +328,7 @@ if ( ! function_exists('btn_block'))
 
         if($confirm_question)
         {
-            return anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => $target, 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-warning btn-xs block_button'));
+            return anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => $target, 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wpdirectorykit').'\')', 'class'=>'btn btn-warning btn-xs block_button'));
         }
         else
         {
@@ -347,7 +347,7 @@ if ( ! function_exists('btn_view'))
     {
         if($confirm_question)
         {
-            return anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-info btn-xs'));
+            return anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wpdirectorykit').'\')', 'class'=>'btn btn-info btn-xs'));
         }
         else
         {
@@ -370,7 +370,7 @@ if ( ! function_exists('btn_hide'))
             $target = '_blank';
         }
 
-        return anchor($uri, '<i class="glyphicon glyphicon-eye-close"></i> ', array( 'target' => $target, 'class'=>'btn btn-default btn-xs', 'title'=>__('Define hide rules', 'wmvc_win')));
+        return anchor($uri, '<i class="glyphicon glyphicon-eye-close"></i> ', array( 'target' => $target, 'class'=>'btn btn-default btn-xs', 'title'=>__('Define hide rules', 'wpdirectorykit')));
     }
 }
 
@@ -556,7 +556,7 @@ if ( ! function_exists('wmvc_btn_read'))
 {
     function wmvc_btn_read($uri, $title=NULL)
     {
-        if(empty($title))$title=__('Read', 'wmvc_win');
+        if(empty($title))$title=__('Read', 'wpdirectorykit');
         
         return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> '.esc_html($title), array('class'=>'btn btn-primary btn-xs'));
     }
@@ -569,7 +569,7 @@ if ( ! function_exists('wmvc_btn_open'))
         if($target === NULL)
             $target = '_blank';
 
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs', 'target'=>esc_html($target), 'title'=>esc_html__('Open details', 'wmvc_win')));
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs', 'target'=>esc_html($target), 'title'=>esc_html__('Open details', 'wpdirectorykit')));
     }
 }
 
@@ -580,7 +580,7 @@ if ( ! function_exists('wmvc_btn_open_ajax'))
         if($target === NULL)
             $target = '_blank';
 
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs popup-with-form-ajax', 'target'=>esc_html($target), 'title'=>esc_html__('Open details', 'wmvc_win')));
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs popup-with-form-ajax', 'target'=>esc_html($target), 'title'=>esc_html__('Open details', 'wpdirectorykit')));
     }
 }
 
@@ -605,7 +605,7 @@ if ( ! function_exists('wmvc_btn_delete'))
 
         if($confirm_question)
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => esc_html($target),  'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')',  'class'=>'btn btn-danger btn-xs delete_button action_confirm'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => esc_html($target),  'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wpdirectorykit').'\')',  'class'=>'btn btn-danger btn-xs delete_button action_confirm'));
         }
         else
         {
@@ -624,7 +624,7 @@ if ( ! function_exists('wmvc_btn_save'))
             $target = '';
         }
 
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-heart'.esc_attr($empty).'"></i> ', array( 'target' => esc_html($target), 'class'=>'btn btn-danger btn-xs save_button', 'title'=>esc_html__('Save', 'wmvc_win')));
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-heart'.esc_attr($empty).'"></i> ', array( 'target' => esc_html($target), 'class'=>'btn btn-danger btn-xs save_button', 'title'=>esc_html__('Save', 'wpdirectorykit')));
     }
 }
 
@@ -640,7 +640,7 @@ if ( ! function_exists('wmvc_btn_block'))
 
         if($confirm_question)
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => esc_attr($target), 'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-warning btn-xs block_button action_block'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => esc_attr($target), 'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wpdirectorykit').'\')', 'class'=>'btn btn-warning btn-xs block_button action_block'));
         }
         else
         {
@@ -655,7 +655,7 @@ if ( ! function_exists('wmvc_btn_view'))
     {
         if($confirm_question)
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-info btn-xs'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wpdirectorykit').'\')', 'class'=>'btn btn-info btn-xs'));
         }
         else
         {
@@ -674,7 +674,7 @@ if ( ! function_exists('wmvc_btn_hide'))
             $target = '_blank';
         }
 
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-eye-close"></i> ', array( 'target' => esc_attr($target), 'class'=>'btn btn-default btn-xs', 'title'=>esc_html__('Define hide rules', 'wmvc_win')));
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-eye-close"></i> ', array( 'target' => esc_attr($target), 'class'=>'btn btn-default btn-xs', 'title'=>esc_html__('Define hide rules', 'wpdirectorykit')));
     }
 }
 
@@ -871,7 +871,7 @@ function wmvc_upload_media($field_name, $image_id)
     <!-- Your image container, which can be manipulated with js -->
     <div class="custom-img-container">
         <?php if ( $you_have_img ) : ?>
-            <img src="<?php echo esc_attr($your_img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
+            <img src="<?php echo esc_attr($your_img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wpdirectorykit');?>" style="max-width:100%;" class="thumbnail"/>
         <?php endif; ?>
     </div>
     
@@ -880,11 +880,11 @@ function wmvc_upload_media($field_name, $image_id)
     <p class="hide-if-no-js">
         <a class="button button-primary upload-custom-img <?php if ( $you_have_img  ) { echo 'hidden'; } ?>" 
         href="<?php echo esc_url($upload_link) ?>">
-            <?php echo esc_html__('Select image','wmvc_win') ?>
+            <?php echo esc_html__('Select image','wpdirectorykit') ?>
         </a>
         <a class="button button-secondary delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>"
         href="#">
-            <?php echo esc_html__('Remove image','wmvc_win') ?>
+            <?php echo esc_html__('Remove image','wpdirectorykit') ?>
         </a>
     </p>
     <?php //endif; ?>
@@ -948,11 +948,11 @@ function wmvc_upload_file($field_name, $file_id)
     <p class="hide-if-no-js">
         <a class="upload-custom-img <?php if ( $you_have_file  ) { echo 'hidden'; } ?>" 
         href="<?php echo esc_url($upload_link) ?>">
-            <?php echo esc_html__('Select file','wmvc_win') ?>
+            <?php echo esc_html__('Select file','wpdirectorykit') ?>
         </a>
         <a class="delete-custom-img <?php if ( ! $you_have_file  ) { echo 'hidden'; } ?>" 
         href="#">
-            <?php echo esc_html__('Remove all files','wmvc_win') ?>
+            <?php echo esc_html__('Remove all files','wpdirectorykit') ?>
         </a>
     </p>
     <?php //endif; ?>
@@ -1021,13 +1021,13 @@ function wmvc_upload_multiple($field_name, $image_ids='')
             $filetype = wp_check_filetype(str_replace(WP_CONTENT_URL, WP_CONTENT_DIR, $img_src));
             if(strpos($filetype['type'], 'video') !== FALSE):?>
                 <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
-                    <video src="<?php echo esc_attr($img_src); ?>" controls alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"></video>
+                    <video src="<?php echo esc_attr($img_src); ?>" controls alt="<?php echo esc_attr__('thumb', 'wpdirectorykit');?>" style="max-width:100%;" class="thumbnail"></video>
                     <a href="#" class="remove"></a>
                     <span href="#" class="move"><span class="dashicons dashicons-editor-expand"></span></span>
                 </div>
             <?php else:?>
                 <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
-                    <img src="<?php echo esc_attr($img_src); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
+                    <img src="<?php echo esc_attr($img_src); ?>" alt="<?php echo esc_attr__('thumb', 'wpdirectorykit');?>" style="max-width:100%;" class="thumbnail"/>
                     <a href="#" class="remove"></a>
                 </div>
             <?php endif;?>
@@ -1042,11 +1042,11 @@ function wmvc_upload_multiple($field_name, $image_ids='')
     <p class="hide-if-no-js">
         <a class="button button-primary upload-custom-img <?php if ( $you_have_img  ) { echo ''; } ?>" 
         href="<?php echo esc_url($upload_link) ?>">
-            <?php echo esc_html__('Add images','wmvc_win') ?>
+            <?php echo esc_html__('Add images','wpdirectorykit') ?>
         </a>
         <a class="button button-secondary delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>" 
         href="#">
-            <?php echo esc_html__('Remove all images','wmvc_win') ?>
+            <?php echo esc_html__('Remove all images','wpdirectorykit') ?>
         </a>
     </p>
     <?php //endif; ?>
@@ -1500,7 +1500,7 @@ function wmvc_get_date($datetime = NULL, $default='timestamp')
     
 	$date_format = get_option('date_format');
 	$time_format = get_option('time_format');
-	$date = date("{$date_format} {$time_format}", $datetime);
+	$date = gmdate("{$date_format} {$time_format}", $datetime);
 	return $date;
 }
 

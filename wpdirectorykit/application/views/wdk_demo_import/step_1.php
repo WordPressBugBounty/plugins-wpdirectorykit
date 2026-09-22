@@ -13,17 +13,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('WDK Demo Import', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('WDK Demo Import', 'wpdirectorykit'); ?></h1>
     <br />
     <div class="wdk-body">
         <div class="postbox" style="display: block;">
             <div class="postbox-header">
-                <h3><?php echo __('Step 1 Import for theme:', 'wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'Name' )); ?></h3>
+                <h3><?php echo esc_html__('Step 1 Import for theme:', 'wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'Name' )); ?></h3>
             </div>
             <div class="inside">
                 <div class="wdk-install-plugins-content-header">
-                    <h2><?php echo __('Before We Import Your Demo', 'wpdirectorykit'); ?></h2>
-                    <p><?php echo __('To ensure the best experience, installing the following plugins is strongly recommended, and in some cases required.', 'wpdirectorykit'); ?></p>
+                    <h2><?php echo esc_html__('Before We Import Your Demo', 'wpdirectorykit'); ?></h2>
+                    <p><?php echo esc_html__('To ensure the best experience, installing the following plugins is strongly recommended, and in some cases required.', 'wpdirectorykit'); ?></p>
                 </div>
                 <?php foreach($theme_plugins as $theme_plugin): ?>
 
@@ -31,14 +31,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                             class="plugin-item plugin-item-<?php echo esc_attr($theme_plugin['slug']); ?> <?php echo is_plugin_active( $theme_plugin['slug'].'/'.$theme_plugin['slug'].'.php' )?'plugin_active':'';?>plugin-item--active plugin-item--required" for="wdk-<?php echo esc_attr($theme_plugin['slug']); ?>-plugin">
                         <div class="plugin-item-content">
                             <div class="plugin-item-content-title">
-                                <h3><img src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/loader.svg" class="wdk-loading wdk-loading-md hidden" alt="Loading..."><?php echo esc_html($theme_plugin['name']); ?></h3>
+                                <h3><img src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/loader.svg" class="wdk-loading wdk-loading-md hidden" alt="Loading..."><?php echo esc_html($theme_plugin['name']); ?></h3>
                             </div>
                             <div class="plugin-item-error js-wdk-plugin-item-error"></div>
                             <div class="plugin-item-info js-wdk-plugin-item-info"></div>
                         </div>
                         <span class="plugin-item-checkbox">
                             <?php if(is_plugin_active( $theme_plugin['slug'].'/'.$theme_plugin['slug'].'.php' )): ?>
-                            <span class="green"><?php echo __('Already active', 'wpdirectorykit'); ?><span>
+                            <span class="green"><?php echo esc_html__('Already active', 'wpdirectorykit'); ?><span>
                             <?php else: ?>
                             <input type="checkbox" id="wdk-<?php echo esc_attr($theme_plugin['slug']); ?>-plugin" name="<?php echo esc_attr($theme_plugin['slug']); ?>" <?php echo is_plugin_active( $theme_plugin['slug'].'/'.$theme_plugin['slug'].'.php' )?'':'checked="checked"';?>>
                             <?php endif; ?>
@@ -49,11 +49,11 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
         </div>
         <p class="wdk_button-container">
-            <a href="<?php echo admin_url('tools.php?page=wdk_demo_import&function=step_2');?>" class="install_button wdk_button button button-hero button-primary"><?php echo __('Continue & Import','wpdirectorykit'); ?></a>
+            <a href="<?php echo esc_url(admin_url('tools.php?page=wdk_demo_import&function=step_2'));?>" class="install_button wdk_button button button-hero button-primary"><?php echo esc_html__('Continue & Import','wpdirectorykit'); ?></a>
         </p>
     </div>
     <br/>
-    <div class="alert alert-info" role="alert"><a href="<?php echo esc_attr($current_theme->get( 'ThemeURI' )); ?>" target="_blank"><?php echo __('Theme Data will be downloaded from API:','wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'AuthorURI' )); ?> <?php echo __('On any trouble contact us via website contact page.','wpdirectorykit'); ?></a></div>
+    <div class="alert alert-info" role="alert"><a href="<?php echo esc_attr($current_theme->get( 'ThemeURI' )); ?>" target="_blank"><?php echo esc_html__('Theme Data will be downloaded from API:','wpdirectorykit'); ?> <?php echo esc_html($current_theme->get( 'AuthorURI' )); ?> <?php echo esc_html__('On any trouble contact us via website contact page.','wpdirectorykit'); ?></a></div>
 </div>
 
 <script>
@@ -88,7 +88,7 @@ jQuery( document ).ready(function($) {
             if(!$(this).find('input[type="checkbox"]').is(':checked'))
                 return;
                 
-            var ajax_nonce = '<?php echo wp_create_nonce( 'updates' ); ?>';
+            var ajax_nonce = '<?php echo esc_js(wp_create_nonce( 'updates' )); ?>';
 
             var that = $(this);
 
@@ -107,17 +107,17 @@ jQuery( document ).ready(function($) {
             var ajax_indicator =  $(this).find('.wdk-loading');
             ajax_indicator.show();
             that.addClass('active');  
-            var jqxhr = $.post( "<?php echo admin_url( 'admin-ajax.php' ); ?>", ajax_param, function(data) {
+            var jqxhr = $.post( "<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>", ajax_param, function(data) {
 
                 if(data.success == true)
                 {
                     that.find('h3').css('color', 'green');
                 } else if(typeof(data.slug) != "undefined") {
-                    that.after("<div class=\"alert alert-danger\" role=\"alert\"><?php echo __('Error:', 'wpdirectorykit'); ?>  <b style=\"color:red;\">"+data.slug+" "+data.message+"</b></div>");
+                    that.after("<div class=\"alert alert-danger\" role=\"alert\"><?php echo esc_html__('Error:', 'wpdirectorykit'); ?>  <b style=\"color:red;\">"+data.slug+" "+data.message+"</b></div>");
                 }
                 else
                 {
-                    that.after("<div class=\"alert alert-danger\" role=\"alert\"><?php echo __('Error:', 'wpdirectorykit'); ?>  <b style=\"color:red;\">"+data+"</b></div>");
+                    that.after("<div class=\"alert alert-danger\" role=\"alert\"><?php echo esc_html__('Error:', 'wpdirectorykit'); ?>  <b style=\"color:red;\">"+data+"</b></div>");
                 }
 
             })
@@ -127,11 +127,11 @@ jQuery( document ).ready(function($) {
             
                 if(typeof(data.responseText) != "undefined")
                 {
-                    that.after("<div class=\"alert alert-danger\" role=\"alert\"><?php echo __('Error:', 'wpdirectorykit'); ?>  <b style=\"color:red;\">"+data.responseText+"</b></div>");
+                    that.after("<div class=\"alert alert-danger\" role=\"alert\"><?php echo esc_html__('Error:', 'wpdirectorykit'); ?>  <b style=\"color:red;\">"+data.responseText+"</b></div>");
                 }
                 else
                 {
-                    that.after("<div class=\"alert alert-danger\" role=\"alert\"><?php echo __('Error:', 'wpdirectorykit'); ?>  <b style=\"color:red;\">"+data+"</b></div>");
+                    that.after("<div class=\"alert alert-danger\" role=\"alert\"><?php echo esc_html__('Error:', 'wpdirectorykit'); ?>  <b style=\"color:red;\">"+data+"</b></div>");
                 }
 
                 is_failed=true;

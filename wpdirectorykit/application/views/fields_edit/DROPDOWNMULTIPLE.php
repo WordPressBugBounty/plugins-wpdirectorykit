@@ -69,10 +69,38 @@ $post_values = explode(',', $post_values);
 <div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?> <?php echo esc_attr($field->class); ?> <?php if(!empty($form) && method_exists($form, 'hasError') && $form->hasError($field_id)):?> field-error <?php endif;?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
-        <?php echo wdk_select_option_multiple($field_id.'_select2', $values, $post_values, "id='".$field_id."_select2' class='select_multi' data-maxselectlimit='20' data-placeholder='".esc_attr($empty_value)."'"); ?>
+        <?php
+        echo wp_kses(
+            wdk_select_option_multiple(
+                $field_id.'_select2',
+                $values,
+                $post_values,
+                "id='".$field_id."_select2' class='select_multi' data-maxselectlimit='20' data-placeholder='".esc_attr($empty_value)."'"
+            ),
+            [
+                'select' => [
+                    'id' => true,
+                    'class' => true,
+                    'data-maxselectlimit' => true,
+                    'data-placeholder' => true,
+                    'multiple' => true,
+                    'name' => true,
+                ],
+                'option' => [
+                    'value' => true,
+                    'selected' => true,
+                ],
+            ]
+        );
+        ?>
+   
         <span class="suffix"><?php
+                      // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
+            // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->suffix, 'wpdirectorykit');
         ?></span>
         <?php if(!empty($field->hint)):?>

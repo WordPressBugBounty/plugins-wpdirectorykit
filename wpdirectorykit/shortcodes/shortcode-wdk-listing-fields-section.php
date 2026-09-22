@@ -52,7 +52,7 @@ function shortcode_wdk_listing_fields_section($atts, $content){
     global $wdk_listing_id;
     $post_id = $wdk_listing_id;
     if (!empty($data['settings']['post_id'])) {
-        $post_id = $data['settings']['post_id'];
+        $post_id = (int)$data['settings']['post_id'];
     }
 
     $data['post_id'] = $post_id;
@@ -67,6 +67,12 @@ function shortcode_wdk_listing_fields_section($atts, $content){
             $data['section_data'] =  $data['sections_data'][$data['settings']['section_id']];
     }
 
+    
+    $post_data = get_post($post_id);
+    if (!$post_data || $post_data->post_status != 'publish' || post_password_required($post_data)) {
+        return false;
+    }
+    
     if(!empty($data['settings']['field_id']))
         $data['field_label'] = wdk_field_label($data['settings']['field_id']);
 

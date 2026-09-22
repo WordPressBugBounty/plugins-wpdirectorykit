@@ -18,10 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
             <table class="wp-list-table widefat fixed striped table-view-list pages wdk-table responsive" style="width: 100%;">
                 <thead>
                     <tr>
-                        <th style="width:50px;"><?php echo __('#ID', 'wpdirectorykit'); ?></th>
-                        <th><?php echo __('Image', 'wpdirectorykit'); ?></th>
-                        <th><?php echo __('Title', 'wpdirectorykit'); ?></th>
-                        <th class="actions_col"><?php echo __('Actions', 'wpdirectorykit'); ?></th>
+                        <th style="width:50px;"><?php echo esc_html__('#ID', 'wpdirectorykit'); ?></th>
+                        <th><?php echo esc_html__('Image', 'wpdirectorykit'); ?></th>
+                        <th><?php echo esc_html__('Title', 'wpdirectorykit'); ?></th>
+                        <th class="actions_col"><?php echo esc_html__('Actions', 'wpdirectorykit'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         $url = get_permalink($listing);
                     ?>
                     <tr>
-                        <td data-label="<?php echo __('#ID', 'wpdirectorykit'); ?>"><?php echo wdk_field_value('post_id', $listing); ?></td>
+                        <td data-label="<?php echo esc_html__('#ID', 'wpdirectorykit'); ?>"><?php echo esc_attr(wdk_field_value('post_id', $listing)); ?></td>
                         <td>
                             <a href="<?php echo esc_url($url);?>" target="_blank" title="<?php echo esc_attr(wdk_field_value('post_title', $listing));?>" class="d-block">
                                 <img src="<?php echo esc_url(wdk_image_src($listing, 'full'));?>" alt="<?php echo esc_attr(wdk_show_data('post_title', $listing, '', TRUE, TRUE));?>">
@@ -38,9 +38,9 @@ if ( ! defined( 'ABSPATH' ) ) {
                         </td>
                         <td class="title column-title page-title"  data-label="<?php echo esc_attr__('Title','wpdirectorykit');?>" class="max-width">
                             <strong>
-                                <a class="row-title" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . wmvc_show_data('ID', $listing, '-')); ?>"><?php echo wmvc_show_data('post_title', $listing, '-'); ?></a>
+                                <a class="row-title" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . wmvc_show_data('ID', $listing, '-')); ?>"><?php echo esc_html(wmvc_show_data('post_title', $listing, '-')); ?></a>
                                 <?php if(!wmvc_show_data('is_activated', $listing, 0)): ?>
-                                <span class="label label-danger"><?php echo __('Not activated', 'wpdirectorykit'); ?></span>
+                                <span class="label label-danger"><?php echo esc_html__('Not activated', 'wpdirectorykit'); ?></span>
                                 <?php endif; ?>
                                 <?php if(!wmvc_show_data('is_approved', $listing, 0) && function_exists('run_wdk_membership')): ?>
                                 <span class="label label-danger"><?php echo esc_html__('Not approved', 'wpdirectorykit'); ?></span>

@@ -30,10 +30,11 @@ $results_page = get_permalink($results_page);
 ?>
 
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
+ 
     <div class="wdk-categories-grid-cover">
 
             <?php if($settings['enable_carousel'] == 'yes'):?>
-                <div class="wdk_slider_box <?php echo esc_attr($settings['layout_carousel_animation_style']).'_animation';?> <?php echo join(' ', [$settings['styles_carousel_dots_position_style'], $settings['styles_carousel_arrows_position']]);?>">
+                <div class="wdk_slider_box <?php echo esc_attr($settings['layout_carousel_animation_style']).'_animation';?> <?php echo esc_attr(join(' ', [$settings['styles_carousel_dots_position_style'], $settings['styles_carousel_arrows_position']]));?>">
                 <div class="wdk_slider_body">
                 <div class="wdk_slider_ini">
             <?php else:?>
@@ -61,6 +62,7 @@ $results_page = get_permalink($results_page);
                                 <h3 class="wdk-title"><?php echo esc_html(wmvc_show_data('category_title', $value));?></h3>
                                 <span class="wdk-listings-count">
                                     <?php
+                                        /* translators: 1: Number of listings. */
                                         echo esc_html(wdk_sprintf(_nx(
                                                 '%1$s Listing',
                                                 '%1$s Listings',
@@ -111,13 +113,13 @@ $results_page = get_permalink($results_page);
             var el = $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_slider_ini').slick({
                 dots: true,
                 arrows: true,
-                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? wmvc_show_data('layout_carousel_columns', $settings, '3') : 3;?>,
-                slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? wmvc_show_data('layout_carousel_columns', $settings, '3') : 3;?>,
+                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? esc_html(wmvc_show_data('layout_carousel_columns', $settings, '3')) : 3;?>,
+                slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? esc_html(wmvc_show_data('layout_carousel_columns', $settings, '3')) : 3;?>,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_infinite', $settings))):?>
-                infinite: <?php echo wmvc_show_data('layout_carousel_is_infinite', $settings, 'true');?>,
+                infinite: <?php echo esc_js(wmvc_show_data('layout_carousel_is_infinite', $settings, 'true'));?>,
                 <?php endif;?>
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_autoplay', $settings))):?>
-                autoplay: <?php echo wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false');?>,
+                autoplay: <?php echo esc_js(wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false'));?>,
                 <?php endif;?>
                 nextArrow: $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_slider_arrows .wdk-slider-next'),
                 prevArrow: $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_slider_arrows .wdk-slider-prev'),
@@ -129,15 +131,15 @@ $results_page = get_permalink($results_page);
                     {
                         breakpoint: 991,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? wmvc_show_data('layout_carousel_columns_tablet', $settings, '2') : 2;?>,
-                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? wmvc_show_data('layout_carousel_columns_tablet', $settings, '2') : 2;?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? esc_html(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')) : 2;?>,
+                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? esc_html(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')) : 2;?>,
                         }
                     },
                     {
                         breakpoint: 768,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? wmvc_show_data('layout_carousel_columns_mobile', $settings, '1') : 1;?>,
-                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? wmvc_show_data('layout_carousel_columns_mobile', $settings, '1') : 1;?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? esc_html(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')) : 1;?>,
+                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? esc_html(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')) : 1;?>,
                         }
                     },
                 ]

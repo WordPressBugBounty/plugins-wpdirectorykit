@@ -171,7 +171,7 @@ class WdkListingMap extends WdkElementorBase {
             $this->data['is_edit_mode']= true;
         }
       
-        echo $this->view('wdk-listing-map', $this->data); 
+        $this->view('wdk-listing-map', $this->data, true); 
     }
 
     private function generate_controls_conf() {
@@ -416,7 +416,9 @@ class WdkListingMap extends WdkElementorBase {
                     'jawg_map_key',
                     [
                         'label' => __( 'Jawg Map API Key', 'wpdirectorykit' ),
+                        /* translators: 1: URL. */
                         'description' => wdk_sprintf(__( 'Please follow link and get API key <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://www.jawg.io/en/pricing')
+                                        /* translators: 1: URL. */
                                         .' '.wdk_sprintf(__( 'or check demo maps <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://www.jawg.io/en/maps'),
                         'type' => \Elementor\Controls_Manager::TEXT,
                         'default' => '',
@@ -432,9 +434,29 @@ class WdkListingMap extends WdkElementorBase {
                 );
     
                 $this->add_control(
+                    'carto_map_key',
+                    [
+                        'label' => __( 'Carto Map API Key', 'wpdirectorykit' ),
+                        /* translators: 1: URL. */
+                        'description' => wdk_sprintf(__( 'Please follow link and get API key <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://carto.com/basemaps/apikey/'),
+                        'type' => \Elementor\Controls_Manager::TEXT,
+                        'default' => '',
+                        'condition' => [
+                            'conf_custom_map_style' => [
+                                'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png',
+                                'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                                'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+                                'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png',
+                            ],
+                        ],
+                    ]
+                );
+                
+                $this->add_control(
                     'thunderforest_map_key',
                     [
                         'label' => __( 'Thunderforest Map API Key', 'wpdirectorykit' ),
+                        /* translators: 1: URL. */
                         'description' => wdk_sprintf(__( 'Please follow link and get API key <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://www.thunderforest.com/pricing/'),
                         'type' => \Elementor\Controls_Manager::TEXT,
                         'default' => '',
@@ -456,6 +478,7 @@ class WdkListingMap extends WdkElementorBase {
                     'google_map_key',
                     [
                         'label' => __( 'Google Map API Key', 'wpdirectorykit' ),
+                        /* translators: 1: URL. */
                         'description' => wdk_sprintf(__( 'Please follow link and get API key <a href="%1$s" target="_blank"> here </a>', 'wpdirectorykit' ), 'https://developers.google.com/maps/documentation/javascript/get-api-key'),
                         'type' => \Elementor\Controls_Manager::TEXT,
                         'default' => '',

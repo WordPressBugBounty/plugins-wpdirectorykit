@@ -43,7 +43,7 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php echo __('Visible on','wpdirectorykit'); ?></span></legend>
+            <legend class="screen-reader-text"><span><?php echo esc_html__('Visible on','wpdirectorykit'); ?></span></legend>
             <?php foreach($field->values as $field_key => $field_value): ?>
                 <input name="<?php echo esc_attr($field_id); ?>" type="radio" id="<?php echo esc_attr($field_id); ?>_<?php echo esc_attr($field_key); ?>" value="<?php echo esc_attr($field_key); ?>" <?php echo !empty(wmvc_show_data($field_id, $db_data, '') == $field_key)?'checked':''; ?>>
                 <label for="<?php echo esc_attr($field_id); ?>_<?php echo esc_attr($field_key); ?>"><?php echo esc_html($field_value); ?></label>

@@ -43,7 +43,10 @@ if (!defined('ABSPATH')) {
                         <?php if (!is_string($value)) continue; ?>
                         <?php if ($key == 'subject') continue; ?>
                         <p>
-                            <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
+                            <strong><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
                         </p>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -61,7 +64,10 @@ if (!defined('ABSPATH')) {
                         <?php if (!is_string($value)) continue; ?>
                         <?php if ($key == 'subject') continue; ?>
                         <p>
-                            <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
+                            <strong><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
                         </p>
                     <?php endif; ?>
                 <?php endforeach; ?>

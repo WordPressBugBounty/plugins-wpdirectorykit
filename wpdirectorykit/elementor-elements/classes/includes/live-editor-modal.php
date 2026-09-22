@@ -6,21 +6,21 @@
 				<div class="elementor-templates-modal__header">
 					<div class="elementor-templates-modal__header__logo-area">
 						<div class="elementor-templates-modal__header__logo">
-							<span class="elementor-templates-modal__header__logo__title"><?php esc_html_e( 'Template Editor', 'wdk-addons-for-elementor' ); ?></span>
+							<span class="elementor-templates-modal__header__logo__title"><?php esc_html_e( 'Template Editor', 'wpdirectorykit' ); ?></span>
 							<div class="wdk-live-editor-title">
 								<input type="text" id="wdk-live-temp-title" name="wdkLiveTempTitle" placeholder="Enter template name...">
-								<button id="pa-insert-live-temp" class="elementor-template-library-template-action wdk-template-insert elementor-button elementor-button-success" ><?php esc_html_e( 'Save Template', 'wdk-addons-for-elementor' ); ?></button>
+								<button id="pa-insert-live-temp" class="elementor-template-library-template-action wdk-template-insert elementor-button elementor-button-success" ><?php esc_html_e( 'Save Template', 'wpdirectorykit' ); ?></button>
 							</div>
 						</div>
 					</div>
 					<div class="elementor-templates-modal__header__items-area">
 						<div class="elementor-templates-modal__header__close elementor-templates-modal__header__close--normal elementor-templates-modal__header__item">
-							<i class="eicon-close" aria-hidden="true" title="<?php echo esc_attr__( 'Close', 'wdk-addons-for-elementor' ); ?>"></i>
-							<span class="elementor-screen-only"><?php esc_html_e( 'Close', 'wdk-addons-for-elementor' ); ?></span>
+							<i class="eicon-close" aria-hidden="true" title="<?php echo esc_attr__( 'Close', 'wpdirectorykit' ); ?>"></i>
+							<span class="elementor-screen-only"><?php esc_html_e( 'Close', 'wpdirectorykit' ); ?></span>
 						</div>
 						<div class="elementor-templates-modal__header__expand  elementor-templates-modal__header__item wdk-expand">
-							<i class="eicon-frame-expand" aria-hidden="true" title="<?php echo esc_attr__( 'Expand', 'wdk-addons-for-elementor' ); ?>"></i>
-							<span class="elementor-screen-only"><?php esc_html_e( 'Expand', 'wdk-addons-for-elementor' ); ?></span>
+							<i class="eicon-frame-expand" aria-hidden="true" title="<?php echo esc_attr__( 'Expand', 'wpdirectorykit' ); ?>"></i>
+							<span class="elementor-screen-only"><?php esc_html_e( 'Expand', 'wpdirectorykit' ); ?></span>
 						</div>
 					</div>
 				</div>
@@ -45,7 +45,7 @@
 									<div class="elementor-loader-box"></div>
 								</div>
 							</div>
-							<div class="elementor-loading-title"><?php esc_html_e( 'Loading', 'wdk-addons-for-elementor' ); ?></div>
+							<div class="elementor-loading-title"><?php esc_html_e( 'Loading', 'wpdirectorykit' ); ?></div>
 						</div>
 					</div>
 				</div>

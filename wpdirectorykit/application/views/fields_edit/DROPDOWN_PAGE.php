@@ -52,17 +52,36 @@ $button_suffix = '';
 <div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
-        <?php echo wmvc_select_option($field_id, $values, wmvc_show_data($field_id, $db_data, '')); ?>
+        <?php
+            echo wp_kses(
+                wmvc_select_option($field_id, $values, wmvc_show_data($field_id, $db_data, '')),
+                [
+                    'select' => [
+                        'id'   => true,
+                        'name' => true,
+                    ],
+                    'option' => [
+                        'value'    => true,
+                        'selected' => true,
+                    ],
+                ]
+            );
+        ?>
+   
         <span class="suffix"><?php
+            // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
+            // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->suffix, 'wpdirectorykit');
         ?>
         <?php if(!empty(wmvc_show_data($field_id, $db_data, '')) && get_post_status(wmvc_show_data($field_id, $db_data, '')) == 'publish'):?>
-            <a class="button button-primary" target="_blank" href="<?php echo get_permalink(wmvc_show_data($field_id, $db_data, ''));?>" style="margin-top: -5px;">
+            <a class="button button-primary" target="_blank" href="<?php echo esc_url(get_permalink(wmvc_show_data($field_id, $db_data, '')));?>" style="margin-top: -5px;">
                 <?php echo esc_html__('View Page','wpdirectorykit');?>
             </a>
-            <a class="button button" target="_blank" href="<?php echo admin_url('post.php?post='.wmvc_show_data($field_id, $db_data, '').'&action=edit');?>" style="margin-top: -5px;">
+            <a class="button button" target="_blank" href="<?php echo esc_url(admin_url('post.php?post='.wmvc_show_data($field_id, $db_data, '')).'&action=edit');?>" style="margin-top: -5px;">
                 <span class="dashicons dashicons-edit"></span>
             </a>
         <?php else:?>

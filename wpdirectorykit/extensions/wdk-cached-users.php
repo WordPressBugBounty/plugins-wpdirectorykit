@@ -79,7 +79,7 @@ class WdkCachedUsers
             'cacheduser_user_url' =>  wdk_get_user_field ($user_id, 'user_url'),
             'cacheduser_roles' =>  join(',', ( array ) wdk_get_user_field ($user_id, 'roles')),
             'cacheduser_json_data' => json_encode($json_data),
-            'cacheduser_date_updated' => date('Y-m-d H:i:s'),
+            'cacheduser_date_updated' => gmdate('Y-m-d H:i:s'),
         ), NULL);
     }
 
@@ -106,12 +106,18 @@ class WdkCachedUsers
     public function regenerate_cache($limit = NULL)
     {
         global $wpdb;
-        $sql = "SELECT * FROM $wpdb->users";
-
-        if(!empty($limit))
-            $sql .= " LIMIT ".esc_sql($limit);
-
-        $dbusers = $wpdb->get_results($sql);
+        if (!empty($limit)) {
+            $dbusers = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->users} LIMIT %d",
+                    absint($limit)
+                )
+            );
+        } else {
+            $dbusers = $wpdb->get_results(
+                "SELECT * FROM {$wpdb->users}"
+            );
+        }
 
         foreach($dbusers as $dbuser) {
             $this->update(wmvc_show_data('ID', $dbuser));

@@ -154,7 +154,7 @@ class WdkListingSlidersGridImages extends WdkElementorBase {
             /* return false if no content */
         }
 
-        echo $this->view('wdk-listing-sliders-grid-images', $this->data); 
+       $this->view('wdk-listing-sliders-grid-images', $this->data, true); 
     }
 
 

@@ -165,7 +165,7 @@ class WdkButtonAddlisting extends WdkElementorBase {
         } else {
         }
 
-        echo $this->view('wdk-button-addlisting', $this->data); 
+        $this->view('wdk-button-addlisting', $this->data, true); 
     }
 
     private function generate_controls_conf() {

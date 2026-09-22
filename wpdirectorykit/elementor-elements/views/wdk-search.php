@@ -75,6 +75,13 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
                 section_more_before_buttons 
         <?php endif;?>
 
+        <?php if
+            (
+                isset($settings['ai_search_enable']) && $settings['ai_search_enable'] == 'yes' 
+            ):?>
+                ai_search_enable 
+        <?php endif;?>
+
         wdk-form-additional
     ">
         <form data-current-link="<?php echo esc_url($current_url);?>" data-scrollto="<?php echo esc_attr(wmvc_show_data('search_scroll', $settings));?>" class="wdk-search-form wdk-skip-empty
@@ -102,9 +109,9 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
                 <?php foreach ($values as $key => $value):?>
                 <?php if(empty($value)) continue;?>
                 <input type="radio" name="field_<?php echo esc_attr($field_id);?>" id="<?php echo esc_attr($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>" value="<?php echo esc_attr($value);?>" <?php if($field_value == $value):?>checked="checked"<?php endif;?>>
-                <label for="<?php echo esc_attr($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>"><?php echo esc_html__($value, 'wpdirectorykit');?> 
+                <label for="<?php echo esc_attr($id_element);?>_wdk_tab_field_<?php echo esc_attr($key);?>"><?php echo esc_html($value);?> 
                     <?php if(wmvc_show_data('tabs_count', $settings) == 'yes'):?>
-                        <span class="tab_count"><?php echo esc_html__(wmvc_show_data($value, $this->data['counts'][$field_id], 0), 'wpdirectorykit');?></span>
+                        <span class="tab_count"><?php echo esc_html(wmvc_show_data($value, $this->data['counts'][$field_id], 0));?></span>
                     <?php endif;?>
                 </label>
                 <?php endforeach;?>
@@ -118,7 +125,7 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
 
             <?php if(wmvc_user_in_role('administrator') || current_user_can('wdk_listings_manage')):?>
                 <div class="section-widget-control">
-                    <a class="wdk-c-btn wdk-c-edit" href="<?php echo esc_url(admin_url('admin.php?page=wdk_searchform'));?>" title="<?php echo esc_attr_e('Edit search form', 'selio'); ?>" target="_blank"><span class="dashicons dashicons-edit"></span></a>
+                    <a class="wdk-c-btn wdk-c-edit" href="<?php echo esc_url(admin_url('admin.php?page=wdk_searchform'));?>" title="<?php echo esc_attr_e('Edit search form', 'wpdirectorykit'); ?>" target="_blank"><span class="dashicons dashicons-edit"></span></a>
                 </div>
             <?php endif;?>
             <div class="wdk-row">
@@ -154,7 +161,7 @@ if(isset($_GET['wdk_search_additional_opened']) && wmvc_xss_clean($_GET['wdk_sea
 
                                         <?php if(function_exists('run_wdk_save_search') && wdk_get_option('wdk_save_search_show_on_searchform')):?>
                                         <div class="section-widget-control right">
-                                            <a class="wdk-c-btn wdk-c-edit wdk-save-search-button" href="#" data-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" title="<?php echo esc_attr_e('Save Search', 'selio'); ?>" target="_blank">
+                                            <a class="wdk-c-btn wdk-c-edit wdk-save-search-button" href="#" data-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" title="<?php echo esc_attr_e('Save Search', 'wpdirectorykit'); ?>" target="_blank">
                                                 <i class="fas fa-save" aria-hidden="true"></i>
                                                 <i class="fa fa-spinner fa-spin fa-ajax-indicator"></i>
                                             </a>

@@ -12,18 +12,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Remove Plugin Data', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Remove Plugin Data', 'wpdirectorykit'); ?></h1>
     <br />
     <div class="wdk-body">
         <div class="postbox" style="display: block;">
             <div class="postbox-header">
-                <h3><?php echo __('Info', 'wpdirectorykit'); ?></h3>
+                <h3><?php echo esc_html__('Info', 'wpdirectorykit'); ?></h3>
             </div>
             <div class="inside">
-                <?php echo wmvc_xss_clean($data_log);?>     
+                <?php echo wp_kses_post(wmvc_xss_clean($data_log));?>     
             </div>
         </div>
-        <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php?page=wdk_settings'));?>"><?php echo __('Back to Settings', 'wpdirectorykit'); ?></a>
+        <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php?page=wdk_settings'));?>"><?php echo esc_html__('Back to Settings', 'wpdirectorykit'); ?></a>
     </div>
 </div>
 

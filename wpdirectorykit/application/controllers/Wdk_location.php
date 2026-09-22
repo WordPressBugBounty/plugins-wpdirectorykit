@@ -140,7 +140,9 @@ class Wdk_location extends Winter_MVC_Controller {
             /* translate */
             $this->data['maps_list'] = array();
             foreach ($maps_list as $location_key => $location) {
-                $this->data['maps_list'][str_replace('.svg', '', $location_key)] = esc_html__($location, 'wdk-svg-map');
+                // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                $this->data['maps_list'][str_replace('.svg', '', $location_key)] = esc_html__($location, 'wpdirectorykit');
             }
         }
         
@@ -154,7 +156,9 @@ class Wdk_location extends Winter_MVC_Controller {
         if(function_exists('run_wdk_svg_map')) {
             if(wmvc_show_data('related_svg_map', $this->data['db_data'], false) && isset($maps_data[wmvc_show_data('related_svg_map', $this->data['db_data'])])) {
                 foreach ($maps_data[wmvc_show_data('related_svg_map', $this->data['db_data'])]['locations'] as $location_key => $location) {
-                    $this->data['map_related_locations'][$location_key] = esc_html__($location, 'wdk-svg-map');
+                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                    $this->data['map_related_locations'][$location_key] = esc_html__($location, 'wpdirectorykit');
                 }
 
                 asort($this->data['map_related_locations']);
@@ -221,7 +225,7 @@ class Wdk_location extends Winter_MVC_Controller {
 	{
 
         if(!function_exists('run_wdk_svg_map')) {
-            exit(esc_html__('Addon WDK SVG Map missing', 'wdk-svg-map'));
+            exit(esc_html__('Addon WDK SVG Map missing', 'wpdirectorykit'));
         }
 
         $this->load->model('location_m');
@@ -243,7 +247,9 @@ class Wdk_location extends Winter_MVC_Controller {
         /* translate */
         $this->data['maps_list'] = array();
         foreach ($maps_data as $location_key => $location) {
-            $this->data['maps_list'][str_replace('.svg', '', $location_key)] = esc_html__($location, 'wdk-svg-map');
+            // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+            $this->data['maps_list'][str_replace('.svg', '', $location_key)] = esc_html__($location, 'wpdirectorykit');
         }
 
         $this->data['db_data'] = NULL;
@@ -283,8 +289,12 @@ class Wdk_location extends Winter_MVC_Controller {
             if(isset($maps_data[strtolower(wmvc_show_data('related_svg_map',$data))])) {
                 $insert_data = array('parent_id' => wmvc_show_data('related_svg_map_location',$data, NULL));
                 foreach ($maps_data[strtolower(wmvc_show_data('related_svg_map',$data))]['locations'] as $location_key => $location) {
-                    if(!$this->location_m->get_by(array('parent_id'=>wmvc_show_data('related_svg_map_location',$data, NULL),'location_title'=>esc_html__($location, 'wdk-svg-map')), TRUE))
-                        $insert_id = $this->location_m->insert(array_merge($insert_data, array('location_title' => esc_html__($location, 'wdk-svg-map'))), NULL);
+                    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+if(!$this->location_m->get_by(array('parent_id'=>wmvc_show_data('related_svg_map_location',$data, NULL),'location_title'=>esc_html__($location, 'wpdirectorykit')), TRUE))
+    // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                        $insert_id = $this->location_m->insert(array_merge($insert_data, array('location_title' => esc_html__($location, 'wpdirectorykit'))), NULL);
                 }
             }
 

@@ -158,10 +158,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_infinite', $settings))):?>
-                infinite: <?php echo wmvc_show_data('layout_carousel_is_infinite', $settings, 'true');?>,
+                infinite: <?php echo esc_js(wmvc_show_data('layout_carousel_is_infinite', $settings, 'true'));?>,
                 <?php endif;?>
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_autoplay', $settings))):?>
-                autoplay: <?php echo wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false');?>,
+                autoplay: <?php echo esc_js(wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false'));?>,
                 <?php endif;?>
                 autoplaySpeed: '<?php echo esc_html($settings['layout_carousel_speed'], '100');?>',
                 <?php if(in_array($settings['layout_carousel_animation_style'], ['fade','fade_in'])):?>

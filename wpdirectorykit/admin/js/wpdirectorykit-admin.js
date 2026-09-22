@@ -489,7 +489,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// Initialize on DOMContentLoaded
-	new WDKListingSearch('#wdk-listing-search', '.wdk-search-results', document.getElementById('wdk-listing-search').getAttribute('idexecuted'));
+	const wdkListingSearchElem = document.getElementById('wdk-listing-search');
+	if (wdkListingSearchElem) {
+		new WDKListingSearch('#wdk-listing-search', '.wdk-search-results', wdkListingSearchElem.getAttribute('idexecuted'));
+	}
 });
 
 

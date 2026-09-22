@@ -31,10 +31,14 @@ if(empty($lng) || empty($lat)) {
                 <input class="input_text" type="hidden" name="address" value="<?php echo esc_attr(wdk_field_value('address', $wdk_listing_id));?>" />
                 <input class="input_text" type="hidden" name="gps" value="<?php echo esc_attr($lat.','.$lng);?>" />
                 <div class="wdk-field-group">
-                    <input class="input_text" type="text" placeholder="<?php echo esc_attr__(wmvc_show_data('text_suggestion_route_placeholder', $settings), 'wpdirectorykit');?>" name="route_from" />
+                    <input class="input_text" type="text" placeholder="<?php // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+echo esc_attr(wmvc_show_data('text_suggestion_route_placeholder', $settings), );?>" name="route_from" />
                 </div>
                 <div class="wdk-field-group">
-                    <button type="submit" class="wdk-btn"><?php echo esc_html__(wmvc_show_data('text_suggestion_route', $settings), 'wpdirectorykit');?></button>
+                    <button type="submit" class="wdk-btn"><?php // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+echo esc_html__(wmvc_show_data('text_suggestion_route', $settings), 'wpdirectorykit');?></button>
                 </div>
             </form>
         <?php endif;?>
@@ -182,6 +186,22 @@ if (!$is_edit_mode)
 				).addTo(wdk_map_<?php echo esc_html($id_element);?>);  
 
                 <?php elseif(in_array($settings['conf_custom_map_style'], array(
+                            'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png',
+                            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                            'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+                            'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png',
+                        ))):?>
+
+                    <?php
+                    // If no Carto key is provided, show default tile styling (fallback to OSM)
+                    if (!$is_edit_mode && empty($settings['carto_map_key'])): ?>
+                        var positron = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(wdk_map);
+                    <?php else: ?>
+                        var positron = L.tileLayer('<?php echo esc_js($settings['conf_custom_map_style']);?>?key=<?php echo esc_js($settings['carto_map_key']);?>').addTo(wdk_map);
+                    <?php endif; ?>
+                <?php elseif(in_array($settings['conf_custom_map_style'], array(
                             'https://{s}.tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png',
                             'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png',
                             'https://{s}.tile.thunderforest.com/transport-dark/{z}/{x}/{y}.png',
@@ -245,13 +265,13 @@ if (!$is_edit_mode)
         <?php if($pin_icon):?>
             var image = '<?php echo esc_html($pin_icon);?>'; var innerMarker = '<div class="wdk_marker-container wdk_marker-container-image category_id_<?php echo esc_js(wdk_field_value('category_id', $wdk_listing_id));?>""><img src='+image+'></img></div>';
         <?php elseif($font_icon && empty($font_class)):?> 
-            var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wdk_field_value('category_id', $wdk_listing_id));?>""><div class="front wdk_face"><?php echo wdk_viewe($font_icon);?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
+            var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wdk_field_value('category_id', $wdk_listing_id));?>""><div class="front wdk_face"><?php echo wdk_viewe($font_icon) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText;?></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php else:?> 
             var innerMarker = '<div class="wdk_marker-container category_id_<?php echo esc_js(wdk_field_value('category_id', $wdk_listing_id));?>""><div class="front wdk_face"><i class="<?php echo esc_attr($font_class);?>"></i></div><div class="wdk_marker-card"><div class="wdk_marker-arrow"></div></div></div>';
         <?php endif;?>
 
         <?php if($settings['conf_custom_popup_enable'] == 'yes'):?>
-            marker = wdk_generate_marker_basic_popup('<?php echo esc_html($lat);?>','<?php echo esc_html($lng);?>',innerMarker,'<?php echo $wdk_popup_content;?>', wdk_jpopup_customOptions);
+            marker = wdk_generate_marker_basic_popup('<?php echo esc_html($lat);?>','<?php echo esc_html($lng);?>',innerMarker,'<?php echo $wdk_popup_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText?>', wdk_jpopup_customOptions);
         <?php else:?>
             marker = wdk_generate_marker_nopopup('<?php echo esc_html($lat);?>','<?php echo esc_html($lng);?>',innerMarker);
         <?php endif;?>

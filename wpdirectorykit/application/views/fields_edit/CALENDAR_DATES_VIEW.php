@@ -39,12 +39,12 @@ if(isset($field->is_required) && $field->is_required == 1)
     <div class="wdk-field-container">
         <div class="wdk-field-calendar">
             <div class="hidden data-ajax" data-ajax="<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>"></div>
-            <div class="hidden js_message_error_date"><?php echo esc_html__('Dates in not available, please set other dates', 'wdk-booking');?></div>
+            <div class="hidden js_message_error_date"><?php echo esc_html__('Dates in not available, please set other dates', 'wpdirectorykit');?></div>
             <div class="wdk-row">
                 <?php
                     $available_dates = [];
-                    $current_day = date("j");
-                    $current_month = date("m");
+                    $current_day = gmdate("j");
+                    $current_month = gmdate("m");
                     $wdk_order = 0;
                 ?>
                 <?php for($month_i=0;$month_i < wdk_show_data('month_count', $values, 48, TRUE, TRUE); $month_i++):?>
@@ -55,7 +55,7 @@ if(isset($field->is_required) && $field->is_required == 1)
                     <div class="wdk-col">
                         <table>
                         <?php
-                        $next_month_time = strtotime("+$month_i month", strtotime(date("F") . "1"));
+                        $next_month_time = strtotime("+$month_i month", strtotime(gmdate("F") . "1"));
                         
                         // Get the value of day, month, year
                         $days = array(
@@ -68,16 +68,21 @@ if(isset($field->is_required) && $field->is_required == 1)
                                 6 => esc_html__('Sat','wpdirectorykit'),
                             );
                         
-                        list($mon, $month_m, $month, $year, $num_days) = explode('-', date("n-m-F-Y-t", $next_month_time));
+                        list($mon, $month_m, $month, $year, $num_days) = explode('-', gmdate("n-m-F-Y-t", $next_month_time));
 
-                        $first_day_of_week = array_search(esc_html__(date('D', strtotime($year . '-' . $month . '-1')), 'wpdirectorykit'), $days);
+                        // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                        $first_day_of_week = array_search(esc_html__(gmdate('D', strtotime($year . '-' . $month . '-1')), 'wpdirectorykit'), $days);
                         if(!$first_day_of_week && $first_day_of_week != 0)
                             $first_day_of_week = 1;
 
-                        $num_days_last_month = date('j', strtotime('last day of previous month', strtotime($current_day. '-' . $month . '-' . $year)));
+                        $num_days_last_month = gmdate('j', strtotime('last day of previous month', strtotime($current_day. '-' . $month . '-' . $year)));
                         $startDay = $first_day_of_week;
                         ?>
-                            <caption><?php echo esc_html__($month,'wpdirectorykit');?> <?php echo esc_html($year);?></caption>
+                            <caption><?php 
+                            // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                            echo esc_html__($month,'wpdirectorykit');?> <?php echo esc_html($year);?></caption>
                             <thead>
                             <tr>
                                 <?php foreach ($days as $key => $day) :?>

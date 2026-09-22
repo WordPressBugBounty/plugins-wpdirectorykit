@@ -15,14 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="wrap wdk-wrap">
 
-    <h1 class="wp-heading-inline"><?php echo __('Demo Import', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Demo Import', 'wpdirectorykit'); ?></h1>
     <div class="wdk-body">
         <?php if($installed):?>
         <div  class="notice notice-success">
             <p>
-                <?php echo __('Some data already exists, please remove all data if you want to full import again','wpdirectorykit'); ?>
-                <a href="<?php echo esc_url(admin_url("admin.php?page=wdk_settings&function=remove&redirect_url=on_install&multipurpose=".wmvc_show_data('multipurpose', $_GET, '')."&_wpnonce=".wp_create_nonce( 'remove-data' ))); ?>" onclick="return (prompt('<?php echo __('Are you sure? All Listings, fields, categories, locations will be completely removed, check url and type remove if you are sure', 'wpdirectorykit')?>', '') == '<?php echo __('remove', 'wpdirectorykit')?>');"  class="button button-primary" id="reset_data_field_button">
-                    <?php echo __('Remove all data','wpdirectorykit'); ?>
+                <?php echo esc_html__('Some data already exists, please remove all data if you want to full import again','wpdirectorykit'); ?>
+                <a href="<?php echo esc_url(admin_url("admin.php?page=wdk_settings&function=remove&redirect_url=on_install&multipurpose=".wmvc_show_data('multipurpose', $_GET, '')."&_wpnonce=".wp_create_nonce( 'remove-data' ))); ?>" onclick="return (prompt('<?php echo esc_html__('Are you sure? All Listings, fields, categories, locations will be completely removed, check url and type remove if you are sure', 'wpdirectorykit')?>', '') == '<?php echo esc_html__('remove', 'wpdirectorykit')?>');"  class="button button-primary" id="reset_data_field_button">
+                    <?php echo esc_html__('Remove all data','wpdirectorykit'); ?>
                 </a>
             </p>
         </div>
@@ -38,9 +38,9 @@ if ( ! defined( 'ABSPATH' ) ) {
         ?>
         <div  class="notice notice-error">
             <p>
-                <?php echo __('You don\'t have required plugins installed, do you want to install it first?','wpdirectorykit'); ?>
+                <?php echo esc_html__('You don\'t have required plugins installed, do you want to install it first?','wpdirectorykit'); ?>
                 <a href="<?php echo esc_url($tgma_link); ?>" class="button button-primary">
-                    <?php echo __('Begin to install / activate','wpdirectorykit'); ?>
+                    <?php echo esc_html__('Begin to install / activate','wpdirectorykit'); ?>
                 </a>
             </p>
         </div>
@@ -51,19 +51,58 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php wp_nonce_field( 'wdk-settings_import', '_wpnonce'); ?>
             <div class="postbox" style="display: block;">
                 <div class="postbox-header">
-                    <h3><?php echo __('Demo Data Importer Tool', 'wpdirectorykit'); ?></h3>
+                    <h3><?php echo esc_html__('Demo Data Importer Tool', 'wpdirectorykit'); ?></h3>
                 </div>
                 <div class="inside">
                     <div class="">
                         <?php
                         $max_time = ini_get("max_execution_time");
                         if($max_time < 120):?>
-                        <div class="alert alert-danger" role="alert"><?php echo __('For import max_execution_time should be more then 120s, please contact with admin host to increase','wpdirectorykit'); ?></div>
+                        <div class="alert alert-danger" role="alert"><?php echo esc_html__('For import max_execution_time should be more then 120s, please contact with admin host to increase','wpdirectorykit'); ?></div>
                         <?php endif;?>
                     </div>
-                    <?php echo wmvc_xss_clean($info_log_message);?>
-                    <?php echo wmvc_xss_clean($import_log);?>
-                    <?php echo wdk_generate_fields($fields, $db_data); ?>        
+                    <?php
+                    // Allow <div> tags with certain classes through wp_kses
+                    $allowed_html = array(
+                        'div' => array(
+                            'class' => array(),
+                            'role' => array(),
+                            'style' => array(),
+                            'id' => array()
+                        ),
+                        'p' => array(
+                            'class' => array(),
+                            'style' => array(),
+                        ),
+                        'span' => array(
+                            'class' => array(),
+                            'style' => array(),
+                        ),
+                        'a' => array(
+                            'href' => array(),
+                            'class' => array(),
+                            'id' => array(),
+                            'style' => array(),
+                            'target' => array(),
+                            'data-function' => array(),
+                            'data-arg' => array(),
+                        ),
+                        'strong' => array(),
+                        'b' => array(),
+                        'em' => array(),
+                        'br' => array(),
+                        // Add other tags and attributes as necessary
+                    );
+
+                    if (isset($info_log_message)) {
+                        echo wp_kses($info_log_message, $allowed_html);
+                    }
+                    if (isset($import_log)) {
+                        echo wp_kses($import_log, $allowed_html);
+                    }
+                    ?>
+         
+                    <?php wdk_generate_fields($fields, $db_data); ?>        
                 </div>
             </div>
             <?php if(!$installed || true):?>
@@ -78,15 +117,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                 }
                 ?>
                     <a href="<?php echo esc_url($tgma_link); ?>" class="button button-primary">
-                        <?php echo __('Begin to install / activate','wpdirectorykit'); ?>
+                        <?php echo esc_html__('Begin to install / activate','wpdirectorykit'); ?>
                     </a>
                 <?php else:?>
-                    <input type="submit" name="submit" id="submit" class="button button-primary event-ajax-indicator" value="<?php echo __('Import demo data', 'wpdirectorykit'); ?>"> <span class="wdk-ajax-indicator wdk-infinity-load color-primary dashicons dashicons-update-alt hidden" style="margin-left: 4px;"></span>
+                    <input type="submit" name="submit" id="submit" class="button button-primary event-ajax-indicator" value="<?php echo esc_html__('Import demo data', 'wpdirectorykit'); ?>"> <span class="wdk-ajax-indicator wdk-infinity-load color-primary dashicons dashicons-update-alt hidden" style="margin-left: 4px;"></span>
                 <?php endif;?>
             
                 <?php endif;?>
             <?php if(!empty($import_log) && stripos($import_log,'alert-succes') !== FALSE && stripos($import_log,'alert-danger') === FALSE):?>
-                <a href="<?php echo esc_url(home_url());?>" class="button button-secondary" target="_blank"><?php echo __('Check your results page now', 'wpdirectorykit'); ?></a>
+                <a href="<?php echo esc_url(home_url());?>" class="button button-secondary" target="_blank"><?php echo esc_html__('Check your results page now', 'wpdirectorykit'); ?></a>
             <?php endif;?>
         </form>
     </div>

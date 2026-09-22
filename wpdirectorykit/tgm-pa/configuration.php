@@ -17,7 +17,7 @@
  * @license    http://opensource.org/licenses/gpl-2.0.php GPL v2 or later
  * @link       https://github.com/TGMPA/TGM-Plugin-Activation
  */
-
+if ( ! defined( 'ABSPATH' ) ) exit; 
 /**
  * Include the TGM_Plugin_Activation class.
  *

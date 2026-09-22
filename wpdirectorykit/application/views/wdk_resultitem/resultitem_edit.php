@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="wrap wdk-wrap">
 
-<h1 class="wp-heading-inline"><?php echo __('Result Card Designer','wpdirectorykit'); ?></h1>
+<h1 class="wp-heading-inline"><?php echo esc_html__('Result Card Designer','wpdirectorykit'); ?></h1>
 <br />
 
     <div class="wdk-body">
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
             <div class="postbox" style="display: block;">
                 <div class="postbox-header">
-                    <h3><?php echo __('Main info','wpdirectorykit'); ?></h3>
+                    <h3><?php echo esc_html__('Main info','wpdirectorykit'); ?></h3>
                 </div>
                 <div class="inside">
                     <?php 
@@ -33,11 +33,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <table class="form-table" role="presentation">
                         <tbody>
                             <tr>
-                                <th scope="row"><label for="resultitem_name"><?php echo __('Name','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="resultitem_name"><?php echo esc_html__('Name','wpdirectorykit'); ?></label></th>
                                 <td><input name="resultitem_name" type="text" id="resultitem_name" value="<?php echo esc_attr(wmvc_show_data('resultitem_name', $db_data, '')); ?>" class="regular-text"></td>
                             </tr>
                             <tr>
-                                <th scope="row"><label for="is_multiline_enabled"><?php echo __('Multiline enabled','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="is_multiline_enabled"><?php echo esc_html__('Multiline enabled','wpdirectorykit'); ?></label></th>
                                 <td>
                                     <input name="is_multiline_enabled" value="1" type="checkbox" id="is_multiline_enabled" class="regular-text" <?php echo !empty(wmvc_show_data('is_multiline_enabled', $db_data, ''))?'checked':''; ?>>
                                     <p class="wdk-hint">
@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><label for="is_label_disable"><?php echo __('Show only icons','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="is_label_disable"><?php echo esc_html__('Show only icons','wpdirectorykit'); ?></label></th>
                                 <td>
                                     <input name="is_label_disable" value="1" type="checkbox" id="is_label_disable" class="regular-text" <?php echo !empty(wmvc_show_data('is_label_disable', $db_data, ''))?'checked':''; ?>>
                                     <p class="wdk-hint">
@@ -55,7 +55,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><label for="is_show_agent_details"><?php echo __('Show agent details','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="is_show_agent_details"><?php echo esc_html__('Show agent details','wpdirectorykit'); ?></label></th>
                                 <td>
                                     <input name="is_show_agent_details" value="1" type="checkbox" id="is_show_agent_details" class="regular-text" <?php echo !empty(wmvc_show_data('is_show_agent_details', $db_data, ''))?'checked':''; ?>>
                                     <p class="wdk-hint">
@@ -64,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 </td>
                             </tr>
                             <tr class="hidden">
-                                <th scope="row"><label for="resultitem_json"><?php echo __('Result Card Json/Structure','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="resultitem_json"><?php echo esc_html__('Result Card Json/Structure','wpdirectorykit'); ?></label></th>
                                 <td>
                                     <textarea name="resultitem_json" type="text" id="resultitem_json" class="regular-text"><?php echo esc_textarea(wmvc_show_data('resultitem_json', $db_data, '')); ?></textarea>
                                 </td>
@@ -158,14 +158,14 @@ if ( ! defined( 'ABSPATH' ) ) {
             ?>
 
             <div class="postbox" style="display: block;">
-                <div class="postbox-header"><h3><?php echo __('Drag & Drop Builder','wpdirectorykit'); ?></h3>
+                <div class="postbox-header"><h3><?php echo esc_html__('Drag & Drop Builder','wpdirectorykit'); ?></h3>
             </div>
             <div class="inside">
-                <p class="alert alert-info"><?php echo __('Drag fields from left side to right side, right side represents result card','wpdirectorykit'); ?></p>
+                <p class="alert alert-info"><?php echo esc_html__('Drag fields from left side to right side, right side represents result card','wpdirectorykit'); ?></p>
                 <div class="wdk-builder-container">
                     <div class="wdk-builder-elements-column">
                         <div class="wdk-builder-elements-box">
-                            <h3 class="sec-title"><?php echo __('General fields','wpdirectorykit'); ?></h3>
+                            <h3 class="sec-title"><?php echo esc_html__('General fields','wpdirectorykit'); ?></h3>
                             <div id="wdk-drag" class="wdk-builder-elements wdk-drop section_fields">
                         <?php foreach($main_fields as $key => $field): 
                                 if(isset($used_fields[$field->idfield]))continue; // skip if field is used
@@ -182,18 +182,18 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <div class="widget-inside">
                                     <div class="widget-content">
                                         <p>
-                                            <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo __('CSS Class:','wpdirectorykit'); ?></label>
+                                            <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo esc_html__('CSS Class:','wpdirectorykit'); ?></label>
                                             <input class="widefat class" id="fid_<?php echo esc_attr($field->idfield); ?>-class" name="fid_<?php echo esc_attr($field->idfield); ?>-class" type="text" value="">
                                         </p>
                                         <p>
-                                            <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
+                                            <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo esc_html__('Columns/Width:','wpdirectorykit'); ?></label>
                                             <input class="widefat columns" id="fid_<?php echo esc_attr($field->idfield); ?>-columns" name="fid_<?php echo esc_attr($field->idfield); ?>-columns" type="number" value="">
                                         </p>
                                         <?php if(in_array($field->idfield, array('agent_image','agent_name','agent_email'))):?>
                                             <p>
                                                 <label for="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link">
                                                     <input class="widefat add_profile_link" id="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" name="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" type="checkbox" value="1">
-                                                    <?php echo __('Add profile link','wpdirectorykit'); ?>
+                                                    <?php echo esc_html__('Add profile link','wpdirectorykit'); ?>
                                                 </label>
                                             </p>
                                         <?php endif;?>
@@ -227,18 +227,18 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <div class="widget-inside">
                                     <div class="widget-content">
                                         <p>
-                                            <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo __('CSS Class:','wpdirectorykit'); ?></label>
+                                            <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo esc_html__('CSS Class:','wpdirectorykit'); ?></label>
                                             <input class="widefat class" id="fid_<?php echo esc_attr($field->idfield); ?>-class" name="fid_<?php echo esc_attr($field->idfield); ?>-class" type="text" value="">
                                         </p>
                                         <p>
-                                            <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
+                                            <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo esc_html__('Columns/Width:','wpdirectorykit'); ?></label>
                                             <input class="widefat columns" id="fid_<?php echo esc_attr($field->idfield); ?>-columns" name="fid_<?php echo esc_attr($field->idfield); ?>-columns" type="number" value="">
                                         </p>
                                         <?php if(in_array($field->idfield, array('agent_image','agent_name','agent_email'))):?>
                                             <p>
                                                 <label for="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link">
                                                     <input class="widefat add_profile_link" id="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" name="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" type="checkbox" value="1">
-                                                    <?php echo __('Add profile link','wpdirectorykit'); ?>
+                                                    <?php echo esc_html__('Add profile link','wpdirectorykit'); ?>
                                                 </label>
                                             </p>
                                         <?php endif;?>
@@ -283,18 +283,18 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <div class="widget-inside">
                             <div class="widget-content">
                                 <p>
-                                    <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo __('CSS Class:','wpdirectorykit'); ?></label>
+                                    <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo esc_html__('CSS Class:','wpdirectorykit'); ?></label>
                                     <input class="widefat class" id="fid_<?php echo esc_attr($field->idfield); ?>-class" name="fid_<?php echo esc_attr($field->idfield); ?>-class" type="text" value="<?php echo esc_attr(wmvc_show_data('class', $used_fields[$field->idfield], '')); ?>">
                                 </p>
                                 <p>
-                                    <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
+                                    <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo esc_html__('Columns/Width:','wpdirectorykit'); ?></label>
                                     <input class="widefat columns" id="fid_<?php echo esc_attr($field->idfield); ?>-columns" name="fid_<?php echo esc_attr($field->idfield); ?>-columns" type="number" value="<?php echo esc_attr(wmvc_show_data('columns', $used_fields[$field->idfield], '')); ?>">
                                 </p>
                                 <?php if(in_array($field->idfield, array('agent_image','agent_name','agent_email'))):?>
                                     <p>
                                         <label for="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link">
                                             <input class="widefat add_profile_link" id="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" name="fid_<?php echo esc_attr($field->idfield); ?>-add_profile_link" type="checkbox" value="1">
-                                            <?php echo __('Add profile link','wpdirectorykit'); ?>
+                                            <?php echo esc_html__('Add profile link','wpdirectorykit'); ?>
                                         </label>
                                     </p>
                                 <?php endif;?>

@@ -180,7 +180,7 @@ class WdkListingSlidersGridMoreImages extends WdkElementorBase {
             /* return false if no content */
         }
 
-        echo $this->view('wdk-listing-sliders-more-grid-images', $this->data); 
+        $this->view('wdk-listing-sliders-more-grid-images', $this->data, true); 
     }
 
 

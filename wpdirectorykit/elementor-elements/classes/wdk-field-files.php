@@ -157,7 +157,7 @@ class WdkFieldFiles extends WdkElementorBase {
             /* return false if no content */
         }
       
-        echo $this->view('wdk-field-files', $this->data); 
+        $this->view('wdk-field-files', $this->data, true); 
     }
 
 

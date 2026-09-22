@@ -181,8 +181,8 @@ class Settings_m extends Winter_MVC_Model {
                 'field' => 'wdk_multilingual_float_language_picker', 
                 'field_label' => __('Float Language Picker', 'wpdirectorykit'), 
                 'field_type' => 'CHECKBOX', 
-                'hint' => __('Multilingual float language picker required WDK Multilingual addon', 'wpdirectorykit'), 
-                'hint' => wdk_sprintf(__('Multilingual float language picker required %1$s WDK Multilingual addon%2$s','wpdirectorykit'),'<a target="_blank" href="https://wpdirectorykit.com/plugins.html">','</a>'), 
+                /* translators: 1: Tag with link open, 2: close link tag. */ 
+                'hint' => wdk_sprintf(__('Multilingual float language picker required %1$s WDK Multilingual addon%2$s','wpdirectorykit'),'<a target="_blank" href="https://wpdirectorykit.com/plugins.html">','</a>'),
                 'rules' => '', 
         );
           
@@ -195,7 +195,8 @@ class Settings_m extends Winter_MVC_Model {
                 'field'  => 'wdk_seo_listing_title', 
                 'field_label' => __('SEO Title', 'wpdirectorykit'), 
                 'field_type' => 'SEO_INPUTBOX', 
-                'hint' => wdk_sprintf(__('Example: %1$s', 'wpdirectorykit'), '{field_title} - {field_location} - {field_33}'), 
+                /* translators: 1: Example field title placeholders. */
+                'hint' => wdk_sprintf(__('Example: %1$s', 'wpdirectorykit'), '{field_title} - {field_location} - {field_33}'),  
                 'rules' => '', 
             ),
            
@@ -370,7 +371,12 @@ class Settings_m extends Winter_MVC_Model {
             array(
                 'field' => 'wdk_recaptcha_site_key', 
                 'field_label' => __('Recaptcha site key', 'wpdirectorykit'), 
-                'hint' => __('Please add Recaptcha site and Secret keys for enable recaptcha Add Google Recaptcha site key (use V2 recaptcha key)', 'wpdirectorykit').'. '.wdk_sprintf(__('Get key %1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="https://www.google.com/recaptcha/admin">','</a>'), 
+                'hint' => __('Please add Recaptcha site and Secret keys for enable recaptcha Add Google Recaptcha site key (use V2 recaptcha key)', 'wpdirectorykit') . '. ' . wdk_sprintf(
+                    /* translators: 1: Tag with link open, 2: close link tag. */
+                    __('Get key %1$s here %2$s', 'wpdirectorykit'),
+                    '<a target="_blank" href="https://www.google.com/recaptcha/admin">',
+                    '</a>'
+                ), 
                 'field_type' => 'INPUTBOX', 
                 'rules' => '', 
             ),
@@ -384,7 +390,12 @@ class Settings_m extends Winter_MVC_Model {
             array(
                 'field' => 'wdk_recaptcha_site_key_v3', 
                 'field_label' => __('Recaptcha site key v3', 'wpdirectorykit'), 
-                'hint' => __('Please add Recaptcha site and Secret keys for enable recaptcha Add Google Recaptcha site key (use V3 recaptcha key)', 'wpdirectorykit').'. '.wdk_sprintf(__('Get key %1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="https://www.google.com/recaptcha/admin">','</a>'), 
+                'hint' => __('Please add Recaptcha site and Secret keys for enable recaptcha Add Google Recaptcha site key (use V3 recaptcha key)', 'wpdirectorykit') . '. ' . wdk_sprintf(
+                    /* translators: 1: Tag with link open, 2: close link tag. */
+                    __('Get key %1$s here %2$s', 'wpdirectorykit'),
+                    '<a target="_blank" href="https://www.google.com/recaptcha/admin">',
+                    '</a>'
+                ),
                 'field_type' => 'INPUTBOX', 
                 'rules' => '', 
             ),
@@ -398,7 +409,12 @@ class Settings_m extends Winter_MVC_Model {
             array(
                 'field' => 'wdk_geo_google_api_key', 
                 'field_label' => __('Google API Key', 'wpdirectorykit'), 
-                'hint' => __('Google API Key, for address to gps coordinates conversion', 'wpdirectorykit').'. '.wdk_sprintf(__('Get key %1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="https://developers.google.com/maps/documentation/javascript/get-api-key">','</a>'), 
+                'hint' => __('Google API Key, for address to gps coordinates conversion', 'wpdirectorykit') . '. ' . wdk_sprintf(
+                    /* translators: 1: Tag with link open, 2: close link tag. */
+                    __('Get key %1$s here %2$s', 'wpdirectorykit'),
+                    '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript/get-api-key">',
+                    '</a>'
+                ),
                 'field_type' => 'INPUTBOX', 
                 'rules' => '', 
             ),
@@ -535,52 +551,53 @@ class Settings_m extends Winter_MVC_Model {
         $this->fields_list_tabs['autosuggestion'] = array(
             array(
                 'field' => 'wdk_autosuggestion_google_api_key', 
-                'field_label' => __('Google Api Key', 'wdk-autosuggestion'), 
+                'field_label' => __('Google Api Key', 'wpdirectorykit'), 
                 'field_type' => 'INPUTBOX', 
                 'rules' => '', 
             ),
             array(
                 'field' => 'wdk_autosuggestion_google_cities', 
-                'field_label' => __('Autosuggestion Google Cities', 'wdk-autosuggestion'), 
+                'field_label' => __('Autosuggestion Google Cities', 'wpdirectorykit'), 
                 'field_type' => 'TEXTAREA', 
                 'rules' => '', 
-                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Google Api Key)', 'wdk-autosuggestion'),
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Google Api Key)', 'wpdirectorykit'),
             ),
             array(
                 'field' => 'wdk_autosuggestion_google_countries', 
-                'field_label' => __('Autosuggestion Google Countries', 'wdk-autosuggestion'), 
+                'field_label' => __('Autosuggestion Google Countries', 'wpdirectorykit'), 
                 'field_type' => 'TEXTAREA', 
                 'rules' => '', 
-                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Google Api Key)', 'wdk-autosuggestion'),
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Google Api Key)', 'wpdirectorykit'),
             ),
 
             array(
                 'field' => 'wdk_autosuggestion_rapidapi_api_key', 
-                'field_label' => __('Rapidapi', 'wdk-autosuggestion'), 
+                'field_label' => __('Rapidapi', 'wpdirectorykit'), 
                 'field_type' => 'INPUTBOX', 
                 'rules' => '', 
-                'hint' => wdk_sprintf(__('Please add Rapid Api Key, Get key %1$s here %2$s, then activate GeoDB Cities API','wpdirectorykit'),'<a target="_blank" href="https://rapidapi.com/products/pricing/">','</a>'), 
+                 /* translators: 1: Tag with link open, 2: close link tag. */ 
+                'hint' => wdk_sprintf(__('Please add Rapid Api Key, Get key %1$s here %2$s, then activate GeoDB Cities API','wpdirectorykit'),'<a target="_blank" href="https://rapidapi.com/products/pricing/">','</a>'),
             ),
             array(
                 'field' => 'wdk_autosuggestion_rapidapi_cities', 
-                'field_label' => __('Autosuggestion Rapid Api Cities', 'wdk-autosuggestion'), 
+                'field_label' => __('Autosuggestion Rapid Api Cities', 'wpdirectorykit'), 
                 'field_type' => 'TEXTAREA', 
                 'rules' => '', 
-                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Rapid Api Key)', 'wdk-autosuggestion'),
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Rapid Api Key)', 'wpdirectorykit'),
             ),
             array(
                 'field' => 'wdk_autosuggestion_rapidapi_countries', 
-                'field_label' => __('Autosuggestion Rapid Api Countries', 'wdk-autosuggestion'), 
+                'field_label' => __('Autosuggestion Rapid Api Countries', 'wpdirectorykit'), 
                 'field_type' => 'TEXTAREA', 
                 'rules' => '', 
-                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Rapid Api Key)', 'wdk-autosuggestion'),
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3 (required Rapid Api Key)', 'wpdirectorykit'),
             ),
             array(
                 'field' => 'wdk_autosuggestion_countriesapi_countries', 
-                'field_label' => __('Autosuggestion REST Countries API Countries', 'wdk-autosuggestion'), 
+                'field_label' => __('Autosuggestion REST Countries API Countries', 'wpdirectorykit'), 
                 'field_type' => 'TEXTAREA', 
                 'rules' => '', 
-                'hint' => __('Put selectors separate by comma, like .field_1,.field_3', 'wdk-autosuggestion'),
+                'hint' => __('Put selectors separate by comma, like .field_1,.field_3', 'wpdirectorykit'),
             ),
         );
 

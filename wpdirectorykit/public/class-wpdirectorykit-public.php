@@ -263,7 +263,8 @@ class Wpdirectorykit_Public {
 				'nonce'=> wp_create_nonce('wp_rest'),
 				'wdk_secure_nonce'=> wp_create_nonce('wdk_secure_ajax'),
 			],
-			'fields_data' =>  wdk_cached_field_get()
+			'fields_data' =>  wdk_cached_field_get(),
+    		'wdk_ai_search_fields' => get_option( 'wdk_ai_search_fields', []),
         );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wpdirectorykit-public.js', array( 'jquery' ,'wp-i18n'), $this->version, false );
         wp_localize_script( $this->plugin_name, 'script_parameters', $params);
@@ -299,7 +300,7 @@ class Wpdirectorykit_Public {
 
 		/* protect access only to ajax controller */
 		if($page != 'wdk_frontendajax' && $page != 'wdk_backendajax') {
-			exit(esc_html__('Access denied','wdk-bookings'));
+			exit(esc_html__('Access denied','wpdirectorykit'));
 		} 
 
 		$WMVC = &wdk_get_instance();

@@ -30,6 +30,7 @@ class WdkListingsResults extends WdkElementorBase {
         \Elementor\Controls_Manager::add_tab(
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
+ 
         );
 
         \Elementor\Controls_Manager::add_tab(
@@ -163,7 +164,7 @@ class WdkListingsResults extends WdkElementorBase {
 
             if(!isset($_GET['order_by'])) {
                 /* if detected custom field for order */
-                if(!empty($this->data['settings']['conf_order_by_custom']) && $this->data['settings']['conf_order_by_custom'] == 'RAND()') {
+                if(!empty($this->data['settings']['conf_order_by_custom']) && $this->data['settings']['conf_order_by_custom'] == 'rand()') {
                     $custom_parameters['order_by'] = $this->data['settings']['conf_order_by_custom'].' '.$this->data['settings']['conf_order'];
                 } elseif(!empty($this->data['settings']['conf_order_by_custom'])) {
                     $custom_parameters['order_by'] .= ((!empty($custom_parameters['order_by'])) ? ', ':'').$this->data['settings']['conf_order_by_custom'].' '.$this->data['settings']['conf_order'];
@@ -287,7 +288,7 @@ class WdkListingsResults extends WdkElementorBase {
                 $this->data['settings']['layout_type'] = 'list';
         }
 
-        echo $this->view('wdk-listings-results', $this->data); 
+        $this->view('wdk-listings-results', $this->data, true); 
     }
 
 
@@ -365,11 +366,11 @@ class WdkListingsResults extends WdkElementorBase {
             $this->add_control(
                 'custom_layout_live_grid',
                 array(
-                    'label'       => __( 'Template Id', 'wdk-addons-for-elementor' ),
+                    'label'       => __( 'Template Id', 'wpdirectorykit' ),
                     'type'        => Controls_Manager::TEXT,
                     'classes'     => 'wdk-live-temp-title control-hidden',
                     'label_block' => true,
-                    'placeholder' => __( 'Enter template name...', 'wdk-addons-for-elementor' ),
+                    'placeholder' => __( 'Enter template name...', 'wpdirectorykit' ),
                     'separator' => 'before',
                     'conditions' => [
                         'terms' => [
@@ -390,7 +391,7 @@ class WdkListingsResults extends WdkElementorBase {
                     'type'        => Controls_Manager::BUTTON,
                     'label_block' => true,
                     'button_type' => 'default papro-btn-block for-custom_layout_live_grid',
-                    'text'        => __( 'Create / Edit Template', 'wdk-addons-for-elementor' ),
+                    'text'        => __( 'Create / Edit Template', 'wpdirectorykit' ),
                     'event'       => 'wdkCreateLiveTemp',
                     'conditions' => [
                         'terms' => [
@@ -407,11 +408,16 @@ class WdkListingsResults extends WdkElementorBase {
             $this->add_control(
                 'custom_layout_id_grid',
                 array(
-                    'label'       => __( 'OR Select Existing Template', 'premium-addons-for-elementor' ),
+                    'label'       => __( 'OR Select Existing Template', 'wpdirectorykit' ),
                     //'type'        => \Wdk\Includes\Controls\Wdk_Post_Filter::TYPE,
                     'type'        => Controls_Manager::SELECT2,
                     'options'     => $this->get_elementor_templates(),
-                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ) . ' ' . wdk_sprintf(
+                        /* translators: 1: Tag with link open, 2: close link tag. */
+                        __('%1$s here %2$s', 'wpdirectorykit'),
+                        '<a target="_blank" href="' . admin_url('edit.php?post_type=elementor_library#add_new') . '">',
+                        '</a>'
+                    ),
                     'label_block' => true,
                     'multiple'    => false,
                     'source'      => 'elementor_library',
@@ -431,11 +437,11 @@ class WdkListingsResults extends WdkElementorBase {
             $this->add_control(
                 'custom_layout_live_list',
                 array(
-                    'label'       => __( 'Template Id', 'wdk-addons-for-elementor' ),
+                    'label'       => __( 'Template Id', 'wpdirectorykit' ),
                     'type'        => Controls_Manager::TEXT,
                     'classes'     => 'wdk-live-temp-title control-hidden',
                     'label_block' => true,
-                    'placeholder' => __( 'Enter template name...', 'wdk-addons-for-elementor' ),
+                    'placeholder' => __( 'Enter template name...', 'wpdirectorykit' ),
                     'conditions' => [
                         'terms' => [
                             [
@@ -454,7 +460,7 @@ class WdkListingsResults extends WdkElementorBase {
                     'type'        => Controls_Manager::BUTTON,
                     'label_block' => true,
                     'button_type' => 'default papro-btn-block for-custom_layout_live_list',
-                    'text'        => __( 'Create / Edit Template', 'wdk-addons-for-elementor' ),
+                    'text'        => __( 'Create / Edit Template', 'wpdirectorykit' ),
                     'event'       => 'wdkCreateLiveTemp',
                     'conditions' => [
                         'terms' => [
@@ -471,10 +477,15 @@ class WdkListingsResults extends WdkElementorBase {
             $this->add_control(
                 'custom_layout_id_list',
                 array(
-                    'label'       => __( 'OR Select Existing Template', 'premium-addons-for-elementor' ),
+                    'label'       => __( 'OR Select Existing Template', 'wpdirectorykit' ),
                     'type'        => Controls_Manager::SELECT2,
                     'options'     => $this->get_elementor_templates(),
-                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ) . ' ' . wdk_sprintf(
+                        /* translators: 1: Tag with link open, 2: close link tag. */
+                        __('%1$s here %2$s', 'wpdirectorykit'),
+                        '<a target="_blank" href="' . admin_url('edit.php?post_type=elementor_library#add_new') . '">',
+                        '</a>'
+                    ),
                     'label_block' => true,
                     'multiple'    => false,
                     'source'      => 'elementor_library',
@@ -792,7 +803,7 @@ class WdkListingsResults extends WdkElementorBase {
                     'label'         => __('Default Custom Sort By', 'wpdirectorykit'),
                     'description'         => __('Custom Sort By', 'wpdirectorykit'),
                     'description' => '<span style="word-break: break-all;">'.__( 'Example:', 'wpdirectorykit' ).
-                                        '<br> RAND()  - return random results'.
+                                        '<br> wp_rand()  - return random results'.
                                         '<br> field_13_NUMBER  - where 13 is field id, NUMBER - field type'.
                                         '<br> field_4_NUMBER  - where 4 is field id, NUMBER - field type'.
                                         '<br> field_6_DROPDOWN  - where 6 is field id, DROPDOWN - field type'.
@@ -951,6 +962,7 @@ class WdkListingsResults extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Edit Result Card Designer <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_resultitem')),
                 'content_classes' => 'wdk_elementor_hint',
             ]

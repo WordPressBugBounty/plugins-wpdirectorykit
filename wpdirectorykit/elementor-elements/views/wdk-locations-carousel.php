@@ -77,14 +77,14 @@ $results_page = get_permalink($results_page);
                     variableWidth: true,
                 <?php endif;?>
                 speed: '<?php echo esc_html($settings['layout_carousel_speed'], '100');?>',
-                slidesToShow: <?php echo wmvc_show_data('layout_carousel_columns', $settings, 1);?>,
-                slidesToScroll: <?php echo wmvc_show_data('layout_carousel_columns', $settings,1);?>,
+                slidesToShow: <?php echo esc_js(wmvc_show_data('layout_carousel_columns', $settings, 1));?>,
+                slidesToScroll: <?php echo esc_js(wmvc_show_data('layout_carousel_columns', $settings,1));?>,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_infinite', $settings))):?>
-                infinite: <?php echo wmvc_show_data('layout_carousel_is_infinite', $settings, 'true');?>,
+                infinite: <?php echo esc_js(wmvc_show_data('layout_carousel_is_infinite', $settings, 'true'));?>,
                 <?php endif;?>
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_autoplay', $settings))):?>
-                autoplay: <?php echo wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false');?>,
-                autoplaySpeed: <?php echo wmvc_show_data('layout_carousel_autoplaySpeed', $settings, '1500');?>,
+                autoplay: <?php echo esc_js(wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false'));?>,
+                autoplaySpeed: <?php echo esc_js(wmvc_show_data('layout_carousel_autoplaySpeed', $settings, '1500'));?>,
                 <?php endif;?>
                 <?php if(wmvc_show_data('layout_carousel_columns', $settings, 1) == 1 &&  in_array($settings['layout_carousel_animation_style'], ['fade','fade_in_in'])):?>
                 fade: true,

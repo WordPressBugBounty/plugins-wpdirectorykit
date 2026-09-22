@@ -140,7 +140,7 @@ class WdkImplodeShortcode extends WdkElementorBase {
 
         $this->data['is_edit_mode']= false;          
         if(Plugin::$instance->editor->is_edit_mode()){
-            echo $shortcode; 
+            echo esc_html($shortcode); 
         } else {
             return do_shortcode($shortcode); 
         }

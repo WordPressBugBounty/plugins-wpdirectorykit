@@ -180,7 +180,7 @@ class WdkLastSearch extends WdkElementorBase {
             }
         }
 
-        echo $this->view('wdk-last-search', $this->data); 
+        $this->view('wdk-last-search', $this->data, true); 
     }
 
 
@@ -270,10 +270,10 @@ class WdkLastSearch extends WdkElementorBase {
                 $this->add_responsive_control(
                     $item['key'].'_hide',
                     [
-                        'label' => esc_html__( 'Hide Element', 'wdk-svg-map' ),
+                        'label' => esc_html__( 'Hide Element', 'wpdirectorykit' ),
                         'type' => Controls_Manager::SWITCHER,
-                        'none' => esc_html__( 'Hide', 'wdk-svg-map' ),
-                        'block' => esc_html__( 'Show', 'wdk-svg-map' ),
+                        'none' => esc_html__( 'Hide', 'wpdirectorykit' ),
+                        'block' => esc_html__( 'Show', 'wpdirectorykit' ),
                         'return_value' =>  'none',
                         'default' => ($item['key'] == 'field_button_reset' ) ? 'none':'',
                         'selectors' => [

@@ -154,7 +154,7 @@ class WdkSearchPopup extends WdkElementorBase {
             $this->data['is_edit_mode'] = true;
         }
 
-        echo $this->view('wdk-search-popup', $this->data); 
+        $this->view('wdk-search-popup', $this->data, true); 
     }
 
 
@@ -308,7 +308,7 @@ class WdkSearchPopup extends WdkElementorBase {
         $this->add_control(
             'text_toggle_button_icon',
             [
-                'label' => __( 'Icon', 'text-domain' ),
+                'label' => __( 'Icon', 'wpdirectorykit' ),
                 'type' => Controls_Manager::ICONS,
             ]
         );
@@ -316,11 +316,11 @@ class WdkSearchPopup extends WdkElementorBase {
         $this->add_control(
             'text_toggle_button_icon_position',
             [
-                'label' => esc_html__('icon Position', 'wdk-compare-listing'),
+                'label' => esc_html__('icon Position', 'wpdirectorykit'),
                 'type' => Controls_Manager::SELECT,
                 'options' => [
-                    'left' => esc_html__('Left', 'wdk-compare-listing'),
-                    'right' => esc_html__('Right', 'wdk-compare-listing'),
+                    'left' => esc_html__('Left', 'wpdirectorykit'),
+                    'right' => esc_html__('Right', 'wpdirectorykit'),
                 ],
                 'default' => 'left',
             ]
@@ -1071,10 +1071,10 @@ class WdkSearchPopup extends WdkElementorBase {
                     $this->add_responsive_control(
                         $item['key'].'_hide',
                         [
-                            'label' => esc_html__( 'Hide Element', 'wdk-svg-map' ),
+                            'label' => esc_html__( 'Hide Element', 'wpdirectorykit' ),
                             'type' => Controls_Manager::SWITCHER,
-                            'none' => esc_html__( 'Hide', 'wdk-svg-map' ),
-                            'block' => esc_html__( 'Show', 'wdk-svg-map' ),
+                            'none' => esc_html__( 'Hide', 'wpdirectorykit' ),
+                            'block' => esc_html__( 'Show', 'wpdirectorykit' ),
                             'return_value' =>  'none',
                             'default' => ($item['key'] == 'field_button_reset' ) ? 'none':'',
                             'selectors' => [

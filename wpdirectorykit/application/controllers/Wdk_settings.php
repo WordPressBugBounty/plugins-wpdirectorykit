@@ -102,7 +102,16 @@ class Wdk_settings extends Winter_MVC_Controller {
 
             // Create the destination directory if it doesn't exist
             if (!is_dir(get_stylesheet_directory().'/wpdirectorykit/application/views/email/')) {
-                mkdir(get_stylesheet_directory().'/wpdirectorykit/application/views/email/', 0777, true);
+                global $wp_filesystem;
+                if (empty($wp_filesystem)) {
+                    require_once(ABSPATH . '/wp-admin/includes/file.php');
+                    WP_Filesystem();
+                }
+                $dir_path = get_stylesheet_directory() . '/wpdirectorykit/application/views/email/';
+                if (!$wp_filesystem->is_dir($dir_path)) {
+                    $wp_filesystem->mkdir($dir_path, FS_CHMOD_DIR | 0777);
+                }
+           
             }
 
             $destinationFile = get_stylesheet_directory().'/wpdirectorykit/application/views/email/'.$view_file.'.php';
@@ -112,7 +121,16 @@ class Wdk_settings extends Winter_MVC_Controller {
         {
             // Create the destination directory if it doesn't exist
             if (!is_dir(get_template_directory().'/wpdirectorykit/application/views/email/')) {
-                mkdir(get_template_directory().'/wpdirectorykit/application/views/email/', 0777, true);
+                global $wp_filesystem;
+                if (empty($wp_filesystem)) {
+                    require_once(ABSPATH . '/wp-admin/includes/file.php');
+                    WP_Filesystem();
+                }
+                $dir_path = get_template_directory() . '/wpdirectorykit/application/views/email/';
+                if (!$wp_filesystem->is_dir($dir_path)) {
+                    $wp_filesystem->mkdir($dir_path, FS_CHMOD_DIR | 0777);
+                }
+           
             }
 
             $destinationFile = get_template_directory().'/wpdirectorykit/application/views/email/'.$view_file.'.php';
@@ -803,7 +821,7 @@ class Wdk_settings extends Winter_MVC_Controller {
         
         /* homepage */
         $from = '2020';
-        $to = date('Y');
+        $to = gmdate('Y');
         $this->replace_meta($from, $to);
 
 
@@ -1105,8 +1123,8 @@ class Wdk_settings extends Winter_MVC_Controller {
             $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Search Form & Result Card imported', 'wpdirectorykit').'</div>';
             return true;
         }
-
-        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Missing xml file '.$this->import_xml_file, 'wpdirectorykit').'</div>';
+        /* translators: 1: XML file path. */
+        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('Missing xml file %1$s', 'wpdirectorykit'), $this->import_xml_file).'</div>';
         return false;
         
     }
@@ -1122,7 +1140,8 @@ class Wdk_settings extends Winter_MVC_Controller {
         if(file_exists($this->import_xml_file_locations)) {
             $dom_array = $this->xmlstr_to_array(file_get_contents($this->import_xml_file_locations));
             if(!isset($dom_array['locations']['location']) && empty($dom_array['locations']['location'])) {
-                $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('No fields in xml file  '.$this->import_xml_file_locations, 'wpdirectorykit').'</div>';
+                /* translators: 1: XML file path. */
+                $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('No fields in xml file %1$s', 'wpdirectorykit'), $this->import_xml_file_locations).'</div>';
                 return false;
             }
             foreach ($dom_array['locations']['location'] as $key => $location_data) {
@@ -1132,8 +1151,8 @@ class Wdk_settings extends Winter_MVC_Controller {
             $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Locations imported', 'wpdirectorykit').'</div>';
             return true;
         }
-
-        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Missing xml file '.$this->import_xml_file_locations, 'wpdirectorykit').'</div>';
+        /* translators: 1: XML file path. */
+        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('Missing xml file %1$s', 'wpdirectorykit'), $this->import_xml_file_locations).'</div>';
         return false;
     }
 
@@ -1189,7 +1208,8 @@ class Wdk_settings extends Winter_MVC_Controller {
         if(file_exists($this->import_xml_file)) {
             $dom_array = $this->xmlstr_to_array(file_get_contents($this->import_xml_file));
             if(!isset($dom_array['categories']['category']) && empty($dom_array['categories']['category'])) {
-                $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('No fields in xml file  '.$this->import_xml_file, 'wpdirectorykit').'</div>';
+                /* translators: 1: XML file path. */
+                $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('No fields in xml file  %1$s', 'wpdirectorykit'), $this->import_xml_file).'</div>';
                 return false;
             }
 
@@ -1211,8 +1231,8 @@ class Wdk_settings extends Winter_MVC_Controller {
             $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Categories imported', 'wpdirectorykit').'</div>';
             return true;
         }
-
-        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Missing xml file '.$this->import_xml_file, 'wpdirectorykit').'</div>';
+        /* translators: 1: XML file path. */
+        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('No fields in xml file  %1$s', 'wpdirectorykit'), $this->import_xml_file).'</div>';
         return false;
     }
 
@@ -1331,7 +1351,8 @@ class Wdk_settings extends Winter_MVC_Controller {
             );
 
             if(!isset($dom_array['fields']['field']) && empty($dom_array['fields']['field'])) {
-                $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('No fields in xml file  '.$this->import_xml_file, 'wpdirectorykit').'</div>';
+                /* translators: 1: XML file path. */
+                $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('No fields in xml file %1$s', 'wpdirectorykit'),$this->import_xml_file).'</div>';
                 return false;
             }
             
@@ -1388,8 +1409,8 @@ class Wdk_settings extends Winter_MVC_Controller {
             $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Fields imported', 'wpdirectorykit').'</div>';
             return true;
         }
-
-        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Missing xml file '.$this->import_xml_file, 'wpdirectorykit').'</div>';
+        /* translators: 1: XML file path. */
+        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('No fields in xml file  %1$s', 'wpdirectorykit'), $this->import_xml_file).'</div>';
         return false;
     }
 
@@ -1447,7 +1468,8 @@ class Wdk_settings extends Winter_MVC_Controller {
         if(file_exists($this->import_xml_file)) {
             $dom_array = $this->xmlstr_to_array(file_get_contents($this->import_xml_file));
             if(!isset($dom_array['listings']['listing']) && empty($dom_array['listings']['listing'])) {
-                $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('No listings in xml file  '.$this->import_xml_file, 'wpdirectorykit').'</div>';
+                /* translators: 1: XML file path. */
+                $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('No listings in xml file %1$s', 'wpdirectorykit'), $this->import_xml_file).'</div>';
                 return false;
             }
 
@@ -1462,10 +1484,10 @@ class Wdk_settings extends Winter_MVC_Controller {
                 $category_id = '';
 
                 if(!empty($categories))
-                    $category_id = $categories[rand(0, count($categories)-1)];
+                    $category_id = $categories[wp_rand(0, count($categories)-1)];
 
                 if(!empty($location))
-                    $location_id = $locations[rand(0, count($locations)-1)];
+                    $location_id = $locations[wp_rand(0, count($locations)-1)];
 
                 $data_listing = array(
                     'post_title' => '',
@@ -1477,12 +1499,12 @@ class Wdk_settings extends Winter_MVC_Controller {
                     'listing_images' => '',
                     'listing_images_path' => '',
                     'listing_images_path_medium' => '',
-                    'date_modified' => date('Y-m-d H:i:s'),
+                    'date_modified' => gmdate('Y-m-d H:i:s'),
                     'lng' => '',
                     'is_featured' => '',
                     'is_activated' => '1',
                     'is_approved' => '1',
-                    'counter_views' => rand(20,250),
+                    'counter_views' => wp_rand(20,250),
                     'user_id_editor' => NULL,
                 );
                 
@@ -1513,17 +1535,17 @@ class Wdk_settings extends Winter_MVC_Controller {
                             {
                                 $start=0;
                                 if(empty($values[0]))$start=1;
-                                $data_listings_fields['field_'.$field_data->idfield] = $values[rand($start, count($values)-1)];
+                                $data_listings_fields['field_'.$field_data->idfield] = $values[wp_rand($start, count($values)-1)];
                             }
                         }
                         elseif($field_data->field_type == 'NUMBER')
                         {
-                            $data_listings_fields['field_'.$field_data->idfield] = rand(2,499);
+                            $data_listings_fields['field_'.$field_data->idfield] = wp_rand(2,499);
 
                         }
                         elseif($field_data->field_type == 'CHECKBOX')
                         {
-                            $data_listings_fields['field_'.$field_data->idfield] = rand(0,1);
+                            $data_listings_fields['field_'.$field_data->idfield] = wp_rand(0,1);
                         }
                         elseif($field_data->field_type == 'TEXTAREA')
                         {
@@ -1566,7 +1588,7 @@ class Wdk_settings extends Winter_MVC_Controller {
 
                         $image_url = wp_get_attachment_image_url($image_id, 'large');
                         if($image_url) {
-                            $parsed = parse_url($image_url);
+                            $parsed = wp_parse_url($image_url);
                             $next_path = substr($parsed['path'], strpos($parsed['path'], 'uploads/')+8);
 
                             if(!empty($data_listing['listing_images_path_medium']))
@@ -1607,7 +1629,7 @@ class Wdk_settings extends Winter_MVC_Controller {
 
                         $image_url = wp_get_attachment_image_url($image_id, 'large');
                         if($image_url) {
-                            $parsed = parse_url($image_url);
+                            $parsed = wp_parse_url($image_url);
                             $next_path = substr($parsed['path'], strpos($parsed['path'], 'uploads/')+8);
 
                             if(!empty($data_listing['listing_images_path_medium']))
@@ -1638,8 +1660,8 @@ class Wdk_settings extends Winter_MVC_Controller {
                         $listing_data[$field_name] = $data_listing[$field_name];
                 }
                 $listing_data['user_id_editor'] = $user_ids[array_rand($user_ids)];
-                $listing_data['date_modified'] = date('Y-m-d H:i:s');
-                $listing_data['counter_views'] = rand(20,250);
+                $listing_data['date_modified'] = gmdate('Y-m-d H:i:s');
+                $listing_data['counter_views'] = wp_rand(20,250);
                 
                 $this->listing_m->insert($listing_data, NULL);
 
@@ -1650,8 +1672,8 @@ class Wdk_settings extends Winter_MVC_Controller {
             $this->data['import_log'] .= '<div class="alert alert-success" role="alert">'.esc_html__('Listings imported', 'wpdirectorykit').'</div>';
             return true;
         }
-
-        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.esc_html__('Missing xml file '.$this->import_xml_file, 'wpdirectorykit').'</div>';
+        /* translators: 1: XML file path. */
+        $this->data['import_log'] .= '<div class="alert alert-danger" role="alert">'.wdk_sprintf(esc_html__('No fields in xml file  %1$s', 'wpdirectorykit'), $this->import_xml_file).'</div>';
         return false;
     }
 

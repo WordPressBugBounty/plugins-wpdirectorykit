@@ -45,7 +45,7 @@ if(isset($field->default) && $field->default == 1)
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php echo __('Visible on','wpdirectorykit'); ?></span></legend>
+            <legend class="screen-reader-text"><span><?php echo esc_html__('Visible on','wpdirectorykit'); ?></span></legend>
             <label for="<?php echo esc_attr($field_id); ?>">
                 <input name="<?php echo esc_attr($field_id); ?>" type="checkbox" id="<?php echo esc_attr($field_id); ?>" value="1" <?php echo !empty(wmvc_show_data($field_id, $db_data, $default))?'checked':''; ?>>
             </label>

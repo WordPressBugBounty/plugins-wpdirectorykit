@@ -14,13 +14,13 @@ if (! defined('ABSPATH')) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Category Management', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Category Management', 'wpdirectorykit'); ?></h1>
     <br />
 
     <div class="wdk-body">
         <div class="postbox" style="display: block;">
             <div class="postbox-header">
-                <h3><?php echo __('Add/Edit Category', 'wpdirectorykit'); ?></h3>
+                <h3><?php echo esc_html__('Add/Edit Category', 'wpdirectorykit'); ?></h3>
             </div>
             <div class="inside">
                 <form method="post" class="form_listing_ai" action="<?php echo esc_url(wmvc_current_edit_url()); ?>" novalidate="novalidate">
@@ -32,16 +32,41 @@ if (! defined('ABSPATH')) {
                         <tbody>
                             <tr>
                                 <th scope="row"><label
-                                        for="parent_id"><?php echo __('Parent', 'wpdirectorykit'); ?></label></th>
+                                        for="parent_id"><?php echo esc_html__('Parent', 'wpdirectorykit'); ?></label></th>
                                 <td>
                                     <?php
-                                    echo wmvc_select_option('parent_id', $parents, wmvc_show_data('parent_id', $db_data, ''), NULL, __('Root', 'wpdirectorykit'), '0');
+                                    echo wp_kses(
+                                        wmvc_select_option(
+                                            'parent_id',
+                                            $parents,
+                                            wmvc_show_data('parent_id', $db_data, ''),
+                                            NULL,
+                                            __('Root', 'wpdirectorykit'),
+                                            '0'
+                                        ),
+                                        array(
+                                            'select' => array(
+                                                'name' => true,
+                                                'id' => true,
+                                                'class' => true,
+                                                'autocomplete' => true,
+                                                'tabindex' => true,
+                                            ),
+                                            'option' => array(
+                                                'value' => true,
+                                                'selected' => true,
+                                                'disabled' => true,
+                                                'label' => true,
+                                            ),
+                                        )
+                                    );
+                               
                                     ?>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="category_title"><?php echo __('Title', 'wpdirectorykit'); ?></label>
+                                    <label for="category_title"><?php echo esc_html__('Title', 'wpdirectorykit'); ?></label>
                                 </th>
                                 <td>
                                     <input name="category_title" type="text" id="category_title"
@@ -51,45 +76,78 @@ if (! defined('ABSPATH')) {
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="titles_for_search"><?php echo __('Alternative titles for search', 'wpdirectorykit'); ?></label>
+                                    <label for="titles_for_search"><?php echo esc_html__('Alternative titles for search', 'wpdirectorykit'); ?></label>
                                 </th>
                                 <td>
                                     <input name="titles_for_search" type="text" id="titles_for_search"
                                         value="<?php echo esc_attr(wmvc_show_data('titles_for_search', $db_data, '')); ?>"
                                         class="regular-text">
                                     <p class="description" id="order_index-description">
-                                        <?php echo __('This can be used for search in different languages, please enter titles like: "Croatia,Hrvatska" so supporting multiple titles', 'wpdirectorykit'); ?>
+                                        <?php echo esc_html__('This can be used for search in different languages, please enter titles like: "Croatia,Hrvatska" so supporting multiple titles', 'wpdirectorykit'); ?>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="order_index"><?php echo __('Order Index', 'wpdirectorykit'); ?></label>
+                                    <label for="order_index"><?php echo esc_html__('Order Index', 'wpdirectorykit'); ?></label>
                                 </th>
                                 <td>
                                     <input name="order_index" type="text" id="order_index"
                                         value="<?php echo esc_attr(wmvc_show_data('order_index', $db_data, '')); ?>"
                                         class="regular-text">
                                     <p class="description" id="order_index-description">
-                                        <?php echo __('Index for sorting/ordering, you can leave it empty and will be auto added to end of parent list', 'wpdirectorykit'); ?>
+                                        <?php echo esc_html__('Index for sorting/ordering, you can leave it empty and will be auto added to end of parent list', 'wpdirectorykit'); ?>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="font_icon_code"><?php echo __('Font icon code', 'wpdirectorykit'); ?></label>
+                                    <label for="font_icon_code"><?php echo esc_html__('Font icon code', 'wpdirectorykit'); ?></label>
                                 </th>
                                 <td>
                                     <div class="wdk-field-edit LISTING edittable">
                                         <div class="wdk-field-container">
-                                            <?php echo wdk_treefield_option('font_icon_code', 'icons_list', wmvc_show_data('font_icon_code', $db_data, ''), 'icon', '', __('Not Selected', 'wpdirectorykit'), '', TRUE); ?>
+                                            <?php echo wp_kses(
+                                                wdk_treefield_option(
+                                                    'font_icon_code',
+                                                    'icons_list',
+                                                    wmvc_show_data('font_icon_code', $db_data, ''),
+                                                    'icon',
+                                                    '',
+                                                    __('Not Selected', 'wpdirectorykit'),
+                                                    '',
+                                                    TRUE
+                                                ),
+                                                array(
+                                                    'select' => array(
+                                                        'name' => true,
+                                                        'id' => true,
+                                                        'class' => true,
+                                                        'autocomplete' => true,
+                                                        'tabindex' => true,
+                                                    ),
+                                                    'option' => array(
+                                                        'value' => true,
+                                                        'selected' => true,
+                                                        'disabled' => true,
+                                                        'label' => true,
+                                                    ),
+                                                    'span' => array(
+                                                        'class' => true,
+                                                    ),
+                                                    'i' => array(
+                                                        'class' => true,
+                                                    ),
+                                                )
+                                            ); ?>
+                                       
                                         </div>
                                     </div>
                                     <p class="description" id="font_icon_code-description">
-                                        <?php echo __('Icon used for marker/pin on map or special places on website, you can found icon classes on font awesome website', 'wpdirectorykit'); ?>
-                                        <br><a href="https://fontawesome.com/" target="_blank"> <?php echo __('Font Awesome icon', 'wpdirectorykit'); ?></a>
-                                        <br><?php echo __('Example class/code', 'wpdirectorykit'); ?>: "fas fa-band-aid"
-                                        <br><?php echo __('Will be used only if "Custom Map Marker Image" is not uploaded', 'wpdirectorykit'); ?>
+                                        <?php echo esc_html__('Icon used for marker/pin on map or special places on website, you can found icon classes on font awesome website', 'wpdirectorykit'); ?>
+                                        <br><a href="https://fontawesome.com/" target="_blank"> <?php echo esc_html__('Font Awesome icon', 'wpdirectorykit'); ?></a>
+                                        <br><?php echo esc_html__('Example class/code', 'wpdirectorykit'); ?>: "fas fa-band-aid"
+                                        <br><?php echo esc_html__('Will be used only if "Custom Map Marker Image" is not uploaded', 'wpdirectorykit'); ?>
                                     </p>
 
                                 </td>
@@ -97,42 +155,101 @@ if (! defined('ABSPATH')) {
                             </tr>
                             <tr>
                                 <th scope="row"><label
-                                        for="marker_image_id"><?php echo __('Custom Map Marker Image', 'wpdirectorykit'); ?></label></th>
+                                        for="marker_image_id"><?php echo esc_html__('Custom Map Marker Image', 'wpdirectorykit'); ?></label></th>
                                 <td>
                                     <?php
-                                    echo wmvc_upload_media('marker_image_id', wmvc_show_data('marker_image_id', $db_data, ''));
+                                    echo wp_kses(
+                                        wmvc_upload_media('marker_image_id', wmvc_show_data('marker_image_id', $db_data, '')),
+                                        array(
+                                            'input' => array(
+                                                'type' => true,
+                                                'name' => true,
+                                                'id' => true,
+                                                'value' => true,
+                                                'class' => true,
+                                                'style' => true,
+                                                'accept' => true,
+                                                'data-*' => true,
+                                            ),
+                                            'button' => array(
+                                                'type' => true,
+                                                'id' => true,
+                                                'class' => true,
+                                                'name' => true,
+                                                'value' => true,
+                                                'aria-label' => true,
+                                                'data-*' => true,
+                                            ),
+                                            'img' => array(
+                                                'src' => true,
+                                                'alt' => true,
+                                                'width' => true,
+                                                'height' => true,
+                                                'class' => true,
+                                                'id' => true,
+                                                'style' => true,
+                                            ),
+                                            'div' => array(
+                                                'class' => true,
+                                                'id' => true,
+                                                'style' => true,
+                                                'data-*' => true,
+                                            ),
+                                            'a' => array(
+                                                'href' => true,
+                                                'class' => true,
+                                                'id' => true,
+                                                'title' => true,
+                                                'rel' => true,
+                                                'style' => true,
+                                                'target' => true,
+                                                'data-*' => true,
+                                            ),
+                                            'span' => array(
+                                                'class' => true,
+                                                'id' => true,
+                                                'style' => true,
+                                            ),
+                                            'br' => array(),
+                                            'strong' => array(),
+                                            'em' => array(),
+                                        )
+                                    );
+                               
                                     ?>
                                     <p class="description" id="marker_image_id-description">
-                                        <?php echo __('Image used for marker/pin on map', 'wpdirectorykit'); ?>
+                                        <?php echo esc_html__('Image used for marker/pin on map', 'wpdirectorykit'); ?>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><label for="icon_id"><?php echo __('Icon', 'wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="icon_id"><?php echo esc_html__('Icon', 'wpdirectorykit'); ?></label></th>
                                 <td>
                                     <?php
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                                     echo wmvc_upload_media('icon_id', wmvc_show_data('icon_id', $db_data, ''));
                                     ?>
                                     <p class="description" id="icon_id-description">
-                                        <?php echo __('Icon used for category sections and elements/widgets on website', 'wpdirectorykit'); ?>
+                                        <?php echo esc_html__('Icon used for category sections and elements/widgets on website', 'wpdirectorykit'); ?>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row"><label
-                                        for="image_id"><?php echo __('Image', 'wpdirectorykit'); ?></label></th>
+                                        for="image_id"><?php echo esc_html__('Image', 'wpdirectorykit'); ?></label></th>
                                 <td>
                                     <?php
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                                     echo wmvc_upload_media('image_id', wmvc_show_data('image_id', $db_data, ''));
                                     ?>
                                     <p class="description" id="image_id-description">
-                                        <?php echo __('Image used for widgets or elements where categories are visible', 'wpdirectorykit'); ?>
+                                        <?php echo esc_html__('Image used for widgets or elements where categories are visible', 'wpdirectorykit'); ?>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="category_color"><?php echo __('Color', 'wpdirectorykit'); ?></label>
+                                    <label for="category_color"><?php echo esc_html__('Color', 'wpdirectorykit'); ?></label>
                                 </th>
                                 <td>
                                     <input name="category_color" type="color" id="category_color"

@@ -30,6 +30,7 @@ add_filter('body_class', function ($classes) {
 add_filter('the_content', 'wdk_content');
 
 function wdk_content($content)
+ 
 {
     global $wp_query;
     global $wdk_listing_id;
@@ -441,7 +442,7 @@ function wdk_buy_link($links)
     // Build and escape the URL.
     $url = esc_url(get_admin_url() . 'admin.php?page=wdk_addons');
     // Create the link.
-    $settings_link = "<a style=\"color:rgb(0, 163, 42);font-weight:bold;\" href='$url'>" . __('Check Premium Features', 'wpdirectorykit') . '</a>';
+    $settings_link = "<a style=\"color:rgb(0, 163, 42);font-weight:bold;\" href='$url'>" . esc_html__('Check Premium Features', 'wpdirectorykit') . '</a>';
     // Adds the link to the end of the array.
     $links[] = $settings_link;
     return $links;
@@ -562,6 +563,7 @@ add_action('init', function () {
         if (isset($_GET['page']) && !empty($plugin_data['TextDomain']) && strpos($_GET['page'], $plugin_data['TextDomain']) === 0) {
             $message = '<span class="dashicons dashicons-warning"></span> &nbsp;&nbsp;' . esc_html__('Important!', 'wpdirectorykit') . '<br>';
             $message .= wdk_sprintf(
+                /* translators: 1: Opening p tag, 2: Closing p tag, 3: Closing a tag, 4: Opening a tag for Gumroad, 5: Opening a tag for WP Rollback, 6: Opening a tag for contact page. */
                 __('%1$sYou need to update WDK Membership Addon to ensure compatibility with the latest plugin version. You can download the latest addons from your Gumroad account: %4$shttps://gumroad.com/library%3$s%2$s or update via freemius, depends where you purchased our premium plugin.
                 %1$sIf you prefer to continue using older plugin versions, please note that this increases security risks and is not recommended. However, you can roll back to a previous version using the following plugin: %5$shttps://wordpress.org/plugins/wp-rollback/%3$s%2$s
                 %1$sIf you experience any issues or need assistance, feel free to contact us through any available channel. We continue to provide fully human-based support: %6$shttps://wpdirectorykit.com/contact/%3$s%2$s', 'wpdirectorykit'),

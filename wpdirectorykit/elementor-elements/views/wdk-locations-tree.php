@@ -84,7 +84,7 @@ $hide_childs = false;
                                     <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_location='.wmvc_show_data('idlocation', $value)));?>#results"  class="wdk-link">
                                         <?php \Elementor\Icons_Manager::render_icon( $settings['item_icon_i'], [ 'aria-hidden' => 'true' ] );?>
                                         <span class="wdk-title"><?php echo esc_html(wmvc_show_data('location_title', $value));?></span>
-                                        <span class="wdk-count"><?php echo wmvc_show_data('listings_counter', $value, 0);?></span>
+                                        <span class="wdk-count"><?php echo esc_html(wmvc_show_data('listings_counter', $value, 0));?></span>
                                     </a>
                                 </li>
                             <?php endif;?>

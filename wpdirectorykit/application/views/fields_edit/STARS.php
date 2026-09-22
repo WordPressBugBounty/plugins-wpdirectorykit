@@ -56,8 +56,12 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
             <label class="full" for="f_<?php echo esc_attr($field_id); ?>_star1" title="<?php echo esc_attr__('Very bad - 1 star', 'wpdirectorykit');?>"></label>
         </fieldset>
         <span class="suffix"><?php
+                      // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
+            // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->suffix, 'wpdirectorykit');
         ?></span>
         <?php if(!empty($field->hint)):?>

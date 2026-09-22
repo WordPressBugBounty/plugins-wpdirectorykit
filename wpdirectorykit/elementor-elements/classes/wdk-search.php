@@ -30,6 +30,7 @@ class WdkSearch extends WdkElementorBase {
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
         );
+ 
 
         \Elementor\Controls_Manager::add_tab(
             'tab_layout',
@@ -196,7 +197,7 @@ class WdkSearch extends WdkElementorBase {
         }
 
 
-        echo $this->view('wdk-search', $this->data); 
+        $this->view('wdk-search', $this->data, true); 
     }
 
 
@@ -227,6 +228,19 @@ class WdkSearch extends WdkElementorBase {
 			'auto_search_enable',
 			[
 				'label' => __( 'Auto Search Enable', 'wpdirectorykit' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => __( 'Show', 'wpdirectorykit' ),
+				'label_off' => __( 'Hide', 'wpdirectorykit' ),
+				'return_value' => 'yes',
+				'default' => '',
+			]
+		);
+                
+                
+		$this->add_control(
+			'ai_search_enable',
+			[
+				'label' => __( 'AI Search Enable', 'wpdirectorykit' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => __( 'Show', 'wpdirectorykit' ),
 				'label_off' => __( 'Hide', 'wpdirectorykit' ),
@@ -319,7 +333,7 @@ class WdkSearch extends WdkElementorBase {
         $this->add_control(
             'field_button_icon',
             [
-                'label' => __( 'Icon', 'text-domain' ),
+                'label' => __( 'Icon', 'wpdirectorykit' ),
                 'type' => Controls_Manager::ICONS,
             ]
         );
@@ -327,11 +341,11 @@ class WdkSearch extends WdkElementorBase {
         $this->add_control(
             'field_button_icon_position',
             [
-                'label' => esc_html__('icon Position', 'wdk-compare-listing'),
+                'label' => esc_html__('icon Position', 'wpdirectorykit'),
                 'type' => Controls_Manager::SELECT,
                 'options' => [
-                    'left' => esc_html__('Left', 'wdk-compare-listing'),
-                    'right' => esc_html__('Right', 'wdk-compare-listing'),
+                    'left' => esc_html__('Left', 'wpdirectorykit'),
+                    'right' => esc_html__('Right', 'wpdirectorykit'),
                 ],
                 'default' => 'left',
             ]
@@ -401,6 +415,7 @@ class WdkSearch extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Manage Search Form <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_searchform')),
                 'content_classes' => 'wdk_elementor_hint',
                 'separator' => 'after',
@@ -1761,10 +1776,10 @@ class WdkSearch extends WdkElementorBase {
                     $this->add_responsive_control(
                         $item['key'].'_hide',
                         [
-                            'label' => esc_html__( 'Hide Element', 'wdk-svg-map' ),
+                            'label' => esc_html__( 'Hide Element', 'wpdirectorykit' ),
                             'type' => Controls_Manager::SWITCHER,
-                            'none' => esc_html__( 'Hide', 'wdk-svg-map' ),
-                            'block' => esc_html__( 'Show', 'wdk-svg-map' ),
+                            'none' => esc_html__( 'Hide', 'wpdirectorykit' ),
+                            'block' => esc_html__( 'Show', 'wpdirectorykit' ),
                             'return_value' =>  'none',
                             'default' => ($item['key'] == 'field_button_reset' ) ? 'none':'',
                             'selectors' => [

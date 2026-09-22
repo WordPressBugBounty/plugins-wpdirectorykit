@@ -51,8 +51,12 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
         value="<?php echo esc_attr(!empty(wmvc_show_data($field_id, $db_data, $field->default)) ? wmvc_show_data($field_id, $db_data, $field->default) : $field->empty_default); ?>"
         >
         <span class="suffix"><?php
+                      // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
+            // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->suffix, 'wpdirectorykit');
         ?></span>
         <?php if(!empty($field->hint)):?>

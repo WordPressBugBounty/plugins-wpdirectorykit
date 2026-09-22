@@ -36,7 +36,8 @@ class Category_m extends Winter_MVC_Model {
         'image_path',
         'marker_image_path',
         'category_color',
-        'titles_for_search'
+        'titles_for_search',
+        'listings_counter'
     );
 
 	public function __construct(){

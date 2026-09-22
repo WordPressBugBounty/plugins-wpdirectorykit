@@ -59,7 +59,9 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     data-type="<?php echo esc_attr($type);?>" 
                                     class="wdk-listing-image wdk-listing-video-embed<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 >
-                                    <?php echo wp_oembed_get($image, array("width" => "800", "height" => "450"));?>
+                                    <?php 
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                    echo wp_oembed_get($image, array("width" => "800", "height" => "450"));?>
                                 </div>
                             <?php elseif (strpos($image, 'watch?v=') !== FALSE):?>
                                 <?php $embed_code = substr($image, strpos($image, 'watch?v=') + 8); ?>
@@ -67,7 +69,9 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     data-type="<?php echo esc_attr($type);?>" 
                                     class="wdk-listing-image wdk-listing-video-embed<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 >
-                                    <?php echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
+                                    <?php 
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                    echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
                                 </div>
                             <?php elseif (strpos($image, 'youtube.com/shorts/') !== FALSE):?>
                                 <?php $embed_code = substr($image, strpos($image, 'shorts') + 7); ?>
@@ -75,7 +79,9 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     data-type="<?php echo esc_attr($type);?>" 
                                     class="wdk-listing-image wdk-listing-video-embed<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 >
-                                    <?php echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
+                                    <?php 
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                    echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
                                 </div>
                             <?php elseif (strpos($image, 'youtu.be/') !== FALSE):?>
                                 <?php $embed_code = substr($image, strpos($image, 'youtu.be/') + 9); ?>
@@ -83,7 +89,9 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     data-type="<?php echo esc_attr($type);?>" 
                                     class="wdk-listing-image wdk-listing-video-embed<?php if($settings['enable_fixed_height']!='yes'):?> auto_height<?php endif;?>"
                                 >
-                                    <?php echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
+                                    <?php 
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                    echo wp_oembed_get('https://www.youtube.com/watch?v=' . $embed_code, array("width" => "800", "height" => "455"));?>
                                 </div>
                             <?php elseif (filter_var($image, FILTER_VALIDATE_URL) !== FALSE && preg_match('/\.(mp4|flv|wmw|ogv|webm|ogg)$/i', $image)):?>
                                 <video 
@@ -180,13 +188,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                 dots: false,
                 arrows: false,
                 <?php endif;?>
-                slidesToShow: <?php echo wmvc_show_data('layout_carousel_columns', $settings, 1);?>,
-                slidesToScroll: <?php echo wmvc_show_data('layout_carousel_columns', $settings,1);?>,
+                slidesToShow: <?php echo esc_js(wmvc_show_data('layout_carousel_columns', $settings, 1));?>,
+                slidesToScroll: <?php echo esc_js(wmvc_show_data('layout_carousel_columns', $settings,1));?>,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_infinite', $settings))):?>
-                infinite: <?php echo wmvc_show_data('layout_carousel_is_infinite', $settings, 'true');?>,
+                infinite: <?php echo esc_js(wmvc_show_data('layout_carousel_is_infinite', $settings, 'true'));?>,
                 <?php endif;?>
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_autoplay', $settings))):?>
-                autoplay: <?php echo wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false');?>,
+                autoplay: <?php echo esc_js(wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false'));?>,
                 <?php endif;?>
                 nextArrow: $('#wdk_el_<?php echo esc_html($id_element);?> .wdk-listing-slider_arrows .wdk-slider-next'),
                 prevArrow: $('#wdk_el_<?php echo esc_html($id_element);?> .wdk-listing-slider_arrows .wdk-slider-prev'),
@@ -206,7 +214,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             });
 
             var $thumbs = $(thumbsSelector).slick({
-                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns', $settings, '4')))) ? wmvc_show_data('styles_thmbn_nav_columns', $settings, '4') : 4;?>,
+                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns', $settings, '4')))) ? esc_js(wmvc_show_data('styles_thmbn_nav_columns', $settings, '4')) : 4;?>,
                 slidesToScroll: 1,
                 asNavFor: sliderSelector,
                 dots: false,
@@ -217,13 +225,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                     {
                         breakpoint: 991,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns_tablet', $settings, '3')))) ? wmvc_show_data('styles_thmbn_nav_columns_tablet', $settings, '3') : 3;?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns_tablet', $settings, '3')))) ? esc_js(wmvc_show_data('styles_thmbn_nav_columns_tablet', $settings, '3')) : 3;?>,
                         }
                     },
                     {
                         breakpoint: 768,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns_mobile', $settings, '2')))) ? wmvc_show_data('styles_thmbn_nav_columns_mobile', $settings, '2') : 2;?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_nav_columns_mobile', $settings, '2')))) ? esc_js(wmvc_show_data('styles_thmbn_nav_columns_mobile', $settings, '2')) : 2;?>,
                         }
                     },
                 ]

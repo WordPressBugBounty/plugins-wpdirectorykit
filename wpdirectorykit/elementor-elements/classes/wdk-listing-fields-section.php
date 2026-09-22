@@ -163,7 +163,8 @@ class WdkListingFieldsSection extends WdkElementorBase {
         if(Plugin::$instance->editor->is_edit_mode()){
             $this->data['is_edit_mode']= true;
             if(empty($this->data['section_data'])){
-                echo '<p class="wdk_alert wdk_alert-danger">'.wdk_sprintf(esc_html__('Section #%1$s not found', 'wpdirectorykit'), $this->data['settings']['section_id']).'</p>';
+                /* translators: 1: Section ID. */
+                echo '<p class="wdk_alert wdk_alert-danger">'.esc_html(wdk_sprintf(esc_html__('Section #%1$s not found', 'wpdirectorykit'), $this->data['settings']['section_id'])).'</p>';
                 return false;
             }
         } else {
@@ -191,7 +192,7 @@ class WdkListingFieldsSection extends WdkElementorBase {
             }
         }
 
-        echo $this->view('wdk-listing-fields-section', $this->data); 
+        $this->view('wdk-listing-fields-section', $this->data, true); 
         parent::render();
     }
 
@@ -284,6 +285,7 @@ class WdkListingFieldsSection extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Manager Fields <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_fields')),
                 'content_classes' => 'wdk_elementor_hint',
             ]

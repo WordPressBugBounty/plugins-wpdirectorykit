@@ -192,7 +192,7 @@ class WdkListingAgentAvatar extends WdkElementorBase {
                 return false;
         }
 
-        echo $this->view('wdk-listing-agent-avatar', $this->data); 
+        $this->view('wdk-listing-agent-avatar', $this->data, true); 
     }
 
 

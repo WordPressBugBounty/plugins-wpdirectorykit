@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Settings', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Settings', 'wpdirectorykit'); ?></h1>
     <br />
     <div class="wdk-body">
         <form method="post" action="" novalidate="novalidate">
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 $form->messages('class="alert alert-danger"',  __('Successfully saved', 'wpdirectorykit'));
             ?>
             <?php if(!get_option('wdk_results_page')):?>
-                <p class="alert alert-info"><?php echo __('Missing results page', 'wpdirectorykit'); ?></p>
+                <p class="alert alert-info"><?php echo esc_html__('Missing results page', 'wpdirectorykit'); ?></p>
             <?php endif;?>
 
             <div class="wdk-tabs-navs">
@@ -46,28 +46,28 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <div class="wdk-tabs-panel">
                         <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_general" checked value="wdk_tab_general">
                         <div class="wdk-tab">
-                            <?php echo wdk_generate_fields($fields_list_tabs['general'], $db_data); ?>  
+                            <?php wdk_generate_fields($fields_list_tabs['general'], $db_data); ?>  
                         </div>
 
                         <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_apis" value="wdk_tab_apis" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_apis'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
-                            <?php echo wdk_generate_fields($fields_list_tabs['apis'], $db_data); ?>  
+                            <?php wdk_generate_fields($fields_list_tabs['apis'], $db_data); ?>  
                         </div>
 
                         <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_templates" value="wdk_tab_templates" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_templates'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
-                            <?php echo wdk_generate_fields($fields_list_tabs['templates'], $db_data); ?>  
+                            <?php wdk_generate_fields($fields_list_tabs['templates'], $db_data); ?>  
                         </div>
 
                         <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_fields" value="wdk_tab_fields" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_fields'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
-                            <?php echo wdk_generate_fields($fields_list_tabs['fields'], $db_data); ?>  
+                            <?php wdk_generate_fields($fields_list_tabs['fields'], $db_data); ?>  
                         </div>
                         
                         <?php if(get_option('wdk_experimental_features')):?>
                             <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_experimental" value="wdk_tab_experimental" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_experimental'):?> checked="checked" <?php endif;?>>
                             <div class="wdk-tab">
-                                <?php echo wdk_generate_fields($fields_list_tabs['experimental'], $db_data); ?>  
+                                <?php wdk_generate_fields($fields_list_tabs['experimental'], $db_data); ?>  
                             </div>
                         <?php endif;?>
 
@@ -78,7 +78,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
                         <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_autosuggestion" value="wdk_tab_autosuggestion" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_autosuggestion'):?> checked="checked" <?php endif;?>>
                         <div class="wdk-tab">
-                            <?php echo wdk_generate_fields($fields_list_tabs['autosuggestion'], $db_data); ?>  
+                            <?php wdk_generate_fields($fields_list_tabs['autosuggestion'], $db_data); ?>  
                         </div>
 
                         <input type="radio" class="wdk-tab-input" name="wdk_tabs" id="wdk_tab_mails" value="wdk_tab_mails" <?php if(wmvc_show_data('wdk_tabs',$_REQUEST) == 'wdk_tab_mails'):?> checked="checked" <?php endif;?>>
@@ -90,11 +90,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                     </div>
                 </div>
             </div>
-            <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo __('Save Changes', 'wpdirectorykit'); ?>">
+            <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_html__('Save Changes', 'wpdirectorykit'); ?>">
         </form>
     </div>
     <br/>
-    <div class="alert alert-info" role="alert"><a href="//wpdirectorykit.com/documentation/#change_currency" target="_blank"><?php echo __('How to change currency?','wpdirectorykit'); ?></a></div>
+    <div class="alert alert-info" role="alert"><a href="//wpdirectorykit.com/documentation/#change_currency" target="_blank"><?php echo esc_html__('How to change currency?','wpdirectorykit'); ?></a></div>
 </div>
 
 <?php wp_enqueue_style('jquery-confirm'); ?>
@@ -112,9 +112,9 @@ jQuery(document).ready(function($) {
     $('#reset_data_field_button').on('click', function(e){
         var self = $(this);
 
-        var res = prompt("<?php echo __('Are you sure? All Listings, fields, categories, locations will be completely removed, check url and type remove if you are sure', 'wpdirectorykit')?>", "");
+        var res = prompt("<?php echo esc_html__('Are you sure? All Listings, fields, categories, locations will be completely removed, check url and type remove if you are sure', 'wpdirectorykit')?>", "");
 
-        if(res == "<?php echo __('remove', 'wpdirectorykit')?>") {
+        if(res == "<?php echo esc_html__('remove', 'wpdirectorykit')?>") {
             return true;
         } else {
             e.preventDefault();
@@ -142,7 +142,7 @@ jQuery(document).ready(function($) {
             "action": 'wdk_public_action',
             "_wpnonce": '<?php echo esc_js(wp_create_nonce( 'wdk-generated_listings_images_path'));?>',
         };
-        $.post("<?php echo admin_url( 'admin-ajax.php' );?>", ajax_param, 
+        $.post("<?php echo esc_url(admin_url( 'admin-ajax.php' ));?>", ajax_param, 
             function(data){
                 
             if(data.popup_text_success)
@@ -182,7 +182,7 @@ jQuery(document).ready(function($) {
             "action": 'wdk_public_action',
             "_wpnonce": '<?php echo esc_js(wp_create_nonce( 'wdk-optimization_listingfields_table'));?>',
         };
-        $.post("<?php echo admin_url( 'admin-ajax.php' );?>", ajax_param, 
+        $.post("<?php echo esc_url(admin_url( 'admin-ajax.php' ));?>", ajax_param, 
             function(data){
                 
             if(data.popup_text_success)
@@ -223,7 +223,7 @@ jQuery(document).ready(function($) {
             "_wpnonce": '<?php echo esc_js(wp_create_nonce( 'wdk-backendajax'));?>',
             "arg": self.data('arg') ?? '',
         };
-        $.post("<?php echo admin_url( 'admin-ajax.php' );?>", ajax_param, 
+        $.post("<?php echo esc_url(admin_url( 'admin-ajax.php' ));?>", ajax_param, 
             function(data){
                 
             if(data.popup_text_success)
@@ -279,7 +279,7 @@ jQuery(document).ready(function($) {
 
                         self.addClass('wdk_btn_load_indicator out');
                         self.attr('disabled','disabled');
-                        $.post("<?php echo admin_url( 'admin-ajax.php' );?>", ajax_param, 
+                        $.post("<?php echo esc_url(admin_url( 'admin-ajax.php' ));?>", ajax_param, 
                             function(data){
                                 
                             if(data.popup_text_success)

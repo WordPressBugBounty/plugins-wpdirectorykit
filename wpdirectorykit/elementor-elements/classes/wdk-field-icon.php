@@ -182,7 +182,7 @@ class WdkFieldIcon extends WdkElementorBase {
                 return false;
         }
 
-        echo $this->view('wdk-field-icon', $this->data); 
+        $this->view('wdk-field-icon', $this->data, true); 
     }
 
 

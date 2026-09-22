@@ -57,7 +57,7 @@ if (! defined('ABSPATH')) {
                 <?php endif; ?>
 
                 <?php if (wmvc_show_data('layout_carousel_is_infinite', $settings) == 'true'): ?>
-                    infinite: <?php echo wmvc_show_data('layout_carousel_nav_is_infinite', $settings, 'true'); ?>,
+                    infinite: <?php echo esc_html(wmvc_show_data('layout_carousel_nav_is_infinite', $settings, 'true')); ?>,
                 <?php endif; ?>
 
                 <?php if (!empty(wmvc_show_data('layout_carousel_speed', $settings))): ?>
@@ -85,17 +85,17 @@ if (! defined('ABSPATH')) {
                     // this example would render "tabs" with titles
                     return '<span class="wdk_dot"><?php \Elementor\Icons_Manager::render_icon($settings['styles_carousel_dots_icon'], ['aria-hidden' => 'true']); ?></span>';
                 },
-                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_columns', $settings, '4')))) ? wmvc_show_data('styles_thmbn_columns', $settings, '4') : 4; ?>,
+                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_columns', $settings, '4')))) ? esc_js(wmvc_show_data('styles_thmbn_columns', $settings, '4')) : 4; ?>,
                 responsive: [{
                         breakpoint: 991,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_columns_tablet', $settings, '3')))) ? wmvc_show_data('styles_thmbn_columns_tablet', $settings, '3') : 3; ?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_columns_tablet', $settings, '3')))) ? esc_js(wmvc_show_data('styles_thmbn_columns_tablet', $settings, '3')) : 3; ?>,
                         }
                     },
                     {
                         breakpoint: 768,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_columns_mobile', $settings, '1')))) ? wmvc_show_data('styles_thmbn_columns_mobile', $settings, '1') : 1; ?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('styles_thmbn_columns_mobile', $settings, '1')))) ? esc_js(wmvc_show_data('styles_thmbn_columns_mobile', $settings, '1')) : 1; ?>,
                         }
                     },
                 ]

@@ -33,7 +33,10 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
         	$listing_post_id = sanitize_text_field($_POST['listing_post_id']);
 
 		$listing = $this->load->listing_m->get($listing_post_id, TRUE);
-
+			
+		if (!$listing || $listing->post_status != 'publish' || !empty($listing->post_password)) {
+			return false;
+		}
 
 		/* protect check */
 		if (
@@ -71,6 +74,11 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
         	$listing_post_id = sanitize_text_field($_POST['listing_post_id']);
 
 		$listing = $this->load->listing_m->get($listing_post_id, TRUE);
+
+			
+		if (!$listing || $listing->post_status != 'publish' || !empty($listing->post_password)) {
+			return false;
+		}
 
 		/* protect check */
 		if (
@@ -320,6 +328,8 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 					}
 				} else {
 					$results[$ind_order]['value'] = $level_gen
+					// Dynamic field values are registered in the translation catalog separately.
+					// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 													.esc_html__(wmvc_show_data($attr_val, $row), 'wpdirectorykit');
 				}
 			$ind_order++;
@@ -351,6 +361,8 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 				
 			} else {
 				$data['curr_val'] = $level_gen
+				// Dynamic field values are registered in the translation catalog separately.
+					// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 							.esc_html__(wmvc_show_data(wmvc_show_data('attribute_value', $parameters), $row), 'wpdirectorykit');
 			}
 
@@ -522,6 +534,8 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 				
 				$results[$ind_order]['key'] = wmvc_show_data($attr_id, $row);
 				$results[$ind_order]['value'] = $level_gen
+				// Dynamic field values are registered in the translation catalog separately.
+				// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 												.esc_html__(wmvc_show_data($attr_val, $row), 'wpdirectorykit');
 			$ind_order++;
 		}
@@ -536,8 +550,9 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
             $level_gen='';
 			if(isset($row->level))
 			    $level_gen = str_pad('', $row->level*12, '&nbsp;').'';
-
-				$data['curr_val'] = $level_gen
+			$data['curr_val'] = $level_gen
+			// Dynamic field values are registered in the translation catalog separately.
+								// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 							.esc_html__(wmvc_show_data(wmvc_show_data('attribute_value', $parameters), $row), 'wpdirectorykit');
 
 		}
@@ -695,6 +710,8 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
                 $results[] = [
                         'id'=> wmvc_show_data($key_column, $row),
+						// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                         'text'=> $level_gen.esc_html__(trim(wmvc_show_data($print_column, $row)), 'wpdirectorykit'),
                 ];
             }
@@ -921,6 +938,8 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
             foreach($db_results as $row) {
                 $results[] = [
                         'id'=> wmvc_show_data($key_column, $row),
+						// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                         'text'=> esc_html__(trim(wmvc_show_data($print_column, $row)),'wpdirectorykit'),
                 ];
             }
@@ -1004,7 +1023,9 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 				'value' => $row->category_title,
 				'print' => [
 					'parsed_content' => [
-						'icon_class' => (!empty(wmvc_show_data('font_icon_code', $row, false))) ? wmvc_show_data('font_icon_code', $row) : 'fa fa-tag',
+						'icon_class' => (!empty(wmvc_show_data('font_icon_code', $row, false))) ? esc_attr(wmvc_show_data('font_icon_code', $row)): 'fa fa-tag',
+						// Dynamic field values are registered in the translation catalog separately.
+						// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 						'title' => esc_html__($row->category_title, 'wpdirectorykit'),
 						'sub_title' => '',
 						'right_text' => __('Category', 'wpdirectorykit')
@@ -1057,8 +1078,12 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 				'value' => $row->location_title,
 				'print' => [
 					'parsed_content' => [
-						'icon_class' => (!empty(wmvc_show_data('font_icon_code', $row, false))) ? wmvc_show_data('font_icon_code', $row) : 'fa fa-map-marker',
+						'icon_class' => (!empty(wmvc_show_data('font_icon_code', $row, false))) ? esc_attr(wmvc_show_data('font_icon_code', $row)) : 'fa fa-map-marker',
+						// Dynamic field values are registered in the translation catalog separately.
+					// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 						'title' => esc_html__($row->location_title, 'wpdirectorykit'),
+						// Dynamic field values are registered in the translation catalog separately.
+					// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 						'sub_title' => esc_html__($subtitle, 'wpdirectorykit'),
 						'right_text' => __('Location', 'wpdirectorykit')
 					]

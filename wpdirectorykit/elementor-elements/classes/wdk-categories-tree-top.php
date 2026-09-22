@@ -30,6 +30,7 @@ class WdkCategoriesTreeTop extends WdkElementorBase {
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
         );
+ 
 
         \Elementor\Controls_Manager::add_tab(
             'tab_layout',
@@ -156,9 +157,9 @@ class WdkCategoriesTreeTop extends WdkElementorBase {
             $order_by = NULL;
             if($this->data['settings']['primary_conf_order_by'] == 'order_most') {
                 /* get category with most listings */
-                $order_by = 'listings_counter '.$this->data['settings']['primary_conf_order'];
+                $order_by = wdk_esc_sql_order_by('listings_counter '.$this->data['settings']['primary_conf_order'], $this->WMVC->{$controller.'_m'}->getAllowedOrderBy());
             } else if (!empty($this->data['settings']['primary_conf_order_by'])) {
-                $order_by = $this->data['settings']['primary_conf_order_by'].' '.$this->data['settings']['primary_conf_order'];
+                $order_by = wdk_esc_sql_order_by($this->data['settings']['primary_conf_order_by'].' '.$this->data['settings']['primary_conf_order'], $this->WMVC->{$controller.'_m'}->getAllowedOrderBy());
             }
 
             $this->data['categories_primary'] = $this->WMVC->{$controller.'_m'}->get_pagination((!empty($this->data['settings']['primary_conf_limit'])) ? $this->data['settings']['primary_conf_limit'] : NULL, $this->data['settings']['primary_conf_offset'], $where, $order_by);
@@ -193,9 +194,9 @@ class WdkCategoriesTreeTop extends WdkElementorBase {
                 $order_by = NULL;
                 if($this->data['settings']['secondary_conf_order_by'] == 'order_most') {
                     /* get category with most listings */
-                    $order_by = 'listings_counter '.$this->data['settings']['secondary_conf_order'];
+                    $order_by = wdk_esc_sql_order_by('listings_counter '.$this->data['settings']['secondary_conf_order'], $this->WMVC->{$controller.'_m'}->getAllowedOrderBy());
                 } else if (!empty($this->data['settings']['secondary_conf_order_by'])) {
-                    $order_by = $this->data['settings']['secondary_conf_order_by'].' '.$this->data['settings']['secondary_conf_order'];
+                    $order_by = wdk_esc_sql_order_by($this->data['settings']['secondary_conf_order_by'].' '.$this->data['settings']['secondary_conf_order'], $this->WMVC->{$controller.'_m'}->getAllowedOrderBy());
                 }
 
                 $this->data['categories_secondary'] = $this->WMVC->{$controller.'_m'}->get_pagination((!empty($this->data['settings']['secondary_conf_limit'])) ? $this->data['settings']['secondary_conf_limit'] : NULL, $this->data['settings']['secondary_conf_offset'], $where, $order_by);
@@ -206,7 +207,7 @@ class WdkCategoriesTreeTop extends WdkElementorBase {
         if(Plugin::$instance->editor->is_edit_mode())
             $this->data['is_edit_mode']= true;
       
-        echo $this->view('wdk-categories-tree-top', $this->data); 
+        $this->view('wdk-categories-tree-top', $this->data, true); 
     }
 
 
@@ -241,6 +242,7 @@ class WdkCategoriesTreeTop extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Edit Categorys <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_category')),
                 'content_classes' => 'wdk_elementor_hint',
             ]
@@ -730,7 +732,7 @@ class WdkCategoriesTreeTop extends WdkElementorBase {
         $this->start_controls_section(
             $prefix.'styles_primary_section',
             [
-                'label' => esc_html__($prefix, 'wpdirectorykit'),
+                'label' => esc_html($prefix),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );

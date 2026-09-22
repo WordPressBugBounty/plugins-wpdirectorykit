@@ -40,7 +40,7 @@ if(isset($field->is_required) && $field->is_required == 1)
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php echo __('Visible on','wpdirectorykit'); ?></span></legend>
+            <legend class="screen-reader-text"><span><?php echo esc_html__('Visible on','wpdirectorykit'); ?></span></legend>
             <?php foreach($field->values as $field_key => $field_value): ?>
                 <input name="<?php echo esc_attr($field_key); ?>" type="checkbox" id="<?php echo esc_attr($field_key); ?>" value="1" <?php echo !empty(wmvc_show_data($field_key, $db_data, ''))?'checked':''; ?>>
                 <label for="<?php echo esc_attr($field_key); ?>"><?php echo esc_html($field_value); ?></label>

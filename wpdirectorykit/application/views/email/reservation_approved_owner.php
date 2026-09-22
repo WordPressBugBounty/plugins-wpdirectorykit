@@ -35,7 +35,7 @@ if (!defined('ABSPATH')) {
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
             <h2 style="margin-top:0">
-                <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo wdk_show_data('display_name', $user_owner); ?>,
+                <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo esc_html(wdk_show_data('display_name', $user_owner)); ?>,
             </h2>
             <p>
                 <?php echo esc_html__('Reservation approved on listing', 'wpdirectorykit'); ?> <a href="<?php echo esc_url(get_permalink($listing)); ?>"><?php echo esc_html(wmvc_show_data('post_title', $listing, '', TRUE, TRUE)); ?></a>
@@ -73,7 +73,10 @@ if (!defined('ABSPATH')) {
                 <?php foreach ($data as $key => $value) : ?>
                     <?php if (!empty($value)) : ?>
                         <p>
-                            <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
+                            <strong><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
                         </p>
                     <?php endif; ?>
                 <?php endforeach; ?>

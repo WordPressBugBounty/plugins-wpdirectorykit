@@ -628,28 +628,54 @@
                                         let type = "text";
                                         if(field.field_type == 'NUMBER')
                                             type = "number";
+
+                                        if(field.field_type == 'CHECKBOX')
+                                            type = "checkbox";
                                 
                                         formFieldsObj[fieldKey] = {
                                             // Optionally: default value or empty, since the user may fill via AI
                                             value: field.value !== undefined ? field.value : "",
-                                            type: field.type || "text",            // fallback type "text" if not set
+                                            type: type,            // fallback type "text" if not set
                                             label: field.field_label || '',// fallback to title if label isn't present
                                             placeholder: field.placeholder || '',   // fallback to empty if not set
                                             options: field.values_list || '',   // fallback to empty if not set
                                         };
                                     });
                                 }
+
+                                // Use only the first 15 fields
+                                let formFieldsObjLimited;
+                                if (
+                                    Array.isArray(wdk_script_parameters.wdk_ai_search_fields) && 
+                                    wdk_script_parameters.wdk_ai_search_fields.length > 0
+                                ) {
+                                    const allowedIds = wdk_script_parameters.wdk_ai_search_fields.map(String);
+                                    formFieldsObjLimited = Object.fromEntries(
+                                        Object.entries(formFieldsObj).filter(([key, field]) => {
+                                            const id = key.replace(/^field_/, '');
+                                            return allowedIds.includes(id);
+                                        })
+                                    );
+                                } else {
+                                    // fallback: limit to 12, as before
+                                    formFieldsObjLimited = Object.fromEntries(
+                                        Object.entries(formFieldsObj).slice(0, 12)
+                                    );
+                                }
+                  
+                        
                                 // Prepend system/required fields if needed, demo here:
                                 const form1 = {
+                                    field_search:        { value: "", type: "text",  label: "locations, country, city", placeholder: "",},
                                     address:        { value: "", type: "text", label: "Address", placeholder: "Address" },
-                                    ...formFieldsObj
+                                    ...formFieldsObjLimited
                                 };
-                                console.log(form1);
+                              
                                 // Additional forms if needed (leave as static if not dynamic)
                                 const formsData = JSON.stringify({
                                     "form_1": form1,
                                 });
-        
+
                                 // Send data via fetch API using FormData for better handling
                                 const formData = new FormData();
                                 formData.append('action', 'fpai_generate_form_data');
@@ -682,6 +708,7 @@
                                                 searchData[name] = field.value;
                                             } 
                                         });
+                                        
                                         var url = wdk_start_search(self.closest('form'), searchData);
 
                                         $(this).closest('form').addClass('loading')
@@ -691,11 +718,15 @@
                                                 wdk_ajax_loading_listings(url);
                                             }
                                         } else if (decodeURI(window.location.href) == decodeURI(url)) {
-                                            window.location.reload(url);
+                                           window.location.reload(url);
                                         } else {
                                             window.location.href = url;
                                         }
 
+
+                                        setTimeout(() => {
+                                            popup.close();
+                                        }, 2000);
                                         
                                     } else {
                                         $responseDiv.html(data.data ? data.data.message : 'Error: Invalid response format').addClass('fpai-error');
@@ -704,11 +735,9 @@
                                 .catch(error => {
                                     $responseDiv.html(__('Error occurred while processing request', 'wpdirectorykit')).addClass('fpai-error');
                                 })
-                                .finally(() => {
+                                .finally((data) => {
                                     $btn.prop('disabled', false).html(`<span class="fpai-btn-icon">✨</span> ${__('Populate form with AI', 'wpdirectorykit')}`);
-                                    setTimeout(() => {
-                                        popup.close();
-                                    }, 2000);
+                                   
                                 });
         
                                 return false;

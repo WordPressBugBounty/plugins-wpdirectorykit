@@ -137,7 +137,7 @@ class WdkLanguageSwitcher extends WdkElementorBase {
         if($this->data['settings']['enable_list_layout'] == 'yes')
             $layout = 'list';
 
-        echo $this->view('wdk-language-switcher-'.$layout, $this->data);
+        $this->view('wdk-language-switcher-'.$layout, $this->data, true);
     }
 
     private function generate_controls_conf() {

@@ -48,7 +48,7 @@ if(isset($field->rules) && strpos($field->rules, 'required') !== FALSE)
                 $minutes = '';
                 if(wmvc_show_data($field_id, $db_data, '')) {
                     $strotime = strtotime(wmvc_show_data($field_id, $db_data, ''));
-                    list($hours, $minutes) = explode('-', date("h-i", $strotime));
+                    list($hours, $minutes) = explode('-', gmdate("h-i", $strotime));
                 }
             ?>
             <select name="hours_mask" class="datetime_time_mask">

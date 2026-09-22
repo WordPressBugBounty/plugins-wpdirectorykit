@@ -14,7 +14,7 @@ if (! defined('ABSPATH')) {
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Listings Management', 'wpdirectorykit'); ?> <a href="<?php echo get_admin_url() . "admin.php?page=wdk_listing"; ?>" class="button button-primary" title="<?php echo esc_attr__('Add Listing', 'wpdirectorykit'); ?>" id="add_listing_button"><?php echo __('Add Listing', 'wpdirectorykit'); ?></a></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Listings Management', 'wpdirectorykit'); ?> <a href="<?php echo esc_url(get_admin_url()) . "admin.php?page=wdk_listing"; ?>" class="button button-primary" title="<?php echo esc_attr__('Add Listing', 'wpdirectorykit'); ?>" id="add_listing_button"><?php echo esc_html__('Add Listing', 'wpdirectorykit'); ?></a></h1>
     <?php
     if (
         !get_option('wdk_listing_page') || get_post_status(get_option('wdk_listing_page')) != 'publish'
@@ -22,9 +22,9 @@ if (! defined('ABSPATH')) {
     ): ?>
         <div class="notice notice-success">
             <p>
-                <?php echo __('Listing Preview page or Listings Result page missing', 'wpdirectorykit'); ?>
+                <?php echo esc_html__('Listing Preview page or Listings Result page missing', 'wpdirectorykit'); ?>
                 <a href="<?php echo esc_url(get_admin_url()) . "admin.php?page=wdk_settings&function=import_demo"; ?>" class="button button-primary" id="reset_data_field_button">
-                    <?php echo __('Import Demo Data', 'wpdirectorykit'); ?>
+                    <?php echo esc_html__('Import Demo Data', 'wpdirectorykit'); ?>
                 </a>
             </p>
         </div>
@@ -33,9 +33,9 @@ if (! defined('ABSPATH')) {
     <?php if (!function_exists('run_wdk_membership')): ?>
         <div class="notice notice-warning">
             <p>
-                <?php echo __('Do you want that your visitors add own listings and earn money by selling subscription packages?', 'wpdirectorykit'); ?>
+                <?php echo esc_html__('Do you want that your visitors add own listings and earn money by selling subscription packages?', 'wpdirectorykit'); ?>
                 <a href="https://wpdirectorykit.com/plugins/wp-directory-membership.html" target="_blank">
-                    <?php echo __('Purchase our premium Membership feature and support our work!', 'wpdirectorykit'); ?>
+                    <?php echo esc_html__('Purchase our premium Membership feature and support our work!', 'wpdirectorykit'); ?>
                 </a>
             </p>
         </div>
@@ -69,9 +69,9 @@ if (! defined('ABSPATH')) {
         <?php if (!$flag): ?>
             <div class="notice notice-success">
                 <p>
-                    <?php echo __('Result page missing or Results widget for all results not exists on page', 'wpdirectorykit'); ?>
+                    <?php echo esc_html__('Result page missing or Results widget for all results not exists on page', 'wpdirectorykit'); ?>
                     <a href="#" class="button button-primary ajax_query_rest_pages" data-function="reinstall_page" data-arg="wdk_results_page">
-                        <?php echo __('RESET RESULTS PAGE', 'wpdirectorykit'); ?>
+                        <?php echo esc_html__('RESET RESULTS PAGE', 'wpdirectorykit'); ?>
                     </a>
                 </p>
             </div>
@@ -117,7 +117,7 @@ if (! defined('ABSPATH')) {
 
                                         self.addClass('wdk_btn_load_indicator out');
                                         self.attr('disabled', 'disabled');
-                                        $.post("<?php echo admin_url('admin-ajax.php'); ?>", ajax_param,
+                                        $.post("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", ajax_param,
                                             function(data) {
 
                                                 if (data.popup_text_success)
@@ -157,25 +157,109 @@ if (! defined('ABSPATH')) {
             <div class="alignleft actions">
                 <input type="hidden" name="page" value="wdk" />
 
+                <label class="screen-reader-text" for="search"><?php echo esc_html__('Filter by keyword', 'wpdirectorykit'); ?></label>
+                <input type="text" name="search" id="search" class="postform left" value="<?php echo esc_attr(wmvc_show_data('search', $db_data, '')); ?>" placeholder="<?php echo esc_html__('Filter by keyword', 'wpdirectorykit'); ?>" />
+
 
                 <?php if (get_option('wdk_is_location_enabled', FALSE)): ?>
-                    <label class="screen-reader-text" for="location_id"><?php echo __('Filter by location', 'wpdirectorykit'); ?></label>
-                    <?php echo wmvc_select_option('location_id', $locations, wmvc_show_data('location_id', $db_data, ''), NULL, __('Location', 'wpdirectorykit')); ?>
+                    <label class="screen-reader-text" for="location_id"><?php echo esc_html__('Filter by location', 'wpdirectorykit'); ?></label>
+                    <?php echo wp_kses(
+                        wmvc_select_option(
+                            'location_id',
+                            $locations,
+                            wmvc_show_data('location_id', $db_data, ''),
+                            NULL,
+                            __('Location', 'wpdirectorykit')
+                        ),
+                        array(
+                            'select' => array(
+                                'name' => true,
+                                'id' => true,
+                                'class' => true,
+                                'autocomplete' => true,
+                                'tabindex' => true,
+                            ),
+                            'option' => array(
+                                'value' => true,
+                                'selected' => true,
+                                'disabled' => true,
+                                'label' => true,
+                            ),
+                        )
+                    ); ?>
+               
                 <?php endif; ?>
 
                 <?php if (get_option('wdk_is_category_enabled', FALSE)): ?>
-                    <label class="screen-reader-text" for="category_id"><?php echo __('Filter by category', 'wpdirectorykit'); ?></label>
-                    <?php echo wmvc_select_option('category_id', $categories, wmvc_show_data('category_id', $db_data, ''), NULL, __('Category', 'wpdirectorykit')); ?>
+                    <label class="screen-reader-text" for="category_id"><?php echo esc_html__('Filter by category', 'wpdirectorykit'); ?></label>
+                    <?php echo wp_kses(
+                        wmvc_select_option(
+                            'category_id',
+                            $categories,
+                            wmvc_show_data('category_id', $db_data, ''),
+                            NULL,
+                            __('Category', 'wpdirectorykit')
+                        ),
+                        array(
+                            'select' => array(
+                                'name' => true,
+                                'id' => true,
+                                'class' => true,
+                                'autocomplete' => true,
+                                'tabindex' => true,
+                            ),
+                            'option' => array(
+                                'value' => true,
+                                'selected' => true,
+                                'disabled' => true,
+                                'label' => true,
+                            ),
+                        )
+                    ); ?>
+               
                 <?php endif; ?>
 
                 <label class="screen-reader-text" for="user_id_editor"><?php echo esc_html__('Filter by user', 'wpdirectorykit'); ?></label>
-                <?php echo wmvc_select_option('user_id_editor', $users, wmvc_show_data('user_id_editor', $db_data, ''), NULL, __('User', 'wpdirectorykit')); ?>
+                <?php echo wp_kses(
+                    wmvc_select_option('user_id_editor', $users, wmvc_show_data('user_id_editor', $db_data, ''), NULL, __('User', 'wpdirectorykit')),
+                    array(
+                        'select' => array(
+                            'name' => true,
+                            'id' => true,
+                            'class' => true,
+                            'autocomplete' => true,
+                            'tabindex' => true,
+                        ),
+                        'option' => array(
+                            'value' => true,
+                            'selected' => true,
+                            'disabled' => true,
+                            'label' => true,
+                        ),
+                    )
+                ); ?>
+           
 
-                <label class="screen-reader-text" for="search"><?php echo __('Filter by keyword', 'wpdirectorykit'); ?></label>
-                <input type="text" name="search" id="search" class="postform left" value="<?php echo esc_attr(wmvc_show_data('search', $db_data, '')); ?>" placeholder="<?php echo __('Filter by keyword', 'wpdirectorykit'); ?>" />
-
-                <label class="screen-reader-text" for="order_by"><?php echo __('Order By', 'wpdirectorykit'); ?></label>
-                <?php echo wmvc_select_option('order_by', $order_by, wmvc_show_data('order_by', $db_data, ''), NULL, __('Order by', 'wpdirectorykit')); ?>
+                <label class="screen-reader-text" for="order_by"><?php echo esc_html__('Order By', 'wpdirectorykit'); ?></label>
+                <?php echo wp_kses(
+                    wmvc_select_option('order_by', $order_by, wmvc_show_data('order_by', $db_data, ''), NULL, __('Order by', 'wpdirectorykit')),
+                    array(
+                        'select' => array(
+                            'name' => true,
+                            'id' => true,
+                            'class' => true,
+                            'autocomplete' => true,
+                            'tabindex' => true,
+                        ),
+                        'option' => array(
+                            'value' => true,
+                            'selected' => true,
+                            'disabled' => true,
+                            'label' => true,
+                        ),
+                    )
+                ); ?>
+           
 
 
                 <?php
@@ -185,9 +269,57 @@ if (! defined('ABSPATH')) {
                         $field_id = substr($key, 8, (stripos($key, '_', 8) - 8));
                 ?>
                         <span class="custom_parameter" data-key="<?php echo esc_attr($field_id); ?>">
-                            <?php echo wmvc_select_option('c_field_' . $field_id . '_field', $fields_list, wmvc_show_data('c_field_' . $field_id . '_field', $_GET, ''), 'class="cus_p_field"', __('Field', 'wpdirectorykit')); ?>
-                            <?php echo wmvc_select_option('c_field_' . $field_id . '_like', array('==' => '=', '>' => '>', '<' => '<'), wmvc_show_data('c_field_' . $field_id . '_like', $_GET, ''), 'class="cus_p_like"'); ?>
-                            <input type="text" name="c_field_<?php echo esc_attr($field_id); ?>_value" value="<?php echo esc_attr(wmvc_show_data('c_field_' . $field_id . '_value', $_GET, '')); ?>" class="cus_p_value" placeholder="<?php echo __('Value', 'wpdirectorykit'); ?>" />
+                            <?php
+                            echo wp_kses(
+                                wmvc_select_option(
+                                    'c_field_' . $field_id . '_field',
+                                    $fields_list,
+                                    wmvc_show_data('c_field_' . $field_id . '_field', $_GET, ''),
+                                    'class="cus_p_field"',
+                                    __('Field', 'wpdirectorykit')
+                                ),
+                                array(
+                                    'select' => array(
+                                        'name' => true,
+                                        'id' => true,
+                                        'class' => true,
+                                        'autocomplete' => true,
+                                        'tabindex' => true,
+                                    ),
+                                    'option' => array(
+                                        'value' => true,
+                                        'selected' => true,
+                                        'disabled' => true,
+                                        'label' => true,
+                                    ),
+                                )
+                            );
+                            echo wp_kses(
+                                wmvc_select_option(
+                                    'c_field_' . $field_id . '_like',
+                                    array('==' => '=', '>' => '>', '<' => '<'),
+                                    wmvc_show_data('c_field_' . $field_id . '_like', $_GET, ''),
+                                    'class="cus_p_like"'
+                                ),
+                                array(
+                                    'select' => array(
+                                        'name' => true,
+                                        'id' => true,
+                                        'class' => true,
+                                        'autocomplete' => true,
+                                        'tabindex' => true,
+                                    ),
+                                    'option' => array(
+                                        'value' => true,
+                                        'selected' => true,
+                                        'disabled' => true,
+                                        'label' => true,
+                                    ),
+                                )
+                            );
+                            ?>
+                       
+                            <input type="text" name="c_field_<?php echo esc_attr($field_id); ?>_value" value="<?php echo esc_attr(wmvc_show_data('c_field_' . $field_id . '_value', $_GET, '')); ?>" class="cus_p_value" placeholder="<?php echo esc_html__('Value', 'wpdirectorykit'); ?>" />
                         </span>
                 <?php
                         $custom_field_init = true;
@@ -196,21 +328,81 @@ if (! defined('ABSPATH')) {
                 ?>
                 <?php if (!$custom_field_init): ?>
                     <span class="custom_parameter">
-                        <?php echo wmvc_select_option('c_field_1_field', $fields_list, wmvc_show_data('c_field_1_field', $db_data, ''), 'class="cus_p_field"', __('Field', 'wpdirectorykit')); ?>
-                        <?php echo wmvc_select_option('c_field_1_like', array('==' => '=', '>' => '>', '<' => '<'), wmvc_show_data('c_field_1_like', $db_data, ''), 'class="cus_p_like"'); ?>
-                        <input type="text" name="c_field_1_value" value="<?php echo esc_attr(wmvc_show_data('c_field_1_value', $db_data, '')); ?>" class="cus_p_value" placeholder="<?php echo __('Value', 'wpdirectorykit'); ?>" />
+                        <?php 
+                        echo wp_kses(
+                            wmvc_select_option(
+                                'c_field_1_field',
+                                $fields_list,
+                                wmvc_show_data('c_field_1_field', $db_data, ''),
+                                'class="cus_p_field"',
+                                __('Field', 'wpdirectorykit')
+                            ),
+                            array(
+                                'select' => array(
+                                    'name' => true,
+                                    'id' => true,
+                                    'class' => true,
+                                    'autocomplete' => true,
+                                    'tabindex' => true,
+                                ),
+                                'option' => array(
+                                    'value' => true,
+                                    'selected' => true,
+                                    'disabled' => true,
+                                    'label' => true,
+                                ),
+                            )
+                        );
+                        echo wp_kses(
+                            wmvc_select_option(
+                                'c_field_1_like',
+                                array('==' => '=', '>' => '>', '<' => '<'),
+                                wmvc_show_data('c_field_1_like', $db_data, ''),
+                                'class="cus_p_like"'
+                            ),
+                            array(
+                                'select' => array(
+                                    'name' => true,
+                                    'id' => true,
+                                    'class' => true,
+                                    'autocomplete' => true,
+                                    'tabindex' => true,
+                                ),
+                                'option' => array(
+                                    'value' => true,
+                                    'selected' => true,
+                                    'disabled' => true,
+                                    'label' => true,
+                                ),
+                            )
+                        );
+                        ?>
+                   
+                        <input type="text" name="c_field_1_value" value="<?php echo esc_attr(wmvc_show_data('c_field_1_value', $db_data, '')); ?>" class="cus_p_value" placeholder="<?php echo esc_html__('Value', 'wpdirectorykit'); ?>" />
                     </span>
                 <?php endif; ?>
 
                 <a href="" class="btn_parameter remove"><span class="dashicons dashicons-minus"></span></a>
                 <a href="" class="btn_parameter add"><span class="dashicons dashicons-plus-alt2"></span></a>
 
-                <input type="submit" name="filter_action" id="post-query-submit" class="button" value="<?php echo __('Filter', 'wpdirectorykit'); ?>">
+                <input type="submit" name="filter_action" id="post-query-submit" class="button" value="<?php echo esc_html__('Filter', 'wpdirectorykit'); ?>">
 
                 <input type="hidden" name="is_featured" value="<?php echo esc_attr(wmvc_show_data('is_featured', $db_data, '')); ?>">
                 <input type="hidden" name="is_activated" value="<?php echo esc_attr(wmvc_show_data('is_activated', $db_data, '')); ?>">
             </div>
-            <?php echo wmvc_xss_clean($pagination_output); ?>
+            <?php echo wp_kses($pagination_output, array(
+                'div' => array('class' => true, 'id' => true, 'style' => true),
+                'span' => array('class' => true, 'id' => true, 'style' => true),
+                'a' => array('href' => true, 'class' => true, 'id' => true, 'style' => true, 'title' => true, 'rel' => true),
+                'ul' => array('class' => true, 'id' => true, 'style' => true),
+                'li' => array('class' => true, 'id' => true, 'style' => true),
+                'b' => array(),
+                'strong' => array(),
+                'em' => array(),
+                'i' => array(),
+                'br' => array(),
+            )); ?>
+       
             <br class="clear">
         </div>
     </form>
@@ -225,29 +417,29 @@ if (! defined('ABSPATH')) {
         <table class="wp-list-table widefat fixed striped table-view-list pages">
             <thead>
                 <tr>
-                    <td id="cb" class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-1"><?php echo __('Select All', 'wpdirectorykit'); ?></label><input id="cb-select-all-1" type="checkbox"></td>
-                    <th style="width:50px;"><?php echo __('#ID', 'wpdirectorykit'); ?></th>
-                    <th><?php echo __('Title', 'wpdirectorykit'); ?></th>
+                    <td id="cb" class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-1"><?php echo esc_html__('Select All', 'wpdirectorykit'); ?></label><input id="cb-select-all-1" type="checkbox"></td>
+                    <th style="width:50px;"><?php echo esc_html__('#ID', 'wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Title', 'wpdirectorykit'); ?></th>
                     <?php if (get_option('wdk_is_category_enabled', FALSE)): ?>
-                        <th><?php echo __('Category', 'wpdirectorykit'); ?></th>
+                        <th><?php echo esc_html__('Category', 'wpdirectorykit'); ?></th>
                     <?php endif; ?>
-                    <th style="text-align: center;"><?php echo __('Image', 'wpdirectorykit'); ?></th>
-                    <th><?php echo __('Post Date', 'wpdirectorykit'); ?></th>
+                    <th style="text-align: center;"><?php echo esc_html__('Image', 'wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Post Date', 'wpdirectorykit'); ?></th>
                     <?php if (function_exists('PLL')): ?>
                         <?php $pll_langs = pll_the_languages(array('raw' => 1));
                         foreach ($pll_langs as $pll_lang): ?>
                             <th class="manage-column column-language_<?php echo esc_attr($pll_lang['slug']); ?>"><img src="<?php echo esc_attr($pll_lang['flag']); ?>" /></th>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    <th class="static"><?php echo __('Views', 'wpdirectorykit'); ?></th>
-                    <th class="static"><?php echo __('Showed in results', 'wpdirectorykit'); ?></th>
-                    <th class="actions_column"><?php echo __('Actions', 'wpdirectorykit'); ?></th>
+                    <th class="static"><?php echo esc_html__('Views', 'wpdirectorykit'); ?></th>
+                    <th class="static"><?php echo esc_html__('Showed in results', 'wpdirectorykit'); ?></th>
+                    <th class="actions_column"><?php echo esc_html__('Actions', 'wpdirectorykit'); ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (count($listings) == 0) : ?>
                     <tr class="no-items">
-                        <td class="colspanchange" colspan="9"><?php echo __('No Listings found.', 'wpdirectorykit'); ?></td>
+                        <td class="colspanchange" colspan="9"><?php echo esc_html__('No Listings found.', 'wpdirectorykit'); ?></td>
                     </tr>
                 <?php endif; ?>
                 <?php foreach ($listings as $listing) : ?>
@@ -256,7 +448,7 @@ if (! defined('ABSPATH')) {
                             <input id="cb-select-<?php echo esc_attr(wmvc_show_data('ID', $listing, '-')); ?>" type="checkbox" name="post[]" value="<?php echo esc_attr(wmvc_show_data('ID', $listing, '-')); ?>">
                             <div class="locked-indicator">
                                 <span class="locked-indicator-icon" aria-hidden="true"></span>
-                                <span class="screen-reader-text"><?php echo __('Is Locked', 'wpdirectorykit'); ?></span>
+                                <span class="screen-reader-text"><?php echo esc_html__('Is Locked', 'wpdirectorykit'); ?></span>
                             </div>
                         </th>
                         <td>
@@ -266,7 +458,7 @@ if (! defined('ABSPATH')) {
                             <strong>
                                 <a class="row-title" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . wmvc_show_data('ID', $listing, '-')); ?>"><?php echo esc_html(wmvc_show_data('post_title', $listing, '-')); ?></a>
                                 <?php if (!wmvc_show_data('is_activated', $listing, 0)): ?>
-                                    <span class="label label-danger"><?php echo __('Not activated', 'wpdirectorykit'); ?></span>
+                                    <span class="label label-danger"><?php echo esc_html__('Not activated', 'wpdirectorykit'); ?></span>
                                 <?php endif; ?>
                                 <?php if (!wmvc_show_data('is_approved', $listing, 0) && function_exists('run_wdk_membership')): ?>
                                     <span class="label label-danger"><?php echo esc_html__('Not approved', 'wpdirectorykit'); ?></span>
@@ -275,14 +467,14 @@ if (! defined('ABSPATH')) {
                                 <?php if (wdk_get_option('wdk_is_featured_enabled', FALSE)): ?>
                                     <?php if (wmvc_show_data('is_featured', $listing, 0)): ?>
                                         <span class="label label-info"><?php echo esc_html__('featured', 'wpdirectorykit'); ?></span>
-                                    <?php endif; ?>
+                                <?php endif; ?>
                                 <?php endif; ?>
 
                             </strong>
                             <div class="row-actions">
-                                <span class="edit"><a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . wmvc_show_data('ID', $listing, '-')); ?>"><?php echo __('Edit', 'wpdirectorykit'); ?></a> | </span>
-                                <span class="trash "><a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&paged=" . esc_attr($paged) . "&id=" . wmvc_show_data('ID', $listing, '-')); ?>&_wpnonce=<?php echo wp_create_nonce('wdk-listing-delete_' . wmvc_show_data('ID', $listing, '-')); ?>" class="submitdelete question_sure"><?php echo __('Delete', 'wpdirectorykit'); ?></a> | </span>
-                                <span class="view"><a href="<?php echo get_permalink($listing); ?>" target="blank"><?php echo __('View', 'wpdirectorykit'); ?></a></span>
+                                <span class="edit"><a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . wmvc_show_data('ID', $listing, '-')); ?>"><?php echo esc_html__('Edit', 'wpdirectorykit'); ?></a> | </span>
+                                <span class="trash "><a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&paged=" . esc_attr($paged) . "&id=" . wmvc_show_data('ID', $listing, '-')); ?>&_wpnonce=<?php echo esc_attr(wp_create_nonce('wdk-listing-delete_' . wmvc_show_data('ID', $listing, '-'))); ?>" class="submitdelete question_sure"><?php echo esc_html__('Delete', 'wpdirectorykit'); ?></a> | </span>
+                                <span class="view"><a href="<?php echo esc_url(get_permalink($listing)); ?>" target="blank"><?php echo esc_html__('View', 'wpdirectorykit'); ?></a></span>
                             </div>
 
 
@@ -314,7 +506,7 @@ if (! defined('ABSPATH')) {
                             </a>
                         </td>
                         <td>
-                            <?php echo wdk_get_date($listing->post_date, false); ?>
+                            <?php echo esc_html(wdk_get_date($listing->post_date, false)); ?>
                         </td>
                         <?php if (function_exists('PLL')): ?>
 
@@ -338,9 +530,9 @@ if (! defined('ABSPATH')) {
                             <?php echo esc_html(wmvc_show_data('counter_results_views', $listing, '-')); ?>
                         </td>
                         <td class="actions_column">
-                            <a href="<?php echo get_permalink($listing); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" target="blank"><span class="dashicons dashicons-visibility"></span></a>
+                            <a href="<?php echo esc_html(get_permalink($listing)); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" target="blank"><span class="dashicons dashicons-visibility"></span></a>
                             <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . wmvc_show_data('ID', $listing, '-')); ?>" title="<?php echo esc_attr__('Edit', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-edit"></span></a>
-                            <a class="question_sure" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&paged=" . esc_attr($paged) . "&id=" . wmvc_show_data('ID', $listing, '-') . "&_wpnonce=" . wp_create_nonce('wdk-listing-delete_' . wmvc_show_data('ID', $listing, '-'))); ?>" title="<?php echo esc_attr__('Remove', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-no"></span></a>
+                            <a class="question_sure" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&paged=" . esc_attr($paged) . "&id=" . wmvc_show_data('ID', $listing, '-') . "&_wpnonce=" . esc_attr(wp_create_nonce('wdk-listing-delete_' . wmvc_show_data('ID', $listing, '-')))); ?>" title="<?php echo esc_attr__('Remove', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-no"></span></a>
                         </td>
                     </tr>
 
@@ -354,20 +546,20 @@ if (! defined('ABSPATH')) {
                                         <a target="_blank" href="<?php echo esc_url(admin_url('admin.php?page=wdk_listing&id=' . $child_idlisting)); ?>"><?php echo esc_html('#' . $child_idlisting . ', ' . wdk_field_value('post_title', $child_idlisting)); ?></a>
                                     </td>
                                     <td>
-                                        <?php echo wdk_field_value('category_id', $categories); ?>
+                                        <?php echo esc_html(wdk_field_value('category_id', $categories)); ?>
                                     </td>
                                     <td style="text-align: center;">
-                                        <a class="img-link" href="<?php echo get_admin_url() . "admin.php?page=wdk_listing&id=" . $child_idlisting; ?>">
+                                        <a class="img-link" href="<?php echo esc_url(get_admin_url()) . "admin.php?page=wdk_listing&id=" . esc_attr($child_idlisting); ?>">
                                             <img src="<?php echo esc_url(wdk_image_src(array('listing_images' => wdk_field_value('listing_images', $child_idlisting)))); ?>" alt="thumb" style="height:50px;width:65px;object-fit:cover;text-align: center;" />
                                         </a>
                                     </td>
                                     <td>
-                                        <?php echo wdk_get_date(wdk_field_value('date', $child_idlisting), false); ?>
+                                        <?php echo esc_html(wdk_get_date(wdk_field_value('date', $child_idlisting), false)); ?>
                                     </td>
                                     <td class="actions_column">
-                                        <a href="<?php echo get_permalink($child_idlisting); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" target="blank"><span class="dashicons dashicons-visibility"></span></a>
+                                        <a href="<?php echo esc_url(get_permalink($child_idlisting)); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" target="blank"><span class="dashicons dashicons-visibility"></span></a>
                                         <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . $child_idlisting); ?>" title="<?php echo esc_attr__('Edit', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-edit"></span></a>
-                                        <a class="question_sure" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&paged=" . esc_attr($paged) . "&id=" . $child_idlisting . "&_wpnonce=" . wp_create_nonce('wdk-listing-delete_' . wmvc_show_data('ID', $listing, '-'))); ?>" title="<?php echo esc_attr__('Remove', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-no"></span></a>
+                                        <a class="question_sure" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&paged=" . esc_attr($paged) . "&id=" . $child_idlisting . "&_wpnonce=" . esc_attr(wp_create_nonce('wdk-listing-delete_' . wmvc_show_data('ID', $listing, '-')))); ?>" title="<?php echo esc_attr__('Remove', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-no"></span></a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -377,14 +569,14 @@ if (! defined('ABSPATH')) {
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-2"><?php echo __('Select All', 'wpdirectorykit'); ?></label><input id="cb-select-all-2" type="checkbox"></td>
-                    <th style="width:50px;"><?php echo __('#ID', 'wpdirectorykit'); ?></th>
-                    <th><?php echo __('Title', 'wpdirectorykit'); ?></th>
+                    <td class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-2"><?php echo esc_html__('Select All', 'wpdirectorykit'); ?></label><input id="cb-select-all-2" type="checkbox"></td>
+                    <th style="width:50px;"><?php echo esc_html__('#ID', 'wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Title', 'wpdirectorykit'); ?></th>
                     <?php if (get_option('wdk_is_category_enabled', FALSE)): ?>
-                        <th><?php echo __('Category', 'wpdirectorykit'); ?></th>
+                        <th><?php echo esc_html__('Category', 'wpdirectorykit'); ?></th>
                     <?php endif; ?>
-                    <th style="text-align: center;"><?php echo __('Image', 'wpdirectorykit'); ?></th>
-                    <th><?php echo __('Post Date', 'wpdirectorykit'); ?></th>
+                    <th style="text-align: center;"><?php echo esc_html__('Image', 'wpdirectorykit'); ?></th>
+                    <th><?php echo esc_html__('Post Date', 'wpdirectorykit'); ?></th>
                     <?php if (function_exists('PLL')): ?>
                         <?php foreach ($pll_langs as $pll_lang): ?>
                             <th><img src="<?php echo esc_attr($pll_lang['flag']); ?>" /></th>
@@ -392,29 +584,41 @@ if (! defined('ABSPATH')) {
                     <?php endif; ?>
                     <th class=""></th>
                     <th class=""></th>
-                    <th class="actions_column"><?php echo __('Actions', 'wpdirectorykit'); ?></th>
+                    <th class="actions_column"><?php echo esc_html__('Actions', 'wpdirectorykit'); ?></th>
                 </tr>
             </tfoot>
         </table>
         <div class="tablenav bottom">
             <div class="alignleft actions bulkactions">
                 <?php wp_nonce_field('wdk-listing-bulk', '_wpnonce'); ?>
-                <label for="bulk-action-selector-bottom" class="screen-reader-text"><?php echo __('Select bulk action', 'wpdirectorykit'); ?></label>
+                <label for="bulk-action-selector-bottom" class="screen-reader-text"><?php echo esc_html__('Select bulk action', 'wpdirectorykit'); ?></label>
                 <select name="action" id="bulk-action-selector-bottom">
-                    <option value="-1"><?php echo __('Bulk actions', 'wpdirectorykit'); ?></option>
-                    <option value="delete" class="hide-if-no-js"><?php echo __('Delete', 'wpdirectorykit'); ?></option>
-                    <option value="deactivate" class="hide-if-no-js"><?php echo __('Deactivate', 'wpdirectorykit'); ?></option>
-                    <option value="activate" class="hide-if-no-js"><?php echo __('Activate', 'wpdirectorykit'); ?></option>
+                    <option value="-1"><?php echo esc_html__('Bulk actions', 'wpdirectorykit'); ?></option>
+                    <option value="delete" class="hide-if-no-js"><?php echo esc_html__('Delete', 'wpdirectorykit'); ?></option>
+                    <option value="deactivate" class="hide-if-no-js"><?php echo esc_html__('Deactivate', 'wpdirectorykit'); ?></option>
+                    <option value="activate" class="hide-if-no-js"><?php echo esc_html__('Activate', 'wpdirectorykit'); ?></option>
                     <?php if (function_exists('run_wdk_membership')): ?>
-                        <option value="deapprove" class="hide-if-no-js"><?php echo __('Deapprove', 'wpdirectorykit'); ?></option>
-                        <option value="approve" class="hide-if-no-js"><?php echo __('Approve', 'wpdirectorykit'); ?></option>
+                        <option value="deapprove" class="hide-if-no-js"><?php echo esc_html__('Deapprove', 'wpdirectorykit'); ?></option>
+                        <option value="approve" class="hide-if-no-js"><?php echo esc_html__('Approve', 'wpdirectorykit'); ?></option>
                     <?php endif; ?>
                 </select>
                 <input type="hidden" name="page" value="wdk" />
                 <input type="submit" id="table_action" class="button action" name="table_action" value="<?php echo esc_attr__('Apply', 'wpdirectorykit'); ?>">
             </div>
 
-            <?php echo wmvc_xss_clean($pagination_output); ?>
+            <?php echo wp_kses($pagination_output, array(
+                'div' => array('class' => true, 'id' => true, 'style' => true),
+                'span' => array('class' => true, 'id' => true, 'style' => true),
+                'a' => array('href' => true, 'class' => true, 'id' => true, 'style' => true, 'title' => true, 'rel' => true),
+                'ul' => array('class' => true, 'id' => true, 'style' => true),
+                'li' => array('class' => true, 'id' => true, 'style' => true),
+                'b' => array(),
+                'strong' => array(),
+                'em' => array(),
+                'i' => array(),
+                'br' => array(),
+            )); ?>
+       
             <br class="clear">
         </div>
     </form>
@@ -456,7 +660,7 @@ wp_enqueue_script('wdk-notify');
                 "_wpnonce": '<?php echo esc_js(wp_create_nonce('wdk-backendajax')); ?>',
             };
 
-            jQuery.post("<?php echo admin_url('admin-ajax.php'); ?>", ajax_param,
+            jQuery.post("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", ajax_param,
                 function(data) {
 
                     if (data.popup_text_success)
@@ -539,7 +743,7 @@ wp_enqueue_script('wdk-notify');
 
                 self.addClass('wdk_btn_load_indicator out');
 
-                jQuery.post("<?php echo admin_url('admin-ajax.php'); ?>", ajax_param,
+                jQuery.post("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", ajax_param,
                     function(data) {
 
                         if (data.popup_text_success)

@@ -36,11 +36,24 @@ if (!defined('ABSPATH')) {
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
         <h2 style="margin-top:0">
-          <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo wdk_show_data('display_name', $user); ?>,
+          <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo esc_html(wdk_show_data('display_name', $user)); ?>,
         </h2>
         <?php if (!empty($hours_for_payment)) : ?>
         <p>
-          <?php echo sprintf(esc_html__('Thanks on reservation, you can pay for reservation in %1$s h, after that reservation will be deactivated for listing', 'wpdirectorykit'), $hours_for_payment) . ': <a href="' . get_permalink($listing) . '">' . wmvc_show_data('post_title', $listing, '', TRUE, TRUE) . '</a>'; ?>
+          <?php
+          echo wp_kses(
+            sprintf(
+                /* translators: 1: Hours allowed for payment. */
+                  esc_html__('Thanks on reservation, you can pay for reservation in %1$s h, after that reservation will be deactivated for listing', 'wpdirectorykit'),
+                  $hours_for_payment
+              ) . ': <a href="' . esc_url(get_permalink($listing)) . '">' . esc_html(wmvc_show_data('post_title', $listing, '', TRUE, TRUE)) . '</a>',
+              array(
+                  'a' => array(
+                      'href' => true,
+                  ),
+              )
+          );
+          ?>
         </p>
         <?php if(wmvc_show_data('post_id', $listing, false)):?>
           <p>
@@ -51,12 +64,12 @@ if (!defined('ABSPATH')) {
           <?php endif;?>
         <?php else:?>
           <p>
-            <?php echo esc_html__('Thanks on reservation, you can pay for reservation', 'wpdirectorykit') . ': <a href="' . get_permalink($listing) . '">' . wmvc_show_data('post_title', $listing, '', TRUE, TRUE) . '</a>'; ?>
+            <?php echo esc_html__('Thanks on reservation, you can pay for reservation', 'wpdirectorykit') . ': <a href="' .esc_url( get_permalink($listing)) . '">' . esc_html(wmvc_show_data('post_title', $listing, '', TRUE, TRUE)) . '</a>'; ?>
           </p>
         <?php endif;?>
         <?php if (!empty($pay_link)) : ?>
           <p>
-            <?php echo esc_html__('Please click', 'wpdirectorykit') . ': <a href="' . ($pay_link) . '">' . esc_html__('Purchase reservation', 'wpdirectorykit') . '</a>'; ?>
+            <?php echo esc_html__('Please click', 'wpdirectorykit') . ': <a href="' . esc_url($pay_link) . '">' . esc_html__('Purchase reservation', 'wpdirectorykit') . '</a>'; ?>
           </p>
         <?php endif; ?>
 

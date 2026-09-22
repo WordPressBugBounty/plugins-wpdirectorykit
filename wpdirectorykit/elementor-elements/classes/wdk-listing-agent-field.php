@@ -198,7 +198,7 @@ class WdkListingAgentField extends WdkElementorBase {
                 return false;
         }
 
-        echo $this->view('wdk-listing-agent-field', $this->data); 
+        $this->view('wdk-listing-agent-field', $this->data, true); 
     }
 
 

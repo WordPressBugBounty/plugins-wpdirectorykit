@@ -52,9 +52,9 @@ $resul_item_config = wdk_resultitem();
             <?php foreach ($over_image_top as $key => $field):?>
                 <span>
                 <?php 
-                    echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field))))
-                        .esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
-                        .esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field))));
+                    echo esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field))))
+                        .esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
+                        .esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field))));
                 ?>
                 </span>
             <?php endforeach;?>
@@ -65,9 +65,9 @@ $resul_item_config = wdk_resultitem();
                 <?php  if(!empty($over_image_bottom)) foreach ($over_image_bottom as $key => $field):?>
                     <span class='wdk-item'>
                     <?php 
-                        echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field))))
-                            .esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
-                            .esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field))));
+                        echo esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field))))
+                            .esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
+                            .esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field))));
                     ?>
                     </span> 
                 <?php endforeach;?>
@@ -86,7 +86,7 @@ $resul_item_config = wdk_resultitem();
                             <span>
                             <?php 
                                 echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)))
-                                    .esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
+                                    .esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
                                     .esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));
                             ?>
                             </span> 
@@ -101,7 +101,7 @@ $resul_item_config = wdk_resultitem();
                     <span>
                     <?php 
                         echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)))
-                            .esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
+                            .esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
                             .esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));
                     ?>
                     </span> 
@@ -125,7 +125,7 @@ $resul_item_config = wdk_resultitem();
 
                             <?php 
                                 echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)))
-                                    .esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
+                                    .esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal(wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field))))
                                     .esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));
                             ?>
                         </span>
@@ -143,17 +143,17 @@ $resul_item_config = wdk_resultitem();
                             <?php echo esc_html(apply_filters( 'wpdirectorykit/listing/field/prefix', wmvc_show_data('prefix', $field), wmvc_show_data('field_id', $field)));?>
                             <?php if(function_exists('run_wdk_currency_conversion')):?>
                                 <?php  
-                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                        $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                                         echo esc_html(wdk_filter_decimal(wdk_number_format_i18n($value)));
                                 ?>
                             <?php else:?>
                                 <?php if(wdk_field_option(wmvc_show_data('field_id', $field), 'is_price_format') && wdk_field_option(wmvc_show_data('field_id', $field), 'field_type') == 'NUMBER'):?>
                                     <?php  
-                                        $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
+                                        $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wmvc_show_data('value', $field)), wmvc_show_data('field_id', $field), FALSE));
                                         echo esc_html(wdk_filter_decimal(wdk_number_format_i18n($value)));
                                     ?>
                                 <?php else:?>
-                                    <?php echo esc_html(strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));?>
+                                    <?php echo esc_html(wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', (wdk_filter_decimal(wmvc_show_data('value', $field))), wmvc_show_data('field_id', $field))));?>
                                 <?php endif;?>
                             <?php endif;?>
                             <?php echo esc_html(apply_filters( 'wpdirectorykit/listing/field/suffix', wmvc_show_data('suffix', $field), wmvc_show_data('field_id', $field)));?>

@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 ">
                 <?php if(wmvc_show_data('field_group_icon_enable', $settings) == 'yes' && wmvc_show_data('icon_id', $field, false)):?>
                     <span class="field_icon"> 
-                        <img src="<?php echo esc_url(wdk_image_src($field, 'full',NULL,'icon_id'));?>" alt="<?php echo wmvc_show_data('field_label', $value);?>" class="wdk-icon">
+                        <img src="<?php echo esc_url(wdk_image_src($field, 'full',NULL,'icon_id'));?>" alt="<?php echo esc_attr(wmvc_show_data('field_label', $value));?>" class="wdk-icon">
                     </span>
                 <?php endif;?>
                 <span class="field_label"> 
@@ -109,11 +109,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 /* price format implement */
                                 if(function_exists('run_wdk_currency_conversion') && wdk_currencies_is_price_field(wmvc_show_data('idfield', $field))) {
                                     /* if currency_conversion and field is price */
-                                    $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal($field_value), wmvc_show_data('idfield', $field), FALSE));
+                                    $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal($field_value), wmvc_show_data('idfield', $field), FALSE));
                                     $field_value = esc_html(wdk_number_format_i18n($value));
                                 } elseif(wdk_field_option(wmvc_show_data('idfield', $field), 'is_price_format')) {
                                     /* if field enabled is_price_format and field type is number*/
-                                    $value = strip_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal($field_value), wmvc_show_data('idfield', $field), FALSE));
+                                    $value = wp_strip_all_tags(apply_filters( 'wpdirectorykit/listing/field/value', wdk_filter_decimal($field_value), wmvc_show_data('idfield', $field), FALSE));
                                     $field_value = esc_html(wdk_number_format_i18n($value));
                                 } else {
                                     /* without number format */

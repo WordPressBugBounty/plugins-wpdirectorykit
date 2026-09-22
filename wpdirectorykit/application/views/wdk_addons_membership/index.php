@@ -14,27 +14,27 @@ if (! defined('ABSPATH')) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Purchase Membership Addon from 8.25$/month in yearly subscription for one website and support our work!', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Purchase Membership Addon from 8.25$/month in yearly subscription for one website and support our work!', 'wpdirectorykit'); ?></h1>
     <p class="presentation-desc">This also help us to make updates, additional features, codes and support even better in future!</p>
     <p class="presentation-desc">Below we providing few screenshots from current main features, if you have any suggestion, or need customization feel free to <a target="_blank" href="https://wpdirectorykit.com/contact.html">contact us</a></p>
     <br />
-    <h2 class="wp-heading-inline"><?php echo __('Registration/Login For membership features', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/register.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Registration/Login For membership features', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/register.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('Agents/Profiles list with search option', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/profiles.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Agents/Profiles list with search option', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/profiles.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('Member can have own profile page with own listings, contact form and other', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/profile.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Member can have own profile page with own listings, contact form and other', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/profile.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('Earn money with subscriptions and Frontend Dashboard', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/subscriptions.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Earn money with subscriptions and Frontend Dashboard', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/subscriptions.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('Visitor can manage own listings', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/manage_listings.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Visitor can manage own listings', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/manage_listings.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('Visitor can add listings on frontend', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/add_listing.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Visitor can add listings on frontend', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/add_listing.jpg" /></a>
 
 
     <div class="wdk-pricing">

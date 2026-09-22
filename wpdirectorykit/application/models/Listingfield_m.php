@@ -153,7 +153,9 @@ class Listingfield_m extends Winter_MVC_Model {
         }
 
         if(!isset($existing_fields[$column_name]))
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             $query_result = $wpdb->query( $sql );
+    
     }
 
     // Create table column for new added or edited fields
@@ -164,10 +166,12 @@ class Listingfield_m extends Winter_MVC_Model {
         $table = $wpdb->prefix . 'wdk_listings_fields';
         $column_name = 'field_'.$field_id.'_'.wmvc_show_data('field_type',$field_data);
 
-        $sql = "ALTER TABLE `{$table}`
-                    DROP `$column_name`;";
-
-        $query_result = $wpdb->query( $sql );
+        $query_result = $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE `{$table}` DROP %s;",
+                $column_name
+            )
+        );
     }
 
 }

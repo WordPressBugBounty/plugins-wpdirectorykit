@@ -1,3 +1,8 @@
+<?php
+if (! defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+?>
 <?php __('Austria','wpdirectorykit');
 __('Graz','wpdirectorykit');
 __('Innsbruck','wpdirectorykit');

@@ -15,16 +15,17 @@ function wdk_extra_user_profile_fields( $user,$wdk_user_fields_list ) {
     ?>
     <div class="wdk_postbox" style="display: block;">
         <div class="wdk_postbox-header">
-            <h3><?php _e("Directory Profile Info", "wpdirectorykit"); ?></h3>
+            <h3><?php esc_html_e("Directory Profile Info", "wpdirectorykit"); ?></h3>
         </div>
         <div class="wdk_inside">
             <table class="form-table">
                 <?php foreach($wdk_user_fields_list as $field_id => $field_name):?>
                 <tr>
-                    <th><label for="user_field_<?php echo esc_html($field_id);?>"><?php echo esc_html__($field_name, 'wpdirectorykit'); ?></label></th>
+                    
+                    <th><label for="user_field_<?php echo esc_html($field_id);?>"><?php echo esc_html($field_name); ?></label></th>
                     <td>
                         <input type="text" name="<?php echo esc_attr($field_id);?>" id="user_field_<?php echo esc_html($field_id);?>" value="<?php echo esc_attr( get_the_author_meta( $field_id, $user->ID ) ); ?>" class="regular-text" /><br />
-                        <span class="description"><?php _e("Please enter your",'wpdirectorykit'); ?> <?php echo esc_html__($field_name, 'wpdirectorykit'); ?>.</span>
+                        <span class="description"><?php esc_html_e("Please enter your",'wpdirectorykit'); ?> <?php echo esc_html($field_name); ?>.</span>
                     </td>
                 </tr>
                 <?php endforeach;?>

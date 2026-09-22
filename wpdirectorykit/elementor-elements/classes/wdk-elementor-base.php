@@ -30,6 +30,7 @@ class WdkElementorBase extends Widget_Base {
         protected $WMVC = NULL;
 
         public function __construct($data = array(), $args = null) {
+ 
                 /* load icons for tabs in edit mode */
                 wp_enqueue_style( 'wdk-elementor-main', WPDIRECTORYKIT_URL. 'elementor-elements/assets/css/wdk-main.css' );
                 
@@ -225,7 +226,8 @@ class WdkElementorBase extends Widget_Base {
                                     break;
                     case 'full': $enable_options = ['margin','align','typo','color','background','border','border_radius','padding','shadow','transition'];
                                  break;
-                    deafult: $enable_options = ['margin','align','typo','color','background','border','border_radius','padding','shadow','transition'];
+                    default: $enable_options = ['margin','align','typo','color','background','border','border_radius','padding','shadow','transition'];
+               
                                  break;
                 }
             }
@@ -831,6 +833,7 @@ class WdkElementorBase extends Widget_Base {
                                 '/* End custom CSS */';
 
                 
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
 		echo '<style>'.wmvc_xss_clean($custom_css_file).'</style>';
 	}
         
@@ -954,6 +957,7 @@ class WdkElementorBase extends Widget_Base {
                                         ],
                                         'default' => '1',
                                         'toggle'    => false,
+                                        /* translators: 1: Tag with link open, 2: close link tag. */
                                         'description' => '<span class="wdk_control_get_pro">'.wdk_sprintf(esc_html__(' %1$sGet our Addons%2$s for more awesome elements and powerful features!','wpdirectorykit'),'<a href="//wpdirectorykit.com/plugins.html" target="_blank">','</a>').'</span>'
 
                                 ]
@@ -968,6 +972,8 @@ class WdkElementorBase extends Widget_Base {
                 foreach ($attr as $key_attr => $value_attr) {
                         $this->add_render_attribute( $key, $key_attr, $value_attr );
                 }
+
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
                 echo $this->get_render_attribute_string( $key );
         }
 

@@ -753,6 +753,12 @@ body .wdk_alert a {
         position: relative;
     }
 
+    &:not(.ai_search_enable) {
+        .wdk-field-group-ai-search {
+            display: none !important;
+         }
+    }
+
     &.section_more_before_buttons {
         .wdk-col-btns {
             order: 100;
@@ -1991,6 +1997,11 @@ body.wdk_disable_outline_on_focus {
         display: block;
         width: 100%;
     } 
+
+    .form-alerts {
+        font-size: 14px;
+        font-style: italic;
+    }
 
     // reset 
     .jconfirm-content-pane,

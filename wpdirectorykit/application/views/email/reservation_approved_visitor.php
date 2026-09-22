@@ -35,7 +35,7 @@ if (!defined('ABSPATH')) {
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
             <h2 style="margin-top:0">
-                <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo wdk_show_data('display_name', $user); ?>,
+                <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo esc_html(wdk_show_data('display_name', $user)); ?>,
             </h2>
             <p>
                 <?php echo esc_html__('Reservation approved on listing', 'wpdirectorykit'); ?> <a href="<?php echo esc_url(get_permalink($listing)); ?>"><?php echo esc_html(wmvc_show_data('post_title', $listing, '', TRUE, TRUE)); ?></a>
@@ -43,7 +43,10 @@ if (!defined('ABSPATH')) {
 
 
             <?php if(wdk_get_option('wdk_bookings_confirmation_email_note')):?>
-                <?php echo wp_kses_post(esc_html__(replace_smart_data(wdk_get_option('wdk_bookings_confirmation_email_note'), array(
+                <?php 
+                // Dynamic field values are registered in the translation catalog separately.
+                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                echo wp_kses_post(esc_html__(replace_smart_data(wdk_get_option('wdk_bookings_confirmation_email_note'), array(
                     'title'=> wmvc_show_data('post_title', $listing, false, TRUE, TRUE),
                     'address'=> wmvc_show_data('address', $listing, false, TRUE, TRUE)
             )), 'wpdirectorykit'));?>
@@ -91,7 +94,10 @@ if (!defined('ABSPATH')) {
                         <?php else :?>
                         <p>
                         <?php endif;?>
-                            <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
+                            <strong><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
                         </p>
                     <?php endif; ?>
                 <?php endforeach; ?>

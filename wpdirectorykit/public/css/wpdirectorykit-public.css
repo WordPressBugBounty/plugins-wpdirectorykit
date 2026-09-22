@@ -747,6 +747,10 @@ body .wdk_alert a {
   position: relative;
 }
 
+.wdk-search:not(.ai_search_enable) .wdk-field-group-ai-search {
+  display: none !important;
+}
+
 .wdk-search.section_more_before_buttons .wdk-col-btns {
   order: 100;
 }
@@ -2014,6 +2018,11 @@ body.wdk_disable_outline_on_focus * {
   margin-bottom: 15px;
   display: block;
   width: 100%;
+}
+
+.jconfirm.wdk-ai-search-popup .form-alerts {
+  font-size: 14px;
+  font-style: italic;
 }
 
 .jconfirm.wdk-ai-search-popup .jconfirm-content-pane,

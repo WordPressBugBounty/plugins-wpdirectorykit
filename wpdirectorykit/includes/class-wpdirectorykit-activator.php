@@ -270,8 +270,7 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '1.3' ) {
 
             $table_name = $wpdb->prefix . 'wdk_categories';
-            $sql = "ALTER TABLE `$table_name` CHANGE `parent_id` `parent_id` INT(11) NULL DEFAULT '0'; ";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare("ALTER TABLE `{$table_name}` CHANGE `parent_id` `parent_id` INT(11) NULL DEFAULT %d;", 0));
 
             self::$db_version = 1.3;
             /* udpate option with db version */
@@ -281,11 +280,15 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '1.4' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `is_approved` INT(1) NULL DEFAULT NULL AFTER `is_activated`; ";
-            $wpdb->query($sql);
-
-            $sql = "UPDATE `$table_name` SET `is_approved` = '1'";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `is_approved` INT(1) NULL DEFAULT NULL AFTER `is_activated`;"    
+            ));
+       
+            $wpdb->query($wpdb->prepare(
+                "UPDATE `{$table_name}` SET `is_approved` = %d",
+                1
+            ));
+       
 
             self::$db_version = 1.4;
             /* udpate option with db version */
@@ -294,8 +297,10 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '1.5' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `date_package_expire` DATETIME NULL AFTER `hubspot_id`, ADD `package_id` INT NULL AFTER `date_package_expire`; ";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `date_package_expire` DATETIME NULL AFTER `hubspot_id`, ADD `package_id` INT NULL AFTER `date_package_expire`;"
+            ));
+       
 
             self::$db_version = 1.5;
             /* udpate option with db version */
@@ -304,8 +309,9 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '1.6' ) {
 
             $table_name = $wpdb->prefix . 'wdk_categories';
-            $sql = "ALTER TABLE `$table_name`  ADD `marker_image_id` int(11) DEFAULT NULL";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `marker_image_id` int(11) DEFAULT NULL"));
+       
 
             self::$db_version = 1.6;
             /* udpate option with db version */
@@ -314,8 +320,10 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '1.7' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `listing_images_path` VARCHAR(200) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `listing_images_path` VARCHAR(200) DEFAULT ''"
+            ));
+       
 
             // TODO: this column content should be generated based on listing_images or old client may have issues after update
 
@@ -326,8 +334,10 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '1.8' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name` ADD `subscription_id` INT NULL; ";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `subscription_id` INT NULL;"
+            ));
+       
 
             self::$db_version = 1.8;
             /* udpate option with db version */
@@ -336,8 +346,10 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '1.9' ) {
 
             $table_name = $wpdb->prefix . 'wdk_fields';
-            $sql = "ALTER TABLE `$table_name` ADD `is_price_format` tinyint(1) DEFAULT NULL; ";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `is_price_format` tinyint(1) DEFAULT NULL;"
+            ));
+       
 
             self::$db_version = 1.9;
             /* udpate option with db version */
@@ -346,8 +358,10 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '2.0' ) {
 
             $table_name = $wpdb->prefix . 'wdk_resultitem';
-            $sql = "ALTER TABLE `$table_name` ADD `is_multiline_enabled` tinyint(1) DEFAULT NULL; ";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `is_multiline_enabled` tinyint(1) DEFAULT NULL;"
+            ));
+       
 
             self::$db_version = 2.0;
             /* udpate option with db version */
@@ -356,23 +370,25 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '2.1' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name` ADD `user_id_editor` INT DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `user_id_editor` INT DEFAULT NULL;"
+            ));
 
             $table_user_name = $wpdb->prefix . 'wdk_listings_users';
 
             /* copy agents to new column */
-            $sql = "UPDATE 
-                        `$table_name` table_listings , 
-                        `$table_user_name` table_users
-                    SET 
-                        table_listings.user_id_editor = table_users.user_id
-                    WHERE
-                        table_listings.post_id = table_users.post_id;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "UPDATE %1\$s table_listings, %2\$s table_users
+                 SET table_listings.user_id_editor = table_users.user_id
+                 WHERE table_listings.post_id = table_users.post_id;",
+                $table_name,
+                $table_user_name
+            ));
 
-            $sql = "TRUNCATE TABLE `$table_user_name`";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "TRUNCATE TABLE `{$table_name}`"
+            ));
+      
 
             self::$db_version = 2.1;
             /* udpate option with db version */
@@ -381,31 +397,38 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '2.2' ) {
 
             $table_name = $wpdb->prefix . 'wdk_locations';
-            $sql = "ALTER TABLE `$table_name` ADD `level_0_id` INT DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `level_0_id` INT DEFAULT NULL;"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_categories';
-            $sql = "ALTER TABLE `$table_name` ADD `level_0_id` INT DEFAULT NULL;";
-            $wpdb->query($sql);
-
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `level_0_id` INT DEFAULT NULL;"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_listings_locations';
-            $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+            $sql = $wpdb->prepare(
+                "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                         `idlistings_locations` int(11) NOT NULL AUTO_INCREMENT,
                         `location_id` int DEFAULT NULL,
                         `post_id` int DEFAULT NULL,
-                PRIMARY KEY  (idlistings_locations)
-            ) $charset_collate;";
+                        PRIMARY KEY  (idlistings_locations)
+                ) $charset_collate;"
+            );
             dbDelta( $sql );
 
             $table_name = $wpdb->prefix . 'wdk_listings_categories';
-            $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+            $sql = $wpdb->prepare(
+                "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                         `idlistings_categories` int(11) NOT NULL AUTO_INCREMENT,
                         `category_id` int DEFAULT NULL,
                         `post_id` int DEFAULT NULL,
-                PRIMARY KEY  (idlistings_categories)
-            ) $charset_collate;";
+                        PRIMARY KEY  (idlistings_categories)
+                ) $charset_collate;"
+            );
             dbDelta( $sql );
+
+       
 
 
             self::$db_version = 2.2;
@@ -415,8 +438,10 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '2.3' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name` ADD `listing_plans_documents` text DEFAULT '';";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `listing_plans_documents` text DEFAULT '';"
+            ));
+       
 
             self::$db_version = 2.3;
             /* udpate option with db version */
@@ -425,8 +450,10 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '2.4' ) {
 
             $table_name = $wpdb->prefix . 'wdk_resultitem';
-            $sql = "ALTER TABLE `$table_name`  ADD `is_label_disable` INT(1) NULL DEFAULT NULL";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `is_label_disable` INT(1) NULL DEFAULT NULL"
+            ));
+       
 
             self::$db_version = 2.4;
             /* udpate option with db version */
@@ -435,12 +462,14 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '2.5' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `categories_list` VARCHAR(128) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `categories_list` VARCHAR(128) DEFAULT ''"
+            ));
 
-            $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `locations_list` VARCHAR(128) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `locations_list` VARCHAR(128) DEFAULT ''"
+            ));
+       
 
 
             self::$db_version = 2.5;
@@ -450,9 +479,12 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '2.6' ) {
 
             $table_name = $wpdb->prefix . 'wdk_fields';
+            $wpdb->query($wpdb->prepare(
+                "UPDATE `{$table_name}` SET `is_visible_frontend` = %d",
+                1
+            ));
 
-            $sql = "UPDATE `$table_name` SET `is_visible_frontend` = '1'";
-            $wpdb->query($sql);
+       
 
             self::$db_version = 2.6;
             /* udpate option with db version */ 
@@ -460,8 +492,10 @@ class Wpdirectorykit_Activator {
 
         if ( get_site_option( 'wdk_db_version' ) < '2.7' ) {
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `listing_images_path_medium` VARCHAR(250) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `listing_images_path_medium` VARCHAR(250) DEFAULT ''"
+            ));
+       
 
             self::$db_version = 2.7;
             /* udpate option with db version */ 
@@ -472,7 +506,7 @@ class Wpdirectorykit_Activator {
                     
             $table_name = $wpdb->prefix . 'wdk_dependfields';
 
-            $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+            $sql = $sql = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                     `iddependfields` int(11) NOT NULL AUTO_INCREMENT,
                     `main_field` varchar(60) DEFAULT '',
                     `field_id` int(11) DEFAULT NULL,
@@ -490,7 +524,15 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '2.9' ) {
             // Main table for visited pages
             global $wpdb;
-            $wpdb->query('UPDATE '.$wpdb->prefix . 'wdk_fields SET is_price_format = 1 WHERE (idfield=6 OR idfield=7) AND field_type="NUMBER"');
+            $table_name = $wpdb->prefix . 'wdk_fields';
+            $wpdb->query($wpdb->prepare(
+                "UPDATE `{$table_name}` SET is_price_format = %d WHERE (idfield=%d OR idfield=%d) AND field_type=%s",
+                1,
+                6,
+                7,
+                'NUMBER'
+            ));
+       
             self::$db_version = 2.9;
             /* udpate option with db version */ 
         }
@@ -499,8 +541,11 @@ class Wpdirectorykit_Activator {
 
             $table_name = $wpdb->prefix . 'wdk_fields';
 
-            $sql = "UPDATE `$table_name` SET `is_visible_dashboard` = '1'";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "UPDATE `{$table_name}` SET is_visible_dashboard = %d",
+                1
+            ));
+       
 
             self::$db_version = 3.0;
             /* udpate option with db version */ 
@@ -509,18 +554,25 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '3.1' ) {
 
             $table_name = $wpdb->prefix . 'wdk_locations';
-            $sql = "ALTER TABLE `$table_name`  ADD `icon_path` VARCHAR(100) DEFAULT ''";
-            $wpdb->query($sql);
-            $sql = "ALTER TABLE `$table_name`  ADD `image_path` VARCHAR(100) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `icon_path` VARCHAR(100) DEFAULT ''"
+            ));
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `image_path` VARCHAR(100) DEFAULT ''"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_categories';
-            $sql = "ALTER TABLE `$table_name`  ADD `icon_path` VARCHAR(100) DEFAULT ''";
-            $wpdb->query($sql);
-            $sql = "ALTER TABLE `$table_name`  ADD `image_path` VARCHAR(100) DEFAULT ''";
-            $wpdb->query($sql);
-            $sql = "ALTER TABLE `$table_name`  ADD `marker_image_path` VARCHAR(100) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `icon_path` VARCHAR(100) DEFAULT ''"
+            ));
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `image_path` VARCHAR(100) DEFAULT ''"
+            ));
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `marker_image_path` VARCHAR(100) DEFAULT ''"
+            ));
+
+       
 
             // TODO: this column content should be generated based on listing_images or old client may have issues after update
 
@@ -533,7 +585,7 @@ class Wpdirectorykit_Activator {
                     
             $table_name = $wpdb->prefix . 'wdk_token';
 
-            $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+            $sql = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                     `idtoken` int(11) NOT NULL AUTO_INCREMENT,
                     `token` varchar(60) UNIQUE DEFAULT '',
                     `user_id` int(11) DEFAULT NULL,
@@ -561,16 +613,19 @@ class Wpdirectorykit_Activator {
             // Main table for visited pages
             
             $table_name = $wpdb->prefix . 'wdk_locations';
-            $sql = "ALTER TABLE `$table_name` ADD `related_svg_map` varchar(64) DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `related_svg_map` varchar(64) DEFAULT NULL;"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_locations';
-            $sql = "ALTER TABLE `$table_name` ADD `related_svg_map_location` varchar(128) DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `related_svg_map_location` varchar(128) DEFAULT NULL;"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_fields';
-            $sql = "ALTER TABLE `$table_name` CHANGE `values_list` `values_list` TEXT NULL DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` CHANGE `values_list` `values_list` TEXT NULL DEFAULT NULL;"
+            ));
 
             self::$db_version = 3.4;
             /* udpate option with db version */ 
@@ -580,24 +635,29 @@ class Wpdirectorykit_Activator {
             // Main table for visited pages
 
             $table_name = $wpdb->prefix . 'wdk_categories';
-            $sql = "ALTER TABLE `$table_name` ADD `category_color` varchar(32) DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `category_color` varchar(32) DEFAULT NULL;"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_fields';
-            $sql = "ALTER TABLE `$table_name` ADD `validation` varchar(64) DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `validation` varchar(64) DEFAULT NULL;"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_fields';
-            $sql = "ALTER TABLE `$table_name` ADD `min_length` INT(3) DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `min_length` INT(3) DEFAULT NULL;"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name` CHANGE `listing_images_path` `listing_images_path` TEXT DEFAULT '';";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` CHANGE `listing_images_path` `listing_images_path` TEXT DEFAULT '';"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name` CHANGE `listing_images_path_medium` `listing_images_path_medium` TEXT DEFAULT '';";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` CHANGE `listing_images_path_medium` `listing_images_path_medium` TEXT DEFAULT '';"
+            ));
 
             self::$db_version = 3.5;
             /* udpate option with db version */ 
@@ -607,16 +667,19 @@ class Wpdirectorykit_Activator {
 
             $table_name = $wpdb->prefix . 'wdk_fields';
 
-            $sql = "UPDATE `$table_name` SET `is_visible_dashboard` = '1'";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "UPDATE `{$table_name}` SET `is_visible_dashboard` = '1'"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name` CHANGE `locations_list` `locations_list` TEXT DEFAULT '';";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` CHANGE `locations_list` `locations_list` TEXT DEFAULT '';"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name` CHANGE `categories_list` `categories_list` TEXT DEFAULT '';";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` CHANGE `categories_list` `categories_list` TEXT DEFAULT '';"
+            ));
 
             self::$db_version = 3.6;
             /* udpate option with db version */ 
@@ -626,8 +689,9 @@ class Wpdirectorykit_Activator {
 
             $table_name = $wpdb->prefix . 'wdk_fields';
 
-            $sql = "ALTER TABLE `$table_name` ADD `placeholder` varchar(128) DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `placeholder` varchar(128) DEFAULT NULL;"
+            ));
 
             self::$db_version = 3.7;
             /* udpate option with db version */ 
@@ -636,8 +700,9 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '3.8' ) {
 
             $table_name = $wpdb->prefix . 'wdk_messages';
-            $sql = "ALTER TABLE `$table_name` ADD `is_notified` tinyint(1) DEFAULT NULL; ";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `is_notified` tinyint(1) DEFAULT NULL; "
+            ));
 
             self::$db_version = 3.8;
             /* udpate option with db version */ 
@@ -647,7 +712,7 @@ class Wpdirectorykit_Activator {
 
             $table_name = $wpdb->prefix . 'wdk_users';
 
-            $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+            $sql = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                     `idusers` int(11) NOT NULL AUTO_INCREMENT,
                     `cacheduser_user_id` int(11) DEFAULT NULL,
                     `cacheduser_profile_url` text DEFAULT NULL,
@@ -685,16 +750,17 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '4.0' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `listing_related_ids` VARCHAR(512) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `listing_related_ids` VARCHAR(512) DEFAULT ''"
+            ));
 
-            $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `sublisting_order` INT(11) DEFAULT NULL";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `sublisting_order` INT(11) DEFAULT NULL"
+            ));
 
-            $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `listing_parent_post_id` INT(11) DEFAULT NULL";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `listing_parent_post_id` INT(11) DEFAULT NULL"
+            ));
                 
             /* disable elmentor experement feature */
             update_option( 'elementor_experiment-landing-pages', 'inactive' );
@@ -707,8 +773,9 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '4.1' ) {
 
             $table_name = $wpdb->prefix . 'wdk_dependfields';
-            $sql = "ALTER TABLE `$table_name` CHANGE `hidden_fields_list` `hidden_fields_list` TEXT NULL DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` CHANGE `hidden_fields_list` `hidden_fields_list` TEXT NULL DEFAULT NULL;"
+            ));
 
             self::$db_version = 4.1;
             /* udpate option with db version */ 
@@ -723,7 +790,8 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '4.3' ) {
             $table_name = $wpdb->prefix . 'wdk_editlog';
 
-            $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+            $sql = $wpdb->prepare(
+                "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                     `ideditlog` int(11) NOT NULL AUTO_INCREMENT,
                     `post_id` int(11) DEFAULT NULL,
                     `user_id` int(11) DEFAULT NULL,
@@ -731,7 +799,8 @@ class Wpdirectorykit_Activator {
                     `ip` text DEFAULT NULL,
                     `comment` text DEFAULT NULL,
                 PRIMARY KEY  (ideditlog)
-                ) $charset_collate;";
+                ) $charset_collate;"
+            );
         
             dbDelta( $sql );
             self::$db_version = 4.3;
@@ -757,8 +826,9 @@ class Wpdirectorykit_Activator {
             update_option( 'wdk_is_alt_agent_enabled', '1');
 
             $table_name = $wpdb->prefix . 'wdk_users';
-            $sql = "ALTER TABLE `$table_name`  ADD `cacheduser_agency_name` text DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `cacheduser_agency_name` text DEFAULT ''"
+            ));
 
             self::$db_version = 4.5;
             /* udpate option with db version */ 
@@ -767,8 +837,9 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '4.6' ) {
                 
             $table_name = $wpdb->prefix . 'wdk_fields';
-            $sql = "ALTER TABLE `$table_name`  ADD `empty_value` text DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `empty_value` text DEFAULT ''"
+            ));
 
             self::$db_version = 4.6;
             /* udpate option with db version */ 
@@ -777,8 +848,9 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '4.7' ) {
                 
             $table_name = $wpdb->prefix . 'wdk_fields';
-            $sql = "ALTER TABLE `$table_name`  ADD `date_format` text DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `date_format` text DEFAULT ''"
+            ));
 
             self::$db_version = 4.7;
             /* udpate option with db version */ 
@@ -787,12 +859,14 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '4.8' ) {
 
             $table_name = $wpdb->prefix . 'wdk_categories';
-            $sql = "ALTER TABLE `$table_name` ADD `titles_for_search` text DEFAULT '';";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `titles_for_search` text DEFAULT '';"
+            ));
 
             $table_name = $wpdb->prefix . 'wdk_locations';
-            $sql = "ALTER TABLE `$table_name` ADD `titles_for_search` text DEFAULT '';";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `titles_for_search` text DEFAULT '';"
+            ));
 
             self::$db_version = 4.8;
             /* udpate option with db version */
@@ -801,11 +875,13 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '4.9' ) {
 
             $table_name = $wpdb->prefix . 'wdk_users';
-            $sql = "ALTER TABLE `$table_name`  ADD `cacheduser_user_login` text DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `cacheduser_user_login` text DEFAULT ''"
+            ));
 
-            $sql = "ALTER TABLE `$table_name`  ADD `cacheduser_wdk_slug` text DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `cacheduser_wdk_slug` text DEFAULT ''"
+            ));
 
             self::$db_version = 4.9;
             /* udpate option with db version */
@@ -815,8 +891,9 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '5.0' ) {
 
             $table_name = $wpdb->prefix . 'wdk_fields';
-            $sql = "ALTER TABLE `$table_name` ADD `autosuggestion` varchar(64) DEFAULT NULL;";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `autosuggestion` varchar(64) DEFAULT NULL;"
+            ));
 
             self::$db_version = 5.0;
             /* udpate option with db version */
@@ -825,24 +902,26 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '5.1' ) {
 
             $table_name = $wpdb->prefix . 'wdk_resultitem';
-            $sql = "ALTER TABLE `$table_name`  ADD `is_show_agent_details` INT(1) NULL DEFAULT NULL";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `is_show_agent_details` INT(1) NULL DEFAULT NULL"
+            ));
             
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `user_id_editor_display_name` VARCHAR(128) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `user_id_editor_display_name` VARCHAR(128) DEFAULT ''"
+            ));
             
-            $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `user_id_editor_user_login` VARCHAR(128) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `user_id_editor_user_login` VARCHAR(128) DEFAULT ''"
+            ));
             
-            $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `user_id_editor_wdk_slug` VARCHAR(128) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `user_id_editor_wdk_slug` VARCHAR(128) DEFAULT ''"
+            ));
             
-            $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `user_id_editor_avatar` VARCHAR(256) DEFAULT ''";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `user_id_editor_avatar` VARCHAR(256) DEFAULT ''"
+            ));
 
             self::$db_version = 5.1;
             /* udpate option with db version */
@@ -851,8 +930,9 @@ class Wpdirectorykit_Activator {
         if ( get_site_option( 'wdk_db_version' ) < '5.2' ) {
 
             $table_name = $wpdb->prefix . 'wdk_listings';
-            $sql = "ALTER TABLE `$table_name`  ADD `counter_results_views` INT(111) DEFAULT 0";
-            $wpdb->query($sql);
+            $wpdb->query($wpdb->prepare(
+                "ALTER TABLE `{$table_name}` ADD `counter_results_views` INT(111) DEFAULT 0"
+            ));
             
             self::$db_version = 5.2;
             /* udpate option with db version */
@@ -867,4 +947,4 @@ class Wpdirectorykit_Activator {
        
         update_option( 'wdk_db_version', self::$db_version );
     }
-}   
+}

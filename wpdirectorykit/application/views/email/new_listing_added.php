@@ -37,7 +37,7 @@ if (!defined('ABSPATH')) {
         <h2 style="margin-top:0">
 
         </h2>
-        <?php echo esc_html__('New Listing posted', 'wpdirectorykit') . ': <a href="' . admin_url('admin.php?page=wdk_listing&id=' . $post_id) . '">' . __('Check Listing', 'wpdirectorykit') . '</a>'; ?>
+        <?php echo esc_html__('New Listing posted', 'wpdirectorykit') . ': <a href="' .esc_url(admin_url('admin.php?page=wdk_listing&id=' . $post_id)) . '">' . esc_html__('Check Listing', 'wpdirectorykit') . '</a>'; ?>
     </div>
 
     <!-- Footer -->

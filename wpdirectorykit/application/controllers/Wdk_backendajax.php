@@ -53,7 +53,7 @@ class Wdk_backendajax extends Winter_MVC_Controller
             $count = 0;
             foreach ($output  as $key => $value) {
                 $data['rss'][] = array(
-                    'date' => wdk_get_date(wmvc_show_data('date', $value, date('Y-m-d H:i:s'), TRUE, TRUE), false),
+                    'date' => wdk_get_date(wmvc_show_data('date', $value, gmdate('Y-m-d H:i:s'), TRUE, TRUE), false),
                     'title' => wmvc_show_data('title', $value, '', TRUE, TRUE),
                     'link' => wmvc_show_data('link', $value, '', TRUE, TRUE),
                 );
@@ -268,7 +268,7 @@ class Wdk_backendajax extends Winter_MVC_Controller
 
                     $image_url = wp_get_attachment_image_url($image_id, 'large');
                     if ($image_url) {
-                        $parsed = parse_url($image_url);
+                        $parsed = wp_parse_url($image_url);
                         $next_path = substr($parsed['path'], strpos($parsed['path'], 'uploads/') + 8);
 
                         if (!empty($listing_data['listing_images_path_medium']))
@@ -634,10 +634,7 @@ class Wdk_backendajax extends Winter_MVC_Controller
         $table_listing_fields = $wpdb->prefix . 'wdk_listings_fields';
         if(!empty($existing_listing_fields)) foreach ($existing_listing_fields as $field_listing_col => $field_listing) {
             if(substr($field_listing_col, 0, 6) == 'field_') {
-                $sql = "ALTER TABLE `{$table_listing_fields}`
-                            DROP `$field_listing_col`;";
-
-                $wpdb->query( $sql );
+                $wpdb->query( $wpdb->prepare( "ALTER TABLE `{$table_listing_fields}` DROP `$field_listing_col`;" ) );
             }
         }
 
@@ -806,6 +803,49 @@ class Wdk_backendajax extends Winter_MVC_Controller
         } else {
             $data['page_id'] = $new_page->ID;
         }
+
+        if (empty($data['popup_text_error'])) {
+            $data['success'] = true;
+        }
+
+        $this->output($data);
+    }
+
+    public function wdk_save_ai_search_fields()
+    {
+        $data = array();
+        $data['message'] = '';
+        $data['popup_text_success'] = '';
+        $data['popup_text_error'] = '';
+        $data['parameters'] = $_POST;
+        $data['success'] = false;
+        $data['page_id'] = false;
+        $data['page_title'] = false;
+        $data['results'] = array();
+
+        /* protect */
+        if(!wmvc_user_in_role('administrator')) {
+            $data['message'] = __('Disabled for current user', 'wpdirectorykit');
+            $this->output($data);
+        }
+
+        // Check _wpnonce
+        check_admin_referer( 'wdk-backendajax', '_wpnonce' );
+        
+        $fields = isset($_POST['fields'])
+            ? array_filter(
+                array_map('intval', (array) wp_unslash($_POST['fields'])),
+                function($val) { return is_int($val) && $val > 0; }
+            )
+            : [];
+       
+   
+        update_option(
+            'wdk_ai_search_fields',
+            $fields
+        );
+
+        $data['popup_text_success'] = __('AI Search fields updated successfully.', 'wpdirectorykit');
 
         if (empty($data['popup_text_error'])) {
             $data['success'] = true;

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
     <div class="wdk-listings-results 
-    <?php echo wmvc_show_data('styles_thmbn_des_type',$settings, '');?> view-<?php echo wmvc_show_data('layout_type',$settings, '');?>
+    <?php echo esc_attr(wmvc_show_data('styles_thmbn_des_type',$settings, ''));?> view-<?php echo esc_attr(wmvc_show_data('layout_type',$settings, ''));?>
     <?php if(wmvc_show_data('enable_separed_styles',$settings, '') == true):?> enable_separed_styles <?php endif;?>
         <?php if
             (
@@ -59,7 +59,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                                         $item['key'] .= ' '.$item['order_type'];
                                     }
                                 ?>
-                                <option value="<?php echo esc_attr($item['key']);?>" <?php echo (wmvc_show_data('order_by', $_GET, '') == $item['key'])?'selected="selected"':''; ?>><?php echo esc_html__(wmvc_show_data('title', $item), 'wpdirectorykit');?></option>
+                                <option value="<?php echo esc_attr($item['key']);?>" <?php echo (wmvc_show_data('order_by', $_GET, '') == $item['key'])?'selected="selected"':''; ?>><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(wmvc_show_data('title', $item), 'wpdirectorykit');?></option>
                             <?php endforeach;?>
                         <?php else:?>
                             <option value="post_id DESC" <?php echo !empty(wmvc_show_data('order_by', $_GET, '') =='post_id DESC')?'selected="selected"':''; ?>><?php echo esc_html__('Sort by: Latest', 'wpdirectorykit');?></option>
@@ -85,7 +88,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <?php endif;?>
         <?php if(!empty($results)):?>
             <?php if($settings['layout_type'] == 'carousel'):?>
-                <div class="wdk_results_listings_slider_box <?php echo esc_attr($settings['layout_carousel_animation_style']).'_animation';?> <?php echo join(' ', [$settings['styles_carousel_dots_position_style'], $settings['styles_carousel_arrows_position']]);?>">
+                <div class="wdk_results_listings_slider_box <?php echo esc_attr($settings['layout_carousel_animation_style']).'_animation';?> <?php echo esc_attr(join(' ', [$settings['styles_carousel_dots_position_style'], $settings['styles_carousel_arrows_position']]));?>">
                 <div class="wdk_results_listings_slider_body">
                 <div class="wdk_results_listings_slider_ini">
             <?php else:?>
@@ -137,10 +140,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <?php echo esc_html__( 'Listings Card List From Extern Layout', 'wpdirectorykit' );?>
                     <?php endif;?>
                     <?php else:?>
-                        <?php echo wdk_listing_card($listing, $settings);?>
+                        <?php 
+                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                            echo wdk_listing_card($listing, $settings);?>
                         <?php endif;?>
                         <?php else:?>
-                            <?php echo wdk_listing_card($listing, $settings);?>
+                            <?php 
+                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo wdk_listing_card($listing, $settings);?>
                             <?php endif;?>
                         </div>
                 </div>
@@ -164,7 +171,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <p class="wdk_alert wdk_alert-danger"><?php echo esc_html__('Results not found', 'wpdirectorykit');?></p>
         <?php endif;?>
         <?php if($settings['layout_type'] != 'carousel'):?>
-            <?php echo wmvc_xss_clean($pagination_output); ?>
+            <?php echo wp_kses_post(wmvc_xss_clean($pagination_output)); ?>
         <?php endif;?>
     </div>
     <?php if($settings['layout_type'] == 'carousel'):?>
@@ -175,15 +182,18 @@ if ( ! defined( 'ABSPATH' ) ) {
                 arrows: true,
                 rtl: localStorage.getItem('siteDirection') == "rtl" ? true : false,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_centerMode', $settings))):?>
-                centerMode: <?php echo wmvc_show_data('layout_carousel_is_centerMode', $settings, 'true');?>,
+                centerMode: <?php echo esc_js(wmvc_show_data('layout_carousel_is_centerMode', $settings, 'true'))
+                ;?>,
                 <?php endif;?>
-                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? wmvc_show_data('layout_carousel_columns', $settings, '3') : 3;?>,
-                slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? wmvc_show_data('layout_carousel_columns', $settings, '3') : 3;?>,
+                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? esc_html(wmvc_show_data('layout_carousel_columns', $settings, '3')) : 3;?>,
+                slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? esc_html(wmvc_show_data('layout_carousel_columns', $settings, '3')) : 3;?>,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_infinite', $settings))):?>
-                infinite: <?php echo wmvc_show_data('layout_carousel_is_infinite', $settings, 'true');?>,
+                infinite: <?php echo esc_js(wmvc_show_data('layout_carousel_is_infinite', $settings, 'true'))
+                ;?>,
                 <?php endif;?>
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_autoplay', $settings))):?>
-                autoplay: <?php echo wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false');?>,
+                autoplay: <?php echo esc_js(wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false'))
+                ;?>,
                 <?php endif;?>
                 nextArrow: $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_slider_arrows .wdk-slider-next'),
                 prevArrow: $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_slider_arrows .wdk-slider-prev'),
@@ -195,15 +205,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                     {
                         breakpoint: 991,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? wmvc_show_data('layout_carousel_columns_tablet', $settings, '2') : 2;?>,
-                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? wmvc_show_data('layout_carousel_columns_tablet', $settings, '2') : 2;?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? esc_html(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')) : 2;?>,
+                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? esc_html(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')) : 2;?>,
                         }
                     },
                     {
                         breakpoint: 768,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? wmvc_show_data('layout_carousel_columns_mobile', $settings, '1') : 1;?>,
-                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? wmvc_show_data('layout_carousel_columns_mobile', $settings, '1') : 1;?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? esc_html(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')) : 1;?>,
+                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? esc_html(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')) : 1;?>,
                         }
                     },
                 ]

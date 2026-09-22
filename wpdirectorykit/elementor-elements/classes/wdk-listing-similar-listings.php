@@ -30,6 +30,7 @@ class WdkListingSimilarListings extends WdkElementorBase {
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
         );
+ 
 
         \Elementor\Controls_Manager::add_tab(
             'tab_layout',
@@ -224,7 +225,7 @@ class WdkListingSimilarListings extends WdkElementorBase {
                 $this->data['settings']['layout_type'] = 'list';
         }
         
-        echo $this->view('wdk-listing-similar-listings', $this->data); 
+        $this->view('wdk-listing-similar-listings', $this->data, true); 
     }
 
 
@@ -258,7 +259,12 @@ class WdkListingSimilarListings extends WdkElementorBase {
                     'type' => \Elementor\Controls_Manager::TEXT,
                     'default' => '',
                     'placeholder' => __( 'put your template id', 'wpdirectorykit' ),
-                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ) . ' ' . wdk_sprintf(
+                        /* translators: 1: Tag with link open, 2: close link tag. */
+                        __('%1$s here %2$s', 'wpdirectorykit'),
+                        '<a target="_blank" href="' . esc_url(admin_url('edit.php?post_type=elementor_library#add_new')) . '">',
+                        '</a>'
+                    ),
                     'conditions' => [
                         'terms' => [
                             [
@@ -278,7 +284,12 @@ class WdkListingSimilarListings extends WdkElementorBase {
                     'type' => \Elementor\Controls_Manager::TEXT,
                     'default' => '',
                     'placeholder' => __( 'put your template id', 'wpdirectorykit' ),
-                    'description' => __( 'Create layout here', 'wpdirectorykit' ).' '.wdk_sprintf(__('%1$s here %2$s','wpdirectorykit'),'<a target="_blank" href="'.admin_url('edit.php?post_type=elementor_library#add_new').'">','</a>'),
+                    'description' => __( 'Create layout here', 'wpdirectorykit' ) . ' ' . wdk_sprintf(
+                        /* translators: 1: Tag with link open, 2: close link tag. */
+                        __('%1$s here %2$s', 'wpdirectorykit'),
+                        '<a target="_blank" href="' . esc_url(admin_url('edit.php?post_type=elementor_library#add_new')) . '">',
+                        '</a>'
+                    ),
                     'conditions' => [
                         'terms' => [
                             [
@@ -439,6 +450,7 @@ class WdkListingSimilarListings extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Edit Result Card Designer <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_resultitem')),
                 'content_classes' => 'wdk_elementor_hint',
             ]

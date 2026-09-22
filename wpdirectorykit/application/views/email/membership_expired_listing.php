@@ -36,10 +36,10 @@ if (!defined('ABSPATH')) {
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
         <p>
-          <?php echo esc_html__('Listing expired', 'wpdirectorykit') . ': <a href="' . get_permalink($listing) . '">' . wmvc_show_data('post_title', $listing, '', TRUE, TRUE) . '</a>'; ?>
+          <?php echo esc_html__('Listing expired', 'wpdirectorykit') . ': <a href="' .esc_url( get_permalink($listing)) . '">' . esc_html(wmvc_show_data('post_title', $listing, '', TRUE, TRUE)) . '</a>'; ?>
         </p>
         <?php if (!empty($subscription_link)) : ?>
-          <?php echo esc_html__('Please click', 'wpdirectorykit') . ': <a href="' . ($subscription_link) . '">' . esc_html__('Purchase again subscription', 'wpdirectorykit') . '</a>'; ?>
+          <?php echo esc_html__('Please click', 'wpdirectorykit') . ': <a href="' . esc_url(($subscription_link)) . '">' . esc_html__('Purchase again subscription', 'wpdirectorykit') . '</a>'; ?>
         <?php endif; ?>
     </div>
 

@@ -191,7 +191,7 @@ class WdkFieldLabel extends WdkElementorBase {
                 return false;
         }
 
-        echo $this->view('wdk-field-label', $this->data); 
+        $this->view('wdk-field-label', $this->data, true); 
     }
 
 

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <table class="table table-bordered footable">
             <tbody id="wdk_script_news_table">
                 <tr>
-                    <td colspan="5"><?php echo __('Loading in progress', 'wpdirectorykit');?></td>
+                    <td colspan="5"><?php echo esc_html__('Loading in progress', 'wpdirectorykit');?></td>
                 </tr>      
             </tbody>
         </table>

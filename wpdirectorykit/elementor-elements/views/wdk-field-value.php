@@ -110,11 +110,11 @@ if (! defined('ABSPATH')) {
                     $url = get_permalink($wdk_listing_id);
                 }
                 ?>
-                <a href="<?php echo $url; ?>">
+                <a href="<?php echo esc_url($url); ?>">
                     <span class='prefix'><?php echo esc_html($field_prefix); ?></span>
                     <span class="value <?php if (wmvc_show_data('text_limit_per_line', $settings)): ?> wdk-stroke <?php endif; ?>">
                         <?php if (wmvc_show_data('text_limit_worlds', $settings)): ?>
-                            <?php echo (wp_strip_all_tags(html_entity_decode(wp_trim_words($field_value, $settings['text_limit_worlds'], '...')))); ?>
+                            <?php echo wp_kses_post(wp_strip_all_tags(html_entity_decode(wp_trim_words($field_value, $settings['text_limit_worlds'], '...')))); ?>
                         <?php else: ?>
                             <?php echo wp_kses_post(wp_unslash(wdk_filter_decimal($field_value))); ?>
                         <?php endif; ?>
@@ -123,7 +123,7 @@ if (! defined('ABSPATH')) {
                 </a>
 
             <?php else: ?>
-                <?php echo empty(wmvc_show_data('html_tag', $settings, 'span')) ? '<span>' : '<' . wmvc_show_data('html_tag', $settings, 'span') . '>'; ?>
+                <?php echo empty(wmvc_show_data('html_tag', $settings, 'span')) ? '<span>' : '<' . esc_html(wmvc_show_data('html_tag', $settings, 'span')) . '>'; ?>
                 <span class='prefix'><?php echo esc_html($field_prefix); ?></span>
 
 
@@ -132,7 +132,7 @@ if (! defined('ABSPATH')) {
                 <?php else: ?>
                     <span class="value <?php if (wmvc_show_data('text_limit_per_line', $settings)): ?> wdk-stroke <?php endif; ?>">
                         <?php if (wmvc_show_data('text_limit_worlds', $settings)): ?>
-                            <?php echo (wp_strip_all_tags(html_entity_decode(wp_trim_words($field_value, $settings['text_limit_worlds'], '...')))); ?>
+                            <?php echo wp_kses_post(wp_strip_all_tags(html_entity_decode(wp_trim_words($field_value, $settings['text_limit_worlds'], '...')))); ?>
                         <?php else: ?>
                             <?php echo wp_kses_post(wp_unslash(wdk_filter_decimal($field_value))); ?>
                         <?php endif; ?>
@@ -140,7 +140,7 @@ if (! defined('ABSPATH')) {
                 <?php endif; ?>
 
                 <span class='suffix'><?php echo esc_html($field_suffix); ?></span>
-                <?php echo empty(wmvc_show_data('html_tag', $settings, 'span')) ? '</span>' : '</' . wmvc_show_data('html_tag', $settings, 'span') . '>'; ?>
+                <?php echo empty(wmvc_show_data('html_tag', $settings, 'span')) ? '</span>' : '</' . esc_html(wmvc_show_data('html_tag', $settings, 'span')) . '>'; ?>
             <?php endif; ?>
         </div>
     <?php endif; ?>

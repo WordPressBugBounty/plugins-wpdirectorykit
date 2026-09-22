@@ -15,6 +15,8 @@ $field_key = 'search_category';
 $field_attr_id = 'wdk_search_'.wmvc_show_data('idfield', $field_data);
 $placeholder = wmvc_show_data('field_label', $field_data);
 $field_value = '';
+// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 $placeholder = esc_html__($placeholder,'wpdirectorykit');
 
 $filter_ids = array();
@@ -124,7 +126,27 @@ wdk_search_fields_toggle();
                 wdk_field_id_category">
                 <label class="wdk-field-label"><?php echo esc_html(wmvc_show_data('field_label', $field_data)); ?></label>
                 <div class="wdk-field-group">
-                    <?php echo wmvc_select_option('category_'.$level, $values_list, $category, 'class="wdk-control"');?>
+                    <?php
+                        echo wp_kses(
+                            wmvc_select_option('category_'.$level, $values_list, $category, 'class="wdk-control"'),
+                            array(
+                                'select' => array(
+                                    'id' => true,
+                                    'name' => true,
+                                    'class' => true,
+                                    'style' => true,
+                                    'multiple' => true,
+                                    'size' => true,
+                                ),
+                                'option' => array(
+                                    'value' => true,
+                                    'selected' => true,
+                                    'disabled' => true,
+                                ),
+                            )
+                        );
+                    ?>
+               
                 </div>
             </div>
 
@@ -146,7 +168,27 @@ wdk_search_fields_toggle();
                 <div data-level="<?php echo esc_attr($level);?>" data-field="<?php echo esc_attr($field_key); ?>" class="wdk-field wdk-col wdk_treefield_dropdown <?php echo esc_attr(wmvc_show_data('field_type', $field_data)); ?> <?php echo esc_attr(wmvc_show_data('class', $field_data)); ?>">
                     <label class="wdk-field-label"><?php echo esc_html(wmvc_show_data('field_label', $field_data)); ?></label>
                     <div class="wdk-field-group">
-                        <?php echo wmvc_select_option('category_'.$level, $values_list, NULL, 'class="wdk-control"');?>
+                        <?php
+                            echo wp_kses(
+                                wmvc_select_option('category_'.$level, $values_list, NULL, 'class="wdk-control"'),
+                                array(
+                                    'select' => array(
+                                        'id' => true,
+                                        'name' => true,
+                                        'class' => true,
+                                        'style' => true,
+                                        'multiple' => true,
+                                        'size' => true,
+                                    ),
+                                    'option' => array(
+                                        'value' => true,
+                                        'selected' => true,
+                                        'disabled' => true,
+                                    ),
+                                )
+                            );
+                        ?>
+                   
                     </div>
                 </div>
     
@@ -160,15 +202,26 @@ wdk_search_fields_toggle();
         <label class="wdk-field-label"><?php echo esc_html(wmvc_show_data('field_label', $field_data)); ?></label>
         <div class="wdk-field-group">
             <?php if(wdk_get_option('wdk_multi_categories_search_field_type') == 'select2'):?>
-                <?php echo wdk_treefield_select_ajax ($field_key.'[]', 'category_m', $field_value, 'category_title','idcategory', '', __('All Categories', 'wpdirectorykit'), $filter_ids);?>
+                <?php 
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                    echo wdk_treefield_select_ajax ($field_key.'[]', 'category_m', $field_value, 'category_title','idcategory', '', __('All Categories', 'wpdirectorykit'), $filter_ids);?>
             <?php elseif(wdk_get_option('wdk_multi_categories_search_field_type') == 'wdk_treefield_checkboxes'):?>
                 <?php
                     wp_enqueue_style( 'wdk-treefield-checkboxes');
                     wp_enqueue_script( 'wdk-treefield-checkboxes');
                 ?>
-                <?php echo wdk_treefield_option_checkboxes  ('search_category', 'category_m', $field_value, 'category_title', '', __('All Categories', 'wpdirectorykit'), $filter_ids);?>
+                <?php
+                     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                    echo wdk_treefield_option_checkboxes('search_category', 'category_m', $field_value, 'category_title', '', __('All Categories', 'wpdirectorykit'), $filter_ids);
+                       
+                ?>
+           
             <?php else:?>
-                <?php echo wdk_treefield_option ('search_category', 'category_m', $field_value, 'category_title', '', __('All Categories', 'wpdirectorykit'), $filter_ids, FALSE, '', $hide_fields);?>
+                <?php 
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                    echo wdk_treefield_option('search_category', 'category_m', $field_value, 'category_title', '', __('All Categories', 'wpdirectorykit'), $filter_ids, FALSE, '', $hide_fields);
+                ?>
+           
             <?php endif;?>
         </div>
     </div>

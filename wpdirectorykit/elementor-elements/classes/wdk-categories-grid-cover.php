@@ -30,6 +30,7 @@ class WdkCategoriesGridCover extends WdkElementorBase {
         \Elementor\Controls_Manager::add_tab(
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
+ 
         );
 
         \Elementor\Controls_Manager::add_tab(
@@ -160,7 +161,12 @@ class WdkCategoriesGridCover extends WdkElementorBase {
             if($this->data['settings']['conf_order_by'] == 'order_most') {
                 /* get category with most listings */
                 global $wpdb;
-                $order_by = 'listings_counter '.$this->data['settings']['conf_order'];
+                $order = strtolower($this->data['settings']['conf_order']);
+                if ($order !== 'asc' && $order !== 'desc') {
+                    $order = 'desc';
+                }
+                $order_by = 'listings_counter ' . $order;
+           
                 $this->data['results'] = $this->WMVC->{$controller.'_m'}->get_pagination((!empty($this->data['settings']['conf_limit'])) ? $this->data['settings']['conf_limit'] : NULL, null, array(), $order_by);
             } else {
                 $where = array();
@@ -180,7 +186,7 @@ class WdkCategoriesGridCover extends WdkElementorBase {
         if(Plugin::$instance->editor->is_edit_mode())
             $this->data['is_edit_mode']= true;
       
-        echo $this->view('wdk-categories-grid-cover', $this->data); 
+        $this->view('wdk-categories-grid-cover', $this->data, true); 
     }
 
 
@@ -228,6 +234,7 @@ class WdkCategoriesGridCover extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Edit Categories <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_category')),
                 'content_classes' => 'wdk_elementor_hint',
             ]

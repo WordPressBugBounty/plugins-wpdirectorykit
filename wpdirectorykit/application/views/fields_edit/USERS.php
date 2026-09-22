@@ -49,7 +49,26 @@ foreach($dbusers as $dbuser) {
 <div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
-        <?php echo wdk_treefield_option($field_id, 'user_m', wmvc_show_data($field_id, $db_data, ''), 'display_name', '', __('Not Selected', 'wpdirectorykit'));?>
+        <?php
+            echo wp_kses(
+                wdk_treefield_option($field_id, 'user_m', wmvc_show_data($field_id, $db_data, ''), 'display_name', '', __('Not Selected', 'wpdirectorykit')),
+                array(
+                    'select' => array(
+                        'class' => true,
+                        'id' => true,
+                        'name' => true,
+                        'multiple' => true,
+                        'style' => true,
+                    ),
+                    'option' => array(
+                        'value' => true,
+                        'selected' => true,
+                    ),
+                    // Add more allowed tags/attributes if wdk_treefield_option outputs others
+                )
+            );
+        ?>
+
         
         <?php
           //  echo wmvc_select_option($field_id, $users, wmvc_show_data($field_id, $db_data, ''), NULL, __('Not Selected', 'wpdirectorykit'));

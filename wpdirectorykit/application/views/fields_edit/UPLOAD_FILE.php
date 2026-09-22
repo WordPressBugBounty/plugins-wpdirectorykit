@@ -40,7 +40,9 @@ if(isset($field->is_required) && $field->is_required == 1)
 <div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
-        <?php echo wdk_upload_file($field_id, wmvc_show_data($field_id, $db_data, '')); ?>
+        <?php 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+        echo wdk_upload_file($field_id, wmvc_show_data($field_id, $db_data, '')); ?>
         <?php if(!empty($field->hint)):?>
         <p class="wdk-hint">
             <?php echo esc_html($field->hint); ?>

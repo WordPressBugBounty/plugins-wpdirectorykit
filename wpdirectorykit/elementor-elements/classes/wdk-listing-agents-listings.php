@@ -30,6 +30,7 @@ class WdkListingAgentsListings extends WdkElementorBase {
             'tab_conf',
             esc_html__('Settings', 'wpdirectorykit')
         );
+ 
 
         \Elementor\Controls_Manager::add_tab(
             'tab_layout',
@@ -243,7 +244,7 @@ class WdkListingAgentsListings extends WdkElementorBase {
                 $this->data['settings']['layout_type'] = 'list';
         }
 
-        echo $this->view('wdk-listing-agents-listings', $this->data); 
+        $this->view('wdk-listing-agents-listings', $this->data, true); 
     }
 
 
@@ -426,6 +427,7 @@ class WdkListingAgentsListings extends WdkElementorBase {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
+                /* translators: 1: URL. */
                 'raw' => wdk_sprintf(__( 'Edit Result Card Designer <a href="%1$s" target="_blank"> open </a>', 'wpdirectorykit' ), admin_url('admin.php?page=wdk_resultitem')),
                 'content_classes' => 'wdk_elementor_hint',
             ]

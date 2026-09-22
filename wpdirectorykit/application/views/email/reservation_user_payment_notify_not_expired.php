@@ -35,7 +35,7 @@ if (!defined('ABSPATH')) {
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
                 <h2 style="margin-top:0">
-                    <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo wdk_show_data('display_name', $user); ?>,
+                    <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo esc_html(wdk_show_data('display_name', $user)); ?>,
                 </h2>
 
                 <p>
@@ -68,7 +68,7 @@ if (!defined('ABSPATH')) {
                                                         color: #fff;
                                                         display: inline-block;
                                                         margin: 7px 0px;
-                                                    " href="' . ($pay_link) . '">' . esc_html__('please pay for reservation here', 'wpdirectorykit') . '</a>'; ?>
+                                                    " href="' . esc_url($pay_link) . '">' . esc_html__('please pay for reservation here', 'wpdirectorykit') . '</a>'; ?>
                     </p>
                 <?php endif; ?>
 
@@ -82,7 +82,10 @@ if (!defined('ABSPATH')) {
                     <?php foreach ($data as $key => $value) : ?>
                         <?php if (!empty($value)) : ?>
                             <p>
-                                <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
+                                <strong><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
                             </p>
                         <?php endif; ?>
                     <?php endforeach; ?>

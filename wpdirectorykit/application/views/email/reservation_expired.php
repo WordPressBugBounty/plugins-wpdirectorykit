@@ -36,7 +36,7 @@ if (!defined('ABSPATH')) {
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
         <?php echo esc_html__('Purchase time expired, please make new reservation', 'wpdirectorykit') ?> <br/><br/>
-        <?php echo esc_html__('Reservation expired, for listing', 'wpdirectorykit') . ': <a href="' . get_permalink($listing) . '">' . wmvc_show_data('post_title', $listing, '', TRUE, TRUE) . '</a>'; ?> <br/><br/>
+        <?php echo esc_html__('Reservation expired, for listing', 'wpdirectorykit') . ': <a href="' .esc_url( get_permalink($listing)) . '">' . esc_html(wmvc_show_data('post_title', $listing, '', TRUE, TRUE)) . '</a>'; ?> <br/><br/>
         <?php if(wmvc_show_data('post_id', $listing, false)):?>
           <p>
               <a href="<?php echo esc_url(get_permalink($listing));?>">

@@ -30,6 +30,7 @@ $results_page = get_permalink($results_page);
 ?>
 
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
+ 
     <div class="wdk-locations-grid-cover">
         <div class="wdk-row">
             <?php if(count($results) > 0):?>
@@ -53,6 +54,7 @@ $results_page = get_permalink($results_page);
                                 <h3 class="wdk-title"><?php echo esc_html(wmvc_show_data('location_title', $value));?></h3>
                                 <span class="wdk-listings-count">
                                     <?php
+                                        /* translators: 1: Number of listings. */
                                         echo esc_html(wdk_sprintf(_nx(
                                                 '%1$s Listing',
                                                 '%1$s Listings',

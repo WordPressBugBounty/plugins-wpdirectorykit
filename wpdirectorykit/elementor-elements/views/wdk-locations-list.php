@@ -35,7 +35,7 @@ $results_page = get_permalink($results_page);
             <?php if(count($results) > 0):?>
                 <?php foreach ($results as $key => $value):?>
                 <li class="wdk-item">
-                    <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_location='.wmvc_show_data('idlocation', $value)));?><?php echo (wmvc_show_data('conf_query_params', $this->data['settings'], false)) ? '&'.wmvc_show_data('conf_query_params', $this->data['settings']):''; ?>#results"  
+                    <a href="<?php echo esc_url(wdk_url_suffix($results_page,'search_location='.wmvc_show_data('idlocation', $value)));?><?php echo (wmvc_show_data('conf_query_params', $this->data['settings'], false)) ? '&'.esc_attr(wmvc_show_data('conf_query_params', $this->data['settings'])):''; ?>#results"  
                     class="wdk-link <?php if(wmvc_show_data('enable_search_sensitive', $settings)):?> wdk-search_sensitive_link <?php endif;?>">
                     <?php if(wmvc_show_data('show_icon', $settings) == 'true'):?>
                             <?php if(wmvc_show_data('icon_id', $value, false)):?>
@@ -44,8 +44,8 @@ $results_page = get_permalink($results_page);
                         <?php else:?>
                             <?php \Elementor\Icons_Manager::render_icon( $settings['item_icon_i'], [ 'aria-hidden' => 'true' ] );?>
                         <?php endif;?>
-                        <span class="wdk-title"><?php echo wmvc_show_data('prefix', $settings, '').wmvc_show_data('location_title', $value).wmvc_show_data('suffix', $settings, '');?></span>
-                        <span class="wdk-count">(<?php echo wmvc_show_data('listings_counter', $value);?>)</span>
+                        <span class="wdk-title"><?php echo esc_html(wmvc_show_data('prefix', $settings, '').wmvc_show_data('location_title', $value).wmvc_show_data('suffix', $settings, ''));?></span>
+                        <span class="wdk-count">(<?php echo esc_html(wmvc_show_data('listings_counter', $value));?>)</span>
                     </a>
                 </li>
                 <?php endforeach;?>

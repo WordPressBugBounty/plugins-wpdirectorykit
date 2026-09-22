@@ -32,7 +32,7 @@ if(isset($_GET['id'])) {
 }
 
 ?>
-<div class="wdk-d-flex wdk-align-items-end wdk-justify-content-end">
+<div class="wdk-d-flex wdk-align-items-center wdk-justify-content-between">
 
 
 <div class="wdk-listing-toolbar">

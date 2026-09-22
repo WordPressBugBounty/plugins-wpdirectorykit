@@ -392,6 +392,14 @@ div.wdk-field-edit.inline {
 
 /* Tables */
 
+.wdk-wrap .widefat #the-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 15px;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
 .wdk-wrap .widefat .actions_column {
     text-align: right;
 }
@@ -1789,5 +1797,133 @@ body .select2-container--default.select2-container--focus .select2-selection--mu
         position: relative;
         top: 2px;
         left: 6px;
+    }
+}
+
+
+.tribute-container {
+    margin-top: 20px;
+}
+
+
+.wdk-wrap {
+
+.wdk-ai-fields-list {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.wdk-ai-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 14px 16px;
+
+    margin: 0;
+
+    border-bottom: 1px solid #f0f0f1;
+
+    cursor: pointer;
+
+    transition: background 0.15s ease;
+}
+
+.wdk-ai-field:last-child {
+    border-bottom: 0;
+}
+
+.wdk-ai-field:hover {
+    background: #f6f7f7;
+} 
+
+.wdk-ai-field input[type="checkbox"] {
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.wdk-ai-field-label {
+    flex: 1;
+
+    font-size: 14px;
+    font-weight: 500;
+    color: #1d2327;
+}
+
+.wdk-ai-field-type {
+    padding: 3px 8px;
+
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #646970; 
+    background: #f0f0f1;
+    border-radius: 4px;
+}
+
+.wdk-ai-field:has(input:checked) {
+    background: #f0f6fc;
+}
+
+.wdk-ai-field:has(input:checked) .wdk-ai-field-label {
+    color: #2271b1;
+}
+
+.wdk-ai-search-status {
+    display: inline-block;
+
+    margin-top: 12px;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.wdk-ai-search-status.success {
+    color: #00a32a;
+}
+
+.wdk-ai-search-status.error {
+    color: #d63638;
+}
+
+.wdk-ai-fields-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+.wdk-ai-field {
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.wdk-ai-field:nth-child(odd) {
+    border-right: 1px solid #f0f0f1;
+}
+}
+
+.wdk-body-listing {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+     >* {
+        order: 1;
+    }
+
+    .fpai-ai-button {
+        order: 0;
+    }
+
+    >form,
+    >.fpai-inline-form {
+        width: 100%;
     }
 }

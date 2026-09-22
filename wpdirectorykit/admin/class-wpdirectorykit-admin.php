@@ -98,10 +98,11 @@ class Wpdirectorykit_Admin
         // Register and enqueue Tribute.js style
         wp_register_style(
             'tribute-css',
-            'https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.css',
+            WPDIRECTORYKIT_URL . 'public/js/tribute/tribute.css',
             [],
             '5.1.3'
         );
+   
   
     }
 
@@ -129,11 +130,12 @@ class Wpdirectorykit_Admin
         // Register and enqueue Tribute.js script
         wp_register_script(
             'tribute-js',
-            'https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.min.js',
+            WPDIRECTORYKIT_URL . 'public/js/tribute/tribute.min.js',
             [],
             '5.1.3',
             true
         );
+   
 
         wp_register_script('wdk-treefield', WPDIRECTORYKIT_URL . 'public/js/wdk_treefield/treefield.js', array('jquery'), false, false);
         wp_register_script('wpmediaelement_file', WPDIRECTORYKIT_URL . 'admin/js/jquery.wpmediaelement_file.js', array('jquery'), false, false);
@@ -219,7 +221,7 @@ class Wpdirectorykit_Admin
 
         /* protect access only to ajax controller */
 		if($page != 'wdk_frontendajax' && $page != 'wdk_backendajax' && $page != 'wdk_fields') {
-			exit(esc_html__('Access denied','wdk-bookings'));
+			exit(esc_html__('Access denied','wpdirectorykit'));
 		} 
 
 
@@ -351,15 +353,26 @@ class Wpdirectorykit_Admin
                 array($this, 'admin_page_display')
             );
 
-        add_submenu_page(
-            'wdk',
-            __('Search Form', 'wpdirectorykit'),
-            __('Search Form', 'wpdirectorykit'),
-            'wdk_listings_manage',
-            'wdk_searchform',
-            array($this, 'admin_page_display')
-        );
-
+       
+            add_submenu_page(
+                'wdk',
+                __('Search Form', 'wpdirectorykit'),
+                __('Search Form', 'wpdirectorykit'),
+                'wdk_listings_manage',
+                'wdk_searchform',
+                array($this, 'admin_page_display')
+            );
+      
+        if (function_exists('fpai_register_settings')) {
+            add_submenu_page(
+                'wdk',
+                __('Ai Search', 'wpdirectorykit'),
+                __('Ai Search', 'wpdirectorykit'),
+                'wdk_listings_manage',
+                'wdk_aisearch',
+                array($this, 'admin_page_display')
+            );
+        }
         add_submenu_page(
             'wdk',
             __('Result Card', 'wpdirectorykit'),

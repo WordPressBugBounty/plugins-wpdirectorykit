@@ -434,7 +434,7 @@ class Wdk_Elementor {
 
 		if ( empty( $post ) ) { // create a new one.
 
-			$post_title = 'WDK Template | #' . substr( md5( rand(0000,9999) ), 0, 4 );
+			$post_title = 'WDK Template | #' . substr( md5( wp_rand(0000,9999) ), 0, 4 );
 
 			$params = array(
 				'post_content' => '',
@@ -480,7 +480,7 @@ class Wdk_Elementor {
 		$post_type = array_map( 'sanitize_text_field', $post_type );
 
 		if ( empty( $post_type ) ) {
-			wp_send_json_error( __( 'Empty Post Type.', 'premium-addons-for-elementor' ) );
+			wp_send_json_error( esc_html__( 'Empty Post Type.', 'wpdirectorykit' ) );
 		}
 
 		$list = get_posts(

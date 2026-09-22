@@ -167,8 +167,7 @@ class WdkListingRelatedListingsTable extends WdkElementorBase {
         if(Plugin::$instance->editor->is_edit_mode())
             $this->data['is_edit_mode'] = true;
 
-
-            echo $this->view('wdk-listing-related-listings-table', $this->data); 
+            $this->view('wdk-listing-related-listings-table', $this->data, true); 
     }
 
     private function generate_controls_conf()

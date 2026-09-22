@@ -107,7 +107,7 @@ add_action('wdk-membership/listing/saved', function($post_id = NULL, $old_listin
 	$Winter_MVC_WDK->editlog_m->insert(array(
 				'user_id' => get_current_user_id(),
 				'post_id' => $post_id,
-				'date' => date('Y-m-d H:i:s'),
+				'date' => gmdate('Y-m-d H:i:s'),
 				'ip' => $_SERVER['REMOTE_ADDR']
 			));
 });

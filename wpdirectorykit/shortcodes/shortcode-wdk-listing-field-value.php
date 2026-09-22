@@ -39,7 +39,7 @@ function shortcode_wdk_listing_field_value($atts, $content){
     global $wdk_listing_id;
     $post_id = $wdk_listing_id;
     if (!empty($data['settings']['post_id'])) {
-        $post_id = $data['settings']['post_id'];
+        $post_id = (int) $data['settings']['post_id'];
     }
     
     $data['field_value'] = '';
@@ -50,6 +50,12 @@ function shortcode_wdk_listing_field_value($atts, $content){
     if(in_array($data['settings']['field_id'], ['post_password', 'status'])  ) {
         return false;
     }
+    
+    $post_data = get_post($post_id);
+    if (!$post_data || $post_data->post_status != 'publish' || post_password_required($post_data)) {
+        return false;
+    }
+    
     if(wdk_field_option($data['settings']['field_id'], 'is_visible_frontend') != 1) {
         return false;
     }

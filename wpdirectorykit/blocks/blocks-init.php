@@ -12,7 +12,7 @@ function wdk_block_category($categories, $post) {
         array(
             array(
                 'slug' => 'wdk-blocks',
-                'title' => __('WDK Blocks', 'text-domain'),
+                'title' => __('WDK Blocks', 'wpdirectorykit'),
                 'icon'  => 'dashicons-heart',
             ),
         ),

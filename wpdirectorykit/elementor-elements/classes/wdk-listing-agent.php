@@ -189,9 +189,9 @@ class WdkListinAgent extends WdkElementorBase {
         $this->data['is_edit_mode']= false;          
         if(Plugin::$instance->editor->is_edit_mode()) {
             $this->data['is_edit_mode']= true;
-            echo $this->view('wdk-listing-agent-demo', $this->data); 
+            $this->view('wdk-listing-agent-demo', $this->data, true); 
         } else {
-            echo $this->view('wdk-listing-agent', $this->data); 
+            $this->view('wdk-listing-agent', $this->data, true); 
         }
         
     }

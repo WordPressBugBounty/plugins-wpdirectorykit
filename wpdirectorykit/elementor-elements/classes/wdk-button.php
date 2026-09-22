@@ -159,7 +159,7 @@ class WdkButton extends WdkElementorBase {
             }
         }
 
-        echo $this->view('wdk-button', $this->data); 
+        $this->view('wdk-button', $this->data, true); 
     }
 
 

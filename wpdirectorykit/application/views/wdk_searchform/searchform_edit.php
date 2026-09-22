@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="wrap wdk-wrap">
 
-    <h1 class="wp-heading-inline"><?php echo __('Search Form Designer','wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Search Form Designer','wpdirectorykit'); ?></h1>
     <br />
 
     <div class="wdk-body">
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php wp_nonce_field( 'wdk-searchform-edit_'.wmvc_show_data('idsearchform', $db_data, 1), '_wpnonce'); ?>
             <div class="postbox" style="display: block;">
                 <div class="postbox-header">
-                    <h3><?php echo __('Main info','wpdirectorykit'); ?></h3>
+                    <h3><?php echo esc_html__('Main info','wpdirectorykit'); ?></h3>
                 </div>
                 <div class="inside">
                     <?php 
@@ -32,11 +32,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <table class="form-table" role="presentation">
                         <tbody>
                             <tr>
-                                <th scope="row"><label for="searchform_name"><?php echo __('Name','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="searchform_name"><?php echo esc_html__('Name','wpdirectorykit'); ?></label></th>
                                 <td><input name="searchform_name" type="text" id="searchform_name" value="<?php echo esc_attr(wmvc_show_data('searchform_name', $db_data, '')); ?>" class="regular-text"></td>
                             </tr>
                             <tr class="hidden">
-                                <th scope="row"><label for="searchform_json"><?php echo __('Search Form Json/Structure','wpdirectorykit'); ?></label></th>
+                                <th scope="row"><label for="searchform_json"><?php echo esc_html__('Search Form Json/Structure','wpdirectorykit'); ?></label></th>
                                 <td>
                                     <textarea readonly="readonly" name="searchform_json" type="text" id="searchform_json" class="regular-text"><?php echo esc_textarea(wmvc_show_data('searchform_json', $db_data, '')); ?></textarea>
                                 </td>
@@ -48,15 +48,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
             <div class="postbox" style="display: block;">
                 <div class="postbox-header">
-                    <h3><?php echo __('Helper Classes','wpdirectorykit'); ?></h3>
+                    <h3><?php echo esc_html__('Helper Classes','wpdirectorykit'); ?></h3>
                 </div>
                 <div class="inside">
                     <div class="" style="border: 1px solid rgb(207, 210, 210); background-color: #eee;padding: 10px 15px;">
                         <dl class="dl-helper">
                             <dt>hidden</dt>
-                                <dd style="margin-left: 25px;"><?php echo __('Hide field on all','wpdirectorykit'); ?></dd>
+                                <dd style="margin-left: 25px;"><?php echo esc_html__('Hide field on all','wpdirectorykit'); ?></dd>
                             <dt>wdk-col-1,wdk-col-2,wdk-col-3,wdk-col-4, wdk-col-n ... 12</dt>
-                                <dd style="margin-left: 25px;"><?php echo __('Grid classes from 1 to 12','wpdirectorykit'); ?></dd>
+                                <dd style="margin-left: 25px;"><?php echo esc_html__('Grid classes from 1 to 12','wpdirectorykit'); ?></dd>
                         </dl>
                     </div>
                 </div>
@@ -123,14 +123,14 @@ if ( ! defined( 'ABSPATH' ) ) {
             ?>
 
             <div class="postbox" style="display: block;">
-                <div class="postbox-header"><h3><?php echo __('Drag & Drop Builder','wpdirectorykit'); ?></h3>
+                <div class="postbox-header"><h3><?php echo esc_html__('Drag & Drop Builder','wpdirectorykit'); ?></h3>
             </div>
             <div class="inside">
-                <p class="alert alert-info"><?php echo __('Drag fields from left side to right side, right side represents search form','wpdirectorykit'); ?></p>
+                <p class="alert alert-info"><?php echo esc_html__('Drag fields from left side to right side, right side represents search form','wpdirectorykit'); ?></p>
                 <div class="wdk-builder-container">
                     <div class="wdk-builder-elements-column">
                         <div class="wdk-builder-elements-box">
-                            <h3 class="sec-title"><?php echo __('Custom fields','wpdirectorykit'); ?></h3>
+                            <h3 class="sec-title"><?php echo esc_html__('Custom fields','wpdirectorykit'); ?></h3>
                             <div id="wdk-drag" class="wdk-builder-elements wdk-drop section_fields">
                             <?php foreach($main_fields as $key => $field): 
                                 if(isset($used_fields[$field->idfield]))continue; // skip if field is used
@@ -147,18 +147,18 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     <div class="widget-inside">
                                         <div class="widget-content">
                                             <p>
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo __('CSS Class:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo esc_html__('CSS Class:','wpdirectorykit'); ?></label>
                                                 <input class="widefat class" id="fid_<?php echo esc_attr($field->idfield); ?>-class" name="fid_<?php echo esc_attr($field->idfield); ?>-class" type="text" value="">
                                             </p>
                                             <p>
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo esc_html__('Columns/Width:','wpdirectorykit'); ?></label>
                                                 <input class="widefat columns" id="fid_<?php echo esc_attr($field->idfield); ?>-columns" name="fid_<?php echo esc_attr($field->idfield); ?>-columns" type="number" value="">
                                             </p>
                                             <p>
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-query_type"><?php echo __('Search type:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-query_type"><?php echo esc_html__('Search type:','wpdirectorykit'); ?></label>
                                                 <select class="widefat query_type" id="fid_<?php echo esc_attr($field->idfield); ?>-query_type" name="fid_<?php echo esc_attr($field->idfield); ?>-query_type">
-                                                    <option value=""><?php echo __('None','wpdirectorykit'); ?></option>
-                                                    <option value="exactly"><?php echo __('Exactly','wpdirectorykit'); ?></option>
+                                                    <option value=""><?php echo esc_html__('None','wpdirectorykit'); ?></option>
+                                                    <option value="exactly"><?php echo esc_html__('Exactly','wpdirectorykit'); ?></option>
                                                 </select>
                                             </p>
                                         </div>
@@ -190,42 +190,42 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     <div class="widget-inside">
                                         <div class="widget-content">
                                             <p>
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo __('CSS Class:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-class"><?php echo esc_html__('CSS Class:','wpdirectorykit'); ?></label>
                                                 <input class="widefat class" id="fid_<?php echo esc_attr($field->idfield); ?>-class" name="fid_<?php echo esc_attr($field->idfield); ?>-class" type="text" value="">
                                             </p>
                                             <p>
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-columns"><?php echo esc_html__('Columns/Width:','wpdirectorykit'); ?></label>
                                                 <input class="widefat columns" id="fid_<?php echo esc_attr($field->idfield); ?>-columns" name="fid_<?php echo esc_attr($field->idfield); ?>-columns" type="number" value="">
                                             </p>
                                             <p class=" <?php if($field->field_type =='CHECKBOX' || $field->field_type =='MORE' || $field->field_type =='TEXTAREA' || $field->field_type =='TEXTAREA_WYSIWYG' || $field->field_type =='CATEGORY' || $field->field_type =='LOCATION'):?> hidden <?php endif;?>">
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-query_type"><?php echo __('Search type:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-query_type"><?php echo esc_html__('Search type:','wpdirectorykit'); ?></label>
                                                 <select class="widefat query_type" id="fid_<?php echo esc_attr($field->idfield); ?>-query_type" name="fid_<?php echo esc_attr($field->idfield); ?>-query_type">
-                                                    <option value=""><?php echo __('None','wpdirectorykit'); ?></option>
-                                                    <option value="exactly"><?php echo __('Exactly','wpdirectorykit'); ?></option>
+                                                    <option value=""><?php echo esc_html__('None','wpdirectorykit'); ?></option>
+                                                    <option value="exactly"><?php echo esc_html__('Exactly','wpdirectorykit'); ?></option>
                                                     <?php if(in_array($field->idfield, array('search','loc','cat','address','post_title')) == FALSE && $field->field_type !='CHECKBOX'):?>
-                                                    <option value="min"><?php echo __('Min','wpdirectorykit'); ?></option>
-                                                    <option value="max"><?php echo __('Max','wpdirectorykit'); ?></option>
-                                                    <option value="min_max"><?php echo __('Min/Max','wpdirectorykit'); ?></option>
+                                                    <option value="min"><?php echo esc_html__('Min','wpdirectorykit'); ?></option>
+                                                    <option value="max"><?php echo esc_html__('Max','wpdirectorykit'); ?></option>
+                                                    <option value="min_max"><?php echo esc_html__('Min/Max','wpdirectorykit'); ?></option>
                                                     <?php endif;?>
                                                     <?php if(in_array($field->idfield, array('search','loc','cat','address','post_title')) == FALSE && $field->field_type =='NUMBER'):?>
-                                                    <option value="slider_range"><?php echo __('Slider Range','wpdirectorykit'); ?></option>
+                                                    <option value="slider_range"><?php echo esc_html__('Slider Range','wpdirectorykit'); ?></option>
                                                     <?php endif;?>
                                                 </select>
                                             </p>
                                             <?php if(in_array($field->idfield, array('search','loc','cat','address','post_title')) == FALSE && $field->field_type =='NUMBER'):?>
                                             <p class="is_slider_range <?php if($field->query_type !='slider_range'):?> hidden <?php endif;?>">
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-value_min"><?php echo __('Value Min:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-value_min"><?php echo esc_html__('Value Min:','wpdirectorykit'); ?></label>
                                                 <input class="widefat value_min" id="fid_<?php echo esc_attr($field->idfield); ?>-value_min" name="fid_<?php echo esc_attr($field->idfield); ?>-value_min" type="number" value="">
                                             </p>
                                             <p class="is_slider_range <?php if($field->query_type !='slider_range'):?> hidden <?php endif;?>">
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-value_max"><?php echo __('Value Max:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-value_max"><?php echo esc_html__('Value Max:','wpdirectorykit'); ?></label>
                                                 <input class="widefat value_max" id="fid_<?php echo esc_attr($field->idfield); ?>-value_max" name="fid_<?php echo esc_attr($field->idfield); ?>-value_max" type="number" value="">
                                             </p>
                                             <?php endif;?>
 
                                             <?php if(in_array($field->idfield, array('search','loc','cat','address','post_title')) == FALSE && $field->field_type =='INPUTBOX'):?>
                                             <p class="is_select_2_ajax_field_db_suggestion">
-                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-is_select_2_ajax_field_db_suggestion"><?php echo __('Field suggestion:','wpdirectorykit'); ?></label>
+                                                <label for="fid_<?php echo esc_attr($field->idfield); ?>-is_select_2_ajax_field_db_suggestion"><?php echo esc_html__('Field suggestion:','wpdirectorykit'); ?></label>
                                                 <input class="widefat is_select_2_ajax_field_db_suggestion" id="fid_<?php echo esc_attr($field->idfield); ?>-is_select_2_ajax_field_db_suggestion" name="fid_<?php echo esc_attr($field->idfield); ?>-is_select_2_ajax_field_db_suggestion" type="checkbox" value="1">
                                             </p>
                                             <?php endif;?>
@@ -269,42 +269,42 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <div class="widget-inside">
                                 <div class="widget-content">
                                     <p>
-                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-class"><?php echo __('CSS Class:','wpdirectorykit'); ?></label>
+                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-class"><?php echo esc_html__('CSS Class:','wpdirectorykit'); ?></label>
                                         <input class="widefat class" id="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-class" name="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-class" type="text" value="<?php echo esc_attr(wmvc_show_data('class', $used_fields[wmvc_show_data('idfield', $field)], '')); ?>">
                                     </p>
                                     <p>
-                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-columns"><?php echo __('Columns/Width:','wpdirectorykit'); ?></label>
+                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-columns"><?php echo esc_html__('Columns/Width:','wpdirectorykit'); ?></label>
                                         <input class="widefat columns" id="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-columns" name="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-columns" type="number" value="<?php echo esc_attr(wmvc_show_data('columns', $used_fields[wmvc_show_data('idfield', $field)], '')); ?>">
                                     </p>
                                     <p class=" <?php if(wmvc_show_data('field_type', $field) =='CHECKBOX' || wmvc_show_data('field_type', $field) =='TEXTAREA' || wmvc_show_data('field_type', $field) =='TEXTAREA_WYSIWYG' || wmvc_show_data('field_type', $field) =='CATEGORY' || wmvc_show_data('field_type', $field) =='LOCATION'):?> hidden <?php endif;?>">
-                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-query_type"><?php echo __('Search type:','wpdirectorykit'); ?></label>
+                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-query_type"><?php echo esc_html__('Search type:','wpdirectorykit'); ?></label>
                                         <select class="widefat query_type" id="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-query_type" name="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-query_type">
-                                            <option value=""><?php echo __('None','wpdirectorykit'); ?></option>
-                                            <option value="exactly" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'exactly'): ?> selected="selected" <?php endif;?>><?php echo __('Exactly','wpdirectorykit'); ?></option>
+                                            <option value=""><?php echo esc_html__('None','wpdirectorykit'); ?></option>
+                                            <option value="exactly" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'exactly'): ?> selected="selected" <?php endif;?>><?php echo esc_html__('Exactly','wpdirectorykit'); ?></option>
                                             <?php if(in_array(wmvc_show_data('idfield', $field), array('search','loc','cat','address','post_title')) == FALSE && wmvc_show_data('field_type', $field) !='CHECKBOX'):?>
-                                                <option value="min" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'min'): ?> selected="selected" <?php endif;?>><?php echo __('Min','wpdirectorykit'); ?></option>
-                                                <option value="max" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'max'): ?> selected="selected" <?php endif;?>><?php echo __('Max','wpdirectorykit'); ?></option>
-                                                <option value="min_max" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'min_max'): ?> selected="selected" <?php endif;?>><?php echo __('Min/Max','wpdirectorykit'); ?></option>
+                                                <option value="min" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'min'): ?> selected="selected" <?php endif;?>><?php echo esc_html__('Min','wpdirectorykit'); ?></option>
+                                                <option value="max" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'max'): ?> selected="selected" <?php endif;?>><?php echo esc_html__('Max','wpdirectorykit'); ?></option>
+                                                <option value="min_max" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'min_max'): ?> selected="selected" <?php endif;?>><?php echo esc_html__('Min/Max','wpdirectorykit'); ?></option>
                                             <?php endif;?>
                                             <?php if(in_array(wmvc_show_data('idfield', $field), array('search','loc','cat','address','post_title')) == FALSE && wmvc_show_data('field_type', $field) =='NUMBER'):?>
-                                                <option value="slider_range" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'slider_range'): ?> selected="selected" <?php endif;?>><?php echo __('Slider Range','wpdirectorykit'); ?></option>
+                                                <option value="slider_range" <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) == 'slider_range'): ?> selected="selected" <?php endif;?>><?php echo esc_html__('Slider Range','wpdirectorykit'); ?></option>
                                             <?php endif;?>
                                         </select>
                                     </p>
                                     <?php if(in_array(wmvc_show_data('idfield', $field), array('search','loc','cat','address','post_title')) == FALSE && wmvc_show_data('field_type', $field) =='NUMBER'):?>
                                     <p class="is_slider_range <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) !='slider_range'):?> hidden <?php endif;?>">
-                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_min"><?php echo __('Value Min:','wpdirectorykit'); ?></label>
+                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_min"><?php echo esc_html__('Value Min:','wpdirectorykit'); ?></label>
                                         <input class="widefat value_min" id="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_min" name="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_min" type="number" value="<?php echo esc_attr(wmvc_show_data('value_min', $used_fields[wmvc_show_data('idfield', $field)], '')); ?>">
                                     </p>
                                     <p class="is_slider_range <?php if(wmvc_show_data('query_type', $used_fields[wmvc_show_data('idfield', $field)]) !='slider_range'):?> hidden <?php endif;?>">
-                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_max"><?php echo __('Value Max:','wpdirectorykit'); ?></label>
+                                        <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_max"><?php echo esc_html__('Value Max:','wpdirectorykit'); ?></label>
                                         <input class="widefat value_max" id="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_max" name="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-value_max" type="number" value="<?php echo esc_attr(wmvc_show_data('value_max', $used_fields[wmvc_show_data('idfield', $field)], '')); ?>">
                                     </p>
                                     <?php endif;?>
 
                                     <?php if(in_array(wmvc_show_data('idfield', $field), array('search','loc','cat','address','post_title')) == FALSE && wmvc_show_data('field_type', $field) =='INPUTBOX'):?>
                                         <p class="is_select_2_ajax_field_db_suggestion">
-                                            <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-is_select_2_ajax_field_db_suggestion"><?php echo __('Field suggestion:','wpdirectorykit'); ?></label>
+                                            <label for="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-is_select_2_ajax_field_db_suggestion"><?php echo esc_html__('Field suggestion:','wpdirectorykit'); ?></label>
                                             <input class="widefat is_select_2_ajax_field_db_suggestion" id="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-is_select_2_ajax_field_db_suggestion" name="fid_<?php echo esc_attr(wmvc_show_data('idfield', $field)); ?>-is_select_2_ajax_field_db_suggestion" type="checkbox" value="1" <?php if(wmvc_show_data('is_select_2_ajax_field_db_suggestion', $used_fields[wmvc_show_data('idfield', $field)], '') == 1):?> checked="checked" <?php endif;?>">
                                         </p>
                                      

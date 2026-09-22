@@ -18,7 +18,8 @@ $field_attr_id = 'wdk_field_'.wmvc_show_data('idfield', $field_data);
 $placeholder = wmvc_show_data('field_label', $field_data);
 if(!empty(wmvc_show_data('placeholder', $field_data,'')))
     $placeholder = wmvc_show_data('placeholder', $field_data);
-
+// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 $placeholder = esc_html__($placeholder,'wpdirectorykit'); 
 $field_value = '';
 $query_type = wmvc_show_data('query_type', $field_data, '');
@@ -76,7 +77,10 @@ wdk_search_fields_toggle();
     <?php echo esc_attr(wmvc_show_data('class', $field_data)); ?> 
     wdk_field_id_<?php echo esc_attr(wmvc_show_data('idfield',$field_data));?>"
     >
-    <label class="wdk-field-label"><?php echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?></label>
+    <label class="wdk-field-label"><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(wmvc_show_data('field_label', $field_data),'wpdirectorykit'); ?></label>
     <div class="wdk-field-group">
         <?php if(empty($values)):?>
             <?php if($query_type == 'min_max'):?>
@@ -95,14 +99,75 @@ wdk_search_fields_toggle();
             <?php if($query_type == 'min_max'):?>
                 <div class="wdk-row min_max_row">
                     <div class="wdk-col wdk-col-6">
-                        <?php echo wmvc_select_option($field_key.'_min' , (array(''=> __('Min', 'wpdirectorykit').' '.$placeholder.$prefix.$suffix) + $values), (isset($_GET[$field_key.'_min'])) ? esc_attr($_GET[$field_key.'_min']) : '', 'class="wdk-control"'); ?>
+                        <?php echo wp_kses(
+                            wmvc_select_option(
+                                $field_key.'_min',
+                                (array(''=> __('Min', 'wpdirectorykit').' '.$placeholder.$prefix.$suffix) + $values),
+                                (isset($_GET[$field_key.'_min'])) ? esc_attr($_GET[$field_key.'_min']) : '',
+                                'class="wdk-control"'
+                            ),
+                            [
+                                'select' => [
+                                    'class' => true,
+                                    'name' => true,
+                                    'id'   => true,
+                                ],
+                                'option' => [
+                                    'value'    => true,
+                                    'selected' => true,
+                                ],
+                            ]
+                        ); ?>
+                   
                     </div>
                     <div class="wdk-col wdk-col-6">
-                        <?php echo wmvc_select_option($field_key.'_max', (array(''=> __('Max', 'wpdirectorykit').' '.$placeholder.$prefix.$suffix) + $values), (isset($_GET[$field_key.'_max'])) ? esc_attr($_GET[$field_key.'_max']) : '', 'class="wdk-control"'); ?>
+                        <?php
+                        echo wp_kses(
+                            wmvc_select_option(
+                                $field_key.'_max',
+                                (array(''=> __('Max', 'wpdirectorykit').' '.$placeholder.$prefix.$suffix) + $values),
+                                (isset($_GET[$field_key.'_max'])) ? esc_attr($_GET[$field_key.'_max']) : '',
+                                'class="wdk-control"'
+                            ),
+                            [
+                                'select' => [
+                                    'class' => true,
+                                    'name' => true,
+                                    'id'   => true,
+                                ],
+                                'option' => [
+                                    'value'    => true,
+                                    'selected' => true,
+                                ],
+                            ]
+                        );
+                        ?>
+                   
                     </div>
                 </div>
             <?php else:?>
-                <?php echo wmvc_select_option($field_key , (array(''=> $placeholder) + $values), $field_value, 'class="wdk-control"'); ?>
+                <?php 
+                echo wp_kses(
+                    wmvc_select_option(
+                        $field_key,
+                        (array(''=> $placeholder) + $values),
+                        $field_value,
+                        'class="wdk-control"'
+                    ),
+                    [
+                        'select' => [
+                            'class' => true,
+                            'name' => true,
+                            'id'   => true,
+                        ],
+                        'option' => [
+                            'value'    => true,
+                            'selected' => true,
+                        ],
+                    ]
+                );
+                ?>
+           
             <?php endif;?>
         <?php endif;?>
     </div>

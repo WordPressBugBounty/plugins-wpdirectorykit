@@ -62,17 +62,41 @@ $button_suffix = '';
 <div class="wdk-field-<?php echo esc_attr($field_id);?> wdk-field-edit <?php echo esc_attr($field->field_type); ?> wdk-col-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->class); ?> <?php echo esc_attr($field->class); ?> <?php if(!empty($form) && method_exists($form, 'hasError') && $form->hasError($field_id)):?> field-error <?php endif;?>">
     <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($field_label).esc_html($required); ?></label>
     <div class="wdk-field-container">
-        <?php echo wmvc_select_option($field_id, $values, !empty(wmvc_show_data($field_id, $db_data, $field->default)) ? wmvc_show_data($field_id, $db_data, $field->default) : $field->empty_default, "id='".$field_id."'"); ?>
+        <?php 
+            echo wp_kses(
+                wmvc_select_option(
+                    $field_id,
+                    $values,
+                    !empty(wmvc_show_data($field_id, $db_data, $field->default)) ? wmvc_show_data($field_id, $db_data, $field->default) : $field->empty_default,
+                    "id='" . esc_attr($field_id) . "'"
+                ),
+                [
+                    'select' => [
+                        'id'   => true,
+                        'name' => true,
+                    ],
+                    'option' => [
+                        'value'    => true,
+                        'selected' => true,
+                    ],
+                ]
+            );
+        ?>
+   
         <span class="suffix"><?php
+                       // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->prefix, 'wpdirectorykit');
                 if(!empty($field->prefix) && !empty($field->suffix)) echo ' / ';
+            // Dynamic field values are registered in the translation catalog separately.
+            // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
             echo esc_html__($field->suffix, 'wpdirectorykit');
         ?><?php if(($field_id=='wdk_listing_page' || $field_id=='wdk_results_page')):?>
         <?php if(!empty(wmvc_show_data($field_id, $db_data, '')) && get_post_status(wmvc_show_data($field_id, $db_data, '')) == 'publish'):?>
-            <a class="button button-primary" target="_blank" href="<?php echo get_permalink(wmvc_show_data($field_id, $db_data, ''));?>" style="margin-top: -5px;">
+            <a class="button button-primary" target="_blank" href="<?php echo esc_url(get_permalink(wmvc_show_data($field_id, $db_data, '')));?>" style="margin-top: -5px;">
                 <?php echo esc_html__('View Page','wpdirectorykit');?>
             </a>
-            <a class="button button" target="_blank" href="<?php echo admin_url('post.php?post='.wmvc_show_data($field_id, $db_data, '').'&action=edit');?>" style="margin-top: -5px;">
+            <a class="button button" target="_blank" href="<?php echo esc_url(admin_url('post.php?post='.wmvc_show_data($field_id, $db_data, '')).'&action=edit');?>" style="margin-top: -5px;">
                 <span class="dashicons dashicons-edit" style="line-height: 29px;"></span>
             </a>
         <?php else:?>

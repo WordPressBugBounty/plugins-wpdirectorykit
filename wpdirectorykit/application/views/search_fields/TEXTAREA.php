@@ -15,6 +15,8 @@ $field_key = 'field_'.wmvc_show_data('idfield',$field_data);
 $field_attr_id = 'wdk_field_'.wmvc_show_data('idfield', $field_data);
 $placeholder = (!empty(wmvc_show_data('placeholder', $field_data)) ? wmvc_show_data('placeholder', $field_data) : wmvc_show_data('field_label', $field_data));
 $field_value = '';
+// Dynamic field values are registered in the translation catalog separately.
+// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 $placeholder = esc_html__($placeholder,'wpdirectorykit');
 
 $query_type = wmvc_show_data('query_type', $field_data, '');

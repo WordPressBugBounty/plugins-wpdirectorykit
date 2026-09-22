@@ -136,7 +136,7 @@ class WdkButtonShare extends WdkElementorBase {
             $this->data['is_edit_mode']= true;
         }
 
-        echo $this->view('wdk-button-share', $this->data); 
+        $this->view('wdk-button-share', $this->data, true); 
     }
 
 

@@ -35,7 +35,7 @@ if (!defined('ABSPATH')) {
                         ?>
                         <td>
                             <?php if ($field['is_link'] == 'yes') : ?>
-                                <a href="<?php echo get_permalink($child_idlisting); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" target="blank">
+                                <a href="<?php echo esc_url(get_permalink($child_idlisting)); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" target="blank">
                                 <?php else : ?>
                                     <span>
                                     <?php endif; ?>
@@ -69,7 +69,7 @@ if (!defined('ABSPATH')) {
                         </td>
                     <?php endforeach; ?>
                     <td>
-                        <a href="<?php echo get_permalink($child_idlisting); ?>" class="wdk-btn"><?php echo esc_html__('More info', 'wpdirectorykit'); ?></a>
+                        <a href="<?php echo esc_url(get_permalink($child_idlisting)); ?>" class="wdk-btn"><?php echo esc_html__('More info', 'wpdirectorykit'); ?></a>
                     </td>
                 </tr>
             <?php endforeach; ?>

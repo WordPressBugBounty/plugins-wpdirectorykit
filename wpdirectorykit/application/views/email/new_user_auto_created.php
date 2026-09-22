@@ -35,30 +35,45 @@ if (!defined('ABSPATH')) {
         <!-- Body -->
         <div class=" body" style="padding: 48px 48px;color: #636363; font-size: 14px;font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;">
             <h2 style="margin-top:0">
-                <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo wdk_show_data('display_name', $user); ?>,
+                <?php echo esc_html__('Hi', 'wpdirectorykit'); ?> <?php echo esc_html(wdk_show_data('display_name', $user)); ?>,
             </h2>
                 <p>
-                    <?php echo sprintf(esc_html__('Account auto created on portal %1$s%2$s%3$s, please use your access bellow for login','wpdirectorykit'), '<a href="'.get_home_url().'">', get_bloginfo('name'), '</a>'); ?>
+                    <?php
+                    echo wp_kses(
+                        sprintf(
+                            /* translators: 1: Tag with link open, 2: Site name, 3: close link tag. */
+                            esc_html__('Account auto created on portal %1$s%2$s%3$s, please use your access bellow for login', 'wpdirectorykit'),
+                            '<a href="' . esc_url(get_home_url()) . '">',
+                            esc_html(get_bloginfo('name')),
+                            '</a>'
+                        ),
+                        array(
+                            'a' => array(
+                                'href' => true,
+                            ),
+                        )
+                    );
+                    ?>
                 </p>
 
                 <?php if(wdk_get_option('wdk_membership_new_user_email_credentials_enable')):?>
                 <p>
-                    <strong><?php echo esc_html__('Login', 'wpdirectorykit'); ?>:</strong> <?php echo $login; ?><br>
+                    <strong><?php echo esc_html__('Login', 'wpdirectorykit'); ?>:</strong> <?php echo esc_html($login); ?><br>
                 </p>
                 <p>
-                    <strong><?php echo esc_html__('Password', 'wpdirectorykit'); ?>:</strong> <?php echo $password; ?><br>
+                    <strong><?php echo esc_html__('Password', 'wpdirectorykit'); ?>:</strong> <?php echo esc_html($password); ?><br>
                 </p>
                 <?php endif;?>
 
                 <?php if(wdk_get_option('wdk_membership_new_user_email_autologin_hash_link_enable')):?>
                 <p>
-                    <strong><?php echo esc_html__('Login', 'wpdirectorykit'); ?>: <a href="<?php echo wdk_generate_auto_login_link($user->ID); ?>"><?php echo wdk_generate_auto_login_link($user->ID); ?></a>
+                    <strong><?php echo esc_html__('Login', 'wpdirectorykit'); ?>: <a href="<?php echo esc_url(wdk_generate_auto_login_link($user->ID)); ?>"><?php echo esc_url(wdk_generate_auto_login_link($user->ID)); ?></a>
                 </p>
                 <?php endif;?>
 
                 <?php if(wdk_get_option('wdk_membership_new_user_email_credentials_enable') || (!wdk_get_option('wdk_membership_new_user_email_autologin_hash_link_enable') && !wdk_get_option('wdk_membership_new_user_email_credentials_enable'))):?>
                 <p>
-                    <strong><?php echo esc_html__('Reset password', 'wpdirectorykit'); ?>: <a href="<?php echo wp_lostpassword_url(); ?>"><?php echo wp_lostpassword_url(); ?></a>
+                    <strong><?php echo esc_html__('Reset password', 'wpdirectorykit'); ?>: <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php echo esc_url(wp_lostpassword_url()); ?></a>
                 </p>
                 <?php endif;?>
 
@@ -83,7 +98,10 @@ if (!defined('ABSPATH')) {
                             <?php if (!is_string($value)) continue; ?>
                             <?php if ($key == 'subject') continue; ?>
                             <p>
-                                <strong><?php echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
+                                <strong><?php 
+                                // Dynamic field values are registered in the translation catalog separately.
+                                // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                                echo esc_html__(ucfirst(str_replace('_', ' ', $key)), 'wpdirectorykit'); ?>:</strong> <?php echo wp_kses_post($value); ?><br />
                             </p>
                         <?php endif; ?>
                     <?php endforeach; ?>

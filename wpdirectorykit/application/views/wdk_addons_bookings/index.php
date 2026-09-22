@@ -14,28 +14,28 @@ if (! defined('ABSPATH')) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Purchase Booking Addon from 8.25$/month in yearly subscription for one website and support our work!', 'wpdirectorykit'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Purchase Booking Addon from 8.25$/month in yearly subscription for one website and support our work!', 'wpdirectorykit'); ?></h1>
     <p class="presentation-desc">This also help us to make updates, additional features, codes and support even better in future!</p>
     <p class="presentation-desc">Below we providing few screenshots from current main features, if you have any suggestion, or need customization feel free to <a target="_blank" href="https://wpdirectorykit.com/contact.html">contact us</a></p>
     <p class="presentation-desc">* Membership Addon is required to use Booking Addon!</p>
     <br />
-    <h2 class="wp-heading-inline"><?php echo __('Availability Calendar with reservations', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/bookings-calendar.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Availability Calendar with reservations', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/bookings-calendar.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('Frontend availability dates filtering', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/frontend-availability-search.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Frontend availability dates filtering', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/frontend-availability-search.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('Availability management', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/availability-management.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Availability management', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/availability-management.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('My reservations management via Frontend Dashboard', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/frontend-dashboard.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('My reservations management via Frontend Dashboard', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/frontend-dashboard.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('WooCommerce support for Online Booking payments', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/woocommerce_payment_support.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('WooCommerce support for Online Booking payments', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/woocommerce_payment_support.jpg" /></a>
 
-    <h2 class="wp-heading-inline"><?php echo __('Almost any world payment gateway supported', 'wpdirectorykit'); ?></h2>
-    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/any-payment-gateway-support.jpg" /></a>
+    <h2 class="wp-heading-inline"><?php echo esc_html__('Almost any world payment gateway supported', 'wpdirectorykit'); ?></h2>
+    <a class="image-link" target="_blank" href="https://wpdirectorykit.com/wp/directory-purchase/"><img class="presentation-image" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/any-payment-gateway-support.jpg" /></a>
 
     <div class="wdk-pricing">
         <div class="wdk-sec-header">

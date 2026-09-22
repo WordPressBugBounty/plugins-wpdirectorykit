@@ -38,11 +38,11 @@ if (!defined('ABSPATH')) {
         <h2><?php echo esc_html__('List expired listings', 'wpdirectorykit') . ':' ?></h2>
         <?php foreach ($listings as $key => $listing):?>
             <p>
-              <?php echo esc_html__('Listing expired', 'wpdirectorykit') . ': <a href="' . get_permalink($listing) . '">' . wmvc_show_data('post_title', $listing, '', TRUE, TRUE) . '</a>'; ?>
+              <?php echo esc_html__('Listing expired', 'wpdirectorykit') . ': <a href="' .esc_url( get_permalink($listing)) . '">' . esc_html(wmvc_show_data('post_title', $listing, '', TRUE, TRUE)) . '</a>'; ?>
             </p>
         <?php endforeach;?>
         <?php if (!empty($subscription_link)) : ?>
-          <?php echo esc_html__('Please click', 'wpdirectorykit') . ': <a href="' . ($subscription_link) . '">' . esc_html__('Purchase again subscription', 'wpdirectorykit') . '</a>'; ?>
+          <?php echo esc_html__('Please click', 'wpdirectorykit') . ': <a href="' . esc_url($subscription_link) . '">' . esc_html__('Purchase again subscription', 'wpdirectorykit') . '</a>'; ?>
         <?php endif; ?>
     </div>
 

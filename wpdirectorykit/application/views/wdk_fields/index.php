@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap wdk-wrap">
-    <h1 class="wp-heading-inline"><?php echo __('Directory Fields Management','wpdirectorykit'); ?> <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields&function=field_edit"); ?>" class="button button-primary" id="add_field_button"><?php echo __('Add Field','wpdirectorykit'); ?></a></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('Directory Fields Management','wpdirectorykit'); ?> <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields&function=field_edit"); ?>" class="button button-primary" id="add_field_button"><?php echo esc_html__('Add Field','wpdirectorykit'); ?></a></h1>
     <br />
         <div class="wdk-body ">
             <div class="row fields_list">
@@ -31,9 +31,9 @@ if ( ! defined( 'ABSPATH' ) ) {
                 
                 <div  class="notice notice-error">
                     <p>
-                        <?php echo __('First please install / activate required plugins, then you can import demo data','wpdirectorykit'); ?>
+                        <?php echo esc_html__('First please install / activate required plugins, then you can import demo data','wpdirectorykit'); ?>
                         <a href="<?php echo esc_url($tgma_link); ?>" class="button button-primary">
-                            <?php echo __('Begin to install / activate','wpdirectorykit'); ?>
+                            <?php echo esc_html__('Begin to install / activate','wpdirectorykit'); ?>
                         </a>
                     </p>
                 </div>
@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     ?>
                     <div  class="notice notice-success">
                         <p>
-                            <?php echo __('You don\'t have any fields, import demo data for','wpdirectorykit'); ?>  
+                            <?php echo esc_html__('You don\'t have any fields, import demo data for','wpdirectorykit'); ?>  
                             <select name="multipurpose" class="field_purpose align-top text-capitalize">
                                 <?php foreach ($multipurpose_values as $purpose_key => $purpose) :?>
                                     <?php 
@@ -74,7 +74,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <?php endforeach;?>
                             </select>
                             <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_settings&function=run&multipurpose=real-estate.xml&redirect_url=admin.php?page=wdk_fields&_wpnonce=".wp_create_nonce( 'wdk-import-data-run')); ?>" class="button button-primary event-ajax-indicator" id="import_demo_field_button">
-                                <?php echo __('Click here to import now','wpdirectorykit'); ?>
+                                <?php echo esc_html__('Click here to import now','wpdirectorykit'); ?>
                             </a>
                             <span class="wdk-ajax-indicator wdk-infinity-load color-primary dashicons dashicons-update-alt hidden" style="margin-top: 6px;margin-left: 4px;"></span>
                         </p>
@@ -83,7 +83,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php endif; ?>
             <?php
                 if (isset($_GET['message'])) {
-                    echo '<p class="alert alert-success">' .str_replace("+", ' ', wp_kses_post(urldecode($_GET['message']))) . '</p><br/>';
+                    echo '<p class="alert alert-success">' .esc_html(str_replace("+", ' ', wp_kses_post(urldecode($_GET['message'])))) . '</p><br/>';
                 }
             ?>
 
@@ -92,7 +92,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <div id="fid_<?php echo esc_attr($field->idfield); ?>" class=" wdk_field wdk-col-md-<?php echo esc_attr($field->columns_number); ?> <?php echo esc_attr($field->field_type); ?>" rel="<?php echo esc_attr($field->idfield); ?>">
                         <div class="postbox-header postbox ">
                             <h3 class="hndle ui-sortable-handle"> <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields&function=field_edit&id=".esc_attr($field->idfield)); ?>">#<?php echo esc_html($field->idfield); ?> <?php echo esc_html($field->field_label); ?>  <?php echo !empty(wmvc_show_data('is_required', $field, ''))?'*':''; ?> [<?php echo esc_html($field->field_type); ?>]</a> 
-                                <a class="question_sure pull_right" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields&function=delete&id=".esc_attr($field->idfield)); ?>&_wpnonce=<?php echo wp_create_nonce( 'wdk-fields-delete_'.esc_attr($field->idfield));?>"  title="<?php echo esc_attr__('Remove','wpdirectorykit');?>"><span class="dashicons dashicons-no"></span></a>
+                                <a class="question_sure pull_right" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields&function=delete&id=".esc_attr($field->idfield)); ?>&_wpnonce=<?php echo esc_attr(wp_create_nonce( 'wdk-fields-delete_'.esc_attr($field->idfield)));?>"  title="<?php echo esc_attr__('Remove','wpdirectorykit');?>"><span class="dashicons dashicons-no"></span></a>
                                 <a class="pull_right" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_fields&function=field_edit&id=".esc_attr($field->idfield)); ?>"  title="<?php echo esc_attr__('Edit','wpdirectorykit');?>"><span class="dashicons dashicons-edit"></span></a>
                             </h3>
                             <?php if(false): ?>
@@ -121,7 +121,22 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <?php endforeach; ?>
             </div>
                     
-            <div class="alert alert-info" style="margin-bottom:20px" role="alert"><?php echo sprintf(__('%1$s This fields and section can be restructured, replaced/moved with drag & drop, resized etc. How to add new fields?%2$s', 'wpdirectorykit'),'<a href="//wpdirectorykit.com/documentation/#!/custom_fields" target="_blank">','</a>'); ?></div>
+            <div class="alert alert-info" style="margin-bottom:20px" role="alert"><?php
+                echo wp_kses(
+                    sprintf(
+                        /* translators: 1: Tag with link open, 2: close link tag. */
+                        __('%1$s This fields and section can be restructured, replaced/moved with drag & drop, resized etc. How to add new fields?%2$s', 'wpdirectorykit'),
+                        '<a href="' . esc_url('https://wpdirectorykit.com/documentation/#!/custom_fields') . '" target="_blank">',
+                        '</a>'
+                    ),
+                    array(
+                        'a' => array(
+                            'href'   => true,
+                            'target' => true,
+                        ),
+                    )
+                );
+            ?></div>
             <iframe width="560" height="315" src="//www.youtube.com/embed/cewZBOGzbPg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>

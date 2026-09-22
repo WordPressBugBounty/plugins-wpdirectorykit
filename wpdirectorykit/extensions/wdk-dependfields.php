@@ -96,10 +96,10 @@ class WdkDependfields
                 <div class="postbox" style="display: block;">
                     <div class="postbox-header flex-align-left">
                         <h3 class="wdk-mr-5">
-                            <?php echo __('Visible fields','wpdirectorykit'); ?>
+                            <?php echo esc_html__('Visible fields','wpdirectorykit'); ?>
                         </h3>
-                        <a href="#" class="wdk-mr-5 button button-secondary wdk_copy_on_subcategories" data-category="<?php echo esc_attr(wmvc_show_data('idcategory', $data));?>" data-wpnonce="<?php echo wp_create_nonce('wdk_depend_copy_on_subcategories');?>">
-                            <span class="dashicons dashicons-admin-page"></span>  <?php echo __('Copy on subcategories','wpdirectorykit'); ?>                    
+                        <a href="#" class="wdk-mr-5 button button-secondary wdk_copy_on_subcategories" data-category="<?php echo esc_attr(wmvc_show_data('idcategory', $data));?>" data-wpnonce="<?php echo esc_attr(wp_create_nonce('wdk_depend_copy_on_subcategories'));?>">
+                            <span class="dashicons dashicons-admin-page"></span>  <?php echo esc_html__('Copy on subcategories','wpdirectorykit'); ?>                    
                         </a>
                     </div>
                     <div class="inside">

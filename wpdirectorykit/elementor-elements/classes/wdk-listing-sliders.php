@@ -155,7 +155,7 @@ class WdkListingSliders extends WdkElementorBase {
                 /* return false if no content */
             }
 
-            echo $this->view('wdk-listing-sliders', $this->data); 
+            $this->view('wdk-listing-sliders', $this->data, true); 
         }
     
     

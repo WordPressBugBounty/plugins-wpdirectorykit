@@ -11,10 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div class="wdk-element" id="wdk_el_<?php echo esc_html($id_element);?>">
-    <div class="wdk-listings-results <?php echo wmvc_show_data('styles_thmbn_des_type',$settings, '');?> view-<?php echo wmvc_show_data('layout_type',$settings, '');?>">
+    <div class="wdk-listings-results <?php echo esc_attr(wmvc_show_data('styles_thmbn_des_type',$settings, ''));?> view-<?php echo esc_attr(wmvc_show_data('layout_type',$settings, ''));?>">
         <?php if(count($results) > 0):?>
             <?php if($settings['layout_type'] == 'carousel'):?>
-                <div class="wdk_results_listings_slider_box <?php echo esc_attr($settings['layout_carousel_animation_style']).'_animation';?> <?php echo join(' ', [$settings['styles_carousel_dots_position_style'],$settings['styles_carousel_arrows_position']]);?>">
+                <div class="wdk_results_listings_slider_box <?php echo esc_attr($settings['layout_carousel_animation_style']).'_animation';?> <?php echo esc_attr(join(' ', [$settings['styles_carousel_dots_position_style'],$settings['styles_carousel_arrows_position']]));?>">
                 <div class="wdk_results_listings_slider_body">
                 <div class="wdk_results_listings_slider_ini">
             <?php else:?>
@@ -22,7 +22,9 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php endif;?>
             <?php foreach($results as $listing):?>
                 <div class="wdk-col">
-                    <?php echo wdk_listing_card($listing, $settings);?>
+                    <?php 
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.NonSingularStringLiteralText
+                    echo wdk_listing_card($listing, $settings);?>
                 </div>
             <?php endforeach;?> 
             <?php if($settings['layout_type'] == 'carousel'):?>
@@ -55,13 +57,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                 dots: false,
                 arrows: false,
                 <?php endif;?>
-                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? wmvc_show_data('layout_carousel_columns', $settings, '3') : 3;?>,
-                slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? wmvc_show_data('layout_carousel_columns', $settings, '3') : 3;?>,
+                slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? esc_html(wmvc_show_data('layout_carousel_columns', $settings, '3')) : 3;?>,
+                slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns', $settings, '3')))) ? esc_html(wmvc_show_data('layout_carousel_columns', $settings, '3')) : 3;?>,
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_infinite', $settings))):?>
-                infinite: <?php echo wmvc_show_data('layout_carousel_is_infinite', $settings, 'true');?>,
+                infinite: <?php echo esc_js(wmvc_show_data('layout_carousel_is_infinite', $settings, 'true'));?>,
                 <?php endif;?>
                 <?php if(!empty(wmvc_show_data('layout_carousel_is_autoplay', $settings))):?>
-                autoplay: <?php echo wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false');?>,
+                autoplay: <?php echo esc_js(wmvc_show_data('layout_carousel_is_autoplay', $settings, 'false'));?>,
                 <?php endif;?>
                 nextArrow: $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_slider_arrows .wdk-slider-next'),
                 prevArrow: $('#wdk_el_<?php echo esc_html($id_element);?> .wdk_slider_arrows .wdk-slider-prev'),
@@ -73,15 +75,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                     {
                         breakpoint: 991,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? wmvc_show_data('layout_carousel_columns_tablet', $settings, '2') : 2;?>,
-                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? wmvc_show_data('layout_carousel_columns_tablet', $settings, '2') : 2;?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? esc_html(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')) : 2;?>,
+                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')))) ? esc_html(wmvc_show_data('layout_carousel_columns_tablet', $settings, '2')) : 2;?>,
                         }
                     },
                     {
                         breakpoint: 768,
                         settings: {
-                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? wmvc_show_data('layout_carousel_columns_mobile', $settings, '1') : 1;?>,
-                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? wmvc_show_data('layout_carousel_columns_mobile', $settings, '1') : 1;?>,
+                            slidesToShow: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? esc_html(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')) : 1;?>,
+                            slidesToScroll: <?php echo (!empty(trim(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')))) ? esc_html(wmvc_show_data('layout_carousel_columns_mobile', $settings, '1')) : 1;?>,
                         }
                     },
                 ]

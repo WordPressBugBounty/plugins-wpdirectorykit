@@ -250,7 +250,9 @@ class wpdirectorykit_Modules_Reviews {
 
 		if ( ! isset( $triggers ) ) {
 
+			/* translators: %d: Number of popup views. */
 			$open_message = __( 'Hey, I noticed you recently hit %d popup views on your site – that’s awesome!. I would very much appreciate if you could quickly give it a 5-star rating on WordPress, just to help us spread the word.', 'wpdirectorykit' );
+			/* translators: %s: Time period (e.g. 1 week). */
 			$time_message = __( "Hey, you've been using WP Directory Kit for %s on your site - I hope that its been helpful. I would very much appreciate if you could quickly give it a 5-star rating on WordPress, just to help us spread the word and motivate us to make it even better.", 'wpdirectorykit' );
 
 			$triggers = apply_filters( 'wpdirectorykit_reviews_triggers', array(
@@ -370,7 +372,7 @@ class wpdirectorykit_Modules_Reviews {
 						url: ajaxurl,
 						data: {
 							action: 'wpdirectorykit_review_action',
-							nonce: '<?php echo wp_create_nonce( 'wpdirectorykit_review_action' ); ?>',
+							nonce: '<?php echo esc_js(wp_create_nonce( 'wpdirectorykit_review_action' )); ?>',
 							group: trigger.group,
 							code: trigger.code,
 							pri: trigger.pri,
@@ -434,7 +436,7 @@ class wpdirectorykit_Modules_Reviews {
 		<div class="notice notice-success is-dismissible wpdirectorykit-notice">
 
 			<p>
-				<img class="logo" src="<?php echo WPDIRECTORYKIT_URL; ?>admin/img/icon-256x256.jpg" />
+				<img class="logo" src="<?php echo esc_url(WPDIRECTORYKIT_URL); ?>admin/img/icon-256x256.jpg" />
 				<strong>
 					<?php echo esc_html($tigger['message']); ?>
 					<br />
@@ -444,22 +446,22 @@ class wpdirectorykit_Modules_Reviews {
 			<ul>
 				<li>
 					<a class="wpdirectorykit-dismiss" target="_blank" href="https://wordpress.org/support/plugin/wpdirectorykit/reviews/?rate=5#rate-response" data-reason="am_now">
-						<strong><?php _e( 'Ok, I will help you with 5 star rating', 'wpdirectorykit' ); ?></strong>
+						<strong><?php esc_html_e( 'Ok, I will help you with 5 star rating', 'wpdirectorykit' ); ?></strong>
 					</a>
 				</li>
 				<li>
 					<a href="https://wpdirectorykit.com/contact.html" target="_blank"class="wpdirectorykit-dismiss" data-reason="improve_suggestion">
-						<?php _e( 'No, you doesn\'t deserver 5 stars and I will tell you why!', 'wpdirectorykit' ); ?>
+						<?php esc_html_e( 'No, you doesn\'t deserver 5 stars and I will tell you why!', 'wpdirectorykit' ); ?>
 					</a>
 				</li>
 				<li>
 					<a href="#" class="wpdirectorykit-dismiss" data-reason="maybe_later">
-						<?php _e( 'Nope, maybe later', 'wpdirectorykit' ); ?>
+						<?php esc_html_e( 'Nope, maybe later', 'wpdirectorykit' ); ?>
 					</a>
 				</li>
 				<li>
 					<a href="#" class="wpdirectorykit-dismiss" data-reason="already_did">
-						<?php _e( 'I already did', 'wpdirectorykit' ); ?>
+						<?php esc_html_e( 'I already did', 'wpdirectorykit' ); ?>
 					</a>
 				</li>
 			</ul>
