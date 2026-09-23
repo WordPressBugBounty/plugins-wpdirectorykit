@@ -32,10 +32,10 @@ class WdkCachedUserEditor
         $user_id_editor = $listing_data['user_id_editor'];
 
         $data_update = array(
-            'user_id_editor_display_name'=> wdk_get_user_field ($user_id_editor, 'display_name'),
-            'user_id_editor_user_login'=>wdk_get_user_field ($user_id_editor, 'user_login'),
-            'user_id_editor_wdk_slug'=>wdk_get_user_field ($user_id_editor, 'wdk_slug'),
-            'user_id_editor_avatar'=>wdk_get_user_field ($user_id_editor, 'avatar'),
+            'user_id_editor_display_name'=> wdk_esc_sql(wdk_get_user_field ($user_id_editor, 'display_name'), true),
+            'user_id_editor_user_login'=>wdk_esc_sql(wdk_get_user_field ($user_id_editor, 'user_login'), true),
+            'user_id_editor_wdk_slug'=>wdk_esc_sql(wdk_get_user_field ($user_id_editor, 'wdk_slug'), true),
+            'user_id_editor_avatar'=>wdk_esc_sql(wdk_get_user_field ($user_id_editor, 'avatar'), true),
         );
 
         if(!empty($data_update))
@@ -49,10 +49,10 @@ class WdkCachedUserEditor
         $Winter_MVC_WDK->load_helper('listing');
 
         $data_update = array(
-            'user_id_editor_display_name'=> wdk_get_user_field ($user_id_editor, 'display_name'),
-            'user_id_editor_user_login'=>wdk_get_user_field ($user_id_editor, 'user_login'),
-            'user_id_editor_wdk_slug'=>wdk_get_user_field ($user_id_editor, 'wdk_slug'),
-            'user_id_editor_avatar'=>wdk_get_user_field ($user_id_editor, 'avatar'),
+            'user_id_editor_display_name'=> wdk_esc_sql(wdk_get_user_field ($user_id_editor, 'display_name'), true),
+            'user_id_editor_user_login'=>wdk_esc_sql(wdk_get_user_field ($user_id_editor, 'user_login'), true),
+            'user_id_editor_wdk_slug'=>wdk_esc_sql(wdk_get_user_field ($user_id_editor, 'wdk_slug'), true),
+            'user_id_editor_avatar'=>wdk_esc_sql(wdk_get_user_field ($user_id_editor, 'avatar'), true),
         );
 
         $Winter_MVC_WDK->db->update($Winter_MVC_WDK->listing_m->_table_name, $data_update, $user_id_editor, 'user_id_editor');

@@ -32,6 +32,7 @@ if (! defined('ABSPATH')) {
         <?php do_action('wdk/listing/edit/aboveform', wmvc_show_data('ID', $db_data)); ?>
  
         <?php $this->view('wdk_listing/inc/quick-nav-listings',$data); ?>
+        
         <form method="post" class="form_listing form_listing_ai" action="<?php echo esc_url(wmvc_current_edit_url()); ?>" enctype="multipart/form-data" novalidate="novalidate">
             <?php wp_nonce_field('wdk-listing-edit_' . wmvc_show_data('ID', $db_data, 0), '_wpnonce'); ?>
 

@@ -1927,3 +1927,76 @@ body .select2-container--default.select2-container--focus .select2-selection--mu
         width: 100%;
     }
 }
+ 
+.wdk-empty-state {
+    padding: 40px 20px 48px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    &__image {
+        display: block;
+        width: 170px;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto 18px;
+    }
+
+    &__title {
+        margin: 0 0 8px;
+        color: #292d32;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    &__description {
+        max-width: 310px;
+        margin: 0 auto 18px;
+        color: #85858d;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 9px 15px;
+        border-radius: 8px;
+        background: #edf0fc;
+        color: #456596;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.4;
+        text-decoration: none;
+        transition: background .2s, color .2s;
+
+        &:hover {
+            background: #e0e7fc;
+            color: #2f51a4;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #4775ed;
+            outline-offset: 3px;
+        }
+
+        span {
+            font-size: 21px;
+            font-weight: 400;
+            line-height: 1;
+        }
+    }
+}
+
+.wdk-wrap {
+    br {
+        display: block;
+        content: "";
+        margin-bottom: 5px;
+    }
+}

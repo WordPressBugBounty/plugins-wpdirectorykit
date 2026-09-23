@@ -54,6 +54,11 @@ function shortcode_wdk_listing_field_value_suffix($atts, $content){
         return false;
     }
     
+    $post_data = get_post($post_id);
+    if (!$post_data || $post_data->post_status != 'publish' || post_password_required($post_data)) {
+        return false;
+    }
+    
     if(!empty($data['settings']['field_id'])){
         if(strpos($data['settings']['field_id'],'__') !== FALSE){
             $data['settings']['field_id'] = substr($data['settings']['field_id'], strpos($data['settings']['field_id'],'__')+2);

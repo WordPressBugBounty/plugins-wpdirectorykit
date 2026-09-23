@@ -29,6 +29,8 @@ if(isset($_GET['id'])) {
         ORDER BY ID ASC
         LIMIT 1
     ", 'wdk-listing', $current_id));
+} else {
+    return false;
 }
 
 ?>

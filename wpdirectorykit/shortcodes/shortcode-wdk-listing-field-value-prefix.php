@@ -46,6 +46,11 @@ function shortcode_wdk_listing_field_value_prefix($atts, $content){
     $data['field_prefix'] = '';
     $data['field_suffix'] = '';
     
+    $post_data = get_post($post_id);
+    if (!$post_data || $post_data->post_status != 'publish' || post_password_required($post_data)) {
+        return false;
+    }
+    
     /* protect check */
     if(in_array($data['settings']['field_id'], ['post_password', 'status'])  ) {
         return false;

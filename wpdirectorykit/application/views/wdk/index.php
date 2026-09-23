@@ -439,7 +439,34 @@ if (! defined('ABSPATH')) {
             <tbody>
                 <?php if (count($listings) == 0) : ?>
                     <tr class="no-items">
-                        <td class="colspanchange" colspan="9"><?php echo esc_html__('No Listings found.', 'wpdirectorykit'); ?></td>
+                        <td class="colspanchange" colspan="9">
+                            <div class="wdk-empty-state">
+                                <img
+                                    src="<?php echo esc_url(WPDIRECTORYKIT_URL . 'admin/img/no-listings.svg'); ?>"
+                                    class="wdk-empty-state__image"
+                                    alt=""
+                                    width="220"
+                                    height="178"
+                                />
+
+                                <h3 class="wdk-empty-state__title">
+                                    <?php echo esc_html__('No Listings Yet', 'wpdirectorykit'); ?>
+                                </h3>
+
+                                <p class="wdk-empty-state__description">
+                                    <?php echo esc_html__(
+                                        'You haven’t created any listings yet. Start by creating your first listing to see it here.',
+                                        'wpdirectorykit'
+                                    ); ?>
+                                </p>
+
+                                <a class="button-primary"
+                                href="<?php echo esc_url(get_admin_url()) . "admin.php?page=wdk_listing"; ?>">
+                                    <span aria-hidden="true">+</span>
+                                    <?php echo esc_html__('Create Listing', 'wpdirectorykit'); ?>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                 <?php endif; ?>
                 <?php foreach ($listings as $listing) : ?>
@@ -535,36 +562,6 @@ if (! defined('ABSPATH')) {
                             <a class="question_sure" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&paged=" . esc_attr($paged) . "&id=" . wmvc_show_data('ID', $listing, '-') . "&_wpnonce=" . esc_attr(wp_create_nonce('wdk-listing-delete_' . wmvc_show_data('ID', $listing, '-')))); ?>" title="<?php echo esc_attr__('Remove', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-no"></span></a>
                         </td>
                     </tr>
-
-                    <?php if (get_option('wdk_sub_listings_enable')): ?>
-                        <?php if (!empty(wmvc_show_data('listing_related_ids', $listing))): ?>
-                            <?php if (false) foreach (explode(',', wmvc_show_data('listing_related_ids', $listing, '')) as $key => $child_idlisting): ?>
-                                <tr class="child">
-                                    <th scope="row"></th>
-                                    <td scope="row"></td>
-                                    <td colspan="1">
-                                        <a target="_blank" href="<?php echo esc_url(admin_url('admin.php?page=wdk_listing&id=' . $child_idlisting)); ?>"><?php echo esc_html('#' . $child_idlisting . ', ' . wdk_field_value('post_title', $child_idlisting)); ?></a>
-                                    </td>
-                                    <td>
-                                        <?php echo esc_html(wdk_field_value('category_id', $categories)); ?>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <a class="img-link" href="<?php echo esc_url(get_admin_url()) . "admin.php?page=wdk_listing&id=" . esc_attr($child_idlisting); ?>">
-                                            <img src="<?php echo esc_url(wdk_image_src(array('listing_images' => wdk_field_value('listing_images', $child_idlisting)))); ?>" alt="thumb" style="height:50px;width:65px;object-fit:cover;text-align: center;" />
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <?php echo esc_html(wdk_get_date(wdk_field_value('date', $child_idlisting), false)); ?>
-                                    </td>
-                                    <td class="actions_column">
-                                        <a href="<?php echo esc_url(get_permalink($child_idlisting)); ?>" title="<?php echo esc_attr__('View', 'wpdirectorykit'); ?>" target="blank"><span class="dashicons dashicons-visibility"></span></a>
-                                        <a href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . $child_idlisting); ?>" title="<?php echo esc_attr__('Edit', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-edit"></span></a>
-                                        <a class="question_sure" href="<?php echo esc_url(get_admin_url() . "admin.php?page=wdk&function=delete&paged=" . esc_attr($paged) . "&id=" . $child_idlisting . "&_wpnonce=" . esc_attr(wp_create_nonce('wdk-listing-delete_' . wmvc_show_data('ID', $listing, '-')))); ?>" title="<?php echo esc_attr__('Remove', 'wpdirectorykit'); ?>"><span class="dashicons dashicons-no"></span></a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
             <tfoot>
