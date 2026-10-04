@@ -60,6 +60,14 @@ foreach($dbusers as $dbuser) {
                         'multiple' => true,
                         'style' => true,
                     ),
+                    'input' => array(
+                        'name' => true,
+                        'value' => true,
+                        'class' => true,
+                        'type' => true,
+                        'id' => true,
+                        'readonly' => true,
+                    ),
                     'option' => array(
                         'value' => true,
                         'selected' => true,

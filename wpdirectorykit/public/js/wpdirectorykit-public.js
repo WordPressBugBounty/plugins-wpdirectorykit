@@ -439,6 +439,16 @@
                         "page": 'wdk_frontendajax',
                         "function": 'search_suggestion',
                     },
+                    debounce: 250,
+                    min_chars: 3,
+                    cache_ttl: 0,
+                    strings: {
+                        loading: wp.i18n.__('Searching…', 'wpdirectorykit'),
+                        empty: wp.i18n.__('No results found', 'wpdirectorykit'),
+                        error: wp.i18n.__('Search failed. Try again.', 'wpdirectorykit'),
+                        results: wp.i18n.__('{count} suggestions available', 'wpdirectorykit'),
+                        label: wp.i18n.__('Search suggestions', 'wpdirectorykit')
+                    },
                     language_id: '',
                     text_search: 'Search',
                     callback_selected: function(key) {

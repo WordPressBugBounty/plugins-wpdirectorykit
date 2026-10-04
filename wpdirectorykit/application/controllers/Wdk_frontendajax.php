@@ -1132,9 +1132,17 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 
 		$limit = apply_filters('wdk/search_suggestion/listings_limit', 5);
 		$this->db->where(array("post_title LIKE '%".esc_sql($search_text)."%'" => NULL));
-		$db_results = $this->listing_m->get_pagination($limit, NULL, array('is_activated' => 1,'is_approved'=>1));
+		$db_results = $this->listing_m->get_pagination($limit, NULL, array('post_status' => 'publish','post_password=""' => NULL,'is_activated' => 1,'is_approved'=>1));
 
 		if($db_results) foreach($db_results as $row) {
+			if (
+				!isset($row->post_status, $row->post_password) ||
+				$row->post_status !== 'publish' ||
+				$row->post_password !== ''
+			) {
+				continue;
+			}
+
 			$results[] = [
 				'field_key' => 'link',
 				'value' => get_permalink($row),

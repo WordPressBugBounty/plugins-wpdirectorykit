@@ -5382,7 +5382,12 @@ if ( ! function_exists('is_wdk_related_validation'))
                 }
     
                 $part = sanitize_key($part);
-    
+
+                // Ensure direction is either ASC or DESC.
+                if ($direction !== 'ASC' && $direction !== 'DESC') {
+                    $direction = 'ASC';
+                }
+                
                 if (in_array($part, $allowed_fields, true)) {
                     $result[] = $part . ' ' . $direction;
                 }
