@@ -612,6 +612,15 @@ if(!function_exists('wdk_listing_card')) {
 		if(is_intval($template)) {
 			$output = '';
 			$post_data = get_post($template);
+			
+			if (
+				!$post_data
+				|| !in_array($post_data->post_type, array('page', 'elementor_library'), true)
+				|| $post_data->post_status !== 'publish'
+				|| post_password_required($post_data)
+			) {
+				return '';
+			}
 
 			global $wdk_listing_id;
 			$wdk_listing_id = wmvc_show_data('post_id', $listing);

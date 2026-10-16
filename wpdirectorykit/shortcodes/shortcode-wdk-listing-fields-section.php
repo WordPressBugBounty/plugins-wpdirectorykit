@@ -69,10 +69,21 @@ function shortcode_wdk_listing_fields_section($atts, $content){
 
     
     $post_data = get_post($post_id);
-    if (!$post_data || $post_data->post_status != 'publish' || post_password_required($post_data)) {
-        return false;
+    if (
+        !$post_data ||
+        $post_data->post_type !== 'wdk-listing' ||
+        $post_data->post_status !== 'publish' ||
+        post_password_required($post_data)
+    ) {
+        return '';
     }
-    
+
+    if (
+        !wdk_field_value('is_activated', $post_id, false) || !wdk_field_value('is_approved', $post_id,false)
+    ) {
+        return __( 'Listing is not public', 'wpdirectorykit' );
+    }
+
     if(!empty($data['settings']['field_id']))
         $data['field_label'] = wdk_field_label($data['settings']['field_id']);
 

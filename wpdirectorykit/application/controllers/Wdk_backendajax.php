@@ -343,7 +343,14 @@ class Wdk_backendajax extends Winter_MVC_Controller
                 list($prefix, $field_id, $field_type) = explode('_', $listingfield);
 
                 if (!wdk_field_option($field_id, 'field_type', false)) {
-                    $wpdb->query("ALTER TABLE {$this->listingfield_m->_table_name} DROP COLUMN $listingfield;");
+                    if ( preg_match( '/^field_\d+_[A-Za-z0-9_]+$/', $listingfield ) ) {
+                        $table_listing_fields = $this->listingfield_m->_table_name;
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "ALTER TABLE `{$table_listing_fields}` DROP COLUMN `{$listingfield}`;"
+                            )
+                        );
+                    }
                 }
             }
         }
@@ -364,7 +371,14 @@ class Wdk_backendajax extends Winter_MVC_Controller
                     stripos($listingfields[$column_name]->Type, 'VARCHAR') !== FALSE
                     && ($field->field_type == 'INPUTBOX' || $field->field_type == 'DROPDOWN' || $field->field_type == 'DROPDOWNMULTIPLE')
                 ) {
-                    $wpdb->query("ALTER TABLE `{$this->listingfield_m->_table_name}` CHANGE  `$column_name` `$column_name` TEXT NULL DEFAULT NULL;");
+                    $table_listing_fields = $this->listingfield_m->_table_name;
+                    if ( preg_match( '/^field_\d+_[A-Za-z0-9_]+$/', $column_name ) ) {
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "ALTER TABLE `{$table_listing_fields}` CHANGE `{$column_name}` `{$column_name}` TEXT NULL DEFAULT NULL;"
+                            )
+                        );
+                    }
                 }
             }
         }
@@ -633,8 +647,8 @@ class Wdk_backendajax extends Winter_MVC_Controller
         }
         $table_listing_fields = $wpdb->prefix . 'wdk_listings_fields';
         if(!empty($existing_listing_fields)) foreach ($existing_listing_fields as $field_listing_col => $field_listing) {
-            if(substr($field_listing_col, 0, 6) == 'field_') {
-                $wpdb->query( $wpdb->prepare( "ALTER TABLE `{$table_listing_fields}` DROP `$field_listing_col`;" ) );
+            if ( preg_match( '/^field_\d+_[A-Za-z0-9_]+$/', $field_listing_col ) ) {
+                $wpdb->query( $wpdb->prepare( "ALTER TABLE `{$table_listing_fields}` DROP `{$field_listing_col}`;" ) );
             }
         }
 
@@ -697,7 +711,7 @@ class Wdk_backendajax extends Winter_MVC_Controller
                 $_listing['listing_edit_url'] = esc_url(get_admin_url() . "admin.php?page=wdk_listing&id=" . wdk_field_value('post_id', $sublisting));
                 $_listing['listing_dash_remove_url'] = '';
                 $_listing['listing_dash_edit_url'] = '';
-                if(function_exists(' wdk_dash_url')) {
+                if(function_exists('wdk_dash_url')) {
                     $_listing['listing_dash_remove_url'] = wdk_dash_url("dash_page=listings&table_action=table&action=delete&ids=" . wdk_field_value('post_id', $sublisting));
                     $_listing['listing_dash_edit_url'] = wdk_dash_url("dash_page=listings&function=edit&id=" . wdk_field_value('post_id', $sublisting));
                 }
@@ -747,7 +761,7 @@ class Wdk_backendajax extends Winter_MVC_Controller
             $this->listing_m->delete($listing_id);
 
             if(isset($parent_listing->listing_related_ids) && !empty($parent_listing->listing_related_ids)) {
-                $related_ids = trim(str_replace(','.$listing_id.'','', ','.$parent_listing->listing_related_ids.','),',');
+                $related_ids = implode(',', array_diff(wp_parse_id_list($parent_listing->listing_related_ids), array($listing_id)));
                 $this->listing_m->insert(array('listing_related_ids' => $related_ids), $listing->listing_parent_post_id);
             }
 

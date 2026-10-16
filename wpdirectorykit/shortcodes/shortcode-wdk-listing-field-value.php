@@ -75,6 +75,12 @@ function shortcode_wdk_listing_field_value($atts, $content){
         return '';
     }
 
+    if (
+        !wdk_field_value('is_activated', $post_id, false) || !wdk_field_value('is_approved', $post_id,false)
+    ) {
+        return __( 'Listing is not public', 'wpdirectorykit' );
+    }
+
 
     if(!empty($data['settings']['field_id'])){
         if(strpos($data['settings']['field_id'],'__') !== FALSE){

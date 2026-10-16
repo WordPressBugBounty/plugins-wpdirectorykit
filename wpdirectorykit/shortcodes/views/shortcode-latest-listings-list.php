@@ -16,6 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php if(!empty($results)):?>
                 <?php foreach($results as $listing):?>
                     <?php
+                        if (wmvc_show_data('post_status', $listing) !== 'publish'
+                            || !empty(wmvc_show_data('post_password', $listing))
+                            || !wmvc_show_data('is_activated', $listing) || !wmvc_show_data('is_approved', $listing)) continue;
                         $url = get_permalink($listing);
                         $title_post =  wdk_resultitem_fields_section_value(1, 2, $listing);
                         $title_part =  wdk_resultitem_fields_section_value(1, 2, $listing);

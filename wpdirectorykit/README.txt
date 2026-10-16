@@ -4,7 +4,7 @@ Donate link: https://wpdirectorykit.com/donate/
 Tags: directory,business directory,directory plugin,real estate,listing,classified ads,member directory
 Requires at least: 5.3
 Tested up to: 7.1
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -169,6 +169,10 @@ Great thing is that you can use it in same time with third parity plugins like:
 
 propertyhive, hivepress, ulistings, opal and more...
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the WP Directory Kit plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fbb82-876a-4ad4-95f4-c194a793a460). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 = Can we migrate from third party solution to Wp Directroy Kit? =
 
 Yes you can migrate if your current solution support CSV or XML export, then you need to use our import/export solution: 
@@ -196,6 +200,9 @@ First you map fields then import this CSV/XML file into WP Directory Kit Plugin
 15. Block Latest Listings
 
 == Changelog ==
+
+= 1.6.1 =
+* Fixed security
 
 = 1.6.0 =
 * Fixed security

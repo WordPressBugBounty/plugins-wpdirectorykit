@@ -265,8 +265,8 @@ if (get_option('wdk_slug_listing_preview_page')) {
 // Hook example, custom page title for 
 add_filter('document_title_parts', function ($title_parts_array) {
     global $wp_query;
-    if (isset($wp_query->post) && $wp_query->post->post_type === 'wdk-listing') {
-        $title_parts_array['title'] = wdk_listing_seo_title();
+    if (isset($wp_query->post) && $wp_query->post->post_type === 'wdk-listing' && $wdk_listing_title=wdk_listing_seo_title()) {
+        $title_parts_array['title'] = $wdk_listing_title;
     }
     return $title_parts_array;
 });

@@ -701,6 +701,40 @@ function wdk_prepare_search_query_GET($columns = array(), $model_name = NULL, $e
                 }
             }
 
+            /* search by worlds */
+            $words = preg_split('/\s+/u', trim($smart_search), -1, PREG_SPLIT_NO_EMPTY);
+            if(count($words) > 1) {
+                $gen_q = '';
+
+                foreach($words as $word) {
+                    foreach($columns as $key => $value)
+                    {
+                        if($value == 'field_booking_date_from' || $value == 'field_booking_date_to' || $value == 'agents_ids' || $value == 'gps' || $value == 'is_featured' || $value == 'field_booking_guest') continue;
+                        if (
+                            strpos($value, '_CHECKBOX') !== FALSE ||
+                            strpos($value, '_exactly') !== FALSE ||
+                            strpos($value, '_max') !== FALSE ||
+                            strpos($value, '_min') !== FALSE ||
+                            strpos($value, '_NUMBER') !== FALSE ||
+                            strpos($value, 'date') !== FALSE ||
+                            strpos($value, 'category_id') !== FALSE ||
+                            strpos($value, 'location_id') !== FALSE ||
+                            strpos($value, 'post_id') !== FALSE
+                        ) continue;
+                   
+
+                        $gen_q .= "$value LIKE '%$word%' OR ";
+
+                        /* categoreis locations */
+                        $gen_q.="location_title LIKE '%$$word%' OR ";
+                        $gen_q.="category_title LIKE '%$$word%' OR ";
+                        
+                        $gen_q.="`category_table`.`titles_for_search` LIKE '%$$word%' OR ";
+                        $gen_q.="`location_table`.`titles_for_search` LIKE '%$$word%' OR ";
+                    }
+                }
+            }
+
             /* location / categories */
             if(!is_intval($smart_search)) {
                 $gen_q.="location_title LIKE '%$smart_search%' OR ";
@@ -2769,7 +2803,7 @@ if ( ! function_exists('wdk_file_extension_type'))
     function wdk_file_extension_type($filepath = NULL)
     {
 
-        if(in_array(wdk_file_extension($filepath),array('jpg','jpeg','bmp','png','webp'))) {
+        if(in_array(wdk_file_extension($filepath),array('jpg','jpeg','bmp','png','webp', 'avif'))) {
             return 'image';
         }
         if(in_array(wdk_file_extension($filepath),array('mp4','mov','flv','mkv','avi','webm'))) {
@@ -5223,7 +5257,7 @@ if ( ! function_exists('is_wdk_related_validation'))
 
             $Winter_MVC_WDK->db->select('post_id');
             $Winter_MVC_WDK->db->where(array(
-                    '(post_id IN ('.esc_sql(sanitize_text_field($param)).'))' => NULL,
+                    'post_id IN (' . esc_sql(implode(',', array_map('intval', (array) $param))) . ')' => NULL,
                     '((`listing_related_ids` IS NOT NULL AND `listing_related_ids` !="") OR (`listing_parent_post_id` IS NOT NULL AND `listing_parent_post_id` !=0))' => NULL,
                     ));
 

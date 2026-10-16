@@ -170,7 +170,7 @@ function wdk_block_product_field_get_meta(WP_REST_Request $request) {
         }
 
         wdk_prepare_search_query_GET($columns, $controller.'_m', $external_columns);
-        $data['results'] = $WMVC->listing_m->get_pagination($data['settings']['limit'], $offset, array('is_activated' => 1,'is_approved'=>1));
+        $data['results'] = $WMVC->listing_m->get_pagination($data['settings']['limit'], $offset, array('is_activated' => 1, 'is_approved' => 1, 'post_status' => 'publish', 'post_password' => ''));
 
     }  
     

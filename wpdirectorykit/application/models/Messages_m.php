@@ -436,13 +436,18 @@ class Messages_m extends Winter_MVC_Model {
 
         global $wpdb;
         if($user_id){
-            $wpdb->query("UPDATE `{$this->_table_name}` 
-                            LEFT JOIN `{$this->db->prefix}wdk_listings` ON `{$this->db->prefix}wdk_listings`.post_id = `{$this->_table_name}`.post_id  
-                            SET `is_notified` = 1 
-                            WHERE 
-                            (`user_id_editor` = {$user_id}
-                            OR `user_id_sender` = {$user_id})
-                        ");
+            $listings_table = $this->db->prefix . 'wdk_listings';
+            $messages_table = $this->_table_name;
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE `{$messages_table}`
+                    LEFT JOIN `{$listings_table}` ON `{$listings_table}`.post_id = `{$messages_table}`.post_id
+                    SET `is_notified` = 1
+                    WHERE (`user_id_editor` = %d OR `user_id_sender` = %d)",
+                    $user_id,
+                    $user_id
+                )
+            );
             return true;
         }
 

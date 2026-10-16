@@ -46,17 +46,37 @@ function shortcode_wdk_listing_field_value_prefix($atts, $content){
     $data['field_prefix'] = '';
     $data['field_suffix'] = '';
     
+    /* Allow only public built-in fields. */
+    $allowed_fields = array(
+        'post_title', 'category_id', 'location_id', 'post_content'
+    );
+
+    $field_id = (string) $data['settings']['field_id'];
+    if (
+        !is_numeric($field_id) &&
+        !in_array($field_id, $allowed_fields, true)
+        ) {
+            return '';
+    }
+
     $post_data = get_post($post_id);
-    if (!$post_data || $post_data->post_status != 'publish' || post_password_required($post_data)) {
-        return false;
+    if (
+        !$post_data ||
+        $post_data->post_type !== 'wdk-listing' ||
+        $post_data->post_status !== 'publish' ||
+        post_password_required($post_data)
+    ) {
+        return '';
+    }
+
+    if ( is_numeric($data['settings']['field_id']) && wdk_field_option($data['settings']['field_id'], 'is_visible_frontend') != 1 ) {
+        return '';
     }
     
-    /* protect check */
-    if(in_array($data['settings']['field_id'], ['post_password', 'status'])  ) {
-        return false;
-    }
-    if(wdk_field_option($data['settings']['field_id'], 'is_visible_frontend') != 1) {
-        return false;
+    if (
+        !wdk_field_value('is_activated', $post_id, false) || !wdk_field_value('is_approved', $post_id,false)
+    ) {
+        return __( 'Listing is not public', 'wpdirectorykit' );
     }
     
     if(!empty($data['settings']['field_id'])){

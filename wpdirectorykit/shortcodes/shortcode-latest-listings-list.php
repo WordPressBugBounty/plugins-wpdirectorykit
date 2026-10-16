@@ -51,12 +51,14 @@ function shortcode_latest_listings_list($atts, $content){
     $WMVC->load_helper('listing');
     $columns = array('ID', 'location_id', 'category_id', 'post_title', 'post_date', 'search', 'order_by','is_featured', 'address');
     $external_columns = array('location_id', 'category_id', 'post_title');
+    $public_where = array('post_status' => 'publish', "post_password = ''" => NULL, 'is_activated' => 1, 'is_approved' => 1);
     
     if(!empty($data['settings']['conf_custom_results'])) {
         /* where in */
+        $listings_ids = array_filter(wp_parse_id_list($data['settings']['conf_custom_results']));
         if(!empty($listings_ids)){
-            $WMVC->db->where( $WMVC->db->prefix.'wdk_listings.post_id IN(' . $data['settings']['conf_custom_results']  . ')', null, false);
-            $data['results'] = $WMVC->listing_m->get();
+            $WMVC->db->where( $WMVC->db->prefix.'wdk_listings.post_id IN(' . implode(',', $listings_ids) . ')', null, false);
+            $data['results'] = $WMVC->listing_m->get_pagination($data['settings']['limit'], 0, $public_where);
         }
     } else {
         $controller = 'listing';
@@ -69,14 +71,14 @@ function shortcode_latest_listings_list($atts, $content){
         if(!empty($data['settings']['conf_query'])) {
             $qr_string = trim($data['settings']['conf_query'],'?');
             parse_str($qr_string, $_GET);
-            $_GET = array_map('trim', $_GET);
+            $_GET = array_map(function ($value) { return is_string($value) ? trim($value) : $value; }, $_GET);
         }
         if($data['settings']['only_is_featured'] == 'yes') {
             $_GET['is_featured'] = 'on';
         }
 
         wdk_prepare_search_query_GET($columns, $controller.'_m', $external_columns);
-        $data['results'] = $WMVC->listing_m->get_pagination($data['settings']['limit'], $offset, array('is_activated' => 1,'is_approved'=>1));
+        $data['results'] = $WMVC->listing_m->get_pagination($data['settings']['limit'], $offset, $public_where);
 
     }  
     

@@ -420,7 +420,10 @@ class Wdk_Elementor {
 			wp_send_json_error();
 		}
 
-		$post_id  = sanitize_text_field( wp_unslash( $_POST['post_id'] ) );
+		if (!is_scalar($_POST['post_id'])) {
+			wp_send_json_error(array('message' => 'Invalid post ID.'), 400);
+		}
+		$post_id = absint($_POST['post_id']);
 		$meta_input = array(
 			'_elementor_edit_mode'     => 'builder',
 			'_elementor_template_type' => 'page',
@@ -433,6 +436,11 @@ class Wdk_Elementor {
 			$post = get_post( $post_id );
 
 		if ( empty( $post ) ) { // create a new one.
+			$post_type = get_post_type_object('elementor_library');
+			if (!$post_type || !current_user_can($post_type->cap->create_posts)
+				|| !current_user_can($post_type->cap->publish_posts)) {
+				wp_send_json_error(array('message' => 'Access denied.'), 403);
+			}
 
 			$post_title = 'WDK Template | #' . substr( md5( wp_rand(0000,9999) ), 0, 4 );
 
@@ -444,9 +452,15 @@ class Wdk_Elementor {
 				'meta_input'   => $meta_input,
 			);
 
-			$post_id = wp_insert_post( $params );
+			$post_id = wp_insert_post( $params, true );
+			if (is_wp_error($post_id) || !$post_id) {
+				wp_send_json_error(array('message' => 'Unable to create template.'), 500);
+			}
 
 		} else {
+			if (!current_user_can('edit_post', $post->ID)) {
+				wp_send_json_error(array('message' => 'Access denied.'), 403);
+			}
 			$post_id    = $post->ID;
 			$post_title = $post->post_title;
 		}
@@ -474,10 +488,13 @@ class Wdk_Elementor {
 	public static function get_posts_list() {
 
 		check_ajax_referer( 'wdk-blog-widget-nonce', 'nonce' );
+		if (!current_user_can('edit_posts')) {
+			wp_send_json_error(array('message' => 'Access denied.'), 403);
+		}
 
 		$post_type = isset( $_POST['post_type'] ) ? wp_unslash( $_POST['post_type'] ) : '';
 
-		$post_type = array_map( 'sanitize_text_field', $post_type );
+		$post_type = array_map( 'sanitize_text_field', (array) $post_type );
 
 		if ( empty( $post_type ) ) {
 			wp_send_json_error( esc_html__( 'Empty Post Type.', 'wpdirectorykit' ) );

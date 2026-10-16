@@ -335,18 +335,33 @@ class Listing_m extends Winter_MVC_Model {
 
         $this->load->model('listingfield_m');
         $this->load->model('listingusers_m');
-        
-        /* remove images direct */
-        if ( get_option('wdk_remove_direct_listing_images', false)) {
+       
+        /* Remove only authorized attachments belonging to this listing. */
+        if (get_option('wdk_remove_direct_listing_images', false)) {
             global $Winter_MVC_WDK;
             $Winter_MVC_WDK->load_helper('listing');
 
             $listing_images = wdk_field_value('listing_images', $post_id);
-            if(!empty($listing_images)) {
-                $image_ids = explode(',', $listing_images);
-                foreach ($image_ids as $key => $image_id) {
-                    wp_delete_attachment($image_id, true);
+           
+           
+            $image_ids = is_string($listing_images)
+                ? array_unique(
+                    array_filter(array_map('absint', explode(',', $listing_images)))
+                )
+                : array();
+
+            foreach ($image_ids as $image_id) {
+                $attachment = get_post($image_id);
+             
+                if (!$attachment || $attachment->post_type !== 'attachment') {
+                    continue;
                 }
+
+                if (!current_user_can('delete_post', $image_id)) {
+                    continue;
+                }
+            
+                wp_delete_attachment($image_id, true);
             }
         }
 
@@ -359,9 +374,6 @@ class Listing_m extends Winter_MVC_Model {
         wp_delete_post($post_id, true);
 
         // Delete listing images if setting enabled
-
-
-
         do_action('wpdirectorykit/model/listing/delete', $post_id);
 
         return true;
@@ -399,7 +411,13 @@ class Listing_m extends Winter_MVC_Model {
         if(empty($listing_ids) )
             return false;
 
-       $sql = 'UPDATE '.$this->_table_name.' SET `counter_results_views` = `counter_results_views`+'.$increment.' WHERE post_id IN ('.join(',', $listing_ids).')';
+       global $wpdb;
+       $safe_ids = array_map('intval', $listing_ids);
+       $placeholders = implode(',', array_fill(0, count($safe_ids), '%d'));
+       $sql = $wpdb->prepare(
+           "UPDATE {$this->_table_name} SET `counter_results_views` = `counter_results_views` + %d WHERE post_id IN ($placeholders)",
+           array_merge([intval($increment)], $safe_ids)
+       );
        $this->db->query($sql);
     }
 

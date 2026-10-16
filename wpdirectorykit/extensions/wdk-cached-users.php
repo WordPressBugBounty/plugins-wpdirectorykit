@@ -98,6 +98,10 @@ class WdkCachedUsers
     public function regenerate_cache_regenerate()
     {
         if(isset($_GET['wdk_cached_users_regenerate'])) {
+            if (!current_user_can('manage_options')) {
+                return FALSE;
+            }
+            check_admin_referer('wdk-cached-users-regenerate', '_wpnonce');
             $this->regenerate_cache();
 
             return TRUE;
