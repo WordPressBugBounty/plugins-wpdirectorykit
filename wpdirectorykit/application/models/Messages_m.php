@@ -18,7 +18,17 @@ class Messages_m extends Winter_MVC_Model {
     public $fields_list_dash_view = NULL;
     public $fields_list = NULL;
     public $current_user_id = NULL;
+    public $allowedOrderBy = array(
+        'idmessage',
+        'display_name',
+        'post_id',
+        'date',
+    );
     
+    public function getAllowedOrderBy() {
+        return $this->allowedOrderBy;
+    }
+
 	public function __construct(){
         parent::__construct();
         $this->current_user_id = get_current_user_id();

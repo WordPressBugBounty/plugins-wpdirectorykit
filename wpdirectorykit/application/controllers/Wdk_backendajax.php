@@ -391,13 +391,15 @@ class Wdk_backendajax extends Winter_MVC_Controller
     public function update_depend()
     {
         $data = array();
+        $data['popup_text_success'] = '';
+        $data['popup_text_error'] = '';
         $data['message'] = __('No message returned!', 'wpdirectorykit');
         $data['success'] = false;
         $data['parameters'] = $_POST;
 
         /* protect */
         if(!wmvc_user_in_role('administrator') && !current_user_can('wdk_listings_manage')) {
-            $data['message'] = __('Disabled for current user', 'wpdirectorykit');
+            $data['popup_text_error'] = $data['message'] = __('Disabled for current user', 'wpdirectorykit');
             $this->output($data);
         }
 
@@ -419,12 +421,19 @@ class Wdk_backendajax extends Winter_MVC_Controller
                 }
             }
 
+            $data['popup_text_success'] = '';
+
             $data_insert = array(
                 'main_field' => wmvc_show_data('main_field', $data['parameters'], false),
-                'field_id' => wmvc_show_data('field_id', $data['parameters'], false),
+                'field_id' => absint(wmvc_show_data('field_id', $data['parameters'], false)),
                 'hidden_fields_list' => join(',', $hidden_fields),
             );
 
+            $allowed_fields= ['categories'];
+            if (!in_array(strtolower($data_insert['main_field']), $allowed_fields, true)) {
+                wp_die('Forbidden');
+            }
+            $data['popup_text_success'] = __('Updated depend fields successfully', 'wpdirectorykit');
             $this->dependfields_m->delete_where(array('field_id' => $data_insert['field_id'], 'main_field' => $data_insert['main_field']));
             $this->dependfields_m->insert($data_insert);
         }

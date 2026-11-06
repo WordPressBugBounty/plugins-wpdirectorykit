@@ -88,8 +88,12 @@
 
 		loading_el.addClass('wdk_btn_load_indicator out');
 
-		wdk_dependfields_update_jqxhr = jQuery.post(script_dependfields_parameters.ajax_url, data, function (data) {
-		
+		wdk_dependfields_update_jqxhr = jQuery.post(script_dependfields_parameters.ajax_url, data, function (response) {
+			if (response.popup_text_success)
+				wdk_log_notify(response.popup_text_success);
+
+			if (response.popup_text_error)
+				wdk_log_notify(response.popup_text_error, 'error');
 			
 		}).always(function(data) {
 			loading_el.removeClass('wdk_btn_load_indicator out');

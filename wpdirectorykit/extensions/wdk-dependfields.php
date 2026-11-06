@@ -84,7 +84,8 @@ class WdkDependfields
         $this->data['fields_data'] = $Winter_MVC_WDK->field_m->get();
         $this->data['hidden_fields'] = array();
 
-        wp_enqueue_script( 'wdk-dependfields-edit');
+        wp_enqueue_script( 'wdk-dependfields-edit','wdk-notify');
+        wp_enqueue_style( 'wdk-notify');
 
         $depend_fields = $Winter_MVC_WDK->dependfields_m->get_by(array('field_id' => wmvc_show_data('idcategory', $data),'main_field' => 'categories'), TRUE);
         if($depend_fields && !empty($depend_fields->hidden_fields_list)) {

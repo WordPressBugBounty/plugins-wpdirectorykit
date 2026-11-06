@@ -132,6 +132,18 @@ class WdkLanguageSwitcher extends WdkElementorBase {
             if(empty( $this->data['langs'])) return false;
         }
 
+        $this->data['current_lang'] = wdk_current_language();
+        $this->data['current_lang_flag'] = '';
+        
+        if(!empty($this->data['settings']['enable_short_names']) && $this->data['settings']['enable_short_names'] == 'yes')
+            foreach ($this->data['langs'] as $lang) {
+                if ($lang['title'] == wdk_current_language()) {
+                    $this->data['current_lang'] = ucfirst($lang['short_language_name']);
+                    $this->data['current_lang_flag'] = $lang['icon'];
+                    break;
+                }
+            }
+
         $layout = 'drop';
 
         if($this->data['settings']['enable_list_layout'] == 'yes')
@@ -153,6 +165,18 @@ class WdkLanguageSwitcher extends WdkElementorBase {
 			'enable_list_layout',
 			[
 				'label' => __( 'Enable List Layout', 'wpdirectorykit' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => __( 'Hide', 'wpdirectorykit' ),
+				'label_off' => __( 'Show', 'wpdirectorykit' ),
+				'return_value' => 'yes',
+				'default' => '',
+			]
+		);
+
+        $this->add_control (
+			'enable_short_names',
+			[
+				'label' => __( 'Enable Short Names', 'wpdirectorykit' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => __( 'Hide', 'wpdirectorykit' ),
 				'label_off' => __( 'Show', 'wpdirectorykit' ),

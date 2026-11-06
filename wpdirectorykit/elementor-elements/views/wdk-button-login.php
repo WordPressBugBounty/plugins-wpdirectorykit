@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="wdk-element wdk-button-login" id="wdk_el_<?php echo esc_html($id_element);?>">
     <?php if(!is_user_logged_in()):?>
-    <a href="<?php echo esc_attr(wmvc_show_data('link_not_login_url', $settings));?>" id="<?php echo esc_attr(wmvc_show_data('link_not_login_id', $settings));?>" class="wdk-element-button login">
+    <a href="<?php echo esc_url(wmvc_show_data('link_not_login_url', $settings));?>" id="<?php echo esc_attr(wmvc_show_data('link_not_login_id', $settings));?>" class="wdk-element-button login">
         <?php if(wmvc_show_data('link_not_login_icon_position', $settings) == 'left') :?>
             <?php \Elementor\Icons_Manager::render_icon( $settings['link_not_login_icon'], [ 'aria-hidden' => 'true' ] ); ?>
         <?php endif;?>
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php endif;?>
 
     <?php if(is_user_logged_in()):?>
-    <a href="<?php echo esc_attr(wmvc_show_data('link_login_url', $settings));?>" id="<?php echo esc_attr(wmvc_show_data('link_login_id', $settings));?>" 
+    <a href="<?php echo esc_url(wmvc_show_data('link_login_url', $settings));?>" id="<?php echo esc_attr(wmvc_show_data('link_login_id', $settings));?>" 
         title="<?php echo esc_attr(wmvc_show_data('link_login_text_attr', $settings));?>" 
         class="wdk-element-button logout">
         <?php if(wmvc_show_data('link_login_icon_position', $settings) == 'left') :?>
@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <?php endif;?>
     </a>
     <span class="dash-span">
-        <a href="<?php echo esc_attr(wmvc_show_data('link_dash_url', $settings));?>" 
+        <a href="<?php echo esc_url(wmvc_show_data('link_dash_url', $settings));?>" 
             title="<?php echo esc_attr(wmvc_show_data('link_dash_text_attr', $settings));?>"
             id="<?php echo esc_attr(wmvc_show_data('link_dash_id', $settings));?>" class="wdk-element-button dash logout">
             <?php if(wmvc_show_data('link_dash_icon_position', $settings) == 'left') :?>

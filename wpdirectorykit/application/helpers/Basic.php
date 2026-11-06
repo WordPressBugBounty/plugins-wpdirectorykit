@@ -1705,7 +1705,7 @@ function wdk_messages_prepare_search_query_GET($columns = array(), $model_name =
         // order
         if(isset($_GET_clone['order_by']))
         {
-            $_GET_clone['order_by'] = str_replace('post_id', $WMVC->db->prefix.'wdk_messages.post_id', $_GET_clone['order_by']);
+            $_GET_clone['order_by'] = wdk_esc_sql_order_by($_GET_clone['order_by'], $WMVC->$model_name->getAllowedOrderBy());
             $WMVC->db->order_by(wdk_esc_sql(sanitize_text_field($_GET_clone['order_by']), true));
         }
 
@@ -4796,7 +4796,7 @@ if (!function_exists('wdk_get_languages')) {
 
     function wdk_get_languages($lang_code_id = null)
     {
-        $lang_pattern = ['title' => '', 'lang_code' => '', 'id' => '', 'icon' => '', 'url' => ''];
+        $lang_pattern = ['title' => '', 'lang_code' => '', 'id' => '', 'icon' => '', 'url' => '', 'short_language_name'=>''];
         $languages = [];
 
         // [qTranslate X]
@@ -4816,6 +4816,7 @@ if (!function_exists('wdk_get_languages')) {
                         [
                             'title' => $q_config['language_name'][$lang_code],
                             'lang_code' => $lang_code,
+                            'short_language_name' => $lang_data['lang_code'],
                             'id' => $key + 1,
                             'icon' => '',
                             'url' => wdk_get_language_url($lang_code),
@@ -4837,6 +4838,7 @@ if (!function_exists('wdk_get_languages')) {
                         'title' => (!empty($lang_data['translated_name'])) ? $lang_data['translated_name'] : $lang_data['native_name'],
                         'lang_code' => $lang_data['language_code'],
                         'id' => $k,
+                        'short_language_name' => $lang_data['language_code'],
                         'icon' => (!empty($lang_data['country_flag_url'])) ? $lang_data['country_flag_url'] : WPDIRECTORYKIT_URL.'public/img/flags/'.$lang_data['language_code'].'.png',
                         'url' => wdk_get_language_url($lang_data['language_code']),
                     ]
@@ -4858,6 +4860,7 @@ if (!function_exists('wdk_get_languages')) {
                         [
                             'title' => (!empty($lang_data['translated_name'])) ? $lang_data['translated_name'] : $lang_data['native_name'],
                             'lang_code' => $lang_data['code'],
+                            'short_language_name' => preg_replace('/_.*/', '', $lang_data['code']),
                             'id' => $lang_data['id'],
                             'icon' => (!empty($lang_data['country_flag_url'])) ? $lang_data['country_flag_url'] : WPDIRECTORYKIT_URL.'public/img/flags/'.$lang_data['language_code'].'.png',
                             'url' => wdk_get_language_url($lang_data['code']),
@@ -4877,6 +4880,7 @@ if (!function_exists('wdk_get_languages')) {
                     [
                         'title' => $lang_data['language_name'],
                         'lang_code' => $lang_data['language_code'],
+                        'short_language_name' =>  preg_replace('/_.*/', '', $lang_data['short_language_name']),
                         'id' => $k,
                         'icon' => $lang_data['flag_link'],
                         'url' => $lang_data['current_page_url'],

@@ -267,7 +267,7 @@ class WdkFieldValue extends WdkElementorBase
                 ) {
                     global $wp_embed;
                     // Dynamic field values are registered in the translation catalog separately.
-// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+                    // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                     $this->data['field_value'] = wpautop(__(wdk_field_value($this->data['settings']['field_id'], $wdk_listing_id), 'wpdirectorykit'));
                     $this->data['field_value'] = html_entity_decode($wp_embed->autoembed($this->data['field_value']));
                 } elseif (

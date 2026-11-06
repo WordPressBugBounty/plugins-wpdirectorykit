@@ -246,7 +246,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                         <?php
                                         $field_value ='';
 
-                                    } elseif(wmvc_show_data('field_type', $field) == 'TEXTAREA') {
+                                    } elseif(in_array(wmvc_show_data('field_type', $field), ['TEXTAREA_WYSIWYG','TEXTAREA'])) {
                                         global $wp_embed;
                                         // Dynamic field values are registered in the translation catalog separately.
 // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText

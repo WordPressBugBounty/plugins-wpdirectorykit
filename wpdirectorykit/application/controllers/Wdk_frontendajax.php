@@ -163,6 +163,35 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		if (!in_array(strtolower($table), $allowed_models, true)) {
 			wp_die('Forbidden');
 		}
+		
+		$allowed_attributes = [
+			'category_m' => [
+				'attribute_id' => ['idcategory'],
+				'attribute_value' => ['idcategory', 'category_title', 'titles_for_search'],
+			],
+			'location_m' => [
+				'attribute_id' => ['idlocation'],
+				'attribute_value' => ['idlocation', 'location_title', 'titles_for_search'],
+			],
+			'listing_m' => [
+				'attribute_id' => ['post_id'],
+				'attribute_value' => ['post_id', 'post_title'],
+			],
+			'user_m' => [
+				'attribute_id' => ['ID'],
+				'attribute_value' => ['display_name'],
+			],
+		];
+		if (isset($allowed_attributes[strtolower($table)])) {
+			$attributes = $allowed_attributes[strtolower($table)];
+		
+			if (
+				!in_array($parameters['attribute_id'] ?? 'id', $attributes['attribute_id'], true) ||
+				!in_array($parameters['attribute_value'] ?? 'address', $attributes['attribute_value'], true)
+			) {
+				wp_die('Forbidden');
+			}
+		}
 
 		$post_table = $this->db->prefix.'posts';
 
@@ -171,6 +200,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		$attr_id = preg_replace("/[^0-9a-zA-Z_\-]/", "",sanitize_text_field($parameters['attribute_id']));
 		$attr_val = preg_replace("/[^0-9a-zA-Z_\-]/", "",sanitize_text_field($parameters['attribute_value']));
 
+	
 
 		$attr_search = wdk_esc_sql(sanitize_text_field($parameters['search_term'] ?? ''));
 		$skip_id = intval($parameters['skip_id'] ?? 0);
@@ -180,8 +210,14 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 			$language_id = NULL;
 
 		$id_part="";
+		/* mapping attribute value to column name */
+		$attr_id_column = $attr_id;
+		if($attr_id == 'post_id') {
+			$attr_id_column = $this->listing_m->_table_name.'.post_id';
+		}
+
 		if(is_numeric($attr_search))
-			$id_part = "$attr_id=$attr_search OR ";
+			$id_part = "$attr_id_column=$attr_search OR ";
 	
 		if($table == 'icons_list') {
 			$icons = $this->get_fa_icons();
@@ -451,6 +487,42 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		if (!in_array(strtolower($table), $allowed_models, true)) {
 			wp_die('Forbidden');
 		}
+
+
+		$allowed_models = ['category_m', 'location_m', 'field_m', 'listing_m', 'user_m', 'icons_list', 'calendar_listing_m'];
+		if (!in_array(strtolower($table), $allowed_models, true)) {
+			wp_die('Forbidden');
+		}
+		
+		$allowed_attributes = [
+			'category_m' => [
+				'attribute_id' => ['idcategory'],
+				'attribute_value' => ['idcategory', 'category_title', 'titles_for_search'],
+			],
+			'location_m' => [
+				'attribute_id' => ['idlocation'],
+				'attribute_value' => ['idlocation', 'location_title', 'titles_for_search'],
+			],
+			'listing_m' => [
+				'attribute_id' => ['post_id'],
+				'attribute_value' => ['post_id', 'post_title'],
+			],
+			'user_m' => [
+				'attribute_id' => ['ID'],
+				'attribute_value' => ['display_name'],
+			],
+		];
+		if (isset($allowed_attributes[strtolower($table)])) {
+			$attributes = $allowed_attributes[strtolower($table)];
+		
+			if (
+				!in_array($parameters['attribute_id'] ?? 'id', $attributes['attribute_id'], true) ||
+				!in_array($parameters['attribute_value'] ?? 'address', $attributes['attribute_value'], true)
+			) {
+				wp_die('Forbidden');
+			}
+		}
+
 		
 		$table_name = substr($table,0, -2);
 		$attr_id = preg_replace("/[^0-9a-zA-Z_\-]/", "",sanitize_text_field($parameters['attribute_id']));
@@ -626,7 +698,7 @@ class Wdk_frontendajax extends Winter_MVC_Controller {
 		$public_columns = array(
 			'category_m' => array('idcategory', 'category_title', 'titles_for_search'),
 			'location_m' => array('idlocation', 'location_title', 'titles_for_search'),
-			'listing_m' => array('post_id', 'post_title', 'post_title'),
+			'listing_m' => array('post_id', 'post_title'),
 		);
 		$key_column = $public_columns[$model_name][0];
 		$print_column = $public_columns[$model_name][1];

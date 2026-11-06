@@ -176,7 +176,7 @@ class Wpdirectorykit_Admin
         wp_localize_script('wdk-treefield-dropdown', 'script_parameters', $params);
         wp_localize_script('wdk-treefield-dropdown', 'wdk_script_parameters', $params);
 
-        wp_register_script('wdk-dependfields-edit', plugin_dir_url(__FILE__) . 'js/wdk-dependfields-edit.js', array('jquery'), $this->version, false);
+        wp_register_script('wdk-dependfields-edit', plugin_dir_url(__FILE__) . 'js/wdk-dependfields-edit.js', array('jquery','wdk-notify'), $this->version, false);
         $params = array(
             'ajax_url' => admin_url('admin-ajax.php'),
         );
